@@ -10,10 +10,16 @@ public class PMovement : MonoBehaviour
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float gravityMax = 36f;
 
+    // This is used to determine how much upward force your character jumps.
+    [SerializeField] private float jumpForce = 16f;
+    [SerializeField] private int maxJumps = 1;
+
     private Vector3 currVel;
     private Vector3 inputDir;
 
     private Vector3 vertVel;
+
+    private int currJumpCount = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,8 +39,8 @@ public class PMovement : MonoBehaviour
 
     void inputHandle()
     {
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
         // Find the input direction in world space.
         inputDir = (transform.right * h + transform.forward * v).normalized;
@@ -44,6 +50,10 @@ public class PMovement : MonoBehaviour
     {
         if (controller.isGrounded)
         {
+            // This is done, so once you touch the ground, your jumps count resets.
+            currJumpCount = 0;
+            vertVel = Vector3.zero;
+
             // This is needed to not just keep the player grounded
             vertVel.y = -1f;
 
@@ -58,9 +68,25 @@ public class PMovement : MonoBehaviour
                 // Appplies friction, if and only if there's no input involved.
                 currVel = Vector3.MoveTowards(currVel, Vector3.zero, groundFriction * Time.deltaTime);
             }
+
+            // This checks the input for jumping.
+            if (Input.GetButtonDown("Jump"))
+            {
+                vertVel.y = jumpForce;
+                currJumpCount++;
+            }
+
         }
         else
         {
+
+            // This allows the jump to be done in mid-air, when under the max jump count.
+            if (Input.GetButtonDown("Jump") && currJumpCount < maxJumps)
+            {
+                vertVel.y = jumpForce;
+                currJumpCount++;
+            }
+
             // This applies gravity, when not on the ground.
             vertVel.y -= gravity * Time.deltaTime;
 
@@ -69,7 +95,7 @@ public class PMovement : MonoBehaviour
         }
 
         // This grabs the H-movement and Fall speed.
-        Vector3 moveFinal = currVel + Vector3.up * Time.deltaTime;
+        Vector3 moveFinal = currVel + vertVel;
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
