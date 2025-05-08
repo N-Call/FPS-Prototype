@@ -49,7 +49,7 @@ public class PMovement : MonoBehaviour
         float v = Input.GetAxis("Vertical");
 
         // Find the input direction in world space.
-        inputDir = (transform.right * h + transform.forward * v).normalized;
+        inputDir = (transform.right * h + transform.forward * v);
 
         // Determine sprint state and speed
         bool isSprinting = Input.GetButton("Sprint");
