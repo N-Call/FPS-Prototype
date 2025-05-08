@@ -76,13 +76,6 @@ public class PMovement : MonoBehaviour
             // Handle crouching
             if (Input.GetButton("Crouch"))
             {
-                if (isSprinting && !isSliding)
-                {
-                    isSliding = true;
-                    slideTimer = 0f;
-                    currentSpeed /= modSprint;
-                    isSprinting = false;
-                }
 
                 Crouch();
             }
