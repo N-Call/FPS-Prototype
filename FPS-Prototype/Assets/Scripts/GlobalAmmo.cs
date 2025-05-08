@@ -3,11 +3,11 @@ using UnityEngine;
 public class GlobalAmmo : MonoBehaviour
 {
     public int gun1 = 10;
-    [SerializeField] GameObject ammoCount;
+    [SerializeField] GameObject AmmoCount;
 
     // Update is called once per frame
     void Update()
     {
-        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + gun1; 
+        AmmoCount.GetComponent<TMPro.TMP_Text>().text = "" + gun1; 
     }
 }
