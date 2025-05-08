@@ -8,8 +8,11 @@ public class PMovement : MonoBehaviour
     [SerializeField] private LayerMask playerMask;
 
     [Header("Movement Settings")]
-    [SerializeField] private float baseSpeed = 5f;
+    [SerializeField] float baseSpeed = 5f;
     [SerializeField] private float modSprint = 1.5f;
+
+    [Header("Crouch Settings")]
+    [SerializeField] private float crouchHeightMod = 0.5f;
 
     [Header("Gravity and Jumping")]
     [SerializeField] private float gravity = 9.81f;
@@ -26,11 +29,13 @@ public class PMovement : MonoBehaviour
     private Vector3 moveDir;
     private Vector3 vertVel;
     private int currJumpCount = 0;
+    private float originalHeight;
+    private bool isCrouching;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        originalHeight = controller.height;
     }
 
     // Update is called once per frame
@@ -67,9 +72,23 @@ public class PMovement : MonoBehaviour
             // This is needed to not just keep the player grounded
             vertVel.y = -1f;
 
+            if (Input.GetButton("Crouch"))
+            {
+                Crouch();
+            }
+            if (Input.GetButtonUp("Crouch") || !Input.GetButton("Crouch"))
+            {
+                UnCrouch();
+            }
+
             // This checks the input for jumping.
             if (Input.GetButtonDown("Jump"))
             {
+                if (isCrouching)
+                {
+                    UnCrouch();
+                }
+
                 vertVel.y = jumpForce;
                 currJumpCount++;
             }
@@ -133,4 +152,17 @@ public class PMovement : MonoBehaviour
         SecWeapon.SetActive(false);
         primWeapon.SetActive(true);
     }
+
+    void Crouch()
+    {
+        controller.height = originalHeight * crouchHeightMod;
+        isCrouching = true;
+    }
+
+    void UnCrouch()
+    {
+        controller.height = originalHeight;
+        isCrouching = false;
+    }
+
 }

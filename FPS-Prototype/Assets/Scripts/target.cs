@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Target : MonoBehaviour, IDamage
+public class Target : MonoBehaviour, IDamage, ITarget
 {
 
     //[SerializeField] Renderer model;
@@ -16,6 +16,8 @@ public class Target : MonoBehaviour, IDamage
     public bool vertical;
     [SerializeField] int speed;
     [SerializeField] float travelDistance;
+
+    [SerializeField][Range(1, 3)] int element;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -47,8 +49,55 @@ public class Target : MonoBehaviour, IDamage
         if(HP <= 0)
         {
             Destroy(gameObject);
-        }
-        
+        }   
     }
 
+    public void activateElem(int modifier, Transform player)
+    {
+        int result;
+        if (element >= modifier)
+        {
+            result = element = modifier;
+        }
+        else { result = modifier - element; }
+
+        switch (result)
+        {
+            case 0:
+                Buff(player);
+                break;
+            case 1:
+                Neutral(player);
+                break;
+            case 2:
+                Debuff(player);
+                break;
+        }
+    }
+
+    void Buff(Transform player)
+    {
+        switch (element)
+        {
+            case 1:
+                
+                break;
+            case 2:
+                //Cry
+                break;
+            case 3:
+                
+                break;
+        }
+    }
+
+    void Neutral(Transform player)
+    {
+
+    }
+
+    void Debuff(Transform player)
+    {
+
+    }
 }
