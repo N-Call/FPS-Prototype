@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
 {
+    public Transform Player;
     [SerializeField] int ammoMaxCopasity;
     [SerializeField] int reloadCopasity;
     [SerializeField] int ammoCount;
     [SerializeField] float distance;
     [SerializeField] int damage;
+
+    [SerializeField][Range(1, 3)] int element;
 
     private int ammoCopasity;
 
@@ -39,6 +42,9 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
                 {
                     dmg.takeDamage(damage);
                 }
+
+                ITarget targ = hit.collider.GetComponent<ITarget>();
+                targ?.activateElem(element, Player);
             }
             ammoCount--;
         }

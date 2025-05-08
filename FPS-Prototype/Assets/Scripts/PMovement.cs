@@ -8,7 +8,7 @@ public class PMovement : MonoBehaviour
     [SerializeField] private LayerMask playerMask;
 
     [Header("Movement Settings")]
-    [SerializeField] private float baseSpeed = 5f;
+    [SerializeField] float baseSpeed = 5f;
     [SerializeField] private float modSprint = 1.5f;
 
     [Header("Gravity and Jumping")]
