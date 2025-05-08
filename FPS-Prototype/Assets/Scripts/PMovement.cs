@@ -4,6 +4,8 @@ using UnityEngine;
 public class PMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController controller;
+    [SerializeField] private Camera cam;
+    [SerializeField] private LayerMask playerMask;
     [SerializeField] private float walkAccel = 5f;
     [SerializeField] private float walkSpeedMax = 10f;
     [SerializeField] private float groundFriction = 0.25f;
@@ -13,6 +15,11 @@ public class PMovement : MonoBehaviour
     // This is used to determine how much upward force your character jumps.
     [SerializeField] private float jumpForce = 16f;
     [SerializeField] private int maxJumps = 1;
+
+    //Store the primary and secondary weapon's gameobjects
+    [Header("Weapon Settings")]
+    [SerializeField] private GameObject primWeapon;
+    [SerializeField] private GameObject SecWeapon;
 
     private Vector3 currVel;
     private Vector3 inputDir;
@@ -35,6 +42,9 @@ public class PMovement : MonoBehaviour
 
         // This applies movement after checking everything within the function.
         moveApply();
+
+        //this method is for the inputs related to weapons
+        WeaponInput();
     }
 
     void inputHandle()
@@ -100,5 +110,39 @@ public class PMovement : MonoBehaviour
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
 
+    }
+
+    void WeaponInput()
+    {
+        //check for primary weapon
+        if (Input.GetButtonDown("Fire1") && primWeapon != null)
+        {
+            //launch attack method
+            primWeapon.GetComponent<IWeapon>().Attack(playerMask, cam);
+        }
+
+        //Change weapon if pressed
+        if (Input.GetButtonDown("Fire3"))
+        {
+            ChangeWeapon();
+        }
+
+        if (Input.GetButtonDown("Reload"))
+        {
+            IReloadable reloadable = primWeapon.GetComponent<IReloadable>();
+            reloadable?.Reload();
+        }
+    }
+
+    void ChangeWeapon()
+    {
+        //swap the primary and secondary Weapons
+        GameObject temp = primWeapon;
+        primWeapon = SecWeapon;
+        SecWeapon = temp;
+
+        //set the seconday to inactive
+        SecWeapon.SetActive(false);
+        primWeapon.SetActive(true);
     }
 }
