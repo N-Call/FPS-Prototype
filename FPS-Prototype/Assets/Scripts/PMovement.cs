@@ -76,7 +76,7 @@ public class PMovement : MonoBehaviour
             {
                 Crouch();
             }
-            if (Input.GetButtonUp("Crouch"))
+            if (Input.GetButtonUp("Crouch") || !Input.GetButton("Crouch"))
             {
                 UnCrouch();
             }
