@@ -153,7 +153,7 @@ public class PMovement : MonoBehaviour
         bool isSprinting = Input.GetButton("Sprint");
         float currSpeed = baseSpeed * (isSprinting ? modSprint : 1f);
 
-        moveDir = inputDir * baseSpeed;
+        moveDir = inputDir * currSpeed;
 
         if (controller.isGrounded)
         {
@@ -187,9 +187,6 @@ public class PMovement : MonoBehaviour
             // This clamps the fall speed to avoid exceeding the maxFallspeed.
             vertVel.y = Mathf.Max(vertVel.y, -gravityMax);
         }
-
-        // Apply the sprint modifier.
-        float targetspeed = baseSpeed * (Input.GetButton("Sprint") ? modSprint : 1f);
 
         // This grabs the H-movement and Fall speed.
         Vector3 moveFinal = moveDir + vertVel;
