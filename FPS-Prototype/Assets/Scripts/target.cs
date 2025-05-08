@@ -17,6 +17,9 @@ public class Target : MonoBehaviour, IDamage
     [SerializeField] int speed;
     [SerializeField] float travelDistance;
 
+
+    [SerializeField][Range(1, 3)] int modifier;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
