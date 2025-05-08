@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class PMovement : MonoBehaviour
 
     [Header("Crouch Settings")]
     [SerializeField] private float crouchHeightMod = 0.5f;
+    [SerializeField] private float crouchSpeedMod = 0.5f;
+    [SerializeField] private bool crouchSprint = false;
 
     [Header("Gravity and Jumping")]
     [SerializeField] private float gravity = 9.81f;
@@ -29,6 +32,7 @@ public class PMovement : MonoBehaviour
     private Vector3 moveDir;
     private Vector3 vertVel;
     private int currJumpCount = 0;
+    private float currentSpeed;
     private float originalHeight;
     private bool isCrouching;
 
@@ -58,10 +62,7 @@ public class PMovement : MonoBehaviour
 
         // Determine sprint state and speed
         bool isSprinting = Input.GetButton("Sprint");
-        float currSpeed = baseSpeed * (isSprinting ? modSprint : 1f);
-
-        // Apply current speed directly
-        moveDir = inputDir * currSpeed;
+        currentSpeed = baseSpeed * ((isSprinting && (!isCrouching || (isCrouching && crouchSprint))) ? modSprint : 1f);
 
         if (controller.isGrounded)
         {
@@ -72,11 +73,22 @@ public class PMovement : MonoBehaviour
             // This is needed to not just keep the player grounded
             vertVel.y = -1f;
 
+            // Handle crouching
             if (Input.GetButton("Crouch"))
             {
+                if (isSprinting && !isSliding)
+                {
+                    isSliding = true;
+                    slideTimer = 0f;
+                    currentSpeed /= modSprint;
+                    isSprinting = false;
+                }
+
                 Crouch();
             }
-            if (Input.GetButtonUp("Crouch"))
+
+            // Handle un-crouching
+            if (Input.GetButtonUp("Crouch") || (!Input.GetButton("Crouch") && isCrouching))
             {
                 UnCrouch();
             }
@@ -110,6 +122,9 @@ public class PMovement : MonoBehaviour
             // This clamps the fall speed to avoid exceeding the maxFallspeed.
             vertVel.y = Mathf.Max(vertVel.y, -gravityMax);
         }
+
+        // Apply current speed directly
+        moveDir = inputDir * currentSpeed;
 
         // This grabs the H-movement and Fall speed.
         Vector3 moveFinal = moveDir + vertVel;
@@ -156,12 +171,14 @@ public class PMovement : MonoBehaviour
     void Crouch()
     {
         controller.height = originalHeight * crouchHeightMod;
+        currentSpeed *= crouchSpeedMod;
         isCrouching = true;
     }
 
     void UnCrouch()
     {
         controller.height = originalHeight;
+        currentSpeed /= crouchSpeedMod;
         isCrouching = false;
     }
 
