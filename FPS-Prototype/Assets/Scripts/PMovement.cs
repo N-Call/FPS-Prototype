@@ -144,6 +144,7 @@ public class PMovement : MonoBehaviour, IDamage
         {
             //launch attack method
             primWeapon.GetComponent<IWeapon>().Attack(playerMask, cam);
+            SoundManager.instance.PlaySFX("pistol");
         }
 
         //Change weapon if pressed
@@ -154,8 +155,10 @@ public class PMovement : MonoBehaviour, IDamage
 
         if (Input.GetButtonDown("Reload"))
         {
+            SoundManager.instance.PlaySFX("reload");
             IReloadable reloadable = primWeapon.GetComponent<IReloadable>();
             reloadable?.Reload();
+            
         }
     }
 
