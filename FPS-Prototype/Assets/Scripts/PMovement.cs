@@ -1,12 +1,16 @@
 using System.ComponentModel;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PMovement : MonoBehaviour
+public class PMovement : MonoBehaviour, IDamage
 {
     [SerializeField] private CharacterController controller;
     [SerializeField] private Camera cam;
     [SerializeField] private LayerMask playerMask;
+
+    [Header("Health")]
+    [SerializeField] private int HP;
 
     [Header("Movement Settings")]
     [SerializeField] float baseSpeed = 5f;
@@ -31,10 +35,16 @@ public class PMovement : MonoBehaviour
     private Vector3 inputDir;
     private Vector3 moveDir;
     private Vector3 vertVel;
+    
     private int currJumpCount = 0;
+    
     private float currentSpeed;
     private float originalHeight;
+    private float slideTimer;
+
     private bool isCrouching;
+    private bool isSliding;
+    private bool addedSlideSpeedBoost;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -173,6 +183,15 @@ public class PMovement : MonoBehaviour
         controller.height = originalHeight;
         currentSpeed /= crouchSpeedMod;
         isCrouching = false;
+    }
+
+    public void takeDamage(int amount)
+    {
+        HP -= amount;
+        if (HP <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
 }
