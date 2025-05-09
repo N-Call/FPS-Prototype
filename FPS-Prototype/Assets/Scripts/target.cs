@@ -66,18 +66,18 @@ public class Target : MonoBehaviour, IDamage, ITarget
         switch (result)
         {
             case 0:
-                Buff(player);
+                Buff();
                 break;
             case 1:
-                Neutral(player);
+                Neutral();
                 break;
             case 2:
-                Debuff(player);
+                Debuff();
                 break;
         }
     }
 
-    void Buff(GameObject player)
+    void Buff()
     {
         switch (element)
         {
@@ -93,12 +93,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
     }
 
-    void Neutral(GameObject player)
+    void Neutral()
     {
 
     }
 
-    void Debuff(GameObject player)
+    void Debuff()
     {  
 
     }
