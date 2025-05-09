@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         // to turn off the reticle
         reticle.SetActive(false);
+        // turn off player Script when paused
         playerScript.enabled = false;
     }
     public void stateUnpause()
@@ -71,13 +72,29 @@ public class GameManager : MonoBehaviour
         menuActive = null;
         // to turn on the reticle
         reticle.SetActive(true);
+        // turn on player Script when unpaused
         playerScript.enabled = true;
     }
 
     public void globalAmmoCount(int amount,int ammoCap)
     {
-        // display ammo count for the UI 
+        // display ammo count for the UI used in GunHitScan 
         ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
     }
-   
+
+    public void youLose()
+    {
+        // need lose condition still
+        statePause();
+        menuActive = menuLose;
+        menuActive.SetActive(true);
+    }
+    public void youWin()
+    {
+        // need win condition still
+        statePause();
+        menuActive = menuWin;
+        menuActive.SetActive(true);
+    }
+
 }
