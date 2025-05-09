@@ -63,7 +63,6 @@ public class PMovement : MonoBehaviour
         // Determine sprint state and speed
         bool isSprinting = Input.GetButton("Sprint");
         currentSpeed = baseSpeed * ((isSprinting && (!isCrouching || (isCrouching && crouchSprint))) ? modSprint : 1f);
-        
 
         if (controller.isGrounded)
         {
@@ -75,15 +74,8 @@ public class PMovement : MonoBehaviour
             vertVel.y = -1f;
 
             // Handle crouching
-            //if (Input.GetButton("Crouch"))
+            if (Input.GetButton("Crouch"))
             {
-                //if (isSprinting && !isSliding)
-                {
-                   // isSliding = true;
-                   // slideTimer = 0f;
-                    //currentSpeed /= modSprint;
-                   // isSprinting = false;
-                }
 
                 Crouch();
             }
@@ -132,7 +124,7 @@ public class PMovement : MonoBehaviour
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
-        
+
     }
 
     void WeaponInput()
@@ -142,7 +134,6 @@ public class PMovement : MonoBehaviour
         {
             //launch attack method
             primWeapon.GetComponent<IWeapon>().Attack(playerMask, cam);
-            //SoundManager.instance.PlaySFX("pistol");
         }
 
         //Change weapon if pressed
