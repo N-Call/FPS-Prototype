@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
 {
-    public Transform Player;
-    [SerializeField] int ammoMaxCopasity;
-    [SerializeField] int reloadCopasity;
+    [SerializeField] int ammoOrigCap;
+    [SerializeField] int reloadCap;
     [SerializeField] int ammoCount;
     [SerializeField] float distance;
     [SerializeField] int damage;
@@ -16,9 +15,8 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ammoCount = reloadCopasity;
-        ammoCopasity = ammoMaxCopasity;
-        GameManager.instance.globalAmmoCount(ammoCount);
+        ammoCount = reloadCap;
+        ammoCopasity = ammoOrigCap;
     }
 
     // Update is called once per frame
@@ -38,24 +36,19 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
             {
                 Debug.Log(hit.collider.name);
                 IDamage dmg = hit.collider.GetComponent<IDamage>();
-                //damage enemy
-                if (dmg != null)
-                {
-                    dmg.takeDamage(damage);
-                }
+                dmg?.takeDamage(damage);
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();
-                targ?.activateElem(element, Player);
+                targ?.activateElem(element, GameManager.instance.transform);
             }
             ammoCount--;
-            GameManager.instance.globalAmmoCount(ammoCount);
         }
     }
 
     public void Reload()
     {
-        ammoCopasity -= reloadCopasity - ammoCount;
-        ammoCount = reloadCopasity;
+        ammoCopasity -= reloadCap - ammoCount;
+        ammoCount = reloadCap;
 
         if(ammoCopasity < 0)
         {
