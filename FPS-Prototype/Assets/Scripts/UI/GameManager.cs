@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         // to turn off the reticle
         reticle.SetActive(false);
+        playerScript.enabled = false;
     }
     public void stateUnpause()
     {
@@ -70,6 +71,7 @@ public class GameManager : MonoBehaviour
         menuActive = null;
         // to turn on the reticle
         reticle.SetActive(true);
+        playerScript.enabled = true;
     }
 
     public void globalAmmoCount(int amount,int ammoCap)
