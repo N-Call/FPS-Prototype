@@ -143,7 +143,12 @@ public class PMovement : MonoBehaviour, IDamage
         if (Input.GetButtonDown("Fire1") && primWeapon != null)
         {
             //launch attack method
-            primWeapon.GetComponent<IWeapon>().Attack(playerMask, cam);
+            IWeapon weapon = primWeapon.GetComponent<IWeapon>();
+            if (weapon == null) {
+                return;
+            }
+
+            weapon.Attack(playerMask, cam);
             SoundManager.instance.PlaySFX("pistol");
         }
 
