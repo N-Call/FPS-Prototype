@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
-    
 
     public GameObject player;
     public PMovement playerScript;
@@ -59,8 +58,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         // to turn off the reticle
         reticle.SetActive(false);
-        // turn off player Script when paused
-        playerScript.enabled = false;
+        SoundManager.instance.musicSource.Stop();
     }
     public void stateUnpause()
     {
@@ -72,29 +70,13 @@ public class GameManager : MonoBehaviour
         menuActive = null;
         // to turn on the reticle
         reticle.SetActive(true);
-        // turn on player Script when unpaused
-        playerScript.enabled = true;
+        SoundManager.instance.musicSource.Play();
     }
 
-    public void globalAmmoCount(int amount,int ammoCap)
+    public void globalAmmoCount(int amount)
     {
-        // display ammo count for the UI used in GunHitScan 
-        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+        // display ammo count for the UI 
+        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount;
     }
-
-    public void youLose()
-    {
-        // need lose condition still
-        statePause();
-        menuActive = menuLose;
-        menuActive.SetActive(true);
-    }
-    public void youWin()
-    {
-        // need win condition still
-        statePause();
-        menuActive = menuWin;
-        menuActive.SetActive(true);
-    }
-
+   
 }
