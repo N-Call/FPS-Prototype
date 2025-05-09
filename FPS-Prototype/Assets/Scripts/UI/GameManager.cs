@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
+    [SerializeField] GameObject ammoCount;
 
     public GameObject player;
     public PMovement playerScript;
@@ -17,8 +18,9 @@ public class GameManager : MonoBehaviour
 
     float timeScaleOrig;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         // to turn off the reticle
         reticle.SetActive(false);
+        SoundManager.instance.musicSource.Stop();
     }
     public void stateUnpause()
     {
@@ -67,5 +70,13 @@ public class GameManager : MonoBehaviour
         menuActive = null;
         // to turn on the reticle
         reticle.SetActive(true);
+        SoundManager.instance.musicSource.Play();
     }
+
+    public void globalAmmoCount(int amount, int ammoCap)
+    {
+        // display ammo count for the UI 
+        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+    }
+   
 }
