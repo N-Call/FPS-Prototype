@@ -73,10 +73,10 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.musicSource.Play();
     }
 
-    public void globalAmmoCount(int amount)
+    public void globalAmmoCount(int amount, int ammoCap)
     {
         // display ammo count for the UI 
-        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
     }
    
 }
