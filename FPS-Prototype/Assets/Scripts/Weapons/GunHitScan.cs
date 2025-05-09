@@ -18,6 +18,7 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
     {
         ammoCount = reloadCopasity;
         ammoCopasity = ammoMaxCopasity;
+        GameManager.instance.globalAmmoCount(ammoCount);
     }
 
     // Update is called once per frame
@@ -47,6 +48,7 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
                 targ?.activateElem(element, Player);
             }
             ammoCount--;
+            GameManager.instance.globalAmmoCount(ammoCount);
         }
     }
 
