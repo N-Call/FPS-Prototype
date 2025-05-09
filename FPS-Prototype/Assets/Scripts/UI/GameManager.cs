@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
+    [SerializeField] GameObject ammoCount;
 
     public GameObject player;
     public PMovement playerScript;
@@ -17,8 +18,9 @@ public class GameManager : MonoBehaviour
 
     float timeScaleOrig;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
@@ -68,4 +70,11 @@ public class GameManager : MonoBehaviour
         // to turn on the reticle
         reticle.SetActive(true);
     }
+
+    public void globalAmmoCount(int amount)
+    {
+        // display ammo count for the UI 
+        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+    }
+   
 }
