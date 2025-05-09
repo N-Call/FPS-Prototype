@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 
 public class Target : MonoBehaviour, IDamage, ITarget
@@ -17,17 +19,42 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [SerializeField] int speed;
     [SerializeField] float travelDistance;
 
+    [SerializeField] private GameObject artToDisable = null;
+    private Collider targCollider;
+
+    [Header("1: Speed. 2: Jump. 3: Time")]
     [SerializeField][Range(1, 3)] int element;
+    bool affected;
+
+    [Header("Speed Element")]
+    [SerializeField] int speedMod;
+    [SerializeField] float speedModTime;
+    float playerSpeedOrig;
+
+    [Header("Speed Element")]
+    [SerializeField] int jumpMod;
+    [SerializeField] float jumpModTime;
+    float playerJumpOrig;
+
+    [SerializeField] int elemJumpMod;
+    [SerializeField] int elemTimeMod;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //colorOrig = model.material.color;
         startPos = transform.position;
+        targCollider = GetComponent<Collider>();
+
     }
 
     // Update is called once per frame
     void Update()
+    {
+        Movement();
+    }
+
+    void Movement()
     {
         if (movingTarget)
         {
@@ -37,7 +64,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
             }
             if (vertical)
             {
-                transform.position = startPos + transform.forward * Mathf.PingPong(Time.time * speed, travelDistance);   
+                transform.position = startPos + transform.forward * Mathf.PingPong(Time.time * speed, travelDistance);
             }
         }
     }
@@ -50,16 +77,19 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
         if(HP <= 0)
         {
-            Destroy(gameObject);
+            targCollider.enabled = false;
+            artToDisable.SetActive(false);
+            
         }   
     }
 
     public void activateElem(int modifier)
     {
+        Debug.Log("Activating Element");
         int result;
         if (element >= modifier)
         {
-            result = element = modifier;
+            result = element - modifier;
         }
         else { result = modifier - element; }
 
@@ -82,7 +112,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         switch (element)
         {
             case 1:
-                
+                StartCoroutine(SpeedBuff());
                 break;
             case 2:
                 //Cry
@@ -101,5 +131,18 @@ public class Target : MonoBehaviour, IDamage, ITarget
     void Debuff()
     {  
 
+    }
+
+    public IEnumerator SpeedBuff()
+    {
+        Debug.Log("Giving Speed");
+        GameManager.instance.playerScript.baseSpeed *= speedMod;
+
+        yield return new WaitForSeconds(speedModTime);
+
+        Debug.Log("Taking Away Speed");
+        GameManager.instance.playerScript.baseSpeed /= speedMod;
+
+        Destroy(gameObject);
     }
 }

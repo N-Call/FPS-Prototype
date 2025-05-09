@@ -9,7 +9,7 @@ public class PMovement : MonoBehaviour
     [SerializeField] private LayerMask playerMask;
 
     [Header("Movement Settings")]
-    [SerializeField] float baseSpeed = 5f;
+    [SerializeField] public float baseSpeed = 5f;
     [SerializeField] private float modSprint = 1.5f;
 
     [Header("Crouch Settings")]
@@ -32,7 +32,7 @@ public class PMovement : MonoBehaviour
     private Vector3 moveDir;
     private Vector3 vertVel;
     private int currJumpCount = 0;
-    private float currentSpeed;
+    float currentSpeed;
     private float originalHeight;
     private bool isCrouching;
 
