@@ -29,15 +29,14 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [Header("Speed Element")]
     [SerializeField] int speedMod;
     [SerializeField] float speedModTime;
-    float playerSpeedOrig;
 
-    [Header("Speed Element")]
+    [Header("Jump Element")]
     [SerializeField] int jumpMod;
     [SerializeField] float jumpModTime;
-    float playerJumpOrig;
 
-    [SerializeField] int elemJumpMod;
-    [SerializeField] int elemTimeMod;
+    [Header("Time Element")]
+    [SerializeField] int timeMod;
+    [SerializeField] int timeModTime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -79,7 +78,6 @@ public class Target : MonoBehaviour, IDamage, ITarget
         {
             targCollider.enabled = false;
             artToDisable.SetActive(false);
-            
         }   
     }
 
@@ -118,14 +116,15 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 StartCoroutine(JumpBuff());
                 break;
             case 3:
-                
+                //StartCoroutine(TimeBuff());
                 break;
         }
     }
 
     void Neutral()
     {
-
+        
+        Debug.Log("Elements Don't Match");
     }
 
     void Debuff()
@@ -148,14 +147,16 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpBuff()
     {
-        Debug.Log("Giving Speed");
-        GameManager.instance.playerScript.jumpForce *= speedMod;
+        Debug.Log("Giving Jump");
+        GameManager.instance.playerScript.jumpForce *= jumpMod;
 
-        yield return new WaitForSeconds(speedModTime);
+        yield return new WaitForSeconds(jumpModTime);
 
-        Debug.Log("Taking Away Speed");
-        GameManager.instance.playerScript.baseSpeed /= speedMod;
+        Debug.Log("Taking Away Jump");
+        GameManager.instance.playerScript.jumpForce /= jumpMod;
 
         Destroy(gameObject);
     }
+
+    
 }

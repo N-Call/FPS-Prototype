@@ -20,7 +20,7 @@ public class PMovement : MonoBehaviour
     [Header("Gravity and Jumping")]
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float gravityMax = 10f;
-    [SerializeField] float jumpForce = 8f;
+    [SerializeField] public float jumpForce = 8f;
     [SerializeField] private int maxJumps = 1;
 
     //Store the primary and secondary weapon's gameobjects

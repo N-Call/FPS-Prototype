@@ -195,6 +195,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1932187664359237370, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932187664359237370, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: element
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932187664359237370, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: jumpMod
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932187664359237370, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: vertical
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932187664359237370, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: horizontal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932187664359237370, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: jumpModTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932187664359237370, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: artToDisable
+      value: 
+      objectReference: {fileID: 1528799740}
+    - target: {fileID: 1932187664359237370, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: travelDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4189158778229712764, guid: 605bf811e4d1844408817941c4033a37, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.37913275
@@ -239,6 +271,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Target (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8864662145730315915, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: df557ada12a51f0458e6ba803932e57f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1303,7 +1339,7 @@ MonoBehaviour:
   cam: {fileID: 963194227}
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   baseSpeed: 8
   modSprint: 1.5
   crouchHeightMod: 0.5
@@ -2823,6 +2859,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510504934}
   m_CullTransparentMesh: 1
+--- !u!1 &1528799740 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6496078138470315720, guid: 605bf811e4d1844408817941c4033a37, type: 3}
+  m_PrefabInstance: {fileID: 43134663}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1627154172
 GameObject:
   m_ObjectHideFlags: 0
@@ -3857,6 +3898,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 963194228}
     m_Modifications:
+    - target: {fileID: 1173886670622830722, guid: 2785997a1da695a468382bdc49f60a4b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 750a12c6308e4af479b9401ec28914ab, type: 2}
     - target: {fileID: 4488971982084038830, guid: 2785997a1da695a468382bdc49f60a4b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.95
@@ -3934,6 +3979,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1234483767353779009, guid: 6776c494b278a4d44a7a9a3033dead33, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: df557ada12a51f0458e6ba803932e57f, type: 2}
     - target: {fileID: 3240487770684830843, guid: 6776c494b278a4d44a7a9a3033dead33, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.95
