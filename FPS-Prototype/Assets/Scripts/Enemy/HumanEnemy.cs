@@ -73,6 +73,8 @@ public class HumanEnemy : MonoBehaviour, IDamage
 
     public void takeDamage(int amount)
     {
+        SoundManager.instance.PlaySFX("playerHurt");
+
         HP -= amount;
 
         agent.SetDestination(GameManager.instance.player.transform.position);
@@ -90,7 +92,7 @@ public class HumanEnemy : MonoBehaviour, IDamage
     IEnumerator flashWhite()
     {
         model.material.color = Color.white;
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.1f);
         model.material.color = colorOrig;
     }
 
