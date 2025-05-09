@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
+    
 
     public GameObject player;
     public PMovement playerScript;
@@ -71,10 +72,10 @@ public class GameManager : MonoBehaviour
         reticle.SetActive(true);
     }
 
-    public void globalAmmoCount(int amount)
+    public void globalAmmoCount(int amount,int ammoCap)
     {
         // display ammo count for the UI 
-        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
     }
    
 }
