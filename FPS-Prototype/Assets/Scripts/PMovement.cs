@@ -134,6 +134,7 @@ public class PMovement : MonoBehaviour
         {
             //launch attack method
             primWeapon.GetComponent<IWeapon>().Attack(playerMask, cam);
+            
         }
 
         //Change weapon if pressed
