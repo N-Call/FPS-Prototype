@@ -9,6 +9,7 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // this is to count up one second at a time
         elapsedTime += Time.deltaTime;
         int minutes = Mathf.FloorToInt(elapsedTime / 60);
         int seconds = Mathf.FloorToInt(elapsedTime % 60);

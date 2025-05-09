@@ -8,6 +8,7 @@ public class GlobalAmmo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // display ammo count for the UI 
         AmmoCount.GetComponent<TMPro.TMP_Text>().text = "" + gun1; 
     }
 }
