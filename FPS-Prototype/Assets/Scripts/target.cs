@@ -52,7 +52,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }   
     }
 
-    public void activateElem(int modifier, Transform player)
+    public void activateElem(int modifier)
     {
         int result;
         if (element >= modifier)
@@ -75,7 +75,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
     }
 
-    void Buff(Transform player)
+    void Buff(GameObject player)
     {
         switch (element)
         {
@@ -91,13 +91,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
     }
 
-    void Neutral(Transform player)
+    void Neutral(GameObject player)
     {
 
     }
 
-    void Debuff(Transform player)
-    {
+    void Debuff(GameObject player)
+    {  
 
     }
 }

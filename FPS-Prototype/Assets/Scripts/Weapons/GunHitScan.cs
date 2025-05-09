@@ -10,6 +10,7 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
 
     [SerializeField][Range(1, 3)] int element;
 
+    
     private int ammoCopasity;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,7 +40,7 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
                 dmg?.takeDamage(damage);
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();
-                targ?.activateElem(element, GameManager.instance.transform);
+                targ?.activateElem(element, );
             }
             ammoCount--;
         }
