@@ -343,8 +343,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1627154173}
-        m_TargetAssemblyTypeName: buttonFunctions, Assembly-CSharp
-        m_MethodName: quit
+        m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
+        m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -612,8 +612,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1627154173}
-        m_TargetAssemblyTypeName: buttonFunctions, Assembly-CSharp
-        m_MethodName: resume
+        m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
+        m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1247,11 +1247,14 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 0
+  HP: 0
   baseSpeed: 8
   modSprint: 1.5
   crouchHeightMod: 0.5
   crouchSpeedMod: 0.5
   crouchSprint: 0
+  slideTime: 0.25
+  slideSpeedBoost: 2
   gravity: 15
   gravityMax: 36
   jumpForce: 10
@@ -1521,7 +1524,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1487786447}
-  - {fileID: 8956146411163133081}
+  - {fileID: 1504026258}
   - {fileID: 1969404719}
   - {fileID: 1827465870}
   - {fileID: 402055456}
@@ -1562,7 +1565,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -158, y: 65}
+  m_AnchoredPosition: {x: -201.75, y: 65}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &782182545
@@ -1585,7 +1588,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 000
+  m_text: 00/000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2568,6 +2571,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2646976414937767615, guid: 4f288c8e7aed9eb4cb8626d1de9b6f13, type: 3}
   m_PrefabInstance: {fileID: 1487786446}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1504026258 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+  m_PrefabInstance: {fileID: 8956146411163133080}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1509822614
 GameObject:
   m_ObjectHideFlags: 0
@@ -2970,8 +2978,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1627154173}
-        m_TargetAssemblyTypeName: buttonFunctions, Assembly-CSharp
-        m_MethodName: restart
+        m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
+        m_MethodName: Restart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3318,8 +3326,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -151, y: 60}
-  m_SizeDelta: {x: 280, y: 100}
+  m_AnchoredPosition: {x: -164.25, y: 60}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1944649577
 MonoBehaviour:
@@ -3966,11 +3974,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
---- !u!4 &8956146411163133081 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2169730103981435191, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
-  m_PrefabInstance: {fileID: 8956146411163133080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
