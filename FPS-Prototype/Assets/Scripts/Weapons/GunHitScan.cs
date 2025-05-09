@@ -41,7 +41,7 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
                 //damage enemy
                 if (dmg != null)
                 {
-                    dmg.takeDamage(damage);
+                    dmg.TakeDamage(damage);
                 }
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();

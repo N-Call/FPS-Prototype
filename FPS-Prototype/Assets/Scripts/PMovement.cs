@@ -1,15 +1,19 @@
 using System.ComponentModel;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PMovement : MonoBehaviour
+public class PMovement : MonoBehaviour, IDamage
 {
     [SerializeField] private CharacterController controller;
     [SerializeField] private Camera cam;
     [SerializeField] private LayerMask playerMask;
 
+    [Header("Health")]
+    [SerializeField] private int HP;
+
     [Header("Movement Settings")]
-    [SerializeField] public float baseSpeed = 5f;
+    [SerializeField] float baseSpeed = 5f;
     [SerializeField] private float modSprint = 1.5f;
 
     [Header("Crouch Settings")]
@@ -17,42 +21,56 @@ public class PMovement : MonoBehaviour
     [SerializeField] private float crouchSpeedMod = 0.5f;
     [SerializeField] private bool crouchSprint = false;
 
+    [Header("Slide Settings")]
+    [SerializeField] private float slideTime = 0.25f;
+    [SerializeField] private float slideSpeedBoost = 2.0f;
+
     [Header("Gravity and Jumping")]
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float gravityMax = 10f;
-    [SerializeField] public float jumpForce = 8f;
+    [SerializeField] private float jumpForce = 8f;
     [SerializeField] private int maxJumps = 1;
 
     //Store the primary and secondary weapon's gameobjects
     [Header("Weapon Settings")]
     [SerializeField] private GameObject primWeapon;
-    [SerializeField] private GameObject SecWeapon;
+    [SerializeField] private GameObject secWeapon;
 
     private Vector3 inputDir;
     private Vector3 moveDir;
     private Vector3 vertVel;
+    
     private int currJumpCount = 0;
-    float currentSpeed;
+    
+    private float currentSpeed;
+    private float crouchSpeed;
     private float originalHeight;
+    private float crouchHeight;
+    private float elapsedSlideTime;
+
+    private bool isSprinting;
     private bool isCrouching;
+    private bool isSliding;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        crouchSpeed = baseSpeed * crouchSpeedMod;
         originalHeight = controller.height;
+        crouchHeight = originalHeight * crouchHeightMod;
     }
 
     // Update is called once per frame
     void Update()
     {
         // This checks the ipnut of the direction being pressed in question, as well as movement.
-        handleMovement();
+        HandleMovement();
 
         //this method is for the inputs related to weapons
         WeaponInput();
     }
 
-    void handleMovement()
+    void HandleMovement()
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -61,8 +79,19 @@ public class PMovement : MonoBehaviour
         inputDir = (transform.right * h + transform.forward * v);
 
         // Determine sprint state and speed
-        bool isSprinting = Input.GetButton("Sprint");
-        currentSpeed = baseSpeed * ((isSprinting && (!isCrouching || (isCrouching && crouchSprint))) ? modSprint : 1f);
+        if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
+        {
+            isSprinting = true;
+        }
+        if (Input.GetButtonUp("Sprint"))
+        {
+            isSprinting = false;
+        }
+
+        if (!isSliding && !isCrouching)
+        {
+            currentSpeed = baseSpeed * (isSprinting ? modSprint : 1f);
+        }
 
         if (controller.isGrounded)
         {
@@ -74,10 +103,15 @@ public class PMovement : MonoBehaviour
             vertVel.y = -1f;
 
             // Handle crouching
-            if (Input.GetButton("Crouch"))
+            if (Input.GetButtonDown("Crouch"))
             {
-
                 Crouch();
+            }
+
+            // Handle sliding
+            if ((isCrouching && isSprinting) || isSliding)
+            {
+                Slide();
             }
 
             // Handle un-crouching
@@ -124,7 +158,6 @@ public class PMovement : MonoBehaviour
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
-
     }
 
     void WeaponInput()
@@ -133,7 +166,12 @@ public class PMovement : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && primWeapon != null)
         {
             //launch attack method
-            primWeapon.GetComponent<IWeapon>().Attack(playerMask, cam);
+            IWeapon weapon = primWeapon.GetComponent<IWeapon>();
+            if (weapon == null) {
+                return;
+            }
+
+            weapon.Attack(playerMask, cam);
             SoundManager.instance.PlaySFX("pistol");
         }
 
@@ -156,17 +194,17 @@ public class PMovement : MonoBehaviour
     {
         //swap the primary and secondary Weapons
         GameObject temp = primWeapon;
-        primWeapon = SecWeapon;
-        SecWeapon = temp;
+        primWeapon = secWeapon;
+        secWeapon = temp;
 
         //set the seconday to inactive
-        SecWeapon.SetActive(false);
+        secWeapon.SetActive(false);
         primWeapon.SetActive(true);
     }
 
     void Crouch()
     {
-        controller.height = originalHeight * crouchHeightMod;
+        controller.height = crouchHeight;
         currentSpeed *= crouchSpeedMod;
         isCrouching = true;
     }
@@ -176,6 +214,44 @@ public class PMovement : MonoBehaviour
         controller.height = originalHeight;
         currentSpeed /= crouchSpeedMod;
         isCrouching = false;
+
+        if (Input.GetButton("Sprint"))
+        {
+            isSprinting = true;
+        }
+    }
+
+    void Slide()
+    {
+        if (!isSliding)
+        {
+            isSprinting = false;
+            isCrouching = false;
+            isSliding = true;
+            currentSpeed += slideSpeedBoost;
+        }
+
+        elapsedSlideTime += Time.deltaTime;
+        currentSpeed = Mathf.Lerp(currentSpeed, crouchSpeed, elapsedSlideTime / slideTime);
+        
+        if (currentSpeed <= crouchSpeed)
+        {
+            currentSpeed = crouchSpeed;
+            controller.height = crouchHeight;
+            elapsedSlideTime = 0.0f;
+            isSliding = false;
+            isSprinting = false;
+            isCrouching = true;
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        HP -= amount;
+        if (HP <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
 }

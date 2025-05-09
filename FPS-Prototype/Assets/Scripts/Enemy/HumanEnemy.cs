@@ -71,7 +71,7 @@ public class HumanEnemy : MonoBehaviour, IDamage
         }
     }
 
-    public void takeDamage(int amount)
+    public void TakeDamage(int amount)
     {
         SoundManager.instance.PlaySFX("playerHurt");
 
