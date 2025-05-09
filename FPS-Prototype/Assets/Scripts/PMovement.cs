@@ -34,7 +34,7 @@ public class PMovement : MonoBehaviour, IDamage
     //Store the primary and secondary weapon's gameobjects
     [Header("Weapon Settings")]
     [SerializeField] private GameObject primWeapon;
-    [SerializeField] private GameObject SecWeapon;
+    [SerializeField] private GameObject secWeapon;
 
     private Vector3 inputDir;
     private Vector3 moveDir;
@@ -64,13 +64,13 @@ public class PMovement : MonoBehaviour, IDamage
     void Update()
     {
         // This checks the ipnut of the direction being pressed in question, as well as movement.
-        handleMovement();
+        HandleMovement();
 
         //this method is for the inputs related to weapons
         WeaponInput();
     }
 
-    void handleMovement()
+    void HandleMovement()
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -194,11 +194,11 @@ public class PMovement : MonoBehaviour, IDamage
     {
         //swap the primary and secondary Weapons
         GameObject temp = primWeapon;
-        primWeapon = SecWeapon;
-        SecWeapon = temp;
+        primWeapon = secWeapon;
+        secWeapon = temp;
 
         //set the seconday to inactive
-        SecWeapon.SetActive(false);
+        secWeapon.SetActive(false);
         primWeapon.SetActive(true);
     }
 
