@@ -115,7 +115,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 StartCoroutine(SpeedBuff());
                 break;
             case 2:
-                //Cry
+                StartCoroutine(JumpBuff());
                 break;
             case 3:
                 
@@ -137,6 +137,19 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         Debug.Log("Giving Speed");
         GameManager.instance.playerScript.baseSpeed *= speedMod;
+
+        yield return new WaitForSeconds(speedModTime);
+
+        Debug.Log("Taking Away Speed");
+        GameManager.instance.playerScript.baseSpeed /= speedMod;
+
+        Destroy(gameObject);
+    }
+
+    public IEnumerator JumpBuff()
+    {
+        Debug.Log("Giving Speed");
+        GameManager.instance.playerScript.jumpForce *= speedMod;
 
         yield return new WaitForSeconds(speedModTime);
 
