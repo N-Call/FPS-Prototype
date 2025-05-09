@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
 {
-    [SerializeField] int ammoOrigCap;
-    [SerializeField] int reloadCap;
+    public Transform Player;
+    [SerializeField] int ammoMaxCopasity;
+    [SerializeField] int reloadCopasity;
     [SerializeField] int ammoCount;
     [SerializeField] float distance;
     [SerializeField] int damage;
@@ -15,8 +16,9 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ammoCount = reloadCap;
-        ammoCopasity = ammoOrigCap;
+        ammoCount = reloadCopasity;
+        ammoCopasity = ammoMaxCopasity;
+        GameManager.instance.globalAmmoCount(ammoCount);
     }
 
     // Update is called once per frame
@@ -36,24 +38,34 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
             {
                 Debug.Log(hit.collider.name);
                 IDamage dmg = hit.collider.GetComponent<IDamage>();
-                dmg?.takeDamage(damage);
+                //damage enemy
+                if (dmg != null)
+                {
+                    dmg.takeDamage(damage);
+                }
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();
-                targ?.activateElem(element, GameManager.instance.transform);
+                targ?.activateElem(element, Player);
             }
             ammoCount--;
+            GameManager.instance.globalAmmoCount(ammoCount);
         }
     }
 
     public void Reload()
     {
-        ammoCopasity -= reloadCap - ammoCount;
-        ammoCount = reloadCap;
+        ammoCopasity -= reloadCopasity - ammoCount;
+        ammoCount = reloadCopasity;
 
         if(ammoCopasity < 0)
         {
             ammoCount += ammoCopasity;
             ammoCopasity = 0;
         }
+        GameManager.instance.globalAmmoCount(ammoCount);
+    }
+    private void OnEnable()
+    {
+        GameManager.instance.globalAmmoCount(ammoCount);
     }
 }
