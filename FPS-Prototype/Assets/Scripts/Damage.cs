@@ -46,7 +46,7 @@ public class Damage : MonoBehaviour
     IEnumerator DamageOther(IDamage other)
     {
         isDamaging = true;
-        other.takeDamage(dotDamage);
+        other.TakeDamage(dotDamage);
         yield return new WaitForSeconds(dotDamageRate);
         isDamaging = false;
     }

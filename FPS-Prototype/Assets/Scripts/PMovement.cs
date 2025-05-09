@@ -245,7 +245,7 @@ public class PMovement : MonoBehaviour, IDamage
         }
     }
 
-    public void takeDamage(int amount)
+    public void TakeDamage(int amount)
     {
         HP -= amount;
         if (HP <= 0)
