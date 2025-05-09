@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject reticle;
 
     public GameObject player;
     public PMovement playerScript;
@@ -33,7 +34,17 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetButtonDown("Cancel"))
         {
-            menuPause.SetActive(isPaused);
+            if (menuActive == null)
+            {
+                statePause();
+                menuActive = menuPause;
+                menuPause.SetActive(isPaused);
+
+            }
+            else if (menuActive == menuPause)
+            { 
+                stateUnpause();
+            }
         }
     }
 
@@ -43,6 +54,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        // to turn off the reticle
+        reticle.SetActive(false);
     }
     public void stateUnpause()
     {
@@ -50,5 +63,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = timeScaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        menuActive.SetActive(false);
+        menuActive = null;
+        // to turn on the reticle
+        reticle.SetActive(true);
     }
 }
