@@ -21,6 +21,10 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private float crouchSpeedMod = 0.5f;
     [SerializeField] private bool crouchSprint = false;
 
+    [Header("Slide Settings")]
+    [SerializeField] private float slideTime = 0.25f;
+    [SerializeField] private float slideSpeedBoost = 2.0f;
+
     [Header("Gravity and Jumping")]
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float gravityMax = 10f;
@@ -39,17 +43,21 @@ public class PMovement : MonoBehaviour, IDamage
     private int currJumpCount = 0;
     
     private float currentSpeed;
+    private float crouchSpeed;
     private float originalHeight;
-    private float slideTimer;
+    private float crouchHeight;
+    private float elapsedSlideTime;
 
+    private bool isSprinting;
     private bool isCrouching;
     private bool isSliding;
-    private bool addedSlideSpeedBoost;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        crouchSpeed = baseSpeed * crouchSpeedMod;
         originalHeight = controller.height;
+        crouchHeight = originalHeight * crouchHeightMod;
     }
 
     // Update is called once per frame
@@ -71,8 +79,19 @@ public class PMovement : MonoBehaviour, IDamage
         inputDir = (transform.right * h + transform.forward * v);
 
         // Determine sprint state and speed
-        bool isSprinting = Input.GetButton("Sprint");
-        currentSpeed = baseSpeed * ((isSprinting && (!isCrouching || (isCrouching && crouchSprint))) ? modSprint : 1f);
+        if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
+        {
+            isSprinting = true;
+        }
+        if (Input.GetButtonUp("Sprint"))
+        {
+            isSprinting = false;
+        }
+
+        if (!isSliding && !isCrouching)
+        {
+            currentSpeed = baseSpeed * (isSprinting ? modSprint : 1f);
+        }
 
         if (controller.isGrounded)
         {
@@ -84,10 +103,15 @@ public class PMovement : MonoBehaviour, IDamage
             vertVel.y = -1f;
 
             // Handle crouching
-            if (Input.GetButton("Crouch"))
+            if (Input.GetButtonDown("Crouch"))
             {
-
                 Crouch();
+            }
+
+            // Handle sliding
+            if ((isCrouching && isSprinting) || isSliding)
+            {
+                Slide();
             }
 
             // Handle un-crouching
@@ -134,7 +158,6 @@ public class PMovement : MonoBehaviour, IDamage
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
-
     }
 
     void WeaponInput()
@@ -181,7 +204,7 @@ public class PMovement : MonoBehaviour, IDamage
 
     void Crouch()
     {
-        controller.height = originalHeight * crouchHeightMod;
+        controller.height = crouchHeight;
         currentSpeed *= crouchSpeedMod;
         isCrouching = true;
     }
@@ -191,6 +214,35 @@ public class PMovement : MonoBehaviour, IDamage
         controller.height = originalHeight;
         currentSpeed /= crouchSpeedMod;
         isCrouching = false;
+
+        if (Input.GetButton("Sprint"))
+        {
+            isSprinting = true;
+        }
+    }
+
+    void Slide()
+    {
+        if (!isSliding)
+        {
+            isSprinting = false;
+            isCrouching = false;
+            isSliding = true;
+            currentSpeed += slideSpeedBoost;
+        }
+
+        elapsedSlideTime += Time.deltaTime;
+        currentSpeed = Mathf.Lerp(currentSpeed, crouchSpeed, elapsedSlideTime / slideTime);
+        
+        if (currentSpeed <= crouchSpeed)
+        {
+            currentSpeed = crouchSpeed;
+            controller.height = crouchHeight;
+            elapsedSlideTime = 0.0f;
+            isSliding = false;
+            isSprinting = false;
+            isCrouching = true;
+        }
     }
 
     public void takeDamage(int amount)
