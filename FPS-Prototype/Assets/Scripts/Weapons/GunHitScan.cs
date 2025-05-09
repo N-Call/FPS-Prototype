@@ -66,6 +66,7 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
     }
     private void OnEnable()
     {
-        GameManager.instance.globalAmmoCount(ammoCount, ammoCopasity);
+        // For safety call on globalAmmoCount for if its null don't use
+        GameManager.instance?.globalAmmoCount(ammoCount, ammoCopasity);
     }
 }
