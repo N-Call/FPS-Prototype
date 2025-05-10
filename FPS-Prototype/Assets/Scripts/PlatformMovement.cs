@@ -15,6 +15,7 @@ public class PlatformMovement : MonoBehaviour
     [SerializeField] float startDelay;
     [SerializeField] float destinationDelay;
     [SerializeField] bool pingPong;
+    [SerializeField] bool backToStart;
 
     [Header("Destruction")]
     [SerializeField] float destroyAfterTime;
@@ -100,17 +101,24 @@ public class PlatformMovement : MonoBehaviour
             // If this object does not ping pong
             // (does not move back and forth between start and destination),
             // then the object has finished moving, and no longer needs to do anything
-            if (!pingPong)
+            if (!pingPong && !backToStart)
             {
                 finished = true;
                 return;
             }
 
-            // Swap start & destination to move back and forth
-            Swap(ref startPosition, ref dest);
-
+            if (backToStart)
+            {
+                transform.position = startPosition;
+            }
+            else
+            {
+                // Swap start & destination to move back and forth
+                Swap(ref startPosition, ref dest);
+                toStart = !toStart;
+            }
+            
             // Reset waiting and elapsed time
-            toStart = !toStart;
             waited = false;
             waitTime = 0.0f;
         }
