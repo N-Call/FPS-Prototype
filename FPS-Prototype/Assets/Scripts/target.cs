@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 
 public class Target : MonoBehaviour, IDamage, ITarget
@@ -17,17 +19,41 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [SerializeField] int speed;
     [SerializeField] float travelDistance;
 
+    [SerializeField] private GameObject artToDisable = null;
+    private Collider targCollider;
+
+    [Header("1: Speed. 2: Jump. 3: Time")]
     [SerializeField][Range(1, 3)] int element;
+    bool affected;
+
+    [Header("Speed Element")]
+    [SerializeField][Range(0.01f, 999999)] int speedMod;
+    [SerializeField] float speedModTime;
+
+    [Header("Jump Element")]
+    [SerializeField][Range(0.01f, 999999)] int jumpMod;
+    [SerializeField] float jumpModTime;
+
+    [Header("Time Element")]
+    [SerializeField][Range(0.01f, 999999)] float timeMod;
+    [SerializeField] float timeModTime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //colorOrig = model.material.color;
         startPos = transform.position;
+        targCollider = GetComponent<Collider>();
+
     }
 
     // Update is called once per frame
     void Update()
+    {
+        Movement();
+    }
+
+    void Movement()
     {
         if (movingTarget)
         {
@@ -37,7 +63,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
             }
             if (vertical)
             {
-                transform.position = startPos + transform.forward * Mathf.PingPong(Time.time * speed, travelDistance);   
+                transform.position = startPos + transform.forward * Mathf.PingPong(Time.time * speed, travelDistance);
             }
         }
     }
@@ -50,56 +76,132 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
         if(HP <= 0)
         {
-            Destroy(gameObject);
+            targCollider.enabled = false;
+            artToDisable.SetActive(false);
         }   
     }
 
-    public void activateElem(int modifier, Transform player)
+    public void ActivateElem(int modifier)
     {
+        Debug.Log("Activating Element");
         int result;
         if (element >= modifier)
         {
-            result = element = modifier;
+            result = element - modifier;
         }
         else { result = modifier - element; }
 
-        switch (result)
+        if (result > 0)
         {
-            case 0:
-                Buff(player);
-                break;
-            case 1:
-                Neutral(player);
-                break;
-            case 2:
-                Debuff(player);
-                break;
+            Debuff();
+        }
+        else
+        {
+            Buff();
         }
     }
 
-    void Buff(Transform player)
+    void Buff()
     {
         switch (element)
         {
             case 1:
-                
+                StartCoroutine(SpeedBuff());
                 break;
             case 2:
-                //Cry
+                StartCoroutine(JumpBuff());
                 break;
             case 3:
-                
+                StartCoroutine(TimeBuff());
                 break;
         }
     }
 
-    void Neutral(Transform player)
+    void Debuff()
     {
-
+        switch (element)
+        {
+            case 1:
+                StartCoroutine(SpeedDebuff());
+                break;
+            case 2:
+                StartCoroutine(JumpDebuff());
+                break;
+            case 3:
+                StartCoroutine(TimeDebuff());
+                break;
+        }
     }
 
-    void Debuff(Transform player)
+    public IEnumerator SpeedBuff()
     {
+        Debug.Log("Giving Speed");
+        GameManager.instance.playerScript.baseSpeed *= speedMod;
 
+        yield return new WaitForSeconds(speedModTime);
+
+        Debug.Log("Taking Away Speed");
+        GameManager.instance.playerScript.baseSpeed /= speedMod;
+
+        Destroy(gameObject);
+    }
+
+    public IEnumerator SpeedDebuff()
+    {
+        Debug.Log("Taking Speed");
+        GameManager.instance.playerScript.baseSpeed /= speedMod;
+
+        yield return new WaitForSeconds(speedModTime);
+
+        Debug.Log("Giving Speed");
+        GameManager.instance.playerScript.baseSpeed *= speedMod;
+
+        Destroy(gameObject);
+    }
+
+    public IEnumerator JumpBuff()
+    {
+        Debug.Log("Giving Jump");
+        GameManager.instance.playerScript.jumpForce *= jumpMod;
+
+        yield return new WaitForSeconds(jumpModTime);
+
+        Debug.Log("Taking Away Jump");
+        GameManager.instance.playerScript.jumpForce /= jumpMod;
+
+        Destroy(gameObject);
+    }
+
+    public IEnumerator JumpDebuff()
+    {
+        Debug.Log("Taking Jump");
+        GameManager.instance.playerScript.jumpForce /= jumpMod;
+
+        yield return new WaitForSeconds(jumpModTime);
+
+        Debug.Log("Giving Jump");
+        GameManager.instance.playerScript.jumpForce *= jumpMod;
+
+        Destroy(gameObject);
+    }
+
+    public IEnumerator TimeBuff() 
+    {
+        Debug.Log("Giving Time");
+        Time.timeScale = timeMod;
+
+        yield return new WaitForSeconds(timeModTime);
+
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+    }
+
+    public IEnumerator TimeDebuff()
+    {
+        Debug.Log("Taking Time");
+        Time.timeScale = timeMod;
+
+        yield return new WaitForSeconds(timeModTime);
+
+        Time.timeScale = GameManager.instance.timeScaleOrig;
     }
 }

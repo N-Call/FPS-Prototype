@@ -45,7 +45,7 @@ public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
                 }
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();
-                targ?.activateElem(element, Player);
+                targ?.ActivateElem(element);
             }
             ammoCount--;
             GameManager.instance.GlobalAmmoCount(ammoCount, ammoCopasity);
