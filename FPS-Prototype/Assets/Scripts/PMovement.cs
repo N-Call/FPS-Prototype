@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 public class PMovement : MonoBehaviour, IDamage
 {
     [SerializeField] private CharacterController controller;
-    [SerializeField] private Camera cam;
     [SerializeField] private LayerMask playerMask;
 
     [Header("Health")]
@@ -168,7 +167,8 @@ public class PMovement : MonoBehaviour, IDamage
         if (Input.GetButtonDown("Fire1") && weaponList != null)
         {
             //launch attack method
-            weaponList[0].GetComponent<IWeapon>().Attack(playerMask, cam);
+            Debug.Log(weaponList[0].name);
+            weaponList[0].GetComponent<IWeapon>()?.Attack(playerMask);
             
         }
 

@@ -22,7 +22,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
     }
 
-    public virtual void Attack(LayerMask playerMask, Camera camera)
+    public virtual void Attack(LayerMask playerMask)
     {
 
     }

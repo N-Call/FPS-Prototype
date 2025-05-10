@@ -15,13 +15,11 @@ public class Bow : Range
         shootTimer += Time.deltaTime;
     }
 
-    public override void Attack(LayerMask playerMask, Camera camera)
+    public override void Attack(LayerMask playerMask)
     {
-        Debug.Log(ammoCount);
         //See if they have bullets
         if (ammoCount > 0 && shootTimer >= shootRate)
         {
-            Debug.Log("isWorking");
             Shoot();
             ammoCount--;
             GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
