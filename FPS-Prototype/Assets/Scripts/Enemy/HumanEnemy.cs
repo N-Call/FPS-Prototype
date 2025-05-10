@@ -1,19 +1,29 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using static Unity.IntegerTime.RationalTime;
 
 public class HumanEnemy : MonoBehaviour, IDamage
 {
+    private float rotationAmount = 2.0f;
+    private int ticksPerSecond = 60;
+
+    [Header("Targeting Settings")]
+    [SerializeField] Transform player;
+    [SerializeField] Transform head;
+    [SerializeField] int faceTargetSpeed;
+    [SerializeField] bool pause;
+
+    [Header("Shooting and Damage Settings")]
+    [SerializeField] int HP;
+    [SerializeField] Transform shootPos;
+    [SerializeField] GameObject bullet;
+    [SerializeField] float shootRate;
 
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
 
-    [SerializeField] int HP;
-    [SerializeField] int faceTargetSpeed;
-
-    [SerializeField] Transform shootPos;
-    [SerializeField] GameObject bullet;
-    [SerializeField] float shootRate;
+    private Coroutine LookCoroutine;
 
     Color colorOrig;
 
@@ -32,7 +42,8 @@ public class HumanEnemy : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        
+        head.LookAt(player);
+        head.eulerAngles = new Vector3(0, head.eulerAngles.y, 0);
 
         shootTimer += Time.deltaTime;
 
@@ -53,6 +64,46 @@ public class HumanEnemy : MonoBehaviour, IDamage
             {
                 faceTarget();
             }
+        }
+    }
+
+    private IEnumerator Rotate()
+    {
+        WaitForSeconds wait = new WaitForSeconds(1f / ticksPerSecond);
+
+        while (true)
+        {
+            if (!pause)
+            {
+                head.Rotate(Vector3.up * rotationAmount);
+            }
+            yield return wait;
+        }
+    }
+    public void TrackPlayer()
+    {
+        if (LookCoroutine != null)
+        {
+            StopCoroutine(LookCoroutine);
+        }
+
+        LookCoroutine = StartCoroutine(faceTarget());
+    }
+    IEnumerator faceTarget()
+    {
+        playerDir = (GameManager.instance.transform.position - transform.position);
+
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(playerDir.x, head.position.y, playerDir.z));
+
+        float time = 0;
+
+        while (time < 1)
+        {
+            head.rotation = Quaternion.Lerp(transform.rotation, lookRotation, time);
+
+            time += Time.deltaTime * faceTargetSpeed;
+
+            yield return null;
         }
     }
     //detect when player is in Range
@@ -95,13 +146,6 @@ public class HumanEnemy : MonoBehaviour, IDamage
         model.material.color = Color.red;
         yield return new WaitForSeconds(0.05f);
         model.material.color = colorOrig;
-    }
-
-    void faceTarget()
-    {
-        Quaternion rot = Quaternion.LookRotation(new Vector3 (playerDir.x, transform.position.y, transform.position.z));
-
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
     void shoot()

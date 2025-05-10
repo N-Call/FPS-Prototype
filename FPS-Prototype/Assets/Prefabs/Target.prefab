@@ -47,19 +47,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 1
-  movingTarget: 1
-  horizontal: 1
-  vertical: 0
+  destination: {x: 0, y: 0, z: 0}
+  relative: 0
   speed: 25
-  travelDistance: 1
+  lerp: 0
+  startDelay: 0
+  destinationDelay: 0
+  pingPong: 0
   artToDisable: {fileID: 0}
   element: 1
-  speedMod: 0
+  speedMod: 0.01
   speedModTime: 0
-  jumpMod: 0
+  jumpMod: 0.01
   jumpModTime: 0
-  elemJumpMod: 0
-  elemTimeMod: 0
+  timeMod: 0.01
+  timeModTime: 0
 --- !u!136 &1133801859072999487
 CapsuleCollider:
   m_ObjectHideFlags: 0

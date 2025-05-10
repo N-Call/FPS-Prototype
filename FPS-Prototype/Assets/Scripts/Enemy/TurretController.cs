@@ -1,18 +1,23 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UIElements;
 
-public class TurretTargeting : MonoBehaviour, IDamage
+public class TurretControl : MonoBehaviour, IDamage
 {
-    public float rotationAmount = 2.0f;
-    public int ticksPerSecond = 60;
-    public bool pause = false;
+    private float rotationAmount = 2.0f;
+    private int ticksPerSecond = 60;
 
+    [Header("Targeting Settings")]
+    [SerializeField] Transform player;
+    [SerializeField] Transform head;
+    [SerializeField] int faceTargetSpeed;
+    [SerializeField] bool pause;
+
+    [Header("Shooting and Damage")]
     [SerializeField] Renderer model;
     [SerializeField] int HP;
-    [SerializeField] int faceTargetSpeed;
-
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
@@ -23,7 +28,7 @@ public class TurretTargeting : MonoBehaviour, IDamage
 
     private Coroutine LookCoroutine;
 
-    public Transform player;
+    
 
     float shootTimer;
 
@@ -36,14 +41,15 @@ public class TurretTargeting : MonoBehaviour, IDamage
 
     private void Update()
     {
-        transform.LookAt(player);
+       
+        head.LookAt(player);
+        head.eulerAngles = new Vector3(0, head.eulerAngles.y, 0);
 
         shootTimer += Time.deltaTime;
 
         //Check if Player is in Range before moving
         if (playerInRange)
         {
-            playerDir = (GameManager.instance.player.transform.position - transform.position);
 
             if (shootTimer >= shootRate)
             {
@@ -60,7 +66,7 @@ public class TurretTargeting : MonoBehaviour, IDamage
         {
             if (!pause)
             {
-                transform.Rotate(Vector3.up * rotationAmount);
+                head.Rotate(Vector3.up * rotationAmount);
             }
             yield return wait;
         }
@@ -79,13 +85,13 @@ public class TurretTargeting : MonoBehaviour, IDamage
     {
         playerDir = (GameManager.instance.transform.position - transform.position);
 
-        Quaternion lookRotation = Quaternion.LookRotation(playerDir);
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3 (playerDir.x, head.position.y, playerDir.z));
 
         float time = 0;
 
         while (time < 1)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, time);
+            head.rotation = Quaternion.Lerp(transform.rotation, lookRotation, time);
 
             time += Time.deltaTime * faceTargetSpeed;
 
@@ -115,7 +121,7 @@ public class TurretTargeting : MonoBehaviour, IDamage
 
         HP -= amount;
 
-        if (HP <= 0)
+            if (HP <= 0)
         {
             SoundManager.instance.PlaySFX("turretDestroy");
             Destroy(gameObject);
