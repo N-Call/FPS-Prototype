@@ -79,7 +79,10 @@ public class GameManager : MonoBehaviour
     public void globalAmmoCount(int amount,int ammoCap)
     {
         // display ammo count for the UI used in GunHitScan 
-        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+        if (ammoCount != null)
+        {
+            ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+        }
     }
 
     public void youLose()

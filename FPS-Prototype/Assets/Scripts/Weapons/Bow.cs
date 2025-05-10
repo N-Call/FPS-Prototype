@@ -1,0 +1,37 @@
+using UnityEngine;
+
+public class Bow : Range
+{
+    [SerializeField] float shootRate;
+    [Header("References")]
+    [SerializeField] Transform shootPos;
+    [SerializeField] GameObject projectil;
+
+    float shootTimer;
+
+    // Update is called once per frame
+    void Update()
+    {
+        shootTimer += Time.deltaTime;
+    }
+
+    public override void Attack(LayerMask playerMask, Camera camera)
+    {
+        Debug.Log(ammoCount);
+        //See if they have bullets
+        if (ammoCount > 0 && shootTimer >= shootRate)
+        {
+            Debug.Log("isWorking");
+            Shoot();
+            ammoCount--;
+            GameManager.instance.globalAmmoCount(ammoCount, ammoCap);
+        }
+    }
+
+    void Shoot()
+    {
+        shootTimer = 0;
+        Instantiate(projectil, shootPos.position, transform.rotation);
+
+    }
+}
