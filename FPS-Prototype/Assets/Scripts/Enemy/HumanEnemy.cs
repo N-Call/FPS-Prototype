@@ -15,6 +15,8 @@ public class HumanEnemy : MonoBehaviour, IDamage
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
 
+    [SerializeField] Transform player;
+
     Color colorOrig;
 
     Vector3 playerDir;
@@ -26,19 +28,20 @@ public class HumanEnemy : MonoBehaviour, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        colorOrig = model.material.color;
-        
-        
+         colorOrig = model.material.color;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
         shootTimer += Time.deltaTime;
 
         //Check if Player is in Range before moving
         if (playerInRange)
         {
+           
             playerDir = (GameManager.instance.player.transform.position - transform.position);
 
             agent.SetDestination(GameManager.instance.player.transform.position);
@@ -73,26 +76,26 @@ public class HumanEnemy : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
-        SoundManager.instance.PlaySFX("playerHurt");
-
+        
         HP -= amount;
+        SoundManager.instance.PlaySFX("playerHurt");
 
         agent.SetDestination(GameManager.instance.player.transform.position);
 
         if (HP <= 0)
-        {
+        {            
             Destroy(gameObject);
         }
         else
         {
-            StartCoroutine(flashWhite());
+            StartCoroutine(flashRed());
         }
     }
 
-    IEnumerator flashWhite()
+    IEnumerator flashRed()
     {
-        model.material.color = Color.white;
-        yield return new WaitForSeconds(0.1f);
+        model.material.color = Color.red;
+        yield return new WaitForSeconds(0.05f);
         model.material.color = colorOrig;
     }
 
