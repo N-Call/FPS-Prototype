@@ -130,6 +130,7 @@ public class PMovement : MonoBehaviour, IDamage
 
                 vertVel.y = jumpForce;
                 currJumpCount++;
+                SoundManager.instance.PlaySFX("playerJump");
             }
 
         }
@@ -141,6 +142,7 @@ public class PMovement : MonoBehaviour, IDamage
             {
                 vertVel.y = jumpForce;
                 currJumpCount++;
+                SoundManager.instance.PlaySFX("playerJump");
             }
 
             // This applies gravity, when not on the ground.

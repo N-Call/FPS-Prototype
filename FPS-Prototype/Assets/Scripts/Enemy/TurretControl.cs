@@ -1,19 +1,16 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
-
-public class HumanEnemy : MonoBehaviour, IDamage
+public class NewMonoBehaviourScript : MonoBehaviour
 {
-
     [SerializeField] Renderer model;
-    [SerializeField] NavMeshAgent agent;
-
     [SerializeField] int HP;
     [SerializeField] int faceTargetSpeed;
 
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
+    [SerializeField] Transform head;
 
     Color colorOrig;
 
@@ -23,65 +20,64 @@ public class HumanEnemy : MonoBehaviour, IDamage
 
     bool playerInRange;
 
+    private Coroutine LookCoroutine;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-         colorOrig = model.material.color;
+        colorOrig = model.material.color;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-
         shootTimer += Time.deltaTime;
 
         //Check if Player is in Range before moving
         if (playerInRange)
         {
-           
             playerDir = (GameManager.instance.player.transform.position - transform.position);
-
-            agent.SetDestination(GameManager.instance.player.transform.position);
-
-            if(shootTimer >= shootRate)
+                       
+            if (shootTimer >= shootRate)
             {
                 shoot();
-            }
-
-            if (agent.remainingDistance <= agent.stoppingDistance)
-            {
-                faceTarget();
-            }
+            }                               
         }
+    }
+
+    public void TrackPlayer()
+    {
+        if (LookCoroutine != null)
+        {
+            StopCoroutine(LookCoroutine);
+        }
+
+        LookCoroutine = StartCoroutine(faceTarget());
     }
     //detect when player is in Range
     public void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
-            {
-                playerInRange = true;   
-            }
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = true;
+        }
     }
     //detect when player is out of Range
     public void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            playerInRange=false;
+            playerInRange = false;
         }
     }
 
     public void TakeDamage(int amount)
     {
-        
-        HP -= amount;
-        SoundManager.instance.PlaySFX("playerHurt");
 
-        agent.SetDestination(GameManager.instance.player.transform.position);
+        HP -= amount;
 
         if (HP <= 0)
-        {            
+        {
             Destroy(gameObject);
         }
         else
@@ -97,11 +93,22 @@ public class HumanEnemy : MonoBehaviour, IDamage
         model.material.color = colorOrig;
     }
 
-    void faceTarget()
+    IEnumerator faceTarget()
     {
-        Quaternion rot = Quaternion.LookRotation(new Vector3 (playerDir.x, transform.position.y, transform.position.z));
+        Quaternion lookRotation = Quaternion.LookRotation(playerDir);
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+        float time = 0;
+
+        while (time < 1)
+        {
+            transform.rotation = Quaternion.Slerp(head.transform.rotation, lookRotation, time);
+
+            time += Time.deltaTime * faceTargetSpeed;
+
+            yield return null;
+        }
+
+        
     }
 
     void shoot()
@@ -109,4 +116,5 @@ public class HumanEnemy : MonoBehaviour, IDamage
         shootTimer = 0;
         Instantiate(bullet, shootPos.position, transform.rotation);
     }
+
 }
