@@ -13,7 +13,7 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private int HP;
 
     [Header("Movement Settings")]
-    [SerializeField] float baseSpeed = 5f;
+    [SerializeField] public float baseSpeed = 5f;
     [SerializeField] private float modSprint = 1.5f;
 
     [Header("Crouch Settings")]
@@ -28,7 +28,7 @@ public class PMovement : MonoBehaviour, IDamage
     [Header("Gravity and Jumping")]
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float gravityMax = 10f;
-    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] public float jumpForce = 8f;
     [SerializeField] private int maxJumps = 1;
 
     //Store the primary and secondary weapon's gameobjects
