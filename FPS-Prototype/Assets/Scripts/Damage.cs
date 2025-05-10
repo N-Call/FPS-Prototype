@@ -2,12 +2,19 @@ using UnityEngine;
 using System.Collections;
 using System;
 
+
 public class Damage : MonoBehaviour
 {
+    enum DamageType {DOT, moving}
 
-    enum DamageType {DOT}
+    [Header("Resources")]
+    [SerializeField] Rigidbody rb;
 
+    [Header("Damage Settings")]
     [SerializeField] private DamageType damageType;
+    [SerializeField] int damageAmount;
+    [SerializeField] int speed;
+    [SerializeField] int destroyTime;
 
     [Header("Damage Over Time Settings")]
     [SerializeField] private int dotDamage;
@@ -18,15 +25,40 @@ public class Damage : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (damageType == DamageType.moving)
+        {
+            Destroy(gameObject, destroyTime);
+
+            if (damageType == DamageType.moving)
+            {
+                rb.linearVelocity = transform.forward * speed;
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if ((other.isTrigger))
+        {
+            return;
+        }
+        IDamage dmg = other.GetComponent<IDamage>();
+        if (dmg != null && (damageType == DamageType.moving))
+        {
+            dmg.TakeDamage(damageAmount);
+        }
+
+        if (damageType == DamageType.moving)
+        {
+            Destroy(gameObject);
+        }
+    }
     private void OnTriggerStay(Collider other)
     {
         if (other.isTrigger)

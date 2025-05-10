@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using System.ComponentModel;
+using NUnit.Framework;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,7 +9,6 @@ using UnityEngine.SceneManagement;
 public class PMovement : MonoBehaviour, IDamage
 {
     [SerializeField] private CharacterController controller;
-    [SerializeField] private Camera cam;
     [SerializeField] private LayerMask playerMask;
 
     [Header("Health")]
@@ -33,8 +35,7 @@ public class PMovement : MonoBehaviour, IDamage
 
     //Store the primary and secondary weapon's gameobjects
     [Header("Weapon Settings")]
-    [SerializeField] private GameObject primWeapon;
-    [SerializeField] private GameObject secWeapon;
+    [SerializeField] private List<GameObject> weaponList;
 
     private Vector3 inputDir;
     private Vector3 moveDir;
@@ -165,43 +166,48 @@ public class PMovement : MonoBehaviour, IDamage
     void WeaponInput()
     {
         //check for primary weapon
-        if (Input.GetButtonDown("Fire1") && primWeapon != null)
+        if (Input.GetButtonDown("Fire1") && weaponList != null)
         {
             //launch attack method
-            IWeapon weapon = primWeapon.GetComponent<IWeapon>();
-            if (weapon == null) {
-                return;
-            }
-
-            weapon.Attack(playerMask, cam);
-            SoundManager.instance.PlaySFX("pistol");
+            Debug.Log(weaponList[0].name);
+            weaponList[0].GetComponent<IWeapon>()?.Attack(playerMask);
+            
         }
 
         //Change weapon if pressed
-        if (Input.GetButtonDown("Fire3"))
+        if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {
-            ChangeWeapon();
+            ChangeWeapon(Input.GetAxis("Mouse ScrollWheel"));
         }
 
         if (Input.GetButtonDown("Reload"))
         {
-            SoundManager.instance.PlaySFX("reload");
-            IReloadable reloadable = primWeapon.GetComponent<IReloadable>();
+            IReloadable reloadable = weaponList[0].GetComponent<IReloadable>();
             reloadable?.Reload();
             
         }
     }
 
-    void ChangeWeapon()
+    void ChangeWeapon(float scroll)
     {
-        //swap the primary and secondary Weapons
-        GameObject temp = primWeapon;
-        primWeapon = secWeapon;
-        secWeapon = temp;
+        weaponList[0].SetActive(false);
+        if (scroll > 0)
+        {
+            //move the primary down the list
+            GameObject temp = weaponList[0];
+            weaponList.RemoveAt(0);
+            weaponList.Add(temp);
+        }
+        else
+        {
+            //up the primary up the list
+            GameObject temp = weaponList[weaponList.Count - 1];
+            weaponList.RemoveAt(weaponList.Count - 1);
+            weaponList.Insert(0, temp);
+        }
 
-        //set the seconday to inactive
-        secWeapon.SetActive(false);
-        primWeapon.SetActive(true);
+         //set the seconday to inactive
+         weaponList[0].SetActive(true);
     }
 
     void Crouch()

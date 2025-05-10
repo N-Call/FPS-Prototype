@@ -1,72 +1,26 @@
 using UnityEngine;
 
-public class GunHitScan : MonoBehaviour, IWeapon, IReloadable
+public class GunHitScan : Range
 {
-    public Transform Player;
-    [SerializeField] int ammoMaxCopasity;
-    [SerializeField] int reloadCopasity;
-    [SerializeField] int ammoCount;
-    [SerializeField] float distance;
-    [SerializeField] int damage;
-
-    [SerializeField][Range(1, 3)] int element;
-
-    private int ammoCopasity;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        ammoCount = reloadCopasity;
-        ammoCopasity = ammoMaxCopasity;
-        GameManager.instance.GlobalAmmoCount(ammoCount, ammoCopasity);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void Attack(LayerMask playerMask, Camera camera)
+    public override void Attack(LayerMask playerMask)
     {
         //See if they have bullets
         if (ammoCount > 0)
         {
             //see if you hit an object
             RaycastHit hit;
-            if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, distance, ~playerMask))
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, distance, ~playerMask))
             {
-                Debug.Log(hit.collider.name);
-                IDamage dmg = hit.collider.GetComponent<IDamage>();
                 //damage enemy
-                if (dmg != null)
-                {
-                    dmg.TakeDamage(damage);
-                }
+                IDamage dmg = hit.collider.GetComponent<IDamage>();
+                dmg?.TakeDamage(damage);
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();
                 targ?.ActivateElem(element);
             }
             ammoCount--;
-            GameManager.instance.GlobalAmmoCount(ammoCount, ammoCopasity);
+            GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
         }
     }
 
-    public void Reload()
-    {
-        ammoCopasity -= reloadCopasity - ammoCount;
-        ammoCount = reloadCopasity;
-
-        if(ammoCopasity < 0)
-        {
-            ammoCount += ammoCopasity;
-            ammoCopasity = 0;
-        }
-        GameManager.instance.GlobalAmmoCount(ammoCount, ammoCopasity);
-    }
-    private void OnEnable()
-    {
-        // For safety call on globalAmmoCount for if its null don't use
-        GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCopasity);
-    }
 }
