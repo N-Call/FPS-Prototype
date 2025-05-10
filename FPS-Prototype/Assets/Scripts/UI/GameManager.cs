@@ -38,19 +38,19 @@ public class GameManager : MonoBehaviour
         {
             if (menuActive == null)
             {
-                statePause();
+                StatePause();
                 menuActive = menuPause;
                 menuPause.SetActive(isPaused);
 
             }
             else if (menuActive == menuPause)
             { 
-                stateUnpause();
+                StateUnpause();
             }
         }
     }
 
-    public void statePause()
+    public void StatePause()
     {
         isPaused = !isPaused;
         Time.timeScale = 0;
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Stop();
     }
-    public void stateUnpause()
+    public void StateUnpause()
     {
         isPaused = !isPaused;
         Time.timeScale = timeScaleOrig;
@@ -73,10 +73,13 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.musicSource.Play();
     }
 
-    public void globalAmmoCount(int amount, int ammoCap)
+    public void GlobalAmmoCount(int amount, int ammoCap)
     {
-        // display ammo count for the UI 
-        ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+        if (ammoCount != null)
+        {
+            // display ammo count for the UI 
+            ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+        }
     }
    
 }
