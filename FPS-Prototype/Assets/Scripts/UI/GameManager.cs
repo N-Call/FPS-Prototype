@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
-    
 
     public GameObject player;
     public PMovement playerScript;
@@ -39,19 +38,19 @@ public class GameManager : MonoBehaviour
         {
             if (menuActive == null)
             {
-                statePause();
+                StatePause();
                 menuActive = menuPause;
                 menuPause.SetActive(isPaused);
 
             }
             else if (menuActive == menuPause)
             { 
-                stateUnpause();
+                StateUnpause();
             }
         }
     }
 
-    public void statePause()
+    public void StatePause()
     {
         isPaused = !isPaused;
         Time.timeScale = 0;
@@ -59,10 +58,9 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         // to turn off the reticle
         reticle.SetActive(false);
-        // turn off player Script when paused
-        playerScript.enabled = false;
+        SoundManager.instance.musicSource.Stop();
     }
-    public void stateUnpause()
+    public void StateUnpause()
     {
         isPaused = !isPaused;
         Time.timeScale = timeScaleOrig;
@@ -72,32 +70,16 @@ public class GameManager : MonoBehaviour
         menuActive = null;
         // to turn on the reticle
         reticle.SetActive(true);
-        // turn on player Script when unpaused
-        playerScript.enabled = true;
+        SoundManager.instance.musicSource.Play();
     }
 
-    public void globalAmmoCount(int amount,int ammoCap)
+    public void GlobalAmmoCount(int amount, int ammoCap)
     {
-        // display ammo count for the UI used in GunHitScan 
         if (ammoCount != null)
         {
+            // display ammo count for the UI 
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
         }
     }
-
-    public void youLose()
-    {
-        // need lose condition still
-        statePause();
-        menuActive = menuLose;
-        menuActive.SetActive(true);
-    }
-    public void youWin()
-    {
-        // need win condition still
-        statePause();
-        menuActive = menuWin;
-        menuActive.SetActive(true);
-    }
-
+   
 }

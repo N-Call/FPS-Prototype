@@ -42,8 +42,10 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
     }
 
-    public void takeDamage(int amount)
+    public void TakeDamage(int amount)
     {
+        SoundManager.instance.PlaySFX("targetHit");
+
         HP -= amount;
 
         if(HP <= 0)
