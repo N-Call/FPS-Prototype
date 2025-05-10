@@ -9,6 +9,7 @@ public class PlatformMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] float speed = 1.0f;
+    [SerializeField] float playerMomentumMod = 0.25f;
     [SerializeField] bool lerp;
 
     [Header("Behavior")]
@@ -30,6 +31,7 @@ public class PlatformMovement : MonoBehaviour
     float cycles;
     float destroyAtDestinationTime;
 
+    bool isMoving;
     bool toStart;
     bool waited;
     bool finished;
@@ -147,8 +149,11 @@ public class PlatformMovement : MonoBehaviour
     {
         if (Vector3.Distance(from, to) <= 0.1f)
         {
+            isMoving = false;
             return true;
         }
+
+        isMoving = true;
 
         if (lerp)
         {
@@ -167,6 +172,19 @@ public class PlatformMovement : MonoBehaviour
         Vector3 temp = one;
         one = two;
         two = temp;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player") && isMoving)
+        {
+            AddMomentumToPlayer(dest - transform.position, speed);
+        }
+    }
+
+    void AddMomentumToPlayer(Vector3 direction, float speed)
+    {
+        GameManager.instance.playerScript.AddMomentum(direction, speed * playerMomentumMod);
     }
 
 }

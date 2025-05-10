@@ -247,6 +247,11 @@ public class PMovement : MonoBehaviour, IDamage
         }
     }
 
+    public void AddMomentum(Vector3 direction, float speed)
+    {
+        controller.Move(direction * speed * Time.deltaTime);
+    }
+
     public void TakeDamage(int amount)
     {
         HP -= amount;
