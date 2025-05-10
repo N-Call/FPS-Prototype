@@ -90,8 +90,6 @@ public class PlatformMovement : MonoBehaviour
             // 1 cycle = start to start
             cycles += 0.5f;
 
-            
-
             if (destroyAfterCycles > 0 && cycles >= destroyAfterCycles)
             {
                 HandleDestruction();
@@ -162,11 +160,6 @@ public class PlatformMovement : MonoBehaviour
         }
 
         return false;
-    }
-
-    void Destroy()
-    {
-        Destroy(gameObject);
     }
 
     void Swap(ref Vector3 one, ref Vector3 two)
