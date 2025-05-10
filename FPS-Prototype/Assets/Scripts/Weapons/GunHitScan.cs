@@ -15,6 +15,14 @@ public class GunHitScan : Range
                 IDamage dmg = hit.collider.GetComponent<IDamage>();
                 dmg?.TakeDamage(damage);
                 GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
+                //damage enemy
+                if (dmg != null)
+                {
+                    dmg.TakeDamage(damage);
+                }
+
+                ITarget targ = hit.collider.GetComponent<ITarget>();
+                targ?.ActivateElem(element);
             }
         }
     }
