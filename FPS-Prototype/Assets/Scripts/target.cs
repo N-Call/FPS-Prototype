@@ -27,16 +27,16 @@ public class Target : MonoBehaviour, IDamage, ITarget
     bool affected;
 
     [Header("Speed Element")]
-    [SerializeField] int speedMod;
+    [SerializeField][Range(0.01f, 999999)] int speedMod;
     [SerializeField] float speedModTime;
 
     [Header("Jump Element")]
-    [SerializeField] int jumpMod;
+    [SerializeField][Range(0.01f, 999999)] int jumpMod;
     [SerializeField] float jumpModTime;
 
     [Header("Time Element")]
-    [SerializeField] int timeMod;
-    [SerializeField] int timeModTime;
+    [SerializeField][Range(0.01f, 999999)] float timeMod;
+    [SerializeField] float timeModTime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -81,7 +81,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }   
     }
 
-    public void activateElem(int modifier)
+    public void ActivateElem(int modifier)
     {
         Debug.Log("Activating Element");
         int result;
@@ -91,17 +91,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
         else { result = modifier - element; }
 
-        switch (result)
+        if (result > 0)
         {
-            case 0:
-                Buff();
-                break;
-            case 1:
-                Neutral();
-                break;
-            case 2:
-                Debuff();
-                break;
+            Debuff();
+        }
+        else
+        {
+            Buff();
         }
     }
 
@@ -116,20 +112,25 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 StartCoroutine(JumpBuff());
                 break;
             case 3:
-                //StartCoroutine(TimeBuff());
+                StartCoroutine(TimeBuff());
                 break;
         }
     }
 
-    void Neutral()
-    {
-        
-        Debug.Log("Elements Don't Match");
-    }
-
     void Debuff()
-    {  
-
+    {
+        switch (element)
+        {
+            case 1:
+                StartCoroutine(SpeedDebuff());
+                break;
+            case 2:
+                StartCoroutine(JumpDebuff());
+                break;
+            case 3:
+                StartCoroutine(TimeDebuff());
+                break;
+        }
     }
 
     public IEnumerator SpeedBuff()
@@ -141,6 +142,19 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
         Debug.Log("Taking Away Speed");
         GameManager.instance.playerScript.baseSpeed /= speedMod;
+
+        Destroy(gameObject);
+    }
+
+    public IEnumerator SpeedDebuff()
+    {
+        Debug.Log("Taking Speed");
+        GameManager.instance.playerScript.baseSpeed /= speedMod;
+
+        yield return new WaitForSeconds(speedModTime);
+
+        Debug.Log("Giving Speed");
+        GameManager.instance.playerScript.baseSpeed *= speedMod;
 
         Destroy(gameObject);
     }
@@ -158,5 +172,36 @@ public class Target : MonoBehaviour, IDamage, ITarget
         Destroy(gameObject);
     }
 
-    
+    public IEnumerator JumpDebuff()
+    {
+        Debug.Log("Taking Jump");
+        GameManager.instance.playerScript.jumpForce /= jumpMod;
+
+        yield return new WaitForSeconds(jumpModTime);
+
+        Debug.Log("Giving Jump");
+        GameManager.instance.playerScript.jumpForce *= jumpMod;
+
+        Destroy(gameObject);
+    }
+
+    public IEnumerator TimeBuff() 
+    {
+        Debug.Log("Giving Time");
+        Time.timeScale = timeMod;
+
+        yield return new WaitForSeconds(timeModTime);
+
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+    }
+
+    public IEnumerator TimeDebuff()
+    {
+        Debug.Log("Taking Time");
+        Time.timeScale = timeMod;
+
+        yield return new WaitForSeconds(timeModTime);
+
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+    }
 }

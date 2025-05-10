@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface ITarget
 {
-    void activateElem(int modifier);
+    void ActivateElem(int modifier);
 }
