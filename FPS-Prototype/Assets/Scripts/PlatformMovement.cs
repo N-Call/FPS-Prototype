@@ -16,10 +16,18 @@ public class PlatformMovement : MonoBehaviour
     [SerializeField] float destinationDelay;
     [SerializeField] bool pingPong;
 
+    [Header("Destruction")]
+    [SerializeField] float destroyAfterTime;
+    [SerializeField] int destroyAfterCycles;
+    [SerializeField] float destroyAtDestinationDelay;
+
     Vector3 startPosition;
     Vector3 dest;
 
-    float elapsedTime;
+    float lifeTime;
+    float waitTime;
+    float cycles;
+    float destroyAtDestinationTime;
 
     bool toStart;
     bool waited;
@@ -35,14 +43,38 @@ public class PlatformMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Count up elapsed life time
+        lifeTime += Time.deltaTime;
+
+        if (destroyAfterTime > 0 && lifeTime >= destroyAfterTime)
+        {
+            HandleDestruction();
+            return;
+        }
+
         // If the object has finished its movement
         if (finished)
         {
             return;
         }
 
-        // Count up elapsed time
-        elapsedTime += Time.deltaTime;
+        // Count up wait time
+        waitTime += Time.deltaTime;
+
+        // Handle count up to destruction if reached destination
+        if (destroyAtDestinationDelay > 0)
+        {
+            if (cycles >= 0.5f)
+            {
+                destroyAtDestinationTime += Time.deltaTime;
+            }
+
+            if (destroyAtDestinationTime >= destroyAtDestinationDelay)
+            {
+                HandleDestruction();
+                return;
+            }
+        }
 
         // Check if they need to wait at start or destination
         if (!waited && !Waited())
@@ -53,6 +85,18 @@ public class PlatformMovement : MonoBehaviour
         // Handle movement
         if (Move(transform.position, dest))
         {
+            // 0.5 cycles = start to destination
+            // 1 cycle = start to start
+            cycles += 0.5f;
+
+            
+
+            if (destroyAfterCycles > 0 && cycles >= destroyAfterCycles)
+            {
+                HandleDestruction();
+                return;
+            }
+
             // If this object does not ping pong
             // (does not move back and forth between start and destination),
             // then the object has finished moving, and no longer needs to do anything
@@ -68,18 +112,23 @@ public class PlatformMovement : MonoBehaviour
             // Reset waiting and elapsed time
             toStart = !toStart;
             waited = false;
-            elapsedTime = 0.0f;
+            waitTime = 0.0f;
         }
+    }
+
+    void HandleDestruction()
+    {
+        Destroy(gameObject);
     }
 
     bool Waited()
     {
-        if (!toStart && elapsedTime < startDelay)
+        if (!toStart && waitTime < startDelay)
         {
             return false;
         }
 
-        if (toStart && elapsedTime < destinationDelay)
+        if (toStart && waitTime < destinationDelay)
         {
             return false;
         }
