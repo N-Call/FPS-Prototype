@@ -12,15 +12,11 @@ public class GunHitScan : Range
             RaycastHit hit;
             if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, distance, ~playerMask))
             {
+                //damage enemy
                 IDamage dmg = hit.collider.GetComponent<IDamage>();
                 dmg?.TakeDamage(damage);
-                GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
-                //damage enemy
-                if (dmg != null)
-                {
-                    dmg.TakeDamage(damage);
-                }
 
+                GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
                 ITarget targ = hit.collider.GetComponent<ITarget>();
                 targ?.ActivateElem(element);
             }

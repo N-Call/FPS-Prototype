@@ -180,7 +180,7 @@ public class PMovement : MonoBehaviour, IDamage
 
         if (Input.GetButtonDown("Reload"))
         {
-            IReloadable reloadable = primWeapon.GetComponent<IReloadable>();
+            IReloadable reloadable = weaponList[0].GetComponent<IReloadable>();
             reloadable?.Reload();
             
         }

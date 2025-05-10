@@ -19,7 +19,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     {
         ammoCount = reloadCap;
         ammoCap = ammoOrigCap;
-        GameManager.instance.globalAmmoCount(ammoCount, ammoCap);
+        GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
     }
 
     public virtual void Attack(LayerMask playerMask, Camera camera)
@@ -37,12 +37,12 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
             ammoCount += ammoCap;
             ammoCap = 0;
         }
-        GameManager.instance.globalAmmoCount(ammoCount, ammoCap);
+        GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
     }
     private void OnEnable()
     {
 
-        GameManager.instance?.globalAmmoCount(ammoCount, ammoCap);
+        GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
     }
 }
 

@@ -24,7 +24,7 @@ public class Bow : Range
             Debug.Log("isWorking");
             Shoot();
             ammoCount--;
-            GameManager.instance.globalAmmoCount(ammoCount, ammoCap);
+            GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
         }
     }
 
