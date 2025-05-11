@@ -9,6 +9,7 @@ public class PlayerRespawn : MonoBehaviour
     void Start()
     {
         spawnPosition = GameManager.instance.player.transform.position;
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,6 +19,7 @@ public class PlayerRespawn : MonoBehaviour
             GetComponent<CharacterController>().enabled = false;
             transform.position = spawnPosition;
             GetComponent<CharacterController>().enabled = true;
+            
         }
     }
 
@@ -26,6 +28,7 @@ public class PlayerRespawn : MonoBehaviour
         GetComponent<CharacterController>().enabled = false;
         transform.position = spawnPosition;
         GetComponent<CharacterController>().enabled = true;
+        
     }
 
     public void UpdateSpawnPosition(Vector3 newPosition)

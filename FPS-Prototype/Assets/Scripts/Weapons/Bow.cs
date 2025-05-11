@@ -20,6 +20,7 @@ public class Bow : Range
         //See if they have bullets
         if (ammoCount > 0 && shootTimer >= shootRate)
         {
+            SoundManager.instance.PlaySFX("bowRelease");
             Shoot();
             ammoCount--;
             GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);

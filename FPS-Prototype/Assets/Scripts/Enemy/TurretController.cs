@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class TurretControl : MonoBehaviour, IDamage
 {
-    private float rotationAmount = 2.0f;
+    private float rotationAmount = 1.0f;
     private int ticksPerSecond = 60;
 
     [Header("Targeting Settings")]
@@ -145,5 +145,6 @@ public class TurretControl : MonoBehaviour, IDamage
     {
         shootTimer = 0;
         Instantiate(bullet, shootPos.position, barrel.rotation);
+        SoundManager.instance.PlaySFX("turretShot");
     }
 }

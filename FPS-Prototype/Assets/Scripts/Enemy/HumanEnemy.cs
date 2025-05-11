@@ -151,5 +151,6 @@ public class HumanEnemy : MonoBehaviour, IDamage
     {
         shootTimer = 0;
         Instantiate(bullet, shootPos.position, transform.rotation);
+        SoundManager.instance.PlaySFX("enemyShot");
     }
 }

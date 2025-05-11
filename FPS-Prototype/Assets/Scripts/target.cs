@@ -135,6 +135,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         else
         {
             Buff();
+            
         }
     }
 
@@ -144,12 +145,15 @@ public class Target : MonoBehaviour, IDamage, ITarget
         {
             case 1:
                 StartCoroutine(SpeedBuff());
+                SoundManager.instance.PlaySFX("powerUp");
                 break;
             case 2:
                 StartCoroutine(JumpBuff());
+                SoundManager.instance.PlaySFX("powerUp");
                 break;
             case 3:
                 StartCoroutine(TimeBuff());
+                SoundManager.instance.PlaySFX("powerUp");
                 break;
         }
     }
