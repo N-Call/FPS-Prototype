@@ -10,7 +10,6 @@ public class HumanEnemy : MonoBehaviour, IDamage
 
     [Header("Targeting Settings")]
     [SerializeField] Transform player;
-    [SerializeField] Transform head;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] bool pause;
 
@@ -42,8 +41,8 @@ public class HumanEnemy : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        head.LookAt(player);
-        head.eulerAngles = new Vector3(0, head.eulerAngles.y, 0);
+        transform.LookAt(player);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
 
         shootTimer += Time.deltaTime;
 
@@ -75,7 +74,7 @@ public class HumanEnemy : MonoBehaviour, IDamage
         {
             if (!pause)
             {
-                head.Rotate(Vector3.up * rotationAmount);
+                transform.Rotate(Vector3.up * rotationAmount);
             }
             yield return wait;
         }
@@ -93,13 +92,13 @@ public class HumanEnemy : MonoBehaviour, IDamage
     {
         playerDir = (GameManager.instance.transform.position - transform.position);
 
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(playerDir.x, head.position.y, playerDir.z));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
 
         float time = 0;
 
         while (time < 1)
         {
-            head.rotation = Quaternion.Lerp(transform.rotation, lookRotation, time);
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, time);
 
             time += Time.deltaTime * faceTargetSpeed;
 

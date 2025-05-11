@@ -255,10 +255,13 @@ public class PMovement : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
+        Debug.Log("is working");
+
         HP -= amount;
         if (HP <= 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            GetComponent<PlayerRespawn>().PlayerDeath();
         }
     }
 

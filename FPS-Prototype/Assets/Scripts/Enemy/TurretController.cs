@@ -19,6 +19,7 @@ public class TurretControl : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
     [SerializeField] int HP;
     [SerializeField] Transform shootPos;
+    [SerializeField] Transform barrel;
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
 
@@ -42,14 +43,16 @@ public class TurretControl : MonoBehaviour, IDamage
     private void Update()
     {
        
-        head.LookAt(player);
-        head.eulerAngles = new Vector3(0, head.eulerAngles.y, 0);
+        
+        //head.eulerAngles = new Vector3(0, head.eulerAngles.y, 0);
 
         shootTimer += Time.deltaTime;
 
         //Check if Player is in Range before moving
         if (playerInRange)
         {
+
+            head.LookAt(player);
 
             if (shootTimer >= shootRate)
             {
@@ -141,6 +144,6 @@ public class TurretControl : MonoBehaviour, IDamage
     void shoot()
     {
         shootTimer = 0;
-        Instantiate(bullet, shootPos.position, transform.rotation);
+        Instantiate(bullet, shootPos.position, barrel.rotation);
     }
 }

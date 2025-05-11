@@ -4,9 +4,11 @@ public class GunHitScan : Range
 {
     public override void Attack(LayerMask playerMask)
     {
+
         //See if they have bullets
         if (ammoCount > 0)
         {
+            SoundManager.instance.PlaySFX("pistol");
             //see if you hit an object
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, distance, ~playerMask))
