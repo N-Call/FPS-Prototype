@@ -4,35 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 public class PlayerRespawn : MonoBehaviour
 {
-    Vector3 spawnPosition;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public Vector3 whereToSpawn;
+
+    public void RespawnPlayer()
     {
-        spawnPosition = GameManager.instance.player.transform.position;
-        
+        GetComponent<CharacterController>().enabled = false;
+        transform.position = whereToSpawn;
+        GetComponent<CharacterController>().enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "FallZone")
         {
-            GetComponent<CharacterController>().enabled = false;
-            transform.position = spawnPosition;
-            GetComponent<CharacterController>().enabled = true;
-            
+            RespawnPlayer();
         }
-    }
-
-    public void PlayerDeath()
-    {
-        GetComponent<CharacterController>().enabled = false;
-        transform.position = spawnPosition;
-        GetComponent<CharacterController>().enabled = true;
-        
-    }
-
-    public void UpdateSpawnPosition(Vector3 newPosition)
-    {
-        spawnPosition = newPosition;    
     }
 }

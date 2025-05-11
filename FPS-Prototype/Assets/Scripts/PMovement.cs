@@ -53,12 +53,16 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isCrouching;
     private bool isSliding;
 
+    private PlayerRespawn playerRespawn;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         crouchSpeed = baseSpeed * crouchSpeedMod;
         originalHeight = controller.height;
         crouchHeight = originalHeight * crouchHeightMod;
+
+        playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();    
     }
 
     // Update is called once per frame
@@ -257,11 +261,14 @@ public class PMovement : MonoBehaviour, IDamage
     {
         Debug.Log("is working");
 
+        SoundManager.instance.PlaySFX("playerHurt");
+
         HP -= amount;
         if (HP <= 0)
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            GetComponent<PlayerRespawn>().PlayerDeath();
+            playerRespawn.RespawnPlayer();
+            
         }
     }
 

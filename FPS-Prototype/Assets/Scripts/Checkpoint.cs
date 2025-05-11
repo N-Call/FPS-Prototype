@@ -4,11 +4,20 @@ using System.Collections.Generic;
 
 public class Checkpoint : MonoBehaviour
 {
+
+    private PlayerRespawn playerRespawn;
+
+    private void Start()
+    {
+        playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            other.GetComponent<PlayerRespawn>().UpdateSpawnPosition(gameObject.transform.position);   
+            playerRespawn.whereToSpawn = transform.position;
         }
     }
+
 }
