@@ -460,6 +460,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1660192237133197165, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 203331699}
+    - targetCorrespondingSourceObject: {fileID: 1660192237133197165, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 203331705}
   m_SourcePrefab: {fileID: 100100000, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
 --- !u!1 &181758214
 GameObject:
@@ -752,7 +755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27998aa5a8ed647479a67ed6339a9a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
+  rb: {fileID: 203331705}
   damageType: 2
   damageAmount: 2
   speed: 3
@@ -822,6 +825,33 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 8
+--- !u!54 &203331705
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203331687}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &250465233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2173,10 +2203,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -2942,8 +2972,10 @@ MonoBehaviour:
   damage: 2
   element: 1
   shootRate: 0.2
+  chargeMaxRate: 3
+  chargeRate: 0.5
   shootPos: {fileID: 1303081641}
-  projectil: {fileID: 1253219748198811086, guid: e0858a00bf1db294697e7360994d841d, type: 3}
+  projectil: {fileID: 2705959878802607773, guid: e0858a00bf1db294697e7360994d841d, type: 3}
 --- !u!4 &1362025893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
@@ -5036,19 +5068,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3240487770684830843, guid: 6776c494b278a4d44a7a9a3033dead33, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99756163
       objectReference: {fileID: 0}
     - target: {fileID: 3240487770684830843, guid: 6776c494b278a4d44a7a9a3033dead33, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.064847946
       objectReference: {fileID: 0}
     - target: {fileID: 3240487770684830843, guid: 6776c494b278a4d44a7a9a3033dead33, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.020724973
       objectReference: {fileID: 0}
     - target: {fileID: 3240487770684830843, guid: 6776c494b278a4d44a7a9a3033dead33, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.01536457
       objectReference: {fileID: 0}
     - target: {fileID: 3240487770684830843, guid: 6776c494b278a4d44a7a9a3033dead33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
