@@ -3,7 +3,7 @@ using UnityEngine;
 public class GunHitScan : Range
 {
    
-    public override void Attack(LayerMask playerMask)
+    public override void AttackBegin(LayerMask playerMask)
     {
 
         //See if they have bullets
