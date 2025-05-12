@@ -12,11 +12,14 @@ public class MineController : MonoBehaviour, IDamage
     [SerializeField] int faceTargetSpeed;
     [SerializeField] float sightRange;
     public LayerMask whatIsPlayer;
+    private int playCount;
 
     Color colorOrig;
     Vector3 playerDir;
 
     bool playerInRange;
+    private AudioClip robotAngry;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,6 +33,12 @@ public class MineController : MonoBehaviour, IDamage
 
         if (playerInRange)
         {
+            if (playCount == 0)
+            {
+                SoundManager.instance.PlaySFX("robotAngry");
+                playCount++;
+            }
+
             playerDir = (GameManager.instance.player.transform.position - transform.position);
 
             agent.SetDestination(GameManager.instance.player.transform.position);
@@ -64,7 +73,7 @@ public class MineController : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
-            SoundManager.instance.PlaySFX("turretDestroy");
+            SoundManager.instance.PlaySFX("mineExplosion");
 
             Destroy(gameObject);
         }
