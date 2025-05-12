@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Stop();
+        // stop the player from shooting 
         playerScript.enabled = false;
         
     }
