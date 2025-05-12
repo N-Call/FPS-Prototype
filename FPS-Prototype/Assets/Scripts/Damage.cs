@@ -22,6 +22,7 @@ public class Damage : MonoBehaviour
 
     private bool isDamaging;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -59,6 +60,10 @@ public class Damage : MonoBehaviour
         if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
             Destroy(gameObject);
+        }
+        if (damageType == DamageType.homing)
+        {
+            SoundManager.instance.PlaySFX("mineExplosion");
         }
     }
     private void OnTriggerStay(Collider other)
