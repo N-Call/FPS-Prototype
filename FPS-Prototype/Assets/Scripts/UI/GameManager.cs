@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviour
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Stop();
+        playerScript.enabled = false;
+        
     }
     public void StateUnpause()
     {
@@ -76,6 +78,8 @@ public class GameManager : MonoBehaviour
         // to turn on the reticle
         reticle.SetActive(true);
         SoundManager.instance.musicSource.Play();
+        playerScript.enabled = true;
+
     }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
