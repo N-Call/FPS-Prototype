@@ -174,6 +174,7 @@ public class PMovement : MonoBehaviour, IDamage
 
     void WeaponInput()
     {
+        
         //check for primary weapon
         if (Input.GetButtonDown("Fire1") && weaponList != null)
         {
