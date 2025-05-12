@@ -25,7 +25,7 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private bool crouchSprint = false;
 
     [Header("Slide Settings")]
-    [SerializeField] private float slideTime = 0.25f;
+    [SerializeField] private float slideTime = 0.67f;
     [SerializeField] private float slideSpeedBoost = 2.0f;
 
     [Header("Gravity and Jumping")]
@@ -117,21 +117,27 @@ public class PMovement : MonoBehaviour, IDamage
                 Crouch();
             }
 
-            // Handle sliding
-            if ((isCrouching && isSprinting) || isSliding)
-            {
-                Slide();
-            }
-
             // Handle un-crouching
             if (Input.GetButtonUp("Crouch") || (!Input.GetButton("Crouch") && isCrouching))
             {
                 UnCrouch();
             }
-
+            // Handle sliding
+            if ((isCrouching && isSprinting) || isSliding)
+            {
+                Slide();
+            }
             // This checks the input for jumping.
             if (Input.GetButtonDown("Jump"))
             {
+                // This allows the player to be able to cancel the slide into a jump.
+                if (isSliding)
+                {
+                    isSliding = false;
+                    controller.height = originalHeight;
+                    currentSpeed = baseSpeed;
+                }
+
                 if (isCrouching)
                 {
                     UnCrouch();
@@ -245,21 +251,66 @@ public class PMovement : MonoBehaviour, IDamage
             isSprinting = false;
             isCrouching = false;
             isSliding = true;
-            currentSpeed += slideSpeedBoost;
+            elapsedSlideTime = 0.0f;
+            currentSpeed = baseSpeed * modSprint + slideSpeedBoost;
         }
 
         elapsedSlideTime += Time.deltaTime;
-        currentSpeed = Mathf.Lerp(currentSpeed, crouchSpeed, elapsedSlideTime / slideTime);
-        
-        if (currentSpeed <= crouchSpeed)
+
+        float delayBeforeLerp = 0.1f;
+        if (elapsedSlideTime > delayBeforeLerp)
+        {
+            float eSTDBL = (elapsedSlideTime - delayBeforeLerp) / (slideTime - delayBeforeLerp);
+            currentSpeed = Mathf.Lerp(baseSpeed + slideSpeedBoost, crouchSpeed, eSTDBL);
+        }
+
+        if (elapsedSlideTime >= slideTime)
         {
             currentSpeed = crouchSpeed;
             controller.height = crouchHeight;
-            elapsedSlideTime = 0.0f;
             isSliding = false;
-            isSprinting = false;
-            isCrouching = true;
+            elapsedSlideTime = 0.0f;
+
+            if (Input.GetButton("Sprint") && inputDir.z > 0)
+            {
+                isSprinting = true;
+                isCrouching = false;
+            }
+            else
+            {
+                isSprinting = false;
+                isCrouching = true;
+            }
         }
+    }
+
+    void StopSlide()
+    {
+        isSliding = false;
+        // This is to check if the player is holding forward.
+        bool forwardHeld = Input.GetAxis("Vertical") > 0.1f;
+        //This is to check if the sprint button is held down.
+        bool sprintHeld = Input.GetButtonDown("Sprint");
+
+        // This is to check if you're both holding forward and the sprint button.
+        if (forwardHeld && sprintHeld)
+        {
+            // If true, go into sprint.
+            isSprinting = true;
+            isCrouching = false;
+            currentSpeed = baseSpeed * modSprint;
+            controller.height = originalHeight;
+        }
+        else
+        {
+            // Otherwise, go to crouch.
+            isSprinting = true;
+            isCrouching = false;
+            currentSpeed = crouchSpeed;
+            controller.height = crouchHeight;
+        }
+
+        elapsedSlideTime = 0f;
     }
 
     public void TakeDamage(int amount)
