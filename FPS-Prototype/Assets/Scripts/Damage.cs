@@ -45,6 +45,12 @@ public class Damage : MonoBehaviour
         }
     }
 
+    public void AddDamageAmount(int damage)
+    {
+        damageAmount += damage;
+        Debug.Log("Damage Amount: " + damageAmount);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if ((other.isTrigger))

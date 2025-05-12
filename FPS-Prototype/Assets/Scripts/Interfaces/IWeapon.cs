@@ -2,5 +2,6 @@ using UnityEngine;
 
 public interface IWeapon
 {
-    void Attack(LayerMask playerMask);
+    void AttackBegin(LayerMask playerMask);
+    void AttackEnd(LayerMask playerMask);
 }

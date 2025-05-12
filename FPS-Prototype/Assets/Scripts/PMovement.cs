@@ -175,13 +175,22 @@ public class PMovement : MonoBehaviour, IDamage
 
     void WeaponInput()
     {
+        
         //check for primary weapon
         if (Input.GetButtonDown("Fire1") && weaponList != null)
         {
             //launch attack method
             Debug.Log(weaponList[0].name);
-            weaponList[0].GetComponent<IWeapon>()?.Attack(playerMask);
+            weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
             
+        }
+
+        if (Input.GetButtonUp("Fire1") && weaponList != null)
+        {
+            //launch attack method
+            Debug.Log(weaponList[0].name);
+            weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
+
         }
 
         //Change weapon if pressed
