@@ -21,7 +21,7 @@ public class EnemyPatrol : MonoBehaviour
     {
         targetDir = wayPoints[targetPoint].position - transform.position;
 
-        //faceTarget();
+        faceTarget();
 
         transform.position = Vector3.MoveTowards(transform.position, wayPoints[targetPoint].position, speed * Time.deltaTime);
         Debug.Log("Found waypoint moving to next");

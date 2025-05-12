@@ -5,13 +5,13 @@ using System;
 
 public class Damage : MonoBehaviour
 {
-    enum DamageType {DOT, moving}
+    enum DamageType {DOT, moving, homing, stationary}
 
     [Header("Resources")]
     [SerializeField] Rigidbody rb;
 
     [Header("Damage Settings")]
-    [SerializeField] private DamageType damageType;
+    [SerializeField] DamageType damageType;
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
@@ -39,7 +39,10 @@ public class Damage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (damageType == DamageType.homing)
+        {
+            rb.linearVelocity = (GameManager.instance.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,12 +52,12 @@ public class Damage : MonoBehaviour
             return;
         }
         IDamage dmg = other.GetComponent<IDamage>();
-        if (dmg != null && (damageType == DamageType.moving))
+        if (dmg != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
             dmg.TakeDamage(damageAmount);
         }
 
-        if (damageType == DamageType.moving)
+        if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
             Destroy(gameObject);
         }

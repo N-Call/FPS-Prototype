@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GunHitScan : Range
 {
+   
     public override void Attack(LayerMask playerMask)
     {
 
@@ -11,6 +12,7 @@ public class GunHitScan : Range
             SoundManager.instance.PlaySFX("pistol");
             //see if you hit an object
             RaycastHit hit;
+
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, distance, ~playerMask))
             {
                 //damage enemy
@@ -19,8 +21,10 @@ public class GunHitScan : Range
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();
                 targ?.ActivateElem(element);
+
             }
-            ammoCount--;
+           
+                ammoCount--;
             GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
         }
     }

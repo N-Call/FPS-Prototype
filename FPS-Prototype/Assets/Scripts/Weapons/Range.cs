@@ -14,6 +14,8 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     protected int ammoCap;
 
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,6 +31,8 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void Reload()
     {
+        SoundManager.instance.PlaySFX("reload");
+
         ammoCap -= reloadCap - ammoCount;
         ammoCount = reloadCap;
 

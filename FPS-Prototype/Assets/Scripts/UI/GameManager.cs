@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,7 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject ammoCount;
 
     public GameObject player;
+    List<GameObject> activeEnemies = new List<GameObject>();
     public PMovement playerScript;
+    public HumanEnemy robotScript;
 
     public bool isPaused;
 
@@ -22,6 +26,7 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+            
         instance = this;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PMovement>();
@@ -82,4 +87,4 @@ public class GameManager : MonoBehaviour
         }
     }
    
-}
+} 

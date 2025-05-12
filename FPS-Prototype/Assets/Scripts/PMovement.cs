@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class PMovement : MonoBehaviour, IDamage
@@ -54,7 +55,7 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isSliding;
 
     private PlayerRespawn playerRespawn;
-
+    Vector3 originalPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -62,7 +63,9 @@ public class PMovement : MonoBehaviour, IDamage
         originalHeight = controller.height;
         crouchHeight = originalHeight * crouchHeightMod;
 
-        playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();    
+        playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
+        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
+        originalPosition = enemy.transform.position;
     }
 
     // Update is called once per frame
@@ -87,6 +90,7 @@ public class PMovement : MonoBehaviour, IDamage
         if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
         {
             isSprinting = true;
+           
         }
         if (Input.GetButtonUp("Sprint"))
         {
@@ -165,6 +169,7 @@ public class PMovement : MonoBehaviour, IDamage
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
+        SoundManager.instance.PlaySFX("run");
     }
 
     void WeaponInput()
@@ -268,7 +273,9 @@ public class PMovement : MonoBehaviour, IDamage
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             playerRespawn.RespawnPlayer();
-            
+
+            GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
+            enemy.transform.position = originalPosition;
         }
     }
 

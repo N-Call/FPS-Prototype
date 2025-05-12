@@ -1,84 +1,42 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
-using static Unity.IntegerTime.RationalTime;
-using NUnit.Framework;
-using System.ComponentModel.Design;
 
-public class HumanEnemy : MonoBehaviour, IDamage
+public class MineController : MonoBehaviour, IDamage
 {
-    [Header("Stats and Info")]
+   
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] int HP;
-
-    [Header("Targeting and Shooting")]
     [SerializeField] int faceTargetSpeed;
-    [SerializeField] Transform shootPos;
-    [SerializeField] GameObject bullet;
-    [SerializeField] float shootRate;
-
-    
-    
+    [SerializeField] float sightRange;
+    public LayerMask whatIsPlayer;
 
     Color colorOrig;
-
     Vector3 playerDir;
 
-    float shootTimer;
-
     bool playerInRange;
-    
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
         colorOrig = model.material.color;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        shootTimer += Time.deltaTime;
+        playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
 
         if (playerInRange)
-       {
-
+        {
             playerDir = (GameManager.instance.player.transform.position - transform.position);
 
             agent.SetDestination(GameManager.instance.player.transform.position);
-
-            if (shootTimer >= shootRate)
-            {
-                shoot();
-            }
-
-            if (agent.remainingDistance <= agent.stoppingDistance)
-            {
-                faceTarget();
-            }
-            
         }
-    }
-
-    
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        if (agent.remainingDistance <= agent.stoppingDistance)
         {
-            playerInRange = true;
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
+            faceTarget();
         }
     }
 
@@ -94,13 +52,6 @@ public class HumanEnemy : MonoBehaviour, IDamage
         Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
 
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
-    }
-
-    void shoot()
-    {
-        shootTimer = 0;
-        Instantiate(bullet, shootPos.position, transform.rotation);
-        SoundManager.instance.PlaySFX("enemyShot");
     }
 
     public void TakeDamage(int amount)
@@ -122,4 +73,5 @@ public class HumanEnemy : MonoBehaviour, IDamage
             StartCoroutine(flashRed());
         }
     }
+    
 }
