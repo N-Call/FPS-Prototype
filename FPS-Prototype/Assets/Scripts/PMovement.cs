@@ -89,6 +89,7 @@ public class PMovement : MonoBehaviour, IDamage
         // Determine sprint state and speed
         if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
         {
+           
             isSprinting = true;
            
         }
@@ -169,7 +170,7 @@ public class PMovement : MonoBehaviour, IDamage
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
-        SoundManager.instance.PlaySFX("run");
+        
     }
 
     void WeaponInput()
@@ -273,9 +274,6 @@ public class PMovement : MonoBehaviour, IDamage
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             playerRespawn.RespawnPlayer();
-
-            GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-            enemy.transform.position = originalPosition;
         }
     }
 

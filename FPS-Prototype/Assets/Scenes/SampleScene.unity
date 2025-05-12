@@ -1164,6 +1164,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 64f6003b8c13b2f4ea2d11458122d79e, type: 3}
   - name: powerUp
     clip: {fileID: 8300000, guid: fe0ae8a1091989c4b81695bc02780964, type: 3}
+  - name: checkPoint
+    clip: {fileID: 8300000, guid: cd2de6b10efbeac4e96b71fae008401c, type: 3}
   musicSource: {fileID: 521377255}
   sfxSource: {fileID: 1827527718}
 --- !u!1001 &402055455
@@ -4780,6 +4782,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Checkpoint
       objectReference: {fileID: 0}
+    - target: {fileID: 4526431182238008996, guid: a4abd375076a24f489f4fa5c1289dc7a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4526431182238008996, guid: a4abd375076a24f489f4fa5c1289dc7a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e04649845bc663458277b8d6b16edda, type: 2}
     - target: {fileID: 7407379603694103281, guid: a4abd375076a24f489f4fa5c1289dc7a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20.67

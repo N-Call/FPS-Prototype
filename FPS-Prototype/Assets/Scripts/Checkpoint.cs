@@ -6,6 +6,7 @@ public class Checkpoint : MonoBehaviour
 {
 
     private PlayerRespawn playerRespawn;
+    private int playerCount = 0;    
 
     private void Start()
     {
@@ -16,6 +17,11 @@ public class Checkpoint : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            if (playerCount == 0)
+            {
+                SoundManager.instance.PlaySFX("checkPoint");
+                playerCount++;
+            }
             playerRespawn.whereToSpawn = transform.position;
         }
     }
