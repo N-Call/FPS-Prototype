@@ -34,7 +34,7 @@ public class HumanEnemy : MonoBehaviour, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        GameManager.instance.UpdateEnemyCounter(+1);
         colorOrig = model.material.color;
     }
 
@@ -114,7 +114,7 @@ public class HumanEnemy : MonoBehaviour, IDamage
         if (HP <= 0)
         {
             SoundManager.instance.PlaySFX("turretDestroy");
-
+            GameManager.instance.UpdateEnemyCounter(-1);
             Destroy(gameObject);
         }
         else

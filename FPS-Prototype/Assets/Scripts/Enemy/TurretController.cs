@@ -36,6 +36,7 @@ public class TurretControl : MonoBehaviour, IDamage
     bool playerInRange;
     private void Start()
     {
+        GameManager.instance.UpdateEnemyCounter(1);
         colorOrig = model.material.color;
         StartCoroutine(Rotate());
     }
@@ -127,6 +128,7 @@ public class TurretControl : MonoBehaviour, IDamage
             if (HP <= 0)
         {
             SoundManager.instance.PlaySFX("turretDestroy");
+            GameManager.instance.UpdateEnemyCounter(-1);
             Destroy(gameObject);
         }
         else

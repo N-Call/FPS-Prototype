@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
+    [SerializeField] GameObject enemyCountUI;
 
     public GameObject player;
     List<GameObject> activeEnemies = new List<GameObject>();
@@ -21,6 +22,9 @@ public class GameManager : MonoBehaviour
     public bool isPaused;
 
     public float timeScaleOrig;
+
+    int gameGoalCount;
+    int enemyCount;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -81,6 +85,34 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.musicSource.Play();
         playerScript.enabled = true;
 
+    }
+    public void YouLose() 
+    {
+        StatePause();
+        menuActive = menuLose;
+        menuActive.SetActive(true);
+    }
+
+    public void WinCondition(int amount)
+    {
+        gameGoalCount += amount;
+        if (gameGoalCount <= 0)
+        {
+            StatePause();
+            menuActive = menuWin;
+            menuActive.SetActive(true);
+        }
+    }
+
+    public void UpdateEnemyCounter(int amount)
+    {
+        enemyCount += amount;
+
+        if (enemyCountUI != null)
+        {
+            // display ammo count for the UI 
+            enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+        }
     }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
