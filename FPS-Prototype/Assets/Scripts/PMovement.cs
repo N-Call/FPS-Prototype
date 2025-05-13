@@ -63,8 +63,8 @@ public class PMovement : MonoBehaviour, IDamage
         crouchHeight = originalHeight * crouchHeightMod;
 
         playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
-        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-        originalPosition = enemy.transform.position;
+       // GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
+       // originalPosition = enemy.transform.position;
 
         origHealth = HP;
     }
