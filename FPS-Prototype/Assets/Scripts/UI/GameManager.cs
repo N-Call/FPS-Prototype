@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
     [SerializeField] GameObject enemyCountUI;
+    [SerializeField] GameObject weaponIcon;
 
     public GameObject player;
     List<GameObject> activeEnemies = new List<GameObject>();
@@ -123,5 +125,10 @@ public class GameManager : MonoBehaviour
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
         }
     }
-   
+    public void SetWeaponIcon(Sprite icon)
+    {
+        gameObject.GetComponent<Image>().sprite = icon;
+    }
+
+
 } 
