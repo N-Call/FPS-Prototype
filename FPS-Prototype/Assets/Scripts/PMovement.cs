@@ -81,6 +81,8 @@ public class PMovement : MonoBehaviour, IDamage
 
         //this method is for the inputs related to weapons
         WeaponInput();
+        // this is to show player health bar and when taking damage
+        UpdatePlayerUI();
     }
 
     void HandleMovement()
@@ -282,6 +284,7 @@ public class PMovement : MonoBehaviour, IDamage
         SoundManager.instance.PlaySFX("playerHurt");
 
         HP -= amount;
+        UpdatePlayerUI();
         if (HP <= 0)
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -289,5 +292,9 @@ public class PMovement : MonoBehaviour, IDamage
             HP = 5;
         }
     }
-
+    public void UpdatePlayerUI()
+    {
+        // update player health bar at full and when taking damage
+        GameManager.instance.playerHPbar.fillAmount = (float)HP/ origHealth;
+    }
 }
