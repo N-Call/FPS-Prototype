@@ -18,6 +18,13 @@ public class GameManager : MonoBehaviour
     public PMovement playerScript;
     public HumanEnemy robotScript;
 
+    public enum Element
+    {
+        speed = 1,
+        jump = 2,
+        time = 3
+    }
+
     public bool isPaused;
 
     public float timeScaleOrig;
