@@ -10,14 +10,15 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     [SerializeField] protected float distance;
     [SerializeField] protected int damage;
 
-    [SerializeField][Range(1, 3)] protected int element;
+    public enum ElementType { speed = 1, jump = 2, time = 3 }
+
+    [SerializeField] public ElementType elem;
 
     [SerializeField] protected string soundFxName;
     [Range(0, 1f)]
     [SerializeField] protected float soundFxVolume;
 
     protected int ammoCap;
-
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

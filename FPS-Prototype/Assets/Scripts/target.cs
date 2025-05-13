@@ -29,12 +29,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
     bool toStart;
     bool waited;
     bool finished;
+    enum ElementType { speed = 1, jump = 2, time = 3 }
 
     private Collider targCollider;
     [SerializeField] private GameObject artToDisable = null;
 
     [Header("1: Speed. 2: Jump. 3: Time")]
-    [SerializeField][Range(1, 3)] int element;
+    [SerializeField] ElementType elem;
     bool affected;
 
     [Header("Speed Element")]
@@ -52,12 +53,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //colorOrig = model.material.color;
         startPosition = transform.position;
         dest = relative ? startPosition + destination : destination;
-        //startPos = transform.position;
         targCollider = GetComponent<Collider>();
-
     }
 
     // Update is called once per frame
@@ -122,6 +120,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         Debug.Log("Activating Element");
         int result;
+        int element = (int) elem;
         if (element >= modifier)
         {
             result = element - modifier;
@@ -141,6 +140,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     void Buff()
     {
+        int element = (int)elem;
         switch (element)
         {
             case 1:
@@ -160,6 +160,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     void Debuff()
     {
+        int element = (int)elem;
         switch (element)
         {
             case 1:
