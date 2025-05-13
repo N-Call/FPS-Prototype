@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Range : MonoBehaviour, IReloadable, IWeapon
 {
+    [Header("Ammo Icon Reference")]
+    [SerializeField] protected Sprite ammoIcon;
     [Header("Ammo Settings")]
     [SerializeField] protected int ammoOrigCap;
     [SerializeField] protected int reloadCap;
@@ -52,6 +55,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     {
 
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
+        GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
 }
 
