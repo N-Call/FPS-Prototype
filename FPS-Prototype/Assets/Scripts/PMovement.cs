@@ -13,7 +13,7 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private LayerMask playerMask;
 
     [Header("Health")]
-    [SerializeField] private int HP;
+    [SerializeField] public int HP;
 
     [Header("Movement Settings")]
     [SerializeField] public float baseSpeed = 5f;
@@ -54,8 +54,11 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isCrouching;
     private bool isSliding;
 
+    public int origHealth;
+
     private PlayerRespawn playerRespawn;
     Vector3 originalPosition;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -66,6 +69,8 @@ public class PMovement : MonoBehaviour, IDamage
         playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
         GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
         originalPosition = enemy.transform.position;
+
+        origHealth = HP;
     }
 
     // Update is called once per frame
@@ -89,6 +94,7 @@ public class PMovement : MonoBehaviour, IDamage
         // Determine sprint state and speed
         if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
         {
+           
             isSprinting = true;
            
         }
@@ -169,7 +175,7 @@ public class PMovement : MonoBehaviour, IDamage
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
-        SoundManager.instance.PlaySFX("run");
+        
     }
 
     void WeaponInput()
@@ -280,9 +286,6 @@ public class PMovement : MonoBehaviour, IDamage
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             playerRespawn.RespawnPlayer();
-
-            GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-            enemy.transform.position = originalPosition;
         }
     }
 

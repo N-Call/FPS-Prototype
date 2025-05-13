@@ -3,15 +3,18 @@ using System.Collections;
 using System;
 
 
+
 public class Damage : MonoBehaviour
 {
     enum DamageType {DOT, moving, homing, stationary}
+    enum ElementType {speed = 1, jump = 2, time = 3}
 
     [Header("Resources")]
     [SerializeField] Rigidbody rb;
 
     [Header("Damage Settings")]
     [SerializeField] DamageType damageType;
+    [SerializeField] ElementType elem;
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
@@ -21,6 +24,7 @@ public class Damage : MonoBehaviour
     [SerializeField] private int dotDamageRate;
 
     private bool isDamaging;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,7 +45,6 @@ public class Damage : MonoBehaviour
     {
         if (damageType == DamageType.homing)
         {
-            rb.linearVelocity = (GameManager.instance.transform.position - transform.position).normalized * speed * Time.deltaTime;
         }
     }
 
@@ -58,14 +61,20 @@ public class Damage : MonoBehaviour
             return;
         }
         IDamage dmg = other.GetComponent<IDamage>();
-        if (dmg != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
+        ITarget targ = other.GetComponent<ITarget>();
+        if (dmg != null || targ != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
             dmg.TakeDamage(damageAmount);
+            targ.ActivateElem((int)elem);
         }
 
         if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
             Destroy(gameObject);
+        }
+        if (damageType == DamageType.homing)
+        {
+            SoundManager.instance.PlaySFX("mineExplosion");
         }
     }
     private void OnTriggerStay(Collider other)

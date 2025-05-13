@@ -16,6 +16,10 @@ public class Checkpoint : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            Destroy(gameObject);
+            
+            SoundManager.instance.PlaySFX("checkPoint");
+                              
             playerRespawn.whereToSpawn = transform.position;
         }
     }

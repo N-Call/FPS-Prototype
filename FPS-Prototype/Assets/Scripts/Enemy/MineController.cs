@@ -13,6 +13,8 @@ public class MineController : MonoBehaviour, IDamage
     [SerializeField] float sightRange;
     public LayerMask whatIsPlayer;
 
+    private int playCount;
+
     Color colorOrig;
     Vector3 playerDir;
 
@@ -30,6 +32,11 @@ public class MineController : MonoBehaviour, IDamage
 
         if (playerInRange)
         {
+            if (playCount == 0)
+            {
+                SoundManager.instance.PlaySFX("robotAngry");
+                playCount++;
+            }
             playerDir = (GameManager.instance.player.transform.position - transform.position);
 
             agent.SetDestination(GameManager.instance.player.transform.position);

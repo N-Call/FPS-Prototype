@@ -10,6 +10,7 @@ public class PlayerRespawn : MonoBehaviour
     {
         GetComponent<CharacterController>().enabled = false;
         transform.position = whereToSpawn;
+        GameManager.instance.playerScript.HP = GameManager.instance.playerScript.origHealth;
         GetComponent<CharacterController>().enabled = true;
     }
 
