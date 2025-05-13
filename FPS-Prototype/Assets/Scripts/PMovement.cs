@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class PMovement : MonoBehaviour, IDamage
@@ -8,7 +9,7 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private LayerMask playerMask;
 
     [Header("Health")]
-    [SerializeField] private int HP;
+    [SerializeField] public int HP;
 
     [Header("Movement Settings")]
     [SerializeField] public float baseSpeed = 5f;
@@ -49,12 +50,23 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isCrouching;
     private bool isSliding;
 
+    public int origHealth;
+
+    private PlayerRespawn playerRespawn;
+    Vector3 originalPosition;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         crouchSpeed = baseSpeed * crouchSpeedMod;
         originalHeight = controller.height;
         crouchHeight = originalHeight * crouchHeightMod;
+
+        playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
+        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
+        originalPosition = enemy.transform.position;
+
+        origHealth = HP;
     }
 
     // Update is called once per frame
@@ -78,7 +90,9 @@ public class PMovement : MonoBehaviour, IDamage
         // Determine sprint state and speed
         if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
         {
+           
             isSprinting = true;
+           
         }
         if (Input.GetButtonUp("Sprint"))
         {
@@ -127,6 +141,7 @@ public class PMovement : MonoBehaviour, IDamage
 
                 vertVel.y = jumpForce;
                 currJumpCount++;
+                SoundManager.instance.PlaySFX("playerJump");
             }
 
         }
@@ -138,6 +153,7 @@ public class PMovement : MonoBehaviour, IDamage
             {
                 vertVel.y = jumpForce;
                 currJumpCount++;
+                SoundManager.instance.PlaySFX("playerJump");
             }
 
             // This applies gravity, when not on the ground.
@@ -155,17 +171,27 @@ public class PMovement : MonoBehaviour, IDamage
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
+        
     }
 
     void WeaponInput()
     {
+        
         //check for primary weapon
         if (Input.GetButtonDown("Fire1") && weaponList != null)
         {
             //launch attack method
             Debug.Log(weaponList[0].name);
-            weaponList[0].GetComponent<IWeapon>()?.Attack(playerMask);
+            weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
             
+        }
+
+        if (Input.GetButtonUp("Fire1") && weaponList != null)
+        {
+            //launch attack method
+            Debug.Log(weaponList[0].name);
+            weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
+
         }
 
         //Change weapon if pressed
@@ -254,10 +280,15 @@ public class PMovement : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
+        Debug.Log("is working");
+
+        SoundManager.instance.PlaySFX("playerHurt");
+
         HP -= amount;
         if (HP <= 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            playerRespawn.RespawnPlayer();
         }
     }
 

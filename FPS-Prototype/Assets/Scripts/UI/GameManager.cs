@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,7 +14,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject ammoCount;
 
     public GameObject player;
+    List<GameObject> activeEnemies = new List<GameObject>();
     public PMovement playerScript;
+    public HumanEnemy robotScript;
+
+    public enum Element
+    {
+        speed = 1,
+        jump = 2,
+        time = 3
+    }
 
     public bool isPaused;
 
@@ -22,6 +33,7 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+            
         instance = this;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PMovement>();
@@ -59,6 +71,9 @@ public class GameManager : MonoBehaviour
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Stop();
+        // stop the player from shooting 
+        playerScript.enabled = false;
+        
     }
     public void StateUnpause()
     {
@@ -71,6 +86,8 @@ public class GameManager : MonoBehaviour
         // to turn on the reticle
         reticle.SetActive(true);
         SoundManager.instance.musicSource.Play();
+        playerScript.enabled = true;
+
     }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
@@ -82,4 +99,4 @@ public class GameManager : MonoBehaviour
         }
     }
    
-}
+} 
