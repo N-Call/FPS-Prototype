@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
+    [SerializeField] GameObject enemyCountUI;
     [SerializeField] GameObject weaponIcon;
 
     public GameObject player;
@@ -20,16 +21,12 @@ public class GameManager : MonoBehaviour
     public PMovement playerScript;
     
 
-    public enum Element
-    {
-        speed = 1,
-        jump = 2,
-        time = 3
-    }
-
     public bool isPaused;
 
     public float timeScaleOrig;
+
+    int gameGoalCount;
+    int enemyCount;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -91,6 +88,34 @@ public class GameManager : MonoBehaviour
         playerScript.enabled = true;
 
     }
+    public void YouLose() 
+    {
+        StatePause();
+        menuActive = menuLose;
+        menuActive.SetActive(true);
+    }
+
+    public void WinCondition(int amount)
+    {
+        gameGoalCount += amount;
+        if (gameGoalCount <= 0)
+        {
+            StatePause();
+            menuActive = menuWin;
+            menuActive.SetActive(true);
+        }
+    }
+
+    public void UpdateEnemyCounter(int amount)
+    {
+        enemyCount += amount;
+
+        if (enemyCountUI != null)
+        {
+            // display ammo count for the UI 
+            enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+        }
+    }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
     {
@@ -100,10 +125,10 @@ public class GameManager : MonoBehaviour
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
         }
     }
-
     public void SetWeaponIcon(Sprite icon)
     {
-        weaponIcon.GetComponent<Image>().sprite = icon;
+        gameObject.GetComponent<Image>().sprite = icon;
     }
-   
+
+
 } 

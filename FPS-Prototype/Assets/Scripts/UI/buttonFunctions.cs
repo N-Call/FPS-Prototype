@@ -3,6 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
+
+    public PlayerRespawn PlayerRespawn;
+
+
+    public void Respawn()
+    {
+        PlayerRespawn.GetComponent<ButtonFunctions>().Respawn();
+        GameManager.instance.StateUnpause();
+    }
+
     public void Resume()
     {
         GameManager.instance.StateUnpause();
