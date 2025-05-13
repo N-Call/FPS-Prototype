@@ -69,6 +69,7 @@ public class Enemy : MonoBehaviour, IDamage
         shootTimer += Time.deltaTime;
 
         playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        agent.isStopped = true;
 
         if (playerInRange && !isTurret)
         {
@@ -85,8 +86,10 @@ public class Enemy : MonoBehaviour, IDamage
         }
         if (playerInRange && isTurret)
         {
+            
             head.LookAt(player);
             head.eulerAngles = new Vector3(0, head.eulerAngles.y, 0);
+            agent.isStopped = false;
         }
 
         if (shootTimer >= shootRate && playerAttackRange && isShooting)
@@ -98,7 +101,10 @@ public class Enemy : MonoBehaviour, IDamage
     public void TakeDamage(int amount)
     {  
         agent.isStopped = false;
-        agent.SetDestination(GameManager.instance.player.transform.position);
+        if (isShooting && !isTurret)
+        {
+            agent.SetDestination(GameManager.instance.player.transform.position);
+        }
 
         currentHealth -= amount;
 
@@ -169,12 +175,13 @@ public class Enemy : MonoBehaviour, IDamage
             {
                 StopCoroutine(LookCoroutine);
             }
-
+            
             LookCoroutine = StartCoroutine(turretTarget());
         }
     }
     IEnumerator turretTarget()
     {
+        
         playerDir = (GameManager.instance.transform.position - transform.position);
 
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(playerDir.x, head.position.y, playerDir.z));
@@ -206,11 +213,14 @@ public class Enemy : MonoBehaviour, IDamage
                 Instantiate(bullet, shootPos.position, transform.rotation);
                 SoundManager.instance.PlaySFX("enemyShot");
             }
+                
         }
         if (isTurret)
         {
+            
             if (agent.isStopped == false)
             {
+                
                 shootTimer = 0;
                 Instantiate(bullet, shootPos.position, barrel.rotation);
                 SoundManager.instance.PlaySFX("turretShot");
@@ -225,11 +235,9 @@ public class Enemy : MonoBehaviour, IDamage
         agent.isStopped = true;   
         currentHealth = maxHealth;
         if (isDead)
-        {
-            currentHealth = maxHealth;
+        { 
             gameObject.SetActive(true);
-            isDead = false;
-            
+            isDead = false;   
         }
         
     }

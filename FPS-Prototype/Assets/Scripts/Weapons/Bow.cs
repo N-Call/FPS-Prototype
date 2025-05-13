@@ -58,6 +58,7 @@ public class Bow : Range
 
     IEnumerator Charge()
     {
+        SoundManager.instance.PlaySFX("bowLoad");
         while (currentCharge < chargeMaxRate)
         {
             currentCharge += chargeRate;
