@@ -28,6 +28,7 @@ public class TurretControl : MonoBehaviour, IDamage
     Color colorOrig;
 
     private Coroutine LookCoroutine;
+    Vector3 originalPosition;
 
     
 
@@ -38,6 +39,7 @@ public class TurretControl : MonoBehaviour, IDamage
     {
         colorOrig = model.material.color;
         StartCoroutine(Rotate());
+        originalPosition = transform.position;
     }
 
     private void Update()
@@ -147,4 +149,6 @@ public class TurretControl : MonoBehaviour, IDamage
         Instantiate(bullet, shootPos.position, barrel.rotation);
         SoundManager.instance.PlaySFX("turretShot");
     }
+
+
 }

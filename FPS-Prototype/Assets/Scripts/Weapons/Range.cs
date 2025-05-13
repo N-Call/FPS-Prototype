@@ -12,6 +12,10 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     [SerializeField][Range(1, 3)] protected int element;
 
+    [SerializeField] protected string soundFxName;
+    [Range(0, 1f)]
+    [SerializeField] protected float soundFxVolume;
+
     protected int ammoCap;
 
     
@@ -36,7 +40,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void Reload()
     {
-        SoundManager.instance.PlaySFX("reload");
+        SoundManager.instance.PlaySFX(soundFxName);
 
         ammoCap -= reloadCap - ammoCount;
         ammoCount = reloadCap;

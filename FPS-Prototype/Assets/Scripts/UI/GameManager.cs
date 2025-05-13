@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     List<GameObject> activeEnemies = new List<GameObject>();
     public PMovement playerScript;
-    public HumanEnemy robotScript;
+    
 
     public bool isPaused;
 

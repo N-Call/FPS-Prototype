@@ -21,7 +21,7 @@ public class Damage : MonoBehaviour
     [SerializeField] private int dotDamageRate;
 
     private bool isDamaging;
-
+    bool isDead;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -65,11 +65,12 @@ public class Damage : MonoBehaviour
 
         if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            isDead = true;
         }
         if (damageType == DamageType.homing)
         {
-            SoundManager.instance.PlaySFX("mineExplosion");
+            SoundManager.instance.PlaySFX("turretDestroy");
         }
     }
     private void OnTriggerStay(Collider other)

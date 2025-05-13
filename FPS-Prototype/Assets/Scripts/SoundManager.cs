@@ -50,7 +50,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            sfxSource.PlayOneShot(s.clip);
+            sfxSource.PlayOneShot(s.clip, 1f);
         }
 
     }
