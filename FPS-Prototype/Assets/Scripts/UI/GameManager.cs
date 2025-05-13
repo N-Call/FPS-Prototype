@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject enemyCountUI;
     [SerializeField] GameObject weaponIcon;
 
+    public GameObject playerDamageScreen;
     public Image playerHPbar;
     public GameObject player;
     List<GameObject> activeEnemies = new List<GameObject>();

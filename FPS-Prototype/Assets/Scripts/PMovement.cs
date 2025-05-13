@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using NUnit.Framework;
@@ -285,6 +286,7 @@ public class PMovement : MonoBehaviour, IDamage
 
         HP -= amount;
         UpdatePlayerUI();
+        StartCoroutine(FlashDamageScreen());
         if (HP <= 0)
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -296,5 +298,11 @@ public class PMovement : MonoBehaviour, IDamage
     {
         // update player health bar at full and when taking damage
         GameManager.instance.playerHPbar.fillAmount = (float)HP/ origHealth;
+    }
+    IEnumerator FlashDamageScreen()
+    {
+        GameManager.instance.playerDamageScreen.SetActive(true);   
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerDamageScreen.SetActive(false);
     }
 }
