@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
     }
     public void SetWeaponIcon(Sprite icon)
     {
-        gameObject.GetComponent<Image>().sprite = icon;
+        weaponIcon.GetComponent<Image>().sprite = icon;
     }
 
 
