@@ -382,7 +382,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 8980723291144548616}
   agent: {fileID: 7832101164761383251}
-  HP: 2
+  currentHealth: 0
+  hitSoundFx: 
   deathSoundFx: mineExplosion
   sightSoundFx: robotAngry
   shootSoundFx: 
@@ -392,11 +393,17 @@ MonoBehaviour:
   shootPos: {fileID: 0}
   bullet: {fileID: 0}
   shootRate: 0
+  pause: 0
+  damageAmount: 2
+  player: {fileID: 0}
+  head: {fileID: 0}
+  barrel: {fileID: 0}
   isShooting: 0
-  isStationary: 0
+  isTurret: 0
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 8
+  originalPosition: {x: 0, y: 0, z: 0}
 --- !u!33 &6751733494175089108
 MeshFilter:
   m_ObjectHideFlags: 0
