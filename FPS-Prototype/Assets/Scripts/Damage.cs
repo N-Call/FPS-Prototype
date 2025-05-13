@@ -64,8 +64,8 @@ public class Damage : MonoBehaviour
         ITarget targ = other.GetComponent<ITarget>();
         if (dmg != null || targ != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
-            dmg.TakeDamage(damageAmount);
-            targ.ActivateElem((int)elem);
+            dmg?.TakeDamage(damageAmount);
+            targ?.ActivateElem((int)elem);
         }
 
         if (damageType == DamageType.moving || damageType == DamageType.homing)
@@ -96,7 +96,7 @@ public class Damage : MonoBehaviour
     IEnumerator DamageOther(IDamage other)
     {
         isDamaging = true;
-        other.TakeDamage(dotDamage);
+        other?.TakeDamage(dotDamage);
         yield return new WaitForSeconds(dotDamageRate);
         isDamaging = false;
     }
