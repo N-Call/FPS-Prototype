@@ -20,7 +20,7 @@ public class GunHitScan : Range
                 dmg?.TakeDamage(damage);
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();
-                targ?.ActivateElem(element);
+                targ?.ActivateElem((int)elem);
 
             }
            

@@ -29,8 +29,6 @@ public class TurretControl : MonoBehaviour, IDamage
 
     private Coroutine LookCoroutine;
 
-    
-
     float shootTimer;
 
     bool playerInRange;
@@ -50,26 +48,19 @@ public class TurretControl : MonoBehaviour, IDamage
         shootTimer += Time.deltaTime;
 
         //Check if Player is in Range before moving
-        if (playerInRange)
-        {
-
-            head.LookAt(player);
-
-            if (shootTimer >= shootRate)
-            {
-                shoot();
-            }
-        }
+      
     }
 
     private IEnumerator Rotate()
     {
+        
         WaitForSeconds wait = new WaitForSeconds(1f / ticksPerSecond);
 
         while (true)
         {
             if (!pause)
             {
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(transform.rotation.x, 0, transform.rotation.z));
                 head.Rotate(Vector3.up * rotationAmount);
             }
             yield return wait;
@@ -89,7 +80,7 @@ public class TurretControl : MonoBehaviour, IDamage
     {
         playerDir = (GameManager.instance.transform.position - transform.position);
 
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3 (playerDir.x, head.position.y, playerDir.z));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3 (playerDir.x, playerDir.y, playerDir.z));
 
         float time = 0;
 
@@ -102,22 +93,26 @@ public class TurretControl : MonoBehaviour, IDamage
             yield return null;
         }
     }
-     public void OnTriggerEnter(Collider other)
+     public void OnTriggerStay(Collider other)
     {
+        playerInRange = true;
+        IDamage dmg = other.GetComponent<IDamage>();
 
-        if (other.CompareTag("Player"))
+        head.LookAt(player);
+
+        if (dmg != null && shootTimer >= shootRate)
         {
-            playerInRange = true;
+            shoot();
         }
     }
     //detect when player is out of Range
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-        }
-    }
+    //public void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        playerInRange = false;
+    //    }
+    //}
 
     public void TakeDamage(int amount)
     {
@@ -148,5 +143,6 @@ public class TurretControl : MonoBehaviour, IDamage
         shootTimer = 0;
         Instantiate(bullet, shootPos.position, barrel.rotation);
         SoundManager.instance.PlaySFX("turretShot");
+        playerInRange = false;
     }
 }

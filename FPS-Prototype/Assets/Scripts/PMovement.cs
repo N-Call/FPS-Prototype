@@ -13,7 +13,7 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private LayerMask playerMask;
 
     [Header("Health")]
-    [SerializeField] private int HP;
+    [SerializeField] public int HP;
 
     [Header("Movement Settings")]
     [SerializeField] public float baseSpeed = 5f;
@@ -54,8 +54,11 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isCrouching;
     private bool isSliding;
 
+    public int origHealth;
+
     private PlayerRespawn playerRespawn;
     Vector3 originalPosition;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -66,6 +69,8 @@ public class PMovement : MonoBehaviour, IDamage
         playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
         GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
         originalPosition = enemy.transform.position;
+
+        origHealth = HP;
     }
 
     // Update is called once per frame
@@ -180,7 +185,6 @@ public class PMovement : MonoBehaviour, IDamage
         if (Input.GetButtonDown("Fire1") && weaponList != null)
         {
             //launch attack method
-            Debug.Log(weaponList[0].name);
             weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
             
         }
@@ -188,7 +192,6 @@ public class PMovement : MonoBehaviour, IDamage
         if (Input.GetButtonUp("Fire1") && weaponList != null)
         {
             //launch attack method
-            Debug.Log(weaponList[0].name);
             weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
 
         }
