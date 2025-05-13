@@ -1,9 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using NUnit.Framework;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -276,6 +272,11 @@ public class PMovement : MonoBehaviour, IDamage
             isSprinting = false;
             isCrouching = true;
         }
+    }
+
+    public void AddMomentum(Vector3 direction, float speed)
+    {
+        controller.Move(direction * speed * Time.deltaTime);
     }
 
     public void TakeDamage(int amount)
