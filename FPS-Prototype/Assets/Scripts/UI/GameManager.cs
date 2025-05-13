@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject enemyCountUI;
     [SerializeField] GameObject weaponIcon;
 
+    public GameObject playerDamageScreen;
+    public Image playerHPbar;
     public GameObject player;
     List<GameObject> activeEnemies = new List<GameObject>();
     public PMovement playerScript;
@@ -98,6 +100,7 @@ public class GameManager : MonoBehaviour
     public void WinCondition(int amount)
     {
         gameGoalCount += amount;
+
         if (gameGoalCount <= 0)
         {
             StatePause();
