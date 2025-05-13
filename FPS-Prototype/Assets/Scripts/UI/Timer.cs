@@ -4,11 +4,23 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI timerCount;
+    [SerializeField] float timerDelay;
+
+    float elapsedDelayTime;
     float elapsedTime;
 
     // Update is called once per frame
     void Update()
     {
+        if (timerDelay >= 0.0f)
+        {
+            elapsedDelayTime += Time.deltaTime;
+            if (elapsedDelayTime < timerDelay)
+            {
+                return;
+            }
+        }
+
         // this is to count up one second at a time
         elapsedTime += Time.deltaTime;
         int minutes = Mathf.FloorToInt(elapsedTime / 60);
