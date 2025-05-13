@@ -382,7 +382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 8980723291144548616}
   agent: {fileID: 7832101164761383251}
-  currentHealth: 0
+  currentHealth: 2
   hitSoundFx: 
   deathSoundFx: mineExplosion
   sightSoundFx: robotAngry
@@ -476,8 +476,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
+  m_Radius: 0.75
+  m_Height: 3
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!65 &1714354470048798862
@@ -499,7 +499,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000001, y: 2.75, z: 1.0000002}
+  m_Size: {x: 2, y: 2.75, z: 2}
   m_Center: {x: 0.000000059604645, y: 0.25, z: -0.00000008940697}
 --- !u!195 &7832101164761383251
 NavMeshAgent:
