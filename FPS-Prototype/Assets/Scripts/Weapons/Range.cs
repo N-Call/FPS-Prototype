@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Range : MonoBehaviour, IReloadable, IWeapon
 {
+    [Header("Ammo Icon Reference")]
+    [SerializeField] protected Sprite ammoIcon;
     [Header("Ammo Settings")]
     [SerializeField] protected int ammoOrigCap;
     [SerializeField] protected int reloadCap;
@@ -13,6 +16,10 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     public enum ElementType { speed = 1, jump = 2, time = 3 }
 
     [SerializeField] public ElementType elem;
+
+    [SerializeField] protected string soundFxName;
+    [Range(0, 1f)]
+    [SerializeField] protected float soundFxVolume;
 
     protected int ammoCap;
     
@@ -37,7 +44,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void Reload()
     {
-        SoundManager.instance.PlaySFX("reload");
+        SoundManager.instance.PlaySFX(soundFxName);
 
         ammoCap -= reloadCap - ammoCount;
         ammoCount = reloadCap;
@@ -53,6 +60,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     {
 
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
+        GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
 }
 

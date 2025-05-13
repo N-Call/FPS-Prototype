@@ -181,7 +181,6 @@ public class PMovement : MonoBehaviour, IDamage
         if (Input.GetButtonDown("Fire1") && weaponList != null)
         {
             //launch attack method
-            Debug.Log(weaponList[0].name);
             weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
             
         }
@@ -189,7 +188,6 @@ public class PMovement : MonoBehaviour, IDamage
         if (Input.GetButtonUp("Fire1") && weaponList != null)
         {
             //launch attack method
-            Debug.Log(weaponList[0].name);
             weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
 
         }
@@ -289,6 +287,7 @@ public class PMovement : MonoBehaviour, IDamage
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             playerRespawn.RespawnPlayer();
+            HP = 5;
         }
     }
 

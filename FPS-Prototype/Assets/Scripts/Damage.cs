@@ -24,7 +24,7 @@ public class Damage : MonoBehaviour
     [SerializeField] private int dotDamageRate;
 
     private bool isDamaging;
-
+    bool isDead;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -64,17 +64,18 @@ public class Damage : MonoBehaviour
         ITarget targ = other.GetComponent<ITarget>();
         if (dmg != null || targ != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
-            dmg.TakeDamage(damageAmount);
-            targ.ActivateElem((int)elem);
+            dmg?.TakeDamage(damageAmount);
+            targ?.ActivateElem((int)elem);
         }
 
         if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            
         }
         if (damageType == DamageType.homing)
         {
-            SoundManager.instance.PlaySFX("mineExplosion");
+            SoundManager.instance.PlaySFX("turretDestroy");
         }
     }
     private void OnTriggerStay(Collider other)
@@ -96,7 +97,7 @@ public class Damage : MonoBehaviour
     IEnumerator DamageOther(IDamage other)
     {
         isDamaging = true;
-        other.TakeDamage(dotDamage);
+        other?.TakeDamage(dotDamage);
         yield return new WaitForSeconds(dotDamageRate);
         isDamaging = false;
     }
