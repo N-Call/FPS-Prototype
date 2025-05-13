@@ -330,7 +330,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2078327213732077592, guid: 08b2c9605ec1bcc439258c32cf9a68ae, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4526752004980101421, guid: 08b2c9605ec1bcc439258c32cf9a68ae, type: 3}
       propertyPath: m_LocalPosition.x
@@ -602,6 +602,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 3484294841347657848, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
+      propertyPath: m_Radius
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816243159971929179, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
+      propertyPath: m_AutoBraking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816243159971929179, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
+      propertyPath: m_Acceleration
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816243159971929179, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816243159971929179, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7211296565631422667, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 21.360786
@@ -642,46 +662,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -5809590397489925483, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
---- !u!1 &142930090 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1660192237133197165, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
-  m_PrefabInstance: {fileID: 1573981930}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &142930098 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -4517661908490810285, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
   m_PrefabInstance: {fileID: 1573981930}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 142930090}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 981a68c9d4bc2f744b6b0697d5fffbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &142930100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 142930090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27998aa5a8ed647479a67ed6339a9a8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  damageType: 2
-  damageAmount: 2
-  speed: 0
-  destroyTime: 1
-  dotDamage: 0
-  dotDamageRate: 0
 --- !u!1 &169848755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,6 +1348,8 @@ MonoBehaviour:
   musicSounds:
   - name: Theme
     clip: {fileID: 8300000, guid: 0afd30528d3ba70488680094d61d1c9c, type: 3}
+  - name: bgMusic
+    clip: {fileID: 8300000, guid: 930f11ef5339fc848b36a345cb3eb805, type: 3}
   sfxSounds:
   - name: pistol
     clip: {fileID: 8300000, guid: c6a01920aaafe9f42a7f3965d9d5b56d, type: 3}
@@ -1361,9 +1360,9 @@ MonoBehaviour:
   - name: targetHit
     clip: {fileID: 8300000, guid: 286f53b8de3d27c4495e473da02912a6, type: 3}
   - name: turretHit
-    clip: {fileID: 8300000, guid: f39aeec275e335c449523402595cc29f, type: 3}
+    clip: {fileID: 8300000, guid: 7ed6ae423fbbd454e9bbf90f9e880a1a, type: 3}
   - name: turretDestroy
-    clip: {fileID: 8300000, guid: ea80ec793d0b2e54aa156f304916191a, type: 3}
+    clip: {fileID: 8300000, guid: c5266806d8bd3bf4c904e6501e50c90a, type: 3}
   - name: playerJump
     clip: {fileID: 8300000, guid: f230eb61d3e48e34abaeba494b63db1d, type: 3}
   - name: respawn
@@ -2889,7 +2888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3811096692516530717, guid: 6beb4549606f55a49b2ea3c7adfad986, type: 3}
       propertyPath: m_Radius
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4983574175186497694, guid: 6beb4549606f55a49b2ea3c7adfad986, type: 3}
       propertyPath: m_Name
@@ -4828,6 +4827,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -4517661908490810285, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
+      propertyPath: damageAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4517661908490810285, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
       propertyPath: currentHealth
       value: 2
       objectReference: {fileID: 0}
@@ -4839,6 +4842,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Moving Mine
       objectReference: {fileID: 0}
+    - target: {fileID: 1660192237133197165, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1660192237133197165, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 1714354470048798862, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
       propertyPath: m_Size.x
       value: 2
@@ -4849,7 +4860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2896242897173172138, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.009992
+      value: 15.78
       objectReference: {fileID: 0}
     - target: {fileID: 2896242897173172138, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4892,10 +4903,7 @@ PrefabInstance:
     - {fileID: 1868235875086188026, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1660192237133197165, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 142930100}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32c56078f82182449ba6cd7acdaf17a9, type: 3}
 --- !u!1 &1627154172
 GameObject:

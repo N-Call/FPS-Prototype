@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] int currentHealth;
-    
+
     [Header("Sound Settings")]
     [SerializeField] string hitSoundFx;
     [SerializeField] string deathSoundFx;
@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour, IDamage
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
     [SerializeField] bool pause;
+    [SerializeField] int damageAmount;
 
     [Header("Turret Settings")]
     [SerializeField] Transform player;
@@ -59,7 +60,7 @@ public class Enemy : MonoBehaviour, IDamage
     {
         StartCoroutine(Rotate());
         colorOrig = model.material.color;
-        
+
     }
 
     // Update is called once per frame
@@ -72,15 +73,15 @@ public class Enemy : MonoBehaviour, IDamage
         if (playerInRange && !isTurret)
         {
             playerDir = (GameManager.instance.player.transform.position - transform.position);
-
+            
+            agent.isStopped = false;
             agent.SetDestination(GameManager.instance.player.transform.position);
 
-            SoundManager.instance.PlaySFX(sightSoundFx);
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 faceTarget();
             }
-            
+
         }
         if (playerInRange && isTurret)
         {
@@ -93,21 +94,19 @@ public class Enemy : MonoBehaviour, IDamage
             Shoot();
         }
     }
-   
+
     public void TakeDamage(int amount)
-    {
-        
+    {  
+        agent.isStopped = false;
+        agent.SetDestination(GameManager.instance.player.transform.position);
+
         currentHealth -= amount;
-        SoundManager.instance.PlaySFX(hitSoundFx);
-        if (!isTurret)
-        {
-           // agent.SetDestination(GameManager.instance.player.transform.position);
-        }
-        
+
+        SoundManager.instance.PlaySFX("turretHit");
+
         if (currentHealth <= 0)
         {
-            
-            SoundManager.instance.PlaySFX(deathSoundFx);
+            SoundManager.instance.PlaySFX("turretDestroy");
             gameObject.SetActive(false);
             isDead = true;
         }
@@ -122,6 +121,14 @@ public class Enemy : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             playerAttackRange = true;
+        }
+        if (!isTurret && !isShooting)
+        {
+            SoundManager.instance.PlaySFX("mineExplosion");
+            IDamage damage = other.GetComponent<IDamage>();
+            damage?.TakeDamage(damageAmount);
+            gameObject.SetActive(false);
+            isDead = true;
         }
     }
 
@@ -142,7 +149,7 @@ public class Enemy : MonoBehaviour, IDamage
     private IEnumerator Rotate()
     {
         WaitForSeconds wait = new WaitForSeconds(1f / ticksPerSecond);
-        if (isTurret) 
+        if (isTurret)
         {
             while (true)
             {
@@ -191,29 +198,38 @@ public class Enemy : MonoBehaviour, IDamage
     }
     void Shoot()
     {
-       if (!isTurret) 
-       {
-            shootTimer = 0;
-            Instantiate(bullet, shootPos.position, transform.rotation);
-            SoundManager.instance.PlaySFX(shootSoundFx);
-       }
-       if (isTurret)
+        if (!isTurret)
         {
-            shootTimer = 0;
-            Instantiate(bullet, shootPos.position, barrel.rotation);
-            SoundManager.instance.PlaySFX(shootSoundFx);
+            if (agent.isStopped == false)
+            {
+                shootTimer = 0;
+                Instantiate(bullet, shootPos.position, transform.rotation);
+                SoundManager.instance.PlaySFX("enemyShot");
+            }
+        }
+        if (isTurret)
+        {
+            if (agent.isStopped == false)
+            {
+                shootTimer = 0;
+                Instantiate(bullet, shootPos.position, barrel.rotation);
+                SoundManager.instance.PlaySFX("turretShot");
+            }
         }
     }
+   
     public void ResetEnemies()
     {
-       Debug.Log("reset");
-       transform.position = originalPosition;
-        agent.SetDestination(originalPosition);
+        Debug.Log("reset");
+        transform.position = originalPosition;
+        agent.isStopped = true;   
+        currentHealth = maxHealth;
         if (isDead)
         {
-            currentHealth = 2;
+            currentHealth = maxHealth;
             gameObject.SetActive(true);
             isDead = false;
+            
         }
         
     }

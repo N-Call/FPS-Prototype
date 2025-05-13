@@ -66,7 +66,7 @@ public class Damage : MonoBehaviour
         if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
             gameObject.SetActive(false);
-            isDead = true;
+            
         }
         if (damageType == DamageType.homing)
         {

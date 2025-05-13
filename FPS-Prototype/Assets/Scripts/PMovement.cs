@@ -283,6 +283,7 @@ public class PMovement : MonoBehaviour, IDamage
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             playerRespawn.RespawnPlayer();
+            HP = 5;
         }
     }
 

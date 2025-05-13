@@ -26,6 +26,7 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         PlayMusic("Theme");
+        //PlayMusic("bgMusic");
     }
 
     public void PlayMusic(string name)
@@ -50,7 +51,8 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            sfxSource.PlayOneShot(s.clip, 1f);
+            
+            sfxSource.PlayOneShot(s.clip);
         }
 
     }
