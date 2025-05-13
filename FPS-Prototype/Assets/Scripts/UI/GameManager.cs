@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +17,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject ammoCount;
     [SerializeField] GameObject enemyCountUI;
     [SerializeField] GameObject weaponIcon;
+    [SerializeField] TMP_Text enemyCounterText;
 
+    public GameObject playerDamageScreen;
+    public Image playerHPbar;
     public GameObject player;
     List<GameObject> activeEnemies = new List<GameObject>();
     public PMovement playerScript;
@@ -98,6 +103,7 @@ public class GameManager : MonoBehaviour
     public void WinCondition(int amount)
     {
         gameGoalCount += amount;
+
         if (gameGoalCount <= 0)
         {
             StatePause();
@@ -109,11 +115,13 @@ public class GameManager : MonoBehaviour
     public void UpdateEnemyCounter(int amount)
     {
         enemyCount += amount;
+        //enemyCounterText.text = enemyCount.ToString("F0");
 
         if (enemyCountUI != null)
         {
-            // display ammo count for the UI 
-            enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+            enemyCounterText.text = enemyCount.ToString("F0");
+            // display enemy count for the UI 
+            //enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
         }
     }
 
