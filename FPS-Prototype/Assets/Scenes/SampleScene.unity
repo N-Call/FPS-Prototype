@@ -1190,6 +1190,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
   m_PrefabInstance: {fileID: 1148365556}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1173001343 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9214524057916638507, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
+  m_PrefabInstance: {fileID: 802453167387261244}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1174113236 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8822987827010534817, guid: 6beb4549606f55a49b2ea3c7adfad986, type: 3}
@@ -1707,6 +1712,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6816343905111374791, guid: 605bf811e4d1844408817941c4033a37, type: 3}
   m_PrefabInstance: {fileID: 1205499088}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1900855439 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7230982164112844161, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+  m_PrefabInstance: {fileID: 4301063183848292456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1900855445 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2769545894233297840, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+  m_PrefabInstance: {fileID: 4301063183848292456}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900855439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d56ae3fb6533245a2d0f2cf6cf741a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1933576412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2134,6 +2155,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6227796996290228672, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1900855439}
+    - target: {fileID: 6227796996290228672, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
+      propertyPath: weaponIcon
+      value: 
+      objectReference: {fileID: 1173001343}
+    - target: {fileID: 6227796996290228672, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
+      propertyPath: playerScript
+      value: 
+      objectReference: {fileID: 1900855445}
     - target: {fileID: 6928201031359508581, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
       propertyPath: m_Name
       value: UI
