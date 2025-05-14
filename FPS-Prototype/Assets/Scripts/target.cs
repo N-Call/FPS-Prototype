@@ -35,12 +35,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
     bool isSpeedDebuffed;
     bool isJumpDebuffed;
 
-    enum ElementType { speed = 1, jump = 2, time = 3 }
+    enum ElementType { speed = 1, jump = 2, ammo = 3 }
 
     private Collider targCollider;
     [SerializeField] private GameObject artToDisable = null;
 
-    [Header("1: Speed. 2: Jump. 3: Time")]
+    [Header("Element Type")]
     [SerializeField] ElementType elem;
     bool affected;
 
