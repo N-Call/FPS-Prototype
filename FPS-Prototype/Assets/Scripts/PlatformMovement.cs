@@ -14,6 +14,7 @@ public class PlatformMovement : MonoBehaviour
 
     [Header("Behavior")]
     [SerializeField] float startDelay;
+    [SerializeField] bool startDelayInitial;
     [SerializeField] float destinationDelay;
     [SerializeField] bool pingPong;
     [SerializeField] bool backToStart;
@@ -134,6 +135,11 @@ public class PlatformMovement : MonoBehaviour
         if (!toStart && waitTime < startDelay)
         {
             return false;
+        }
+
+        if (startDelay > 0.0f && startDelayInitial)
+        {
+            startDelay = 0.0f;
         }
 
         if ((toStart || backToStart && cycles > 0.0f) && waitTime < destinationDelay)
