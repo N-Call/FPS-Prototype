@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
 
 
     List<Enemy> enemiesToRespawn;
-    Vector3 respawnPosition;
+       
+    public Vector3 respawnPosition;
 
     public GameObject playerDamageScreen;
     public Image playerHPbar;
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused;
     public float timeScaleOrig;
+    public Vector3 startPos;
+
 
     
     int gameGoalCount;
@@ -45,10 +48,11 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PMovement>();
         timeScaleOrig = Time.timeScale;
-        
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         enemiesToRespawn = new List<Enemy>();
+        startPos = player.transform.position;
     }
 
     // Update is called once per frame
@@ -145,10 +149,11 @@ public class GameManager : MonoBehaviour
     {
         weaponIcon.GetComponent<Image>().sprite = icon;
     }
-
+   
     public void AddEnemyToRespawn(Enemy enemy)
     {
         enemiesToRespawn.Add(enemy);
+        
     }
 
     public void SetSpawnPosition(Vector3 newSpawnPosition)

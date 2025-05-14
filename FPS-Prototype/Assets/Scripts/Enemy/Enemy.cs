@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -42,6 +43,7 @@ public class Enemy : MonoBehaviour, IDamage
     public Vector3 originalPosition;
     int maxHealth;
     public bool isDead;
+    public bool isRespawned;
 
     Transform turretBase;
     Transform turretHead;
@@ -57,6 +59,9 @@ public class Enemy : MonoBehaviour, IDamage
     Color turretLeftEyebrowColor;
     Color turretRightEyeColor;
     Color turretRightEyebrowColor;
+
+    Transform mineTop;
+    Color mineTopColor;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -92,6 +97,12 @@ public class Enemy : MonoBehaviour, IDamage
             turretRightEyebrow = transform.Find("Head/Right Eye/Right Eyebrow");
             turretRightEyebrowColor = turretRightEyebrow.GetComponent<MeshRenderer>().material.color;
         }
+        if (!isShooting)
+        {
+            mineTop = transform.Find("Top");
+            mineTopColor = mineTop.GetComponent<MeshRenderer>().material.color;
+        }
+
     }
 
     // Update is called once per frame
@@ -214,6 +225,10 @@ public class Enemy : MonoBehaviour, IDamage
         {
             FlashTurretRed();
         }
+        if(!isShooting)
+        {
+            FlashMineRed();
+        }
 
         yield return new WaitForSeconds(0.05f);
 
@@ -222,6 +237,20 @@ public class Enemy : MonoBehaviour, IDamage
         {
             ReturnTurretColor();
         }
+        if(!isShooting)
+        {
+            ReturnMineColor();
+        }
+    }
+
+    private void ReturnMineColor()
+    {
+        mineTop.GetComponent<MeshRenderer>().material.color = mineTopColor;
+    }
+
+    private void FlashMineRed()
+    {
+        mineTop.GetComponent<MeshRenderer>().material.color = Color.red;
     }
 
     void FlashTurretRed()

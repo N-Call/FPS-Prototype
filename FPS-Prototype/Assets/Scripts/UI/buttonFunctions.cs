@@ -1,12 +1,21 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
+   
 
     public void Respawn()
     {
-        GameManager.instance.Respawn();
+        if (GameManager.instance.respawnPosition == GameManager.instance.startPos)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            GameManager.instance.Respawn();
+        }
         GameManager.instance.StateUnpause();
     }
 
