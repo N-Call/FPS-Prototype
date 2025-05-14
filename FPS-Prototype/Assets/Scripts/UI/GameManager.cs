@@ -147,7 +147,10 @@ public class GameManager : MonoBehaviour
 
     public void SetWeaponIcon(Sprite icon)
     {
-        weaponIcon.GetComponent<Image>().sprite = icon;
+        if (weaponIcon != null)
+        {
+            weaponIcon.GetComponent<Image>().sprite = icon;
+        }
     }
    
     public void AddEnemyToRespawn(Enemy enemy)
