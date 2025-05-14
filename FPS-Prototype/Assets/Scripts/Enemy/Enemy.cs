@@ -145,6 +145,8 @@ public class Enemy : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
+        if (isDead) { return; }
+
         if (!isTurret)
         {
             agent.isStopped = false;
@@ -173,6 +175,8 @@ public class Enemy : MonoBehaviour, IDamage
 
     public void OnTriggerEnter(Collider other)
     {
+        if (isDead) { return; }
+
         if (other.CompareTag("Player"))
         {
             playerAttackRange = true;
@@ -346,7 +350,7 @@ public class Enemy : MonoBehaviour, IDamage
     public void ResetEnemies()
     {
         transform.position = originalPosition;
-        if (!isTurret)
+        if (!isTurret && agent.isActiveAndEnabled)
         {
             agent.isStopped = true;
         }
@@ -361,6 +365,7 @@ public class Enemy : MonoBehaviour, IDamage
             GameManager.instance.UpdateEnemyCounter(1);
             if (isRespawned == false)
             {
+                GameManager.instance.UpdateEnemyCounter(-1);
                 gameObject.SetActive(false);
 
             }
