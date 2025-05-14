@@ -10,14 +10,6 @@ public class Enemy : MonoBehaviour, IDamage
     [SerializeField] NavMeshAgent agent;
     [SerializeField] int currentHealth;
 
-    [Header("Sound Settings")]
-    [SerializeField] string hitSoundFx;
-    [SerializeField] string deathSoundFx;
-    [SerializeField] string sightSoundFx;
-    [SerializeField] string shootSoundFx;
-    [Range(0f, 1f)]
-    [SerializeField] float soundFxVolume;
-
     [Header("Targeting and Shooting")]
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int sightRange;
@@ -151,12 +143,10 @@ public class Enemy : MonoBehaviour, IDamage
         {
             agent.isStopped = false;
         }
-
         if (isShooting && !isTurret)
         {
             agent.SetDestination(GameManager.instance.player.transform.position);
         }
-
         currentHealth -= amount;
 
         SoundManager.instance.PlaySFX("turretHit");
@@ -193,6 +183,7 @@ public class Enemy : MonoBehaviour, IDamage
             damage?.TakeDamage(damageAmount);
             gameObject.SetActive(false);
             isDead = true;
+            GameManager.instance.UpdateEnemyCounter(-1);
         }
     }
 
@@ -360,6 +351,12 @@ public class Enemy : MonoBehaviour, IDamage
         { 
             gameObject.SetActive(true);
             isDead = false;
+            GameManager.instance.UpdateEnemyCounter(1);
+            if (isRespawned == false)
+            {
+                gameObject.SetActive(false);
+
+            }
         }
     }
 
