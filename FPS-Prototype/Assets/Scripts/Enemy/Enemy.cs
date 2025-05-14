@@ -112,7 +112,13 @@ public class Enemy : MonoBehaviour, IDamage
 
         if (!rangeIsTrigger)
         {
-            playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+            if (agent.isStopped && !isTurret)
+            {
+                playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+            }else if (isTurret)
+            {
+                playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+            }
         }
 
         if (!isTurret)
@@ -150,6 +156,7 @@ public class Enemy : MonoBehaviour, IDamage
         if (!isTurret)
         {
             agent.isStopped = false;
+            playerInRange = true;
         }
 
         if (isShooting && !isTurret)
@@ -225,7 +232,7 @@ public class Enemy : MonoBehaviour, IDamage
         {
             FlashTurretRed();
         }
-        if(!isShooting)
+        else if(!isShooting)
         {
             FlashMineRed();
         }
@@ -237,7 +244,7 @@ public class Enemy : MonoBehaviour, IDamage
         {
             ReturnTurretColor();
         }
-        if(!isShooting)
+        else if(!isShooting)
         {
             ReturnMineColor();
         }
