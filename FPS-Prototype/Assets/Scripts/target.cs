@@ -289,7 +289,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
         {
             IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
-            rld?.SetAmmo(reloadPercentDebuff);
+            rld?.SetAmmo(-reloadPercentDebuff);
         }
     }
 
