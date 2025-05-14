@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour, IDamage
     [Header("Targeting and Shooting")]
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int sightRange;
+    [SerializeField] bool rangeIsTrigger;
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
@@ -98,7 +99,11 @@ public class Enemy : MonoBehaviour, IDamage
     {
         shootTimer += Time.deltaTime;
 
-        playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        if (!rangeIsTrigger)
+        {
+            playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        }
+
         if (!isTurret)
         {
             agent.isStopped = true;
@@ -117,9 +122,8 @@ public class Enemy : MonoBehaviour, IDamage
             }
 
         }
-        if (playerInRange && isTurret)
+        if (!rangeIsTrigger && playerInRange && isTurret)
         {
-            
             turretHead.LookAt(GameManager.instance.player.transform);
             turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
         }
@@ -164,6 +168,11 @@ public class Enemy : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             playerAttackRange = true;
+            
+            if (rangeIsTrigger)
+            {
+                playerInRange = true;
+            }
         }
 
         if (!isTurret && !isShooting)
@@ -181,6 +190,20 @@ public class Enemy : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             playerAttackRange = false;
+
+            if (rangeIsTrigger)
+            {
+                playerInRange = false;
+            }
+        }
+    }
+
+    void OnTriggerStay()
+    {
+        if (playerInRange && isTurret && rangeIsTrigger)
+        {
+            turretHead.LookAt(GameManager.instance.player.transform);
+            turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
         }
     }
 
@@ -309,6 +332,6 @@ public class Enemy : MonoBehaviour, IDamage
             gameObject.SetActive(true);
             isDead = false;
         }
-        
     }
+
 }
