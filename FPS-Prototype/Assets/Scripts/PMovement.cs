@@ -1,8 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using NUnit.Framework;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -22,10 +19,9 @@ public class PMovement : MonoBehaviour, IDamage
     [Header("Crouch Settings")]
     [SerializeField] private float crouchHeightMod = 0.5f;
     [SerializeField] private float crouchSpeedMod = 0.5f;
-    [SerializeField] private bool crouchSprint = false;
 
     [Header("Slide Settings")]
-    [SerializeField] private float slideTime = 0.25f;
+    [SerializeField] private float slideTime = 0.67f;
     [SerializeField] private float slideSpeedBoost = 2.0f;
 
     [Header("Gravity and Jumping")]
@@ -56,9 +52,6 @@ public class PMovement : MonoBehaviour, IDamage
 
     public int origHealth;
 
-    private PlayerRespawn playerRespawn;
-    Vector3 originalPosition;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -66,11 +59,8 @@ public class PMovement : MonoBehaviour, IDamage
         originalHeight = controller.height;
         crouchHeight = originalHeight * crouchHeightMod;
 
-        playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
-        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-        originalPosition = enemy.transform.position;
-
         origHealth = HP;
+        GameManager.instance.SetSpawnPosition(transform.position);
     }
 
     // Update is called once per frame
@@ -81,6 +71,8 @@ public class PMovement : MonoBehaviour, IDamage
 
         //this method is for the inputs related to weapons
         WeaponInput();
+        // this is to show player health bar and when taking damage
+        UpdatePlayerUI();
     }
 
     void HandleMovement()
@@ -94,9 +86,7 @@ public class PMovement : MonoBehaviour, IDamage
         // Determine sprint state and speed
         if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
         {
-           
             isSprinting = true;
-           
         }
         if (Input.GetButtonUp("Sprint"))
         {
@@ -123,21 +113,29 @@ public class PMovement : MonoBehaviour, IDamage
                 Crouch();
             }
 
-            // Handle sliding
-            if ((isCrouching && isSprinting) || isSliding)
-            {
-                Slide();
-            }
-
             // Handle un-crouching
             if (Input.GetButtonUp("Crouch") || (!Input.GetButton("Crouch") && isCrouching))
             {
                 UnCrouch();
             }
 
+            // Handle sliding
+            if ((isCrouching && isSprinting) || isSliding)
+            {
+                Slide();
+            }
+
             // This checks the input for jumping.
             if (Input.GetButtonDown("Jump"))
             {
+                // This allows the player to be able to cancel the slide into a jump.
+                if (isSliding)
+                {
+                    isSliding = false;
+                    controller.height = originalHeight;
+                    currentSpeed = baseSpeed;
+                }
+
                 if (isCrouching)
                 {
                     UnCrouch();
@@ -258,36 +256,70 @@ public class PMovement : MonoBehaviour, IDamage
             isSprinting = false;
             isCrouching = false;
             isSliding = true;
-            currentSpeed += slideSpeedBoost;
+            elapsedSlideTime = 0.0f;
+            currentSpeed = baseSpeed * modSprint + slideSpeedBoost;
         }
 
         elapsedSlideTime += Time.deltaTime;
-        currentSpeed = Mathf.Lerp(currentSpeed, crouchSpeed, elapsedSlideTime / slideTime);
+
+        float delayBeforeLerp = 0.1f;
+        if (elapsedSlideTime > delayBeforeLerp)
+        {
+            float eSTDBL = (elapsedSlideTime - delayBeforeLerp) / (slideTime - delayBeforeLerp);
+            currentSpeed = Mathf.Lerp(baseSpeed + slideSpeedBoost, crouchSpeed, eSTDBL);
+        }
         
-        if (currentSpeed <= crouchSpeed)
+        if (elapsedSlideTime > slideTime)
         {
             currentSpeed = crouchSpeed;
             controller.height = crouchHeight;
-            elapsedSlideTime = 0.0f;
             isSliding = false;
-            isSprinting = false;
-            isCrouching = true;
+            elapsedSlideTime = 0.0f;
+
+            if (Input.GetButton("Sprint") && inputDir.z > 0)
+            {
+                isSprinting = true;
+                isCrouching = false;
+            }
+            else
+            {
+                isSprinting = false;
+                isCrouching = true;
+            }
         }
+    }
+
+    public void AddMomentum(Vector3 direction, float speed)
+    {
+        controller.Move(direction * speed * Time.deltaTime);
     }
 
     public void TakeDamage(int amount)
     {
-        Debug.Log("is working");
-
         SoundManager.instance.PlaySFX("playerHurt");
 
         HP -= amount;
+        UpdatePlayerUI();
+        StartCoroutine(FlashDamageScreen());
+
         if (HP <= 0)
         {
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            playerRespawn.RespawnPlayer();
-            HP = 5;
+            GameManager.instance.YouLose();
+            //GameManager.instance.Respawn();
         }
+    }
+
+    public void UpdatePlayerUI()
+    {
+        // update player health bar at full and when taking damage
+        GameManager.instance.playerHPbar.fillAmount = (float)HP/ origHealth;
+    }
+
+    IEnumerator FlashDamageScreen()
+    {
+        GameManager.instance.playerDamageScreen.SetActive(true);   
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerDamageScreen.SetActive(false);
     }
 
 }

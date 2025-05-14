@@ -1,10 +1,13 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Collections;
+using TMPro;
+using JetBrains.Annotations;
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance;
 
     [SerializeField] GameObject menuActive;
@@ -13,26 +16,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
-    [SerializeField] GameObject enemyCountUI;
     [SerializeField] GameObject weaponIcon;
+    [SerializeField] TMP_Text enemyCountUI;
 
+    List<Enemy> enemiesToRespawn;
+    Vector3 respawnPosition;
+
+    public GameObject playerDamageScreen;
+    public Image playerHPbar;
     public GameObject player;
-    List<GameObject> activeEnemies = new List<GameObject>();
     public PMovement playerScript;
-    
 
     public bool isPaused;
-
     public float timeScaleOrig;
 
     int gameGoalCount;
     int enemyCount;
 
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-            
         instance = this;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PMovement>();
@@ -40,6 +43,7 @@ public class GameManager : MonoBehaviour
         
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        enemiesToRespawn = new List<Enemy>();
     }
 
     // Update is called once per frame
@@ -72,8 +76,8 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.musicSource.Stop();
         // stop the player from shooting 
         playerScript.enabled = false;
-        
     }
+
     public void StateUnpause()
     {
         isPaused = !isPaused;
@@ -88,6 +92,7 @@ public class GameManager : MonoBehaviour
         playerScript.enabled = true;
 
     }
+
     public void YouLose() 
     {
         StatePause();
@@ -98,6 +103,7 @@ public class GameManager : MonoBehaviour
     public void WinCondition(int amount)
     {
         gameGoalCount += amount;
+
         if (gameGoalCount <= 0)
         {
             StatePause();
@@ -109,11 +115,15 @@ public class GameManager : MonoBehaviour
     public void UpdateEnemyCounter(int amount)
     {
         enemyCount += amount;
+        enemyCountUI.text = enemyCount.ToString("F0");
+    }
 
-        if (enemyCountUI != null)
+    public void EnemyTimePenalty(int endTimer)
+    {
+        if (enemyCount > 0 )
         {
-            // display ammo count for the UI 
-            enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+            enemyCount *= 5;
+
         }
     }
 
@@ -125,10 +135,36 @@ public class GameManager : MonoBehaviour
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
         }
     }
+
     public void SetWeaponIcon(Sprite icon)
     {
         weaponIcon.GetComponent<Image>().sprite = icon;
     }
 
+    public void AddEnemyToRespawn(Enemy enemy)
+    {
+        enemiesToRespawn.Add(enemy);
+    }
+
+    public void SetSpawnPosition(Vector3 newSpawnPosition)
+    {
+        respawnPosition = newSpawnPosition;
+    }
+
+    public void Respawn()
+    {
+        playerScript.GetComponent<CharacterController>().enabled = false;
+
+        player.transform.position = respawnPosition;
+        playerScript.HP = playerScript.origHealth;
+
+        playerScript.GetComponent<CharacterController>().enabled = true;
+
+        foreach (Enemy enemy in enemiesToRespawn)
+        {
+            enemy.ResetEnemies();
+        }
+
+    }
 
 } 
