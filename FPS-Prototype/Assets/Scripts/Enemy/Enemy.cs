@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,6 +42,10 @@ public class Enemy : MonoBehaviour, IDamage
     public Vector3 originalPosition;
     int maxHealth;
     public bool isDead;
+    public bool isRespawned;
+
+    Transform mineTop;
+    Color mineTopColor;
 
     Transform turretBase;
     Transform turretHead;
@@ -91,6 +96,12 @@ public class Enemy : MonoBehaviour, IDamage
             turretRightEyebrow = transform.Find("Head/Right Eye/Right Eyebrow");
             turretRightEyebrowColor = turretRightEyebrow.GetComponent<MeshRenderer>().material.color;
         }
+        if (!isShooting)
+        {
+            mineTop = transform.Find("Top");
+            mineTopColor = mineTop.GetComponent<MeshRenderer>().material.color;
+           
+        }    
     }
 
     // Update is called once per frame
@@ -151,7 +162,9 @@ public class Enemy : MonoBehaviour, IDamage
             GameManager.instance.UpdateEnemyCounter(-1);
             SoundManager.instance.PlaySFX("turretDestroy");
             gameObject.SetActive(false);
+            
             isDead = true;
+            
         }
         else
         {
@@ -173,6 +186,7 @@ public class Enemy : MonoBehaviour, IDamage
             damage?.TakeDamage(damageAmount);
             gameObject.SetActive(false);
             isDead = true;
+            GameManager.instance.UpdateEnemyCounter(-1);
         }
     }
 
@@ -191,6 +205,16 @@ public class Enemy : MonoBehaviour, IDamage
         {
             FlashTurretRed();
         }
+        if (!isShooting)
+        {
+            FlashMineRed();
+        }
+        
+         
+                
+
+            
+        
 
         yield return new WaitForSeconds(0.05f);
 
@@ -199,6 +223,25 @@ public class Enemy : MonoBehaviour, IDamage
         {
             ReturnTurretColor();
         }
+        
+        if (!isShooting)
+        {
+            ReturnMineColor();
+        }
+           
+    }
+
+    
+
+    private void FlashMineRed()
+    {
+        mineTop.GetComponent<MeshRenderer>().material.color = Color.red;
+    }
+
+    private void ReturnMineColor()
+    {
+        mineTop.GetComponent<MeshRenderer>().material.color = mineTopColor;
+       
     }
 
     void FlashTurretRed()
@@ -222,6 +265,7 @@ public class Enemy : MonoBehaviour, IDamage
         turretRightEye.GetComponent<MeshRenderer>().material.color = turretRightEyeColor;
         turretRightEyebrow.GetComponent<MeshRenderer>().material.color = turretRightEyebrowColor;
     }
+    
 
     private IEnumerator Rotate()
     {
@@ -292,7 +336,7 @@ public class Enemy : MonoBehaviour, IDamage
             SoundManager.instance.PlaySFX("turretShot");
         }
     }
-   
+
     public void ResetEnemies()
     {
         transform.position = originalPosition;
@@ -305,10 +349,19 @@ public class Enemy : MonoBehaviour, IDamage
         currentHealth = maxHealth;
 
         if (isDead)
-        { 
+        {
             gameObject.SetActive(true);
             isDead = false;
+            GameManager.instance.UpdateEnemyCounter(1);
+            if (!isRespawned)
+            {
+                Debug.Log("working respawn");
+                gameObject.SetActive(false);
+                GameManager.instance.UpdateEnemyCounter(-1);
+
+            }
         }
-        
+      
     }
+   
 }
