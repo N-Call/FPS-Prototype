@@ -3,13 +3,16 @@ using UnityEngine.UI;
 
 public class Melee : MonoBehaviour, IWeapon
 {
+    public enum ElementType { speed = 1, jump = 2, time = 3 }
+
+    
     [Header("Referencess")]
     [SerializeField] private Sprite weaponImage;
     [SerializeField] private Animator animator;
     [SerializeField] private Collider weaponCollider;
 
     [Header("Weapon Settings")]
-    [SerializeField] [Range(1,3)]private int element;
+    [SerializeField] public ElementType elem;
     [SerializeField] private int damage;
     [SerializeField] private float attackSpeed;
 
@@ -39,7 +42,7 @@ public class Melee : MonoBehaviour, IWeapon
 
         //check to see if the trigger hit an enemy
         other.GetComponent<IDamage>()?.TakeDamage(damage);
-        other.GetComponent<ITarget>()?.ActivateElem(element);
+        other.GetComponent<ITarget>()?.ActivateElem((int)elem);
     }
     public void AttackEnd(LayerMask playerMask)
     {

@@ -29,6 +29,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
     bool toStart;
     bool waited;
     bool finished;
+
+    bool isSpeedBuffed;
+    bool isJumpBuffed;
+    bool isSpeedDebuffed;
+    bool isJumpDebuffed;
+
     enum ElementType { speed = 1, jump = 2, time = 3 }
 
     private Collider targCollider;
@@ -46,9 +52,10 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [SerializeField][Range(0.01f, 999999)] float jumpMod;
     [SerializeField] float jumpModTime;
 
-    [Header("Time Element")]
-    [SerializeField][Range(0.01f, 999999)] float timeMod;
-    [SerializeField] float timeModTime;
+    [Header("Reload Element")]
+    [SerializeField][Range(1, 100)] float reloadPercentBuff;
+    [SerializeField][Range(1, 100)] float reloadPercentDebuff;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -144,15 +151,31 @@ public class Target : MonoBehaviour, IDamage, ITarget
         switch (element)
         {
             case 1:
-                StartCoroutine(SpeedBuff());
-                SoundManager.instance.PlaySFX("powerUp");
+                if (isSpeedBuffed == true)
+                {
+                    break;
+                }
+                else
+                {
+                    isSpeedBuffed = true;
+                    StartCoroutine(SpeedBuff());
+                    SoundManager.instance.PlaySFX("powerUp");
+                }
                 break;
             case 2:
-                StartCoroutine(JumpBuff());
-                SoundManager.instance.PlaySFX("powerUp");
+                if (isJumpBuffed == true)
+                {
+                    break;
+                }
+                else
+                {
+                    isJumpBuffed = true;
+                    StartCoroutine(JumpBuff());
+                    SoundManager.instance.PlaySFX("powerUp");
+                }
                 break;
             case 3:
-                StartCoroutine(TimeBuff());
+                AmmoBuff();
                 SoundManager.instance.PlaySFX("powerUp");
                 break;
         }
@@ -164,13 +187,31 @@ public class Target : MonoBehaviour, IDamage, ITarget
         switch (element)
         {
             case 1:
-                StartCoroutine(SpeedDebuff());
+                if (isSpeedDebuffed == true)
+                {
+                    break;
+                }
+                else
+                {
+                    isSpeedDebuffed = true;
+                    StartCoroutine(SpeedDebuff());
+                    SoundManager.instance.PlaySFX("powerUp");
+                }
                 break;
             case 2:
-                StartCoroutine(JumpDebuff());
+                if (isJumpDebuffed == true)
+                {
+                    break;
+                }
+                else
+                {
+                    isJumpDebuffed = true;
+                    StartCoroutine(JumpDebuff());
+                    SoundManager.instance.PlaySFX("powerUp");
+                }
                 break;
             case 3:
-                StartCoroutine(TimeDebuff());
+                AmmoDebuff();
                 break;
         }
     }
@@ -183,6 +224,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         yield return new WaitForSeconds(speedModTime);
 
         Debug.Log("Taking Away Speed");
+        isSpeedBuffed = false;
         GameManager.instance.playerScript.baseSpeed /= speedMod;
 
         Destroy(gameObject);
@@ -196,6 +238,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         yield return new WaitForSeconds(speedModTime);
 
         Debug.Log("Giving Speed");
+        isSpeedDebuffed = false;
         GameManager.instance.playerScript.baseSpeed *= speedMod;
 
         Destroy(gameObject);
@@ -209,6 +252,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         yield return new WaitForSeconds(jumpModTime);
 
         Debug.Log("Taking Away Jump");
+        isJumpBuffed = false;
         GameManager.instance.playerScript.jumpForce /= jumpMod;
 
         Destroy(gameObject);
@@ -222,29 +266,31 @@ public class Target : MonoBehaviour, IDamage, ITarget
         yield return new WaitForSeconds(jumpModTime);
 
         Debug.Log("Giving Jump");
+        isJumpDebuffed = false;
         GameManager.instance.playerScript.jumpForce *= jumpMod;
 
         Destroy(gameObject);
     }
 
-    public IEnumerator TimeBuff() 
+    private void AmmoBuff() 
     {
-        Debug.Log("Giving Time");
-        Time.timeScale = timeMod;
+        Debug.Log("Giving Ammo");
+        for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
+        {
+            IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
+            rld?.SetAmmo(reloadPercentBuff);
+        }
 
-        yield return new WaitForSeconds(timeModTime);
-
-        Time.timeScale = GameManager.instance.timeScaleOrig;
     }
 
-    public IEnumerator TimeDebuff()
+    private void AmmoDebuff()
     {
-        Debug.Log("Taking Time");
-        Time.timeScale = timeMod;
-
-        yield return new WaitForSeconds(timeModTime);
-
-        Time.timeScale = GameManager.instance.timeScaleOrig;
+        Debug.Log("Taking Ammo");
+        for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
+        {
+            IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
+            rld?.SetAmmo(reloadPercentDebuff);
+        }
     }
 
     bool Waited()

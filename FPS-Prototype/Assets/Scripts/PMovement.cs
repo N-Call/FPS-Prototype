@@ -32,7 +32,7 @@ public class PMovement : MonoBehaviour, IDamage
 
     //Store the primary and secondary weapon's gameobjects
     [Header("Weapon Settings")]
-    [SerializeField] private List<GameObject> weaponList;
+    [SerializeField] public List<GameObject> weaponList;
 
     private Vector3 inputDir;
     private Vector3 moveDir;

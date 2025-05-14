@@ -61,5 +61,14 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
+
+    public void SetAmmo(float percent)
+    {
+        float temp = percent / 100;
+        int newAmmo = (int)(ammoOrigCap * temp);
+        ammoCap += newAmmo;
+        Reload();
+        GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
+    }
 }
 
