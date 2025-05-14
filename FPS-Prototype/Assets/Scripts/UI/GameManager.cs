@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject ammoCount;
     [SerializeField] GameObject weaponIcon;
     [SerializeField] TMP_Text enemyCountUI;
+    [SerializeField] GameObject timerWinCount;
+    [SerializeField] GameObject elapsedTime;
+    [SerializeField] TMP_Text enemyWinCount;
+
 
     List<Enemy> enemiesToRespawn;
     Vector3 respawnPosition;
@@ -30,6 +34,7 @@ public class GameManager : MonoBehaviour
     public bool isPaused;
     public float timeScaleOrig;
 
+    
     int gameGoalCount;
     int enemyCount;
 
@@ -107,6 +112,9 @@ public class GameManager : MonoBehaviour
         if (gameGoalCount <= 0)
         {
             StatePause();
+            
+            timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
+
             menuActive = menuWin;
             menuActive.SetActive(true);
         }
@@ -116,15 +124,13 @@ public class GameManager : MonoBehaviour
     {
         enemyCount += amount;
         enemyCountUI.text = enemyCount.ToString("F0");
+        enemyWinCount.text = enemyCount.ToString(enemyCount + " * 5s ");
     }
 
-    public void EnemyTimePenalty(int endTimer)
+    public float EnemyTimePenalty(float totalTime)
     {
-        if (enemyCount > 0 )
-        {
-            enemyCount *= 5;
-
-        }
+        Debug.Log(totalTime);
+        return totalTime + enemyCount * 5; 
     }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
