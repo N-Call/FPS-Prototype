@@ -9,18 +9,29 @@ public class PlatformMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] float speed = 1.0f;
+    [SerializeField] float playerMomentumMod = 0.25f;
     [SerializeField] bool lerp;
 
     [Header("Behavior")]
     [SerializeField] float startDelay;
     [SerializeField] float destinationDelay;
     [SerializeField] bool pingPong;
+    [SerializeField] bool backToStart;
+
+    [Header("Destruction")]
+    [SerializeField] float destroyAfterTime;
+    [SerializeField] int destroyAfterCycles;
+    [SerializeField] float destroyAtDestinationDelay;
 
     Vector3 startPosition;
     Vector3 dest;
 
-    float elapsedTime;
+    float lifeTime;
+    float waitTime;
+    float cycles;
+    float destroyAtDestinationTime;
 
+    bool isMoving;
     bool toStart;
     bool waited;
     bool finished;
@@ -35,14 +46,38 @@ public class PlatformMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Count up elapsed life time
+        lifeTime += Time.deltaTime;
+
+        if (destroyAfterTime > 0 && lifeTime >= destroyAfterTime)
+        {
+            HandleDestruction();
+            return;
+        }
+
         // If the object has finished its movement
         if (finished)
         {
             return;
         }
 
-        // Count up elapsed time
-        elapsedTime += Time.deltaTime;
+        // Count up wait time
+        waitTime += Time.deltaTime;
+
+        // Handle count up to destruction if reached destination
+        if (destroyAtDestinationDelay > 0)
+        {
+            if (cycles >= 0.5f)
+            {
+                destroyAtDestinationTime += Time.deltaTime;
+            }
+
+            if (destroyAtDestinationTime >= destroyAtDestinationDelay)
+            {
+                HandleDestruction();
+                return;
+            }
+        }
 
         // Check if they need to wait at start or destination
         if (!waited && !Waited())
@@ -53,33 +88,55 @@ public class PlatformMovement : MonoBehaviour
         // Handle movement
         if (Move(transform.position, dest))
         {
+            // 0.5 cycles = start to destination
+            // 1 cycle = start to start
+            cycles += 0.5f;
+
+            if (destroyAfterCycles > 0 && cycles >= destroyAfterCycles)
+            {
+                HandleDestruction();
+                return;
+            }
+
             // If this object does not ping pong
             // (does not move back and forth between start and destination),
             // then the object has finished moving, and no longer needs to do anything
-            if (!pingPong)
+            if (!pingPong && !backToStart)
             {
                 finished = true;
                 return;
             }
 
-            // Swap start & destination to move back and forth
-            Swap(ref startPosition, ref dest);
-
+            if (backToStart)
+            {
+                transform.position = startPosition;
+            }
+            else
+            {
+                // Swap start & destination to move back and forth
+                Swap(ref startPosition, ref dest);
+                toStart = !toStart;
+            }
+            
             // Reset waiting and elapsed time
-            toStart = !toStart;
             waited = false;
-            elapsedTime = 0.0f;
+            waitTime = 0.0f;
         }
+    }
+
+    void HandleDestruction()
+    {
+        Destroy(gameObject);
     }
 
     bool Waited()
     {
-        if (!toStart && elapsedTime < startDelay)
+        if (!toStart && waitTime < startDelay)
         {
             return false;
         }
 
-        if (toStart && elapsedTime < destinationDelay)
+        if (toStart && waitTime < destinationDelay)
         {
             return false;
         }
@@ -92,8 +149,11 @@ public class PlatformMovement : MonoBehaviour
     {
         if (Vector3.Distance(from, to) <= 0.1f)
         {
+            isMoving = false;
             return true;
         }
+
+        isMoving = true;
 
         if (lerp)
         {
@@ -107,16 +167,24 @@ public class PlatformMovement : MonoBehaviour
         return false;
     }
 
-    void Destroy()
-    {
-        Destroy(gameObject);
-    }
-
     void Swap(ref Vector3 one, ref Vector3 two)
     {
         Vector3 temp = one;
         one = two;
         two = temp;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player") && isMoving)
+        {
+            AddMomentumToPlayer(dest - transform.position, speed);
+        }
+    }
+
+    void AddMomentumToPlayer(Vector3 direction, float speed)
+    {
+        GameManager.instance.playerScript.AddMomentum(direction, speed * playerMomentumMod);
     }
 
 }

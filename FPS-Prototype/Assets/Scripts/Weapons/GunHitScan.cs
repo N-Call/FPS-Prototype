@@ -3,7 +3,7 @@ using UnityEngine;
 public class GunHitScan : Range
 {
    
-    public override void Attack(LayerMask playerMask)
+    public override void AttackBegin(LayerMask playerMask)
     {
 
         //See if they have bullets
@@ -20,7 +20,7 @@ public class GunHitScan : Range
                 dmg?.TakeDamage(damage);
 
                 ITarget targ = hit.collider.GetComponent<ITarget>();
-                targ?.ActivateElem(element);
+                targ?.ActivateElem((int)elem);
 
             }
            

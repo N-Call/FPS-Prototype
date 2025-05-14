@@ -1,8 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using NUnit.Framework;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -13,7 +10,7 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private LayerMask playerMask;
 
     [Header("Health")]
-    [SerializeField] private int HP;
+    [SerializeField] public int HP;
 
     [Header("Movement Settings")]
     [SerializeField] public float baseSpeed = 5f;
@@ -25,7 +22,7 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private bool crouchSprint = false;
 
     [Header("Slide Settings")]
-    [SerializeField] private float slideTime = 0.67f;
+    [SerializeField] private float slideTime = 0.25f;
     [SerializeField] private float slideSpeedBoost = 2.0f;
 
     [Header("Gravity and Jumping")]
@@ -54,8 +51,11 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isCrouching;
     private bool isSliding;
 
+    public int origHealth;
+
     private PlayerRespawn playerRespawn;
     Vector3 originalPosition;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -64,8 +64,10 @@ public class PMovement : MonoBehaviour, IDamage
         crouchHeight = originalHeight * crouchHeightMod;
 
         playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
-        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-        originalPosition = enemy.transform.position;
+       // GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
+       // originalPosition = enemy.transform.position;
+
+        origHealth = HP;
     }
 
     // Update is called once per frame
@@ -76,6 +78,8 @@ public class PMovement : MonoBehaviour, IDamage
 
         //this method is for the inputs related to weapons
         WeaponInput();
+        // this is to show player health bar and when taking damage
+        UpdatePlayerUI();
     }
 
     void HandleMovement()
@@ -89,6 +93,7 @@ public class PMovement : MonoBehaviour, IDamage
         // Determine sprint state and speed
         if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
         {
+           
             isSprinting = true;
            
         }
@@ -117,27 +122,21 @@ public class PMovement : MonoBehaviour, IDamage
                 Crouch();
             }
 
-            // Handle un-crouching
-            if (Input.GetButtonUp("Crouch") || (!Input.GetButton("Crouch") && isCrouching))
-            {
-                UnCrouch();
-            }
             // Handle sliding
             if ((isCrouching && isSprinting) || isSliding)
             {
                 Slide();
             }
+
+            // Handle un-crouching
+            if (Input.GetButtonUp("Crouch") || (!Input.GetButton("Crouch") && isCrouching))
+            {
+                UnCrouch();
+            }
+
             // This checks the input for jumping.
             if (Input.GetButtonDown("Jump"))
             {
-                // This allows the player to be able to cancel the slide into a jump.
-                if (isSliding)
-                {
-                    isSliding = false;
-                    controller.height = originalHeight;
-                    currentSpeed = baseSpeed;
-                }
-
                 if (isCrouching)
                 {
                     UnCrouch();
@@ -175,18 +174,25 @@ public class PMovement : MonoBehaviour, IDamage
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
-        SoundManager.instance.PlaySFX("run");
+        
     }
 
     void WeaponInput()
     {
+        
         //check for primary weapon
         if (Input.GetButtonDown("Fire1") && weaponList != null)
         {
             //launch attack method
-            Debug.Log(weaponList[0].name);
-            weaponList[0].GetComponent<IWeapon>()?.Attack(playerMask);
+            weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
             
+        }
+
+        if (Input.GetButtonUp("Fire1") && weaponList != null)
+        {
+            //launch attack method
+            weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
+
         }
 
         //Change weapon if pressed
@@ -251,66 +257,26 @@ public class PMovement : MonoBehaviour, IDamage
             isSprinting = false;
             isCrouching = false;
             isSliding = true;
-            elapsedSlideTime = 0.0f;
-            currentSpeed = baseSpeed * modSprint + slideSpeedBoost;
+            currentSpeed += slideSpeedBoost;
         }
 
         elapsedSlideTime += Time.deltaTime;
-
-        float delayBeforeLerp = 0.1f;
-        if (elapsedSlideTime > delayBeforeLerp)
-        {
-            float eSTDBL = (elapsedSlideTime - delayBeforeLerp) / (slideTime - delayBeforeLerp);
-            currentSpeed = Mathf.Lerp(baseSpeed + slideSpeedBoost, crouchSpeed, eSTDBL);
-        }
-
-        if (elapsedSlideTime >= slideTime)
+        currentSpeed = Mathf.Lerp(currentSpeed, crouchSpeed, elapsedSlideTime / slideTime);
+        
+        if (currentSpeed <= crouchSpeed)
         {
             currentSpeed = crouchSpeed;
             controller.height = crouchHeight;
-            isSliding = false;
             elapsedSlideTime = 0.0f;
-
-            if (Input.GetButton("Sprint") && inputDir.z > 0)
-            {
-                isSprinting = true;
-                isCrouching = false;
-            }
-            else
-            {
-                isSprinting = false;
-                isCrouching = true;
-            }
+            isSliding = false;
+            isSprinting = false;
+            isCrouching = true;
         }
     }
 
-    void StopSlide()
+    public void AddMomentum(Vector3 direction, float speed)
     {
-        isSliding = false;
-        // This is to check if the player is holding forward.
-        bool forwardHeld = Input.GetAxis("Vertical") > 0.1f;
-        //This is to check if the sprint button is held down.
-        bool sprintHeld = Input.GetButtonDown("Sprint");
-
-        // This is to check if you're both holding forward and the sprint button.
-        if (forwardHeld && sprintHeld)
-        {
-            // If true, go into sprint.
-            isSprinting = true;
-            isCrouching = false;
-            currentSpeed = baseSpeed * modSprint;
-            controller.height = originalHeight;
-        }
-        else
-        {
-            // Otherwise, go to crouch.
-            isSprinting = true;
-            isCrouching = false;
-            currentSpeed = crouchSpeed;
-            controller.height = crouchHeight;
-        }
-
-        elapsedSlideTime = 0f;
+        controller.Move(direction * speed * Time.deltaTime);
     }
 
     public void TakeDamage(int amount)
@@ -320,14 +286,24 @@ public class PMovement : MonoBehaviour, IDamage
         SoundManager.instance.PlaySFX("playerHurt");
 
         HP -= amount;
+        UpdatePlayerUI();
+        StartCoroutine(FlashDamageScreen());
         if (HP <= 0)
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             playerRespawn.RespawnPlayer();
-
-            GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-            enemy.transform.position = originalPosition;
+            HP = 5;
         }
     }
-
+    public void UpdatePlayerUI()
+    {
+        // update player health bar at full and when taking damage
+        GameManager.instance.playerHPbar.fillAmount = (float)HP/ origHealth;
+    }
+    IEnumerator FlashDamageScreen()
+    {
+        GameManager.instance.playerDamageScreen.SetActive(true);   
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerDamageScreen.SetActive(false);
+    }
 }

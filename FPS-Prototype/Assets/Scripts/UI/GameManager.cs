@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -12,15 +15,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
+    [SerializeField] GameObject enemyCountUI;
+    [SerializeField] GameObject weaponIcon;
+    [SerializeField] TMP_Text enemyCounterText;
 
+    public GameObject playerDamageScreen;
+    public Image playerHPbar;
     public GameObject player;
     List<GameObject> activeEnemies = new List<GameObject>();
     public PMovement playerScript;
-    public HumanEnemy robotScript;
+    
 
     public bool isPaused;
 
     public float timeScaleOrig;
+
+    int gameGoalCount;
+    int enemyCount;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -64,6 +75,7 @@ public class GameManager : MonoBehaviour
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Stop();
+        // stop the player from shooting 
         playerScript.enabled = false;
         
     }
@@ -81,6 +93,37 @@ public class GameManager : MonoBehaviour
         playerScript.enabled = true;
 
     }
+    public void YouLose() 
+    {
+        StatePause();
+        menuActive = menuLose;
+        menuActive.SetActive(true);
+    }
+
+    public void WinCondition(int amount)
+    {
+        gameGoalCount += amount;
+
+        if (gameGoalCount <= 0)
+        {
+            StatePause();
+            menuActive = menuWin;
+            menuActive.SetActive(true);
+        }
+    }
+
+    public void UpdateEnemyCounter(int amount)
+    {
+        enemyCount += amount;
+        //enemyCounterText.text = enemyCount.ToString("F0");
+
+        if (enemyCountUI != null)
+        {
+            enemyCounterText.text = enemyCount.ToString("F0");
+            // display enemy count for the UI 
+            //enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+        }
+    }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
     {
@@ -90,5 +133,10 @@ public class GameManager : MonoBehaviour
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
         }
     }
-   
+    public void SetWeaponIcon(Sprite icon)
+    {
+        weaponIcon.GetComponent<Image>().sprite = icon;
+    }
+
+
 } 

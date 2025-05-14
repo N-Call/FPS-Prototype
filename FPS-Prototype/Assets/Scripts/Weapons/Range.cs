@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Range : MonoBehaviour, IReloadable, IWeapon
 {
+    [Header("Ammo Icon Reference")]
+    [SerializeField] protected Sprite ammoIcon;
     [Header("Ammo Settings")]
     [SerializeField] protected int ammoOrigCap;
     [SerializeField] protected int reloadCap;
@@ -10,10 +13,15 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     [SerializeField] protected float distance;
     [SerializeField] protected int damage;
 
-    [SerializeField][Range(1, 3)] protected int element;
+    public enum ElementType { speed = 1, jump = 2, time = 3 }
+
+    [SerializeField] public ElementType elem;
+
+    [SerializeField] protected string soundFxName;
+    [Range(0, 1f)]
+    [SerializeField] protected float soundFxVolume;
 
     protected int ammoCap;
-
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,14 +32,19 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
     }
 
-    public virtual void Attack(LayerMask playerMask)
+    public virtual void AttackBegin(LayerMask playerMask)
+    {
+
+    }
+
+    public virtual void AttackEnd(LayerMask playerMask)
     {
 
     }
 
     public void Reload()
     {
-        SoundManager.instance.PlaySFX("reload");
+        SoundManager.instance.PlaySFX(soundFxName);
 
         ammoCap -= reloadCap - ammoCount;
         ammoCount = reloadCap;
@@ -47,6 +60,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     {
 
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
+        GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
 }
 
