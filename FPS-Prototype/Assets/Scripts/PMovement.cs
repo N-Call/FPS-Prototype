@@ -288,6 +288,7 @@ public class PMovement : MonoBehaviour, IDamage
         HP -= amount;
         UpdatePlayerUI();
         StartCoroutine(FlashDamageScreen());
+
         if (HP <= 0)
         {
             //SceneManager.LoadScene(SceneManager.GetActiveScene().name);

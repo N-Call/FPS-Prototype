@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     public float timeScaleOrig;
 
-    int gameGoalCount;
+    
     int enemyCount;
 
 
@@ -102,26 +102,21 @@ public class GameManager : MonoBehaviour
 
     public void WinCondition(int amount)
     {
-        gameGoalCount += amount;
-
-        if (gameGoalCount <= 0)
-        {
             StatePause();
             menuActive = menuWin;
-            menuActive.SetActive(true);
-        }
+            menuActive.SetActive(true); 
     }
 
     public void UpdateEnemyCounter(int amount)
     {
         enemyCount += amount;
-        //enemyCounterText.text = enemyCount.ToString("F0");
+        enemyCounterText.text = enemyCount.ToString("F0");
 
         if (enemyCountUI != null)
         {
             enemyCounterText.text = enemyCount.ToString("F0");
             // display enemy count for the UI 
-            //enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+            enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
         }
     }
 
