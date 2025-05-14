@@ -14,6 +14,7 @@ public class PlatformMovement : MonoBehaviour
 
     [Header("Behavior")]
     [SerializeField] float startDelay;
+    [SerializeField] bool startDelayInitial;
     [SerializeField] float destinationDelay;
     [SerializeField] bool pingPong;
     [SerializeField] bool backToStart;
@@ -107,6 +108,10 @@ public class PlatformMovement : MonoBehaviour
                 return;
             }
 
+            // Reset waiting and elapsed time
+            waited = false;
+            waitTime = 0.0f;
+
             if (backToStart)
             {
                 transform.position = startPosition;
@@ -117,10 +122,6 @@ public class PlatformMovement : MonoBehaviour
                 Swap(ref startPosition, ref dest);
                 toStart = !toStart;
             }
-            
-            // Reset waiting and elapsed time
-            waited = false;
-            waitTime = 0.0f;
         }
     }
 
@@ -136,7 +137,12 @@ public class PlatformMovement : MonoBehaviour
             return false;
         }
 
-        if (toStart && waitTime < destinationDelay)
+        if (startDelay > 0.0f && startDelayInitial)
+        {
+            startDelay = 0.0f;
+        }
+
+        if ((toStart || backToStart && cycles > 0.0f) && waitTime < destinationDelay)
         {
             return false;
         }

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
+    [SerializeField] GameObject hitMakerReticle;
     [SerializeField] GameObject ammoCount;
     [SerializeField] GameObject weaponIcon;
     [SerializeField] TMP_Text enemyCountUI;
@@ -101,6 +102,16 @@ public class GameManager : MonoBehaviour
         playerScript.enabled = true;
 
     }
+    public void ToggleReticle()
+    {
+        StartCoroutine(ReticleWaitTime());
+    }
+    IEnumerator ReticleWaitTime()
+    {
+        hitMakerReticle.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        hitMakerReticle.SetActive(false);
+    }
 
     public void YouLose() 
     {
@@ -147,7 +158,10 @@ public class GameManager : MonoBehaviour
 
     public void SetWeaponIcon(Sprite icon)
     {
-        weaponIcon.GetComponent<Image>().sprite = icon;
+        if (weaponIcon != null)
+        {
+            weaponIcon.GetComponent<Image>().sprite = icon;
+        }
     }
    
     public void AddEnemyToRespawn(Enemy enemy)
