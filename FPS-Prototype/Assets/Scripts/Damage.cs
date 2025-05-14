@@ -54,6 +54,11 @@ public class Damage : MonoBehaviour
         Debug.Log("Damage Amount: " + damageAmount);
     }
 
+    public void AddSpeedAmount(int range)
+    {
+        speed += range;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if ((other.isTrigger))
