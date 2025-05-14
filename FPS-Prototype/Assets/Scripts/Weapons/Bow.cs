@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Bow : Range
 {
-    [SerializeField] float shootRate;
     [SerializeField] float chargeMaxRate;
     [SerializeField] float chargeRate;
     [Header("References")]
@@ -13,13 +12,6 @@ public class Bow : Range
     Coroutine chargeCoroutine;
 
     float currentCharge;
-    float shootTimer;
-
-    // Update is called once per frame
-    void Update()
-    {
-        shootTimer += Time.deltaTime;
-    }
 
     public override void AttackBegin(LayerMask playerMask)
     {
@@ -51,13 +43,16 @@ public class Bow : Range
 
     void Shoot()
     {
+        PlayShootAnim();
         shootTimer = 0;
         Damage dmg = Instantiate(projectil, shootPos.position, transform.rotation);
         dmg.AddDamageAmount((int)(damage * currentCharge));
+        dmg.AddSpeedAmount((int)(distance / chargeMaxRate * currentCharge));
     }
 
     IEnumerator Charge()
     {
+        PlayChargeAnim();
         SoundManager.instance.PlaySFX("bowLoad");
         while (currentCharge < chargeMaxRate)
         {

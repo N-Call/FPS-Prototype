@@ -7,9 +7,11 @@ public class GunHitScan : Range
     {
 
         //See if they have bullets
-        if (ammoCount > 0)
+        if (ammoCount > 0 && shootRate <= shootTimer)
         {
+            PlayShootAnim();
             SoundManager.instance.PlaySFX("pistol");
+
             //see if you hit an object
             RaycastHit hit;
 
@@ -23,8 +25,9 @@ public class GunHitScan : Range
                 targ?.ActivateElem((int)elem);
 
             }
-           
-                ammoCount--;
+
+            shootTimer = 0;
+            ammoCount--;
             GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
         }
     }
