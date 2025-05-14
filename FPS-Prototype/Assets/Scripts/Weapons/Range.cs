@@ -22,7 +22,6 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     [SerializeField] protected float soundFxVolume;
 
     protected int ammoCap;
-    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,9 +55,9 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         }
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
     }
+
     private void OnEnable()
     {
-
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
     }

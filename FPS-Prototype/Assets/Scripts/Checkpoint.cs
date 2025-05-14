@@ -5,14 +5,7 @@ using System.Collections.Generic;
 public class Checkpoint : MonoBehaviour
 {
 
-    private PlayerRespawn playerRespawn;
     public bool isFinalCheckPoint;
-
-    private void Start()
-    {
-        playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,8 +14,7 @@ public class Checkpoint : MonoBehaviour
             Destroy(gameObject);
             
             SoundManager.instance.PlaySFX("checkPoint");
-                              
-            playerRespawn.whereToSpawn = transform.position;
+            GameManager.instance.SetSpawnPosition(transform.position);
             
             if(isFinalCheckPoint)
             {
@@ -30,9 +22,6 @@ public class Checkpoint : MonoBehaviour
                 GameManager.instance.WinCondition(-1);
             }
         }
-
     }
-
-    
 
 }
