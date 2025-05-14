@@ -12,6 +12,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     [Header("Weapon Settings")]
     [SerializeField] protected float distance;
     [SerializeField] protected int damage;
+    [SerializeField] protected float shootRate;
 
     public enum ElementType { speed = 1, jump = 2, time = 3 }
 
@@ -23,12 +24,26 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     protected int ammoCap;
 
+    protected float shootTimer;
+
+    private Animator animator;
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         ammoCount = reloadCap;
         ammoCap = ammoOrigCap;
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
+
+        //Grab the animator from object
+        animator = GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        shootTimer += Time.deltaTime;
     }
 
     public virtual void AttackBegin(LayerMask playerMask)
@@ -43,6 +58,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void Reload()
     {
+        PlayReloadAnim();
         SoundManager.instance.PlaySFX(soundFxName);
 
         ammoCap -= reloadCap - ammoCount;
@@ -56,8 +72,24 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
     }
 
+    private void PlayReloadAnim()
+    {
+        animator?.CrossFade("Reload", 0.1f);
+    }
+
+    public void PlayShootAnim()
+    {
+        animator?.CrossFade("Shoot", 0.1f);
+    }
+
+    protected void PlayChargeAnim()
+    {
+        animator?.CrossFade("Charge", 0.1f);
+    }
+
     private void OnEnable()
     {
+
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
