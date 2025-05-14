@@ -128,8 +128,7 @@ public class GameManager : MonoBehaviour
     }
 
     public float EnemyTimePenalty(float totalTime)
-    {
-        Debug.Log(totalTime);
+    { 
         return totalTime + enemyCount * 5; 
     }
 
