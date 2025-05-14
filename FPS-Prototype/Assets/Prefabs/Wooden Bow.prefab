@@ -733,7 +733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4620178347958848
 Transform:
   m_ObjectHideFlags: 0
@@ -762,7 +762,7 @@ Animator:
   m_GameObject: {fileID: 1717406733745140}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0be2ba322dd85494db39a44ee439af41, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 434b47dc90dda694292c7589f05349ea, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -790,12 +790,12 @@ MonoBehaviour:
   ammoOrigCap: 20
   reloadCap: 5
   ammoCount: 0
-  distance: 150
+  distance: 10
   damage: 2
+  shootRate: 0.2
   elem: 0
   soundFxName: 
   soundFxVolume: 0
-  shootRate: 0.2
   chargeMaxRate: 3
   chargeRate: 0.5
   shootPos: {fileID: 5953494373964675072}
@@ -1111,10 +1111,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6096678664327938728}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.286, y: 0.297, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.241, y: 0.297, z: 0.094}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4620178347958848}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
