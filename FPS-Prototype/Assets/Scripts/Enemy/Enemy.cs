@@ -60,6 +60,7 @@ public class Enemy : MonoBehaviour, IDamage
     {
         StartCoroutine(Rotate());
         colorOrig = model.material.color;
+        GameManager.instance.WinCondition(1);
 
     }
 
@@ -112,6 +113,7 @@ public class Enemy : MonoBehaviour, IDamage
 
         if (currentHealth <= 0)
         {
+            GameManager.instance.WinCondition(-1);
             SoundManager.instance.PlaySFX("turretDestroy");
             gameObject.SetActive(false);
             isDead = true;
