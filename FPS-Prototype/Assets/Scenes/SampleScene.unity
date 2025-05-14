@@ -1189,6 +1189,17 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 965212509}
   m_SourcePrefab: {fileID: 100100000, guid: 0cdd6c62eeebbb340af9414c9fdbeae6, type: 3}
+--- !u!114 &1136418591 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6951909507736030480, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
+  m_PrefabInstance: {fileID: 802453167387261244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1148365556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2280,6 +2291,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 226388405602078718, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Respawn
+      objectReference: {fileID: 0}
     - target: {fileID: 640852177204492611, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
       propertyPath: m_SizeDelta.x
       value: 250
@@ -2315,7 +2330,7 @@ PrefabInstance:
     - target: {fileID: 6227796996290228672, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
       propertyPath: enemyCountUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1136418591}
     - target: {fileID: 6928201031359508581, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
       propertyPath: m_Name
       value: UI
