@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6977188299996024726}
   - component: {fileID: 8913753626850861695}
+  - component: {fileID: 2705959878802607773}
   - component: {fileID: 3528928679213762201}
   - component: {fileID: 4281600195465696639}
-  - component: {fileID: 2705959878802607773}
   m_Layer: 11
   m_Name: Projectile
   m_TagString: Untagged
@@ -56,6 +56,26 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2705959878802607773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253219748198811086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27998aa5a8ed647479a67ed6339a9a8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 4281600195465696639}
+  damageType: 1
+  elem: 2
+  damageAmount: 1
+  speed: 30
+  destroyTime: 2
+  dotDamage: 0
+  dotDamageRate: 0
 --- !u!96 &3528928679213762201
 TrailRenderer:
   serializedVersion: 3
@@ -190,22 +210,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &2705959878802607773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1253219748198811086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27998aa5a8ed647479a67ed6339a9a8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 4281600195465696639}
-  damageType: 1
-  damageAmount: 1
-  speed: 30
-  destroyTime: 2
-  dotDamage: 0
-  dotDamageRate: 0

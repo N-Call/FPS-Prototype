@@ -14,7 +14,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     [SerializeField] protected int damage;
     [SerializeField] protected float shootRate;
 
-    public enum ElementType { speed = 1, jump = 2, time = 3 }
+    public enum ElementType { speed = 1, jump = 2, ammo = 3 }
 
     [SerializeField] public ElementType elem;
 
@@ -92,6 +92,15 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
+    }
+
+    public void SetAmmo(float percent)
+    {
+        float temp = percent / 100;
+        int newAmmo = (int)(ammoOrigCap * temp);
+        ammoCap += newAmmo;
+        Reload();
+        GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
     }
 }
 
