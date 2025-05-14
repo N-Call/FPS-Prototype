@@ -30,8 +30,6 @@ public class ButtonFunctions : MonoBehaviour
         GameManager.instance.StateUnpause();
     }
 
-    
-
     public void Quit()
     {// allows you to quit the app from Unity
 #if UNITY_EDITOR

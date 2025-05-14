@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
     [SerializeField] float timerDelay;
 
     float elapsedDelayTime;
-    float elapsedTime;
+    public float elapsedTime;
 
     // Update is called once per frame
     void Update()
@@ -20,11 +20,20 @@ public class Timer : MonoBehaviour
                 return;
             }
         }
-
+        
         // this is to count up one second at a time
         elapsedTime += Time.deltaTime;
+
         int minutes = Mathf.FloorToInt(elapsedTime / 60);
         int seconds = Mathf.FloorToInt(elapsedTime % 60);
         timerCount.text = string.Format("{0:00}:{1:00}",minutes,seconds);
+
+        
     }
+    public void DisplayTimeAdded(float timeCount)
+    {
+        
+        elapsedTime = GameManager.instance.EnemyTimePenalty(timeCount);
+    }
+    
 }
