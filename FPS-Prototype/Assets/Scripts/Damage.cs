@@ -1,8 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System;
-
-
 
 public class Damage : MonoBehaviour
 {
@@ -24,7 +21,6 @@ public class Damage : MonoBehaviour
     [SerializeField] private int dotDamageRate;
 
     private bool isDamaging;
-    bool isDead;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,26 +36,18 @@ public class Damage : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (damageType == DamageType.homing)
-        {
-        }
-    }
-
     public void AddDamageAmount(int damage)
     {
         damageAmount += damage;
-        Debug.Log("Damage Amount: " + damageAmount);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.isTrigger))
+        if (other.isTrigger)
         {
             return;
         }
+
         IDamage dmg = other.GetComponent<IDamage>();
         ITarget targ = other.GetComponent<ITarget>();
         if (dmg != null || targ != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
@@ -70,14 +58,15 @@ public class Damage : MonoBehaviour
 
         if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
-            gameObject.SetActive(false);
-            
+            GameObject.Destroy(gameObject);
         }
+
         if (damageType == DamageType.homing)
         {
             SoundManager.instance.PlaySFX("turretDestroy");
         }
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.isTrigger)

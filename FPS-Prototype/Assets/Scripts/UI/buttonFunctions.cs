@@ -4,12 +4,9 @@ using UnityEngine.SceneManagement;
 public class ButtonFunctions : MonoBehaviour
 {
 
-    public PlayerRespawn PlayerRespawn;
-
-
     public void Respawn()
     {
-        PlayerRespawn.GetComponent<ButtonFunctions>().Respawn();
+        GameManager.instance.Respawn();
         GameManager.instance.StateUnpause();
     }
 

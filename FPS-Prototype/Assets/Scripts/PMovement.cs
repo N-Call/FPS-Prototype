@@ -19,7 +19,6 @@ public class PMovement : MonoBehaviour, IDamage
     [Header("Crouch Settings")]
     [SerializeField] private float crouchHeightMod = 0.5f;
     [SerializeField] private float crouchSpeedMod = 0.5f;
-    [SerializeField] private bool crouchSprint = false;
 
     [Header("Slide Settings")]
     [SerializeField] private float slideTime = 0.25f;
@@ -53,9 +52,6 @@ public class PMovement : MonoBehaviour, IDamage
 
     public int origHealth;
 
-    private PlayerRespawn playerRespawn;
-    Vector3 originalPosition;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -63,11 +59,8 @@ public class PMovement : MonoBehaviour, IDamage
         originalHeight = controller.height;
         crouchHeight = originalHeight * crouchHeightMod;
 
-        playerRespawn = GameObject.Find("Player").GetComponent<PlayerRespawn>();
-       // GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
-       // originalPosition = enemy.transform.position;
-
         origHealth = HP;
+        GameManager.instance.SetSpawnPosition(transform.position);
     }
 
     // Update is called once per frame
@@ -281,8 +274,6 @@ public class PMovement : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
-        Debug.Log("is working");
-
         SoundManager.instance.PlaySFX("playerHurt");
 
         HP -= amount;
@@ -291,20 +282,21 @@ public class PMovement : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            playerRespawn.RespawnPlayer();
-            HP = 5;
+            GameManager.instance.Respawn();
         }
     }
+
     public void UpdatePlayerUI()
     {
         // update player health bar at full and when taking damage
         GameManager.instance.playerHPbar.fillAmount = (float)HP/ origHealth;
     }
+
     IEnumerator FlashDamageScreen()
     {
         GameManager.instance.playerDamageScreen.SetActive(true);   
         yield return new WaitForSeconds(0.1f);
         GameManager.instance.playerDamageScreen.SetActive(false);
     }
+
 }
