@@ -112,6 +112,37 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167253852335030190}
   m_Enabled: 1
+--- !u!1 &5235507442294530098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 553724404774796032}
+  m_Layer: 3
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &553724404774796032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5235507442294530098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.867, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4447460840228111181}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7230982164112844161
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +177,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4741164836150491886}
+  - {fileID: 553724404774796032}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2769545894233297840
@@ -169,7 +201,7 @@ MonoBehaviour:
   modSprint: 1.5
   crouchHeightMod: 0.5
   crouchSpeedMod: 0.5
-  slideTime: 0.25
+  slideTime: 0.67
   slideSpeedBoost: 2
   gravity: 15
   gravityMax: 36
@@ -440,6 +472,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3370575895995622101, guid: f29db0c8f1a9fc842a4231e54dbb02f5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534227346334936048, guid: f29db0c8f1a9fc842a4231e54dbb02f5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d77301f94bb40b64b8d1d30ee687fddd, type: 2}
     - target: {fileID: 6887159452987626481, guid: f29db0c8f1a9fc842a4231e54dbb02f5, type: 3}
       propertyPath: m_Name
       value: Katana

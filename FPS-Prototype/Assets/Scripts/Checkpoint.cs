@@ -6,21 +6,32 @@ public class Checkpoint : MonoBehaviour
 {
 
     public bool isFinalCheckPoint;
+    
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.tag == "Player")
         {
-            Destroy(gameObject);
+            Enemy enemy = GetComponent<Enemy>();
             
             SoundManager.instance.PlaySFX("checkPoint");
+            Debug.Log("checkpoint reached");
             GameManager.instance.SetSpawnPosition(transform.position);
-            
-            if(isFinalCheckPoint)
+            Destroy(gameObject);
+            if (enemy != null && enemy.isDead == true)
+            {
+                enemy.isRespawned = false;
+                Destroy(enemy); 
+            }
+
+            if (isFinalCheckPoint)
             {
                 Debug.Log("final checkpoint");
                 GameManager.instance.WinCondition(-1);
             }
+
+            
         }
     }
 
