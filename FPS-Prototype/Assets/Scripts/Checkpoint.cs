@@ -18,6 +18,7 @@ public class Checkpoint : MonoBehaviour
             
             if(isFinalCheckPoint)
             {
+                Debug.Log("final checkpoint");
                 GameManager.instance.WinCondition(-1);
             }
         }

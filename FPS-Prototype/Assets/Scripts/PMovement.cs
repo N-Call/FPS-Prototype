@@ -304,7 +304,8 @@ public class PMovement : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
-            GameManager.instance.Respawn();
+            GameManager.instance.YouLose();
+            //GameManager.instance.Respawn();
         }
     }
 

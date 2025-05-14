@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using TMPro;
+using JetBrains.Annotations;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,8 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject ammoCount;
-    [SerializeField] GameObject enemyCountUI;
     [SerializeField] GameObject weaponIcon;
+    [SerializeField] TMP_Text enemyCountUI;
 
     List<Enemy> enemiesToRespawn;
     Vector3 respawnPosition;
@@ -113,11 +115,15 @@ public class GameManager : MonoBehaviour
     public void UpdateEnemyCounter(int amount)
     {
         enemyCount += amount;
+        enemyCountUI.text = enemyCount.ToString("F0");
+    }
 
-        if (enemyCountUI != null)
+    public void EnemyTimePenalty(int endTimer)
+    {
+        if (enemyCount > 0 )
         {
-            // display ammo count for the UI 
-            enemyCountUI.GetComponent<TMPro.TMP_Text>().text = "" + amount;
+            enemyCount *= 5;
+
         }
     }
 

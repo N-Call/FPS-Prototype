@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour, IDamage
         maxHealth = currentHealth;
         originalPosition = transform.position;
         colorOrig = model.material.color;
-        GameManager.instance.WinCondition(1);
+        GameManager.instance.UpdateEnemyCounter(1);
 
         if (isTurret)
         {
@@ -148,7 +148,7 @@ public class Enemy : MonoBehaviour, IDamage
 
         if (currentHealth <= 0)
         {
-            GameManager.instance.WinCondition(-1);
+            GameManager.instance.UpdateEnemyCounter(-1);
             SoundManager.instance.PlaySFX("turretDestroy");
             gameObject.SetActive(false);
             isDead = true;

@@ -25,7 +25,7 @@ public class Melee : MonoBehaviour, IWeapon
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void AttackBegin(LayerMask playerMask)
