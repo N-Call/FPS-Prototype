@@ -32,11 +32,12 @@ public class PMovement : MonoBehaviour, IDamage
 
     //Store the primary and secondary weapon's gameobjects
     [Header("Weapon Settings")]
-    [SerializeField] private List<GameObject> weaponList;
+    [SerializeField] public List<GameObject> weaponList;
 
     private Vector3 inputDir;
     private Vector3 moveDir;
     private Vector3 vertVel;
+    
     
     private int currJumpCount = 0;
     
@@ -51,7 +52,7 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isSliding;
 
     public int origHealth;
-
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -61,6 +62,7 @@ public class PMovement : MonoBehaviour, IDamage
 
         origHealth = HP;
         GameManager.instance.SetSpawnPosition(transform.position);
+       
     }
 
     // Update is called once per frame
@@ -173,6 +175,11 @@ public class PMovement : MonoBehaviour, IDamage
 
         // Now move the player using the controller itself after all of that is said and done.
         controller.Move(moveFinal * Time.deltaTime);
+        
+        if(controller.isGrounded && inputDir.magnitude != 0)
+        {
+            SoundManager.instance.PlaySFX("footSteps");
+        }
         
     }
 
