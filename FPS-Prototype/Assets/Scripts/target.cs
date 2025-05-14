@@ -147,6 +147,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     void Buff()
     {
+        
         int element = (int)elem;
         switch (element)
         {
@@ -183,7 +184,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     void Debuff()
     {
+        
         int element = (int)elem;
+
         switch (element)
         {
             case 1:
@@ -193,6 +196,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 }
                 else
                 {
+                    
                     isSpeedDebuffed = true;
                     StartCoroutine(SpeedDebuff());
                     
