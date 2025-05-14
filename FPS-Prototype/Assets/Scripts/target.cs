@@ -113,7 +113,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     public void TakeDamage(int amount)
     {
         SoundManager.instance.PlaySFX("targetHit");
-
+        GameManager.instance.ToggleReticle();
         HP -= amount;
 
         if(HP <= 0)
