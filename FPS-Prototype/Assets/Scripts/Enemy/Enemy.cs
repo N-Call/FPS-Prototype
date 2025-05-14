@@ -145,8 +145,9 @@ public class Enemy : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
+        
         if (isDead) { return; }
-
+        GameManager.instance.ToggleReticle();
         if (!isTurret)
         {
             agent.isStopped = false;
@@ -192,6 +193,7 @@ public class Enemy : MonoBehaviour, IDamage
             SoundManager.instance.PlaySFX("mineExplosion");
             IDamage damage = other.GetComponent<IDamage>();
             damage?.TakeDamage(damageAmount);
+            GameManager.instance.ToggleReticle();
             gameObject.SetActive(false);
             isDead = true;
             GameManager.instance.UpdateEnemyCounter(-1);
