@@ -21,7 +21,7 @@ public class PMovement : MonoBehaviour, IDamage
     [SerializeField] private float crouchSpeedMod = 0.5f;
 
     [Header("Slide Settings")]
-    [SerializeField] private float slideTime = 0.25f;
+    [SerializeField] private float slideTime = 0.67f;
     [SerializeField] private float slideSpeedBoost = 2.0f;
 
     [Header("Gravity and Jumping")]
@@ -86,9 +86,7 @@ public class PMovement : MonoBehaviour, IDamage
         // Determine sprint state and speed
         if (Input.GetButtonDown("Sprint") || (Input.GetButton("Sprint") && !isSliding && !isCrouching))
         {
-           
             isSprinting = true;
-           
         }
         if (Input.GetButtonUp("Sprint"))
         {
@@ -115,21 +113,29 @@ public class PMovement : MonoBehaviour, IDamage
                 Crouch();
             }
 
-            // Handle sliding
-            if ((isCrouching && isSprinting) || isSliding)
-            {
-                Slide();
-            }
-
             // Handle un-crouching
             if (Input.GetButtonUp("Crouch") || (!Input.GetButton("Crouch") && isCrouching))
             {
                 UnCrouch();
             }
 
+            // Handle sliding
+            if ((isCrouching && isSprinting) || isSliding)
+            {
+                Slide();
+            }
+
             // This checks the input for jumping.
             if (Input.GetButtonDown("Jump"))
             {
+                // This allows the player to be able to cancel the slide into a jump.
+                if (isSliding)
+                {
+                    isSliding = false;
+                    controller.height = originalHeight;
+                    currentSpeed = baseSpeed;
+                }
+
                 if (isCrouching)
                 {
                     UnCrouch();
@@ -250,20 +256,36 @@ public class PMovement : MonoBehaviour, IDamage
             isSprinting = false;
             isCrouching = false;
             isSliding = true;
-            currentSpeed += slideSpeedBoost;
+            elapsedSlideTime = 0.0f;
+            currentSpeed = baseSpeed * modSprint + slideSpeedBoost;
         }
 
         elapsedSlideTime += Time.deltaTime;
-        currentSpeed = Mathf.Lerp(currentSpeed, crouchSpeed, elapsedSlideTime / slideTime);
+
+        float delayBeforeLerp = 0.1f;
+        if (elapsedSlideTime > delayBeforeLerp)
+        {
+            float eSTDBL = (elapsedSlideTime - delayBeforeLerp) / (slideTime - delayBeforeLerp);
+            currentSpeed = Mathf.Lerp(baseSpeed + slideSpeedBoost, crouchSpeed, eSTDBL);
+        }
         
-        if (currentSpeed <= crouchSpeed)
+        if (elapsedSlideTime > slideTime)
         {
             currentSpeed = crouchSpeed;
             controller.height = crouchHeight;
-            elapsedSlideTime = 0.0f;
             isSliding = false;
-            isSprinting = false;
-            isCrouching = true;
+            elapsedSlideTime = 0.0f;
+
+            if (Input.GetButton("Sprint") && inputDir.z > 0)
+            {
+                isSprinting = true;
+                isCrouching = false;
+            }
+            else
+            {
+                isSprinting = false;
+                isCrouching = true;
+            }
         }
     }
 
