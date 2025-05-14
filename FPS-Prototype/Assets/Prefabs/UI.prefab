@@ -1416,7 +1416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a485d36d3533dc54bb91f719c537a824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerRespawn: {fileID: 0}
 --- !u!1 &2532956012487553421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1548,6 +1547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerCount: {fileID: 4348637337769910153}
+  timerDelay: 0
 --- !u!114 &4348637337769910153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2320,7 +2320,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9123626848039998588}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: Resume
+        m_MethodName: Respawn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2599,9 +2599,8 @@ MonoBehaviour:
   menuLose: {fileID: 5455801757303876398}
   reticle: {fileID: 338533100132535030}
   ammoCount: {fileID: 742173440445201202}
-  enemyCountUI: {fileID: 0}
   weaponIcon: {fileID: 9214524057916638507}
-  enemyCounterText: {fileID: 0}
+  enemyCountUI: {fileID: 6951909507736030480}
   playerDamageScreen: {fileID: 7938001656103578483}
   playerHPbar: {fileID: 6579848326692649394}
   player: {fileID: 0}
