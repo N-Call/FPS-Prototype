@@ -98,8 +98,11 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         float temp = percent / 100;
         int newAmmo = (int)(ammoOrigCap * temp);
         ammoCap += newAmmo;
-        Reload();
-        GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
+
+        if (gameObject.activeSelf)
+        {
+            GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
+        }
     }
 }
 

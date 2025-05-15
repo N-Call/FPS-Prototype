@@ -146,6 +146,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     void Buff()
     {
+        
         int element = (int)elem;
         switch (element)
         {
@@ -158,7 +159,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isSpeedBuffed = true;
                     StartCoroutine(SpeedBuff());
-                    SoundManager.instance.PlaySFX("powerUp");
+                    
                 }
                 break;
             case 2:
@@ -170,19 +171,21 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isJumpBuffed = true;
                     StartCoroutine(JumpBuff());
-                    SoundManager.instance.PlaySFX("powerUp");
+                    
                 }
                 break;
             case 3:
                 AmmoBuff();
-                SoundManager.instance.PlaySFX("powerUp");
+                
                 break;
         }
     }
 
     void Debuff()
     {
+        
         int element = (int)elem;
+
         switch (element)
         {
             case 1:
@@ -192,9 +195,10 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 }
                 else
                 {
+                    
                     isSpeedDebuffed = true;
                     StartCoroutine(SpeedDebuff());
-                    SoundManager.instance.PlaySFX("powerUp");
+                    
                 }
                 break;
             case 2:
@@ -206,7 +210,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isJumpDebuffed = true;
                     StartCoroutine(JumpDebuff());
-                    SoundManager.instance.PlaySFX("powerUp");
+                    
                 }
                 break;
             case 3:
@@ -217,26 +221,28 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator SpeedBuff()
     {
-        Debug.Log("Giving Speed");
+        SoundManager.instance.PlaySFX("powerUp");
         GameManager.instance.playerScript.baseSpeed *= speedMod;
+       
 
         yield return new WaitForSeconds(speedModTime);
 
-        Debug.Log("Taking Away Speed");
+        
         isSpeedBuffed = false;
         GameManager.instance.playerScript.baseSpeed /= speedMod;
+        
 
         Destroy(gameObject);
     }
 
     public IEnumerator SpeedDebuff()
     {
-        Debug.Log("Taking Speed");
+        SoundManager.instance.PlaySFX("debuff");
         GameManager.instance.playerScript.baseSpeed /= speedMod;
-
+        
         yield return new WaitForSeconds(speedModTime);
 
-        Debug.Log("Giving Speed");
+       
         isSpeedDebuffed = false;
         GameManager.instance.playerScript.baseSpeed *= speedMod;
 
@@ -245,12 +251,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpBuff()
     {
-        Debug.Log("Giving Jump");
+        SoundManager.instance.PlaySFX("powerUp");
         GameManager.instance.playerScript.jumpForce *= jumpMod;
 
         yield return new WaitForSeconds(jumpModTime);
 
-        Debug.Log("Taking Away Jump");
+       
         isJumpBuffed = false;
         GameManager.instance.playerScript.jumpForce /= jumpMod;
 
@@ -259,12 +265,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpDebuff()
     {
-        Debug.Log("Taking Jump");
+        SoundManager.instance.PlaySFX("debuff");
         GameManager.instance.playerScript.jumpForce /= jumpMod;
 
         yield return new WaitForSeconds(jumpModTime);
 
-        Debug.Log("Giving Jump");
+        
         isJumpDebuffed = false;
         GameManager.instance.playerScript.jumpForce *= jumpMod;
 
@@ -273,7 +279,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void AmmoBuff() 
     {
-        Debug.Log("Giving Ammo");
+        SoundManager.instance.PlaySFX("powerUp");
         for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
         {
             IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
@@ -284,11 +290,11 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void AmmoDebuff()
     {
-        Debug.Log("Taking Ammo");
+        SoundManager.instance.PlaySFX("debuff");
         for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
         {
             IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
-            rld?.SetAmmo(reloadPercentDebuff);
+            rld?.SetAmmo(-reloadPercentDebuff);
         }
     }
 
