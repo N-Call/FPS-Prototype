@@ -107,12 +107,6 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(ReticleWaitTime());
     }
-    IEnumerator ReticleWaitTime()
-    {
-        hitMakerReticle.SetActive(true);
-        yield return new WaitForSeconds(0.1f);
-        hitMakerReticle.SetActive(false);
-    }
 
     public void YouLose() 
     {
@@ -196,6 +190,12 @@ public class GameManager : MonoBehaviour
             enemy.ResetEnemies();
         }
 
+    }
+    IEnumerator ReticleWaitTime()
+    {
+        hitMakerReticle.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        hitMakerReticle.SetActive(false);
     }
 
 } 

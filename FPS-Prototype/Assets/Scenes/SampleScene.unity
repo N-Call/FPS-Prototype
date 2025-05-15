@@ -1130,8 +1130,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Missed enemies will add 5 seconds to your final time\n\nThere are Colored
     Targets\n \nBlue/Buff-speed boost \tDeBuff-speed slowed\nGreen/Buff-Jump Boost
-    \tDeBuff-Jump Reduced \nYellow/Ammo\n\nTo Get Buffs match weapons Color with
-    Targets Colors"
+    \tDeBuff-Jump Reduced \nYellow/BuffAmmo            DeBuff-Lose Ammo\n\nTo Get
+    Buffs match weapons Color with Targets Colors"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1428,7 +1428,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 26.25}
+  m_AnchoredPosition: {x: 0, y: 37.25}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1124534737
@@ -1775,7 +1775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 219.5, y: -116.25}
+  m_AnchoredPosition: {x: 219.5, y: -169.75}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1231493556
@@ -2049,7 +2049,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 601.25, y: -102.5}
+  m_AnchoredPosition: {x: 601.25, y: -156.75}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1424119415
@@ -3300,10 +3300,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4677489930656847632, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6227796996290228672, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
       propertyPath: menuStart
       value: 
