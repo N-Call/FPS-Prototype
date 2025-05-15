@@ -32,6 +32,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        shootTimer = shootRate;
         ammoCount = reloadCap;
         ammoCap = ammoOrigCap;
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
@@ -58,6 +59,8 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void Reload()
     {
+        if (reloadCap == ammoCount || ammoCap == 0 && ammoCount == 0) {return;}
+
         PlayReloadAnim();
         SoundManager.instance.PlaySFX(soundFxName);
 
@@ -86,9 +89,21 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     {
         animator?.CrossFade("Charge", 0.1f);
     }
+    protected void PlayIdle()
+    {
+        animator?.CrossFade("Idle", 0f);
+    }
+
+    protected void PlaySeconedIdle(bool answer)
+    {
+        animator?.SetBool("isIdle2", answer);
+    }
 
     private void OnEnable()
     {
+        PlayIdle();
+
+
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
     }

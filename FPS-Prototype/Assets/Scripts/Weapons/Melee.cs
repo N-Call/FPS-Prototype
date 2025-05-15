@@ -51,6 +51,8 @@ public class Melee : MonoBehaviour, IWeapon
 
     private void OnEnable()
     {
+        animator.CrossFade("Idle", 0f);
+
         GameManager.instance?.SetWeaponIcon(weaponImage);
         GameManager.instance?.GlobalAmmoCount(0, 0);
     }
