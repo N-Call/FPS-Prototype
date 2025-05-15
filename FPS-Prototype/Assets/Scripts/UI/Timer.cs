@@ -32,7 +32,6 @@ public class Timer : MonoBehaviour
     }
     public void DisplayTimeAdded(float timeCount)
     {
-        
         elapsedTime = GameManager.instance.EnemyTimePenalty(timeCount);
     }
     
