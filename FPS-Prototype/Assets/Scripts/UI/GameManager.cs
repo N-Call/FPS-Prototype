@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuStart;
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
     [SerializeField] GameObject ammoCount;
@@ -49,11 +50,16 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PMovement>();
         timeScaleOrig = Time.timeScale;
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+       
         enemiesToRespawn = new List<Enemy>();
         startPos = player.transform.position;
+        
+    }
+    private void Start()
+    {
+        StartGame();
+        //StartCoroutine(StartGameTimer());
+
     }
 
     // Update is called once per frame
@@ -117,6 +123,12 @@ public class GameManager : MonoBehaviour
     {
         StatePause();
         menuActive = menuLose;
+        menuActive.SetActive(true);
+    }
+    public void StartGame()
+    {
+        StatePause();
+        menuActive = menuStart;
         menuActive.SetActive(true);
     }
 
@@ -186,6 +198,11 @@ public class GameManager : MonoBehaviour
             enemy.ResetEnemies();
         }
 
+    }
+    IEnumerator StartGameTimer()
+    {
+        yield return new WaitForSeconds(0.2f);
+        
     }
 
 } 
