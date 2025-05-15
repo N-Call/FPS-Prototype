@@ -30,8 +30,10 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void Restart()
     {
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         GameManager.instance.StateUnpause();
+        SoundManager.instance.sfxSource.Stop();
     }
 
     public void Quit()
