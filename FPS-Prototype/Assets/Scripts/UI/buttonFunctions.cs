@@ -33,8 +33,8 @@ public class ButtonFunctions : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        GameManager.instance.StateUnpause();
         SoundManager.instance.sfxSource.Stop();
+        GameManager.instance.StateUnpause();
     }
     public void NextLevel()
     {
@@ -42,6 +42,7 @@ public class ButtonFunctions : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex + 1 <= 3)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SoundManager.instance.sfxSource.Stop();
             GameManager.instance.StateUnpause();
         }
     }
