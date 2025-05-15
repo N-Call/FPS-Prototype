@@ -806,7 +806,6 @@ GameObject:
   - component: {fileID: 4197851950952619164}
   - component: {fileID: 608370117456697366}
   - component: {fileID: 3651686809219059195}
-  - component: {fileID: 3811096692516530717}
   m_Layer: 6
   m_Name: Turret
   m_TagString: Enemy
@@ -822,7 +821,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4983574175186497694}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 23.27, y: 3.24, z: -2.61}
   m_LocalScale: {x: 0.23956624, y: 0.5989155, z: 0.23956624}
   m_ConstrainProportionsScale: 0
@@ -846,13 +845,9 @@ MonoBehaviour:
   model: {fileID: 608370117456697366}
   agent: {fileID: 0}
   currentHealth: 3
-  hitSoundFx: 
-  deathSoundFx: turretDestroy
-  sightSoundFx: 
-  shootSoundFx: turretShot
-  soundFxVolume: 1
   faceTargetSpeed: 0
   sightRange: 10
+  rangeIsTrigger: 0
   shootPos: {fileID: 8822987827010534817}
   bullet: {fileID: 8973326993888958128, guid: 3d478ccae6fa99b48a17177b02922246, type: 3}
   shootRate: 1
@@ -865,6 +860,7 @@ MonoBehaviour:
     m_Bits: 8
   originalPosition: {x: 0, y: 0, z: 0}
   isDead: 0
+  isRespawned: 0
 --- !u!33 &4197851950952619164
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -941,24 +937,3 @@ CapsuleCollider:
   m_Height: 3.5
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0.4, z: -0.00000008940697}
---- !u!135 &3811096692516530717
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4983574175186497694}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 17
-  m_Center: {x: 0.000015318394, y: 0.0000014305115, z: -0.0000039041042}
