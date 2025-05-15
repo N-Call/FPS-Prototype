@@ -251,6 +251,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpBuff()
     {
+        Debug.Log("Jumping");
         SoundManager.instance.PlaySFX("powerUp");
         GameManager.instance.playerScript.jumpForce *= jumpMod;
 
