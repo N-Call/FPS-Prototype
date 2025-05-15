@@ -43,6 +43,8 @@ public class PMovement : MonoBehaviour, IDamage
     
     private float currentSpeed;
     private float crouchSpeed;
+    private float originalSpeed;
+    private float originalJump;
     private float originalHeight;
     private float crouchHeight;
     private float elapsedSlideTime;
@@ -59,6 +61,9 @@ public class PMovement : MonoBehaviour, IDamage
         crouchSpeed = baseSpeed * crouchSpeedMod;
         originalHeight = controller.height;
         crouchHeight = originalHeight * crouchHeightMod;
+
+        originalSpeed = baseSpeed;
+        originalJump = jumpForce;
 
         origHealth = HP;
         GameManager.instance.SetSpawnPosition(transform.position);
@@ -314,6 +319,13 @@ public class PMovement : MonoBehaviour, IDamage
             GameManager.instance.YouLose();
             //GameManager.instance.Respawn();
         }
+    }
+
+    public void ResetPlayerStats()
+    {
+        baseSpeed = originalSpeed;
+        jumpForce = originalJump;
+        HP = origHealth;
     }
 
     public void UpdatePlayerUI()

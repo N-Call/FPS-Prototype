@@ -181,7 +181,7 @@ public class GameManager : MonoBehaviour
         playerScript.GetComponent<CharacterController>().enabled = false;
 
         player.transform.position = respawnPosition;
-        playerScript.HP = playerScript.origHealth;
+        playerScript.ResetPlayerStats();
 
         playerScript.GetComponent<CharacterController>().enabled = true;
 
