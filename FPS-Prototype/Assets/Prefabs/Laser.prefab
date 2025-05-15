@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5511291707596354463}
   - component: {fileID: 7953381702130162339}
   - component: {fileID: 4795134292987749438}
+  - component: {fileID: 2891278375284648671}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
@@ -74,6 +75,7 @@ MonoBehaviour:
   playerMomentumMod: 0
   lerp: 0
   startDelay: 0
+  startDelayInitial: 0
   destinationDelay: 0
   pingPong: 1
   backToStart: 0
@@ -154,3 +156,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &2891278375284648671
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5239139098542354359}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
