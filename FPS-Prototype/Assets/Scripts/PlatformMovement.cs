@@ -56,17 +56,8 @@ public class PlatformMovement : MonoBehaviour
             return;
         }
 
-        // If the object has finished its movement
-        if (finished)
-        {
-            return;
-        }
-
-        // Count up wait time
-        waitTime += Time.deltaTime;
-
         // Handle count up to destruction if reached destination
-        if (destroyAtDestinationDelay > 0)
+        if (destroyAtDestinationDelay > 0.0f)
         {
             if (cycles >= 0.5f)
             {
@@ -79,6 +70,15 @@ public class PlatformMovement : MonoBehaviour
                 return;
             }
         }
+
+        // If the object has finished its movement
+        if (finished)
+        {
+            return;
+        }
+
+        // Count up wait time
+        waitTime += Time.deltaTime;
 
         // Check if they need to wait at start or destination
         if (!waited && !Waited())

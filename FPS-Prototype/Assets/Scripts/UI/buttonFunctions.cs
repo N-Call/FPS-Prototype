@@ -18,18 +18,32 @@ public class ButtonFunctions : MonoBehaviour
         }
         GameManager.instance.StateUnpause();
     }
+    public void StartGame()
+    {
+        // this is for the start game menu after button pushed then moves to first level
+        SceneManager.LoadScene(1);
+        GameManager.instance.StateUnpause();
+    }
 
     public void Resume()
     {
         GameManager.instance.StateUnpause();
     }
-
+    
     public void Restart()
     {
-        
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         GameManager.instance.StateUnpause();
         SoundManager.instance.sfxSource.Stop();
+    }
+    public void NextLevel()
+    {
+        // this is to load the next level but does a check first on making sure your in scene count 
+        if (SceneManager.GetActiveScene().buildIndex + 1 <= SceneManager.sceneCount)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            GameManager.instance.StateUnpause();
+        }
     }
 
     public void Quit()

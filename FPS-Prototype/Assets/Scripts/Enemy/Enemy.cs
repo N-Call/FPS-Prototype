@@ -104,10 +104,12 @@ public class Enemy : MonoBehaviour, IDamage
 
         if (!rangeIsTrigger)
         {
-            if (agent.isStopped && !isTurret)
+            if (!isTurret && agent.isStopped)
             {
                 playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-            }else if (isTurret)
+            }
+
+            else if (isTurret)
             {
                 playerInRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
             }
