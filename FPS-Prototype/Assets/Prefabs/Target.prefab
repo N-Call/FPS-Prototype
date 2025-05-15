@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4189158778229712764}
   - component: {fileID: 1932187664359237370}
   - component: {fileID: 1133801859072999487}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4863239528085769767}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.70710677, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 4.4614534, y: 2.7709653, z: 4.42868}
   m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
@@ -49,17 +49,17 @@ MonoBehaviour:
   HP: 1
   destination: {x: 0, y: 0, z: 0}
   relative: 0
-  speed: 25
+  speed: 2
   lerp: 0
   startDelay: 0
   destinationDelay: 0
-  pingPong: 0
-  artToDisable: {fileID: 0}
-  elem: 0
+  pingPong: 1
+  artToDisable: {fileID: 6496078138470315720}
+  elem: 2
   speedMod: 0.01
   speedModTime: 0
   jumpMod: 0.01
-  jumpModTime: 0
+  jumpModTime: 5
   reloadPercentBuff: 1
   reloadPercentDebuff: 1
 --- !u!136 &1133801859072999487
@@ -181,7 +181,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: df557ada12a51f0458e6ba803932e57f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
