@@ -55,12 +55,7 @@ public class GameManager : MonoBehaviour
         startPos = player.transform.position;
         
     }
-    private void Start()
-    {
-        StartGame();
-        //StartCoroutine(StartGameTimer());
-
-    }
+ 
 
     // Update is called once per frame
     void Update()
@@ -201,11 +196,6 @@ public class GameManager : MonoBehaviour
             enemy.ResetEnemies();
         }
 
-    }
-    IEnumerator StartGameTimer()
-    {
-        yield return new WaitForSeconds(0.2f);
-        
     }
 
 } 
