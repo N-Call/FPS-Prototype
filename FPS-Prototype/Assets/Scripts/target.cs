@@ -141,7 +141,6 @@ public class Target : MonoBehaviour, IDamage, ITarget
         else
         {
             Buff();
-            
         }
     }
 

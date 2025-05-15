@@ -89,7 +89,6 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     private void OnEnable()
     {
-
         GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
