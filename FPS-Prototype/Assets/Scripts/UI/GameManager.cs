@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
 
     }
     public void ToggleReticle()
-    {
+    {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
     }
 
