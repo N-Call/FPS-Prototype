@@ -54,6 +54,7 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isSliding;
 
     public int origHealth;
+    public int isShielded;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -310,9 +311,16 @@ public class PMovement : MonoBehaviour, IDamage
     {
         SoundManager.instance.PlaySFX("playerHurt");
 
-        HP -= amount;
-        UpdatePlayerUI();
-        StartCoroutine(FlashDamageScreen());
+        if (isShielded > 0)
+        {
+            isShielded -= isShielded - 1;
+        }
+        else
+        {
+            HP -= amount;
+            UpdatePlayerUI();
+            StartCoroutine(FlashDamageScreen());
+        }
 
         if (HP <= 0)
         {

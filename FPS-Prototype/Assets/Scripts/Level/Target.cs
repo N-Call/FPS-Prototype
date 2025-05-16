@@ -53,8 +53,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [SerializeField] float jumpModTime;
 
     [Header("Reload Element")]
-    [SerializeField][Range(1, 100)] float reloadPercentBuff;
-    [SerializeField][Range(1, 100)] float reloadPercentDebuff;
+    [SerializeField] int shieldMod;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -175,7 +174,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 }
                 break;
             case 3:
-                AmmoBuff();
+                ShieldBuff();
                 
                 break;
         }
@@ -214,7 +213,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 }
                 break;
             case 3:
-                AmmoDebuff();
+                ShieldDebuff();
                 break;
         }
     }
@@ -278,25 +277,16 @@ public class Target : MonoBehaviour, IDamage, ITarget
         Destroy(gameObject);
     }
 
-    private void AmmoBuff() 
+    private void ShieldBuff() 
     {
         SoundManager.instance.PlaySFX("powerUp");
-        for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
-        {
-            IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
-            rld?.SetAmmo(reloadPercentBuff);
-        }
-
+        GameManager.instance.playerScript.isShielded += GameManager.instance.playerScript.isShielded + shieldMod;
     }
 
-    private void AmmoDebuff()
+    private void ShieldDebuff()
     {
         SoundManager.instance.PlaySFX("debuff");
-        for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
-        {
-            IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
-            rld?.SetAmmo(-reloadPercentDebuff);
-        }
+        GameManager.instance.playerScript.isShielded -= GameManager.instance.playerScript.isShielded - shieldMod;
     }
 
     bool Waited()
