@@ -15,11 +15,11 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [SerializeField] ElementType elem;
 
     [Header("Speed Element")]
-    [SerializeField][Range(0.01f, 999999)] float speedMod;
+    [SerializeField][Range(0.0f, 2.0f)] float speedMod;
     [SerializeField] float speedModTime;
 
     [Header("Jump Element")]
-    [SerializeField][Range(0.01f, 999999)] float jumpMod;
+    [SerializeField][Range(0.0f, 5.0f)] float jumpMod;
     [SerializeField] float jumpModTime;
 
     [Header("Reload Element")]
