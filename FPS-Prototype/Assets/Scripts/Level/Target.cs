@@ -156,14 +156,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
     public IEnumerator SpeedBuff()
     {
         SoundManager.instance.PlaySFX("powerUp");
-        GameManager.instance.playerScript.baseSpeed *= speedMod;
-       
+        GameManager.instance.playerScript.AddModifier(speedMod);
 
         yield return new WaitForSeconds(speedModTime);
         
         isSpeedBuffed = false;
-        GameManager.instance.playerScript.baseSpeed /= speedMod;
-        
+        GameManager.instance.playerScript.AddModifier(-speedMod);
 
         Destroy(gameObject);
     }
@@ -171,13 +169,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
     public IEnumerator SpeedDebuff()
     {
         SoundManager.instance.PlaySFX("debuff");
-        GameManager.instance.playerScript.baseSpeed /= speedMod;
-        
+        GameManager.instance.playerScript.AddModifier(-speedMod);
+
         yield return new WaitForSeconds(speedModTime);
 
        
         isSpeedDebuffed = false;
-        GameManager.instance.playerScript.baseSpeed *= speedMod;
+        GameManager.instance.playerScript.AddModifier(speedMod);
 
         Destroy(gameObject);
     }
@@ -185,12 +183,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
     public IEnumerator JumpBuff()
     {
         SoundManager.instance.PlaySFX("powerUp");
-        GameManager.instance.playerScript.jumpForce *= jumpMod;
+        GameManager.instance.playerScript.AddModifier(0.0f, jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
 
         isJumpBuffed = false;
-        GameManager.instance.playerScript.jumpForce /= jumpMod;
+        GameManager.instance.playerScript.AddModifier(0.0f, -jumpMod);
 
         Destroy(gameObject);
     }
@@ -198,13 +196,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
     public IEnumerator JumpDebuff()
     {
         SoundManager.instance.PlaySFX("debuff");
-        GameManager.instance.playerScript.jumpForce /= jumpMod;
+        GameManager.instance.playerScript.AddModifier(0.0f, -jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
 
         
         isJumpDebuffed = false;
-        GameManager.instance.playerScript.jumpForce *= jumpMod;
+        GameManager.instance.playerScript.AddModifier(0.0f, jumpMod);
 
         Destroy(gameObject);
     }
