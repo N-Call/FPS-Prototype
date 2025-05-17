@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlatformMovement : MonoBehaviour
 {
 
+    static bool shouldResetPlayerParent;
+
     [Header("Direction")]
     [SerializeField] Vector3 destination;
     [SerializeField] bool relative;
@@ -18,10 +20,16 @@ public class PlatformMovement : MonoBehaviour
     [SerializeField] bool pingPong;
     [SerializeField] bool backToStart;
 
+    [Header("Player Passenger")]
+    [SerializeField] bool carryPlayer;
+    [SerializeField] bool onlyMoveWhenPlayer;
+
     [Header("Destruction")]
     [SerializeField] float destroyAfterTime;
     [SerializeField] int destroyAfterCycles;
     [SerializeField] float destroyAtDestinationDelay;
+
+    BoxCollider carryPlayerCollider;
 
     Vector3 startPosition;
     Vector3 dest;
@@ -31,20 +39,38 @@ public class PlatformMovement : MonoBehaviour
     float cycles;
     float destroyAtDestinationTime;
 
+    bool startedMoving;
     bool toStart;
     bool waited;
     bool finished;
+    bool hasPlayer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         startPosition = transform.position;
         dest = relative ? startPosition + destination : destination;
+        
+        if (carryPlayer)
+        {
+            carryPlayerCollider = gameObject.AddComponent<BoxCollider>();
+            carryPlayerCollider.enabled = true;
+            carryPlayerCollider.isTrigger = true;
+            carryPlayerCollider.size = new Vector3(1.0f, 2.0f, 1.0f);
+            carryPlayerCollider.center = new Vector3(0.0f, 1.4f, 0.0f);
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (onlyMoveWhenPlayer && !hasPlayer && !startedMoving)
+        {
+            return;
+        }
+
+        startedMoving = true;
+
         // Count up elapsed life time
         lifeTime += Time.deltaTime;
 
@@ -100,7 +126,7 @@ public class PlatformMovement : MonoBehaviour
             // If this object does not ping pong
             // (does not move back and forth between start and destination),
             // then the object has finished moving, and no longer needs to do anything
-            if (!pingPong && !backToStart)
+            if (!pingPong && !backToStart && !carryPlayer)
             {
                 finished = true;
                 return;
@@ -173,6 +199,33 @@ public class PlatformMovement : MonoBehaviour
         Vector3 temp = one;
         one = two;
         two = temp;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!carryPlayer || other.tag != "Player")
+        {
+            return;
+        }
+
+        if (other.transform.parent != null) {
+            shouldResetPlayerParent = false;
+        }
+
+        hasPlayer = true;
+        other.transform.parent = carryPlayerCollider.transform;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!carryPlayer || other.tag != "Player" || !shouldResetPlayerParent)
+        {
+            shouldResetPlayerParent = true;
+            return;
+        }
+
+        hasPlayer = false;
+        other.transform.parent = null;
     }
 
 }
