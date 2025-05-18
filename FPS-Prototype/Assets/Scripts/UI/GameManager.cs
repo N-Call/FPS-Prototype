@@ -29,9 +29,12 @@ public class GameManager : MonoBehaviour
     public Vector3 respawnPosition;
 
     public GameObject playerDamageScreen;
-    public Image playerHPbar;
     public GameObject player;
+
+    public Image playerHPbar;
     public PlayerScript playerScript;
+    public SceneData sceneData;
+    public SceneLoader sceneLoader;
 
     public bool isPaused;
     public float timeScaleOrig;
@@ -84,6 +87,7 @@ public class GameManager : MonoBehaviour
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();
         // stop the player from shooting 
+        Debug.Log(playerScript);
         playerScript.enabled = false;
     }
 
