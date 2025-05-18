@@ -52,7 +52,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [SerializeField][Range(0.01f, 999999)] float jumpMod;
     [SerializeField] float jumpModTime;
 
-    [Header("Reload Element")]
+    [Header("Shield Element")]
     [SerializeField] int shieldMod;
 
 
@@ -280,7 +280,14 @@ public class Target : MonoBehaviour, IDamage, ITarget
     private void ShieldBuff() 
     {
         SoundManager.instance.PlaySFX("powerUp");
+
         GameManager.instance.playerScript.isShielded += GameManager.instance.playerScript.isShielded + shieldMod;
+        if(GameManager.instance.playerScript.isShielded > GameManager.instance.playerScript.shieldMax)
+        {
+            GameManager.instance.playerScript.isShielded = GameManager.instance.playerScript.shieldMax;
+        }
+
+        GameManager.instance.playerScript.UpdatePlayerUI();
     }
 
     private void ShieldDebuff()

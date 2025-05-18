@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerDamageScreen;
     public Image playerHPbar;
+    public Image playerShieldBar;
     public GameObject player;
     public PMovement playerScript;
 
