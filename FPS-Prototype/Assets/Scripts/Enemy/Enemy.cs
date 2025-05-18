@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,7 +13,7 @@ public class Enemy : MonoBehaviour, IDamage
 
     [Header("Targeting and Shooting")]
     [SerializeField] int faceTargetSpeed;
-    [SerializeField] int sightRange;
+    [SerializeField] protected int sightRange;
     [SerializeField] bool rangeIsTrigger;
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
@@ -55,9 +56,13 @@ public class Enemy : MonoBehaviour, IDamage
     Transform mineTop;
     Color mineTopColor;
 
+    public Transform robotHead;
+    Transform robotMouth;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
         originalPosition = transform.position;
@@ -71,35 +76,33 @@ public class Enemy : MonoBehaviour, IDamage
 
             StartCoroutine(Rotate());
 
-            turretBase = transform.Find("Base");
-            turretBaseColor = turretBase.GetComponent<MeshRenderer>().material.color;
+            //turretBase = transform.Find("Base");
+            //turretBaseColor = turretBase.GetComponent<MeshRenderer>().material.color;
 
-            turretBarrel = transform.Find("Head/Barrel");
+            turretBarrel = transform.Find("Head/CannonBase/Cannon");
             turretBarrelColor = turretBarrel.GetComponent<MeshRenderer>().material.color;
 
-            turretLeftEye = transform.Find("Head/Left Eye");
-            turretLeftEyeColor = turretLeftEye.GetComponent<MeshRenderer>().material.color;
+            //turretLeftEye = transform.Find("Head/Left Eye");
+            //turretLeftEyeColor = turretLeftEye.GetComponent<MeshRenderer>().material.color;
 
-            turretLeftEyebrow = transform.Find("Head/Left Eye/Left Eyebrow");
-            turretLeftEyebrowColor = turretLeftEyebrow.GetComponent<MeshRenderer>().material.color;
+            //turretLeftEyebrow = transform.Find("Head/Left Eye/Left Eyebrow");
+            //turretLeftEyebrowColor = turretLeftEyebrow.GetComponent<MeshRenderer>().material.color;
 
-            turretRightEye = transform.Find("Head/Right Eye");
-            turretRightEyeColor = turretRightEye.GetComponent<MeshRenderer>().material.color;
+            //turretRightEye = transform.Find("Head/Right Eye");
+            //turretRightEyeColor = turretRightEye.GetComponent<MeshRenderer>().material.color;
 
-            turretRightEyebrow = transform.Find("Head/Right Eye/Right Eyebrow");
-            turretRightEyebrowColor = turretRightEyebrow.GetComponent<MeshRenderer>().material.color;
+            //turretRightEyebrow = transform.Find("Head/Right Eye/Right Eyebrow");
+            //turretRightEyebrowColor = turretRightEyebrow.GetComponent<MeshRenderer>().material.color;
         }
-        if (!isShooting)
-        {
-            mineTop = transform.Find("Top");
-            mineTopColor = mineTop.GetComponent<MeshRenderer>().material.color;
-        }
+        robotMouth = transform.Find("RobotMouth.001");
 
     }
 
     // Update is called once per frame
     void Update()
     {
+       
+
         shootTimer += Time.deltaTime;
 
         if (!rangeIsTrigger)
@@ -133,10 +136,13 @@ public class Enemy : MonoBehaviour, IDamage
             }
 
         }
-        if (!rangeIsTrigger && playerInRange && isTurret)
+        if (playerInRange && isTurret)
         {
+            Debug.Log("looking");
+            
             turretHead.LookAt(GameManager.instance.player.transform);
             turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
+            
         }
 
         if (shootTimer >= shootRate && playerAttackRange && isShooting)
@@ -219,6 +225,7 @@ public class Enemy : MonoBehaviour, IDamage
     {
         if (playerInRange && isTurret && rangeIsTrigger)
         {
+            Debug.Log("tracking");
             turretHead.LookAt(GameManager.instance.player.transform);
             turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
         }
@@ -227,37 +234,23 @@ public class Enemy : MonoBehaviour, IDamage
     IEnumerator flashRed()
     {
         model.material.color = Color.red;
-        if (isTurret)
-        {
-            FlashTurretRed();
-        }
-        else if(!isShooting)
-        {
-            FlashMineRed();
-        }
+        //if (isTurret)
+        //{
+        //    FlashTurretRed();
+        //}
+       
 
         yield return new WaitForSeconds(0.05f);
 
         model.material.color = colorOrig;
-        if (isTurret)
-        {
-            ReturnTurretColor();
-        }
-        else if(!isShooting)
-        {
-            ReturnMineColor();
-        }
+        //if (isTurret)
+        //{
+        //    ReturnTurretColor();
+        //}
+        
     }
 
-    private void ReturnMineColor()
-    {
-        mineTop.GetComponent<MeshRenderer>().material.color = mineTopColor;
-    }
-
-    private void FlashMineRed()
-    {
-        mineTop.GetComponent<MeshRenderer>().material.color = Color.red;
-    }
+    
 
     void FlashTurretRed()
     {
@@ -294,39 +287,40 @@ public class Enemy : MonoBehaviour, IDamage
         }
     }
 
-    public void TrackPlayer()
-    {
-        if (isTurret)
-        {
-            if (LookCoroutine != null)
-            {
-                StopCoroutine(LookCoroutine);
-            }
+    //public void TrackPlayer()
+    //{
+    //    if (isTurret)
+    //    {
+    //        if (LookCoroutine != null)
+    //        {
+    //            StopCoroutine(LookCoroutine);
+    //        }
             
-            LookCoroutine = StartCoroutine(turretTarget());
-        }
-    }
+    //        LookCoroutine = StartCoroutine(turretTarget());
+    //    }
+    //}
 
-    IEnumerator turretTarget()
-    {
+    //IEnumerator turretTarget()
+    //{
         
-        playerDir = (GameManager.instance.transform.position - transform.position);
+    //    playerDir = (GameManager.instance.transform.position - transform.position);
 
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(playerDir.x, turretHead.position.y, playerDir.z));
+    //    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(playerDir.x, playerDir.y, playerDir.z));
 
-        float time = 0;
+    //    float time = 0;
 
-        while (time < 1)
-        {
-            turretHead.rotation = Quaternion.Lerp(transform.rotation, lookRotation, time);
+    //    while (time < 1)
+    //    {
+    //        turretHead.rotation = Quaternion.Slerp(transform.rotation, lookRotation, time);
 
-            time += Time.deltaTime * faceTargetSpeed;
+    //        time += Time.deltaTime * faceTargetSpeed;
 
-            yield return null;
-        }
-    }
+    //        yield return null;
+    //    }
+    //}
     public void faceTarget()
     {
+
         Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
@@ -338,7 +332,7 @@ public class Enemy : MonoBehaviour, IDamage
             if (agent.isStopped == false)
             {
                 shootTimer = 0;
-                Instantiate(bullet, shootPos.position, transform.rotation);
+                Instantiate(bullet, shootPos.position, robotMouth.rotation);
                 SoundManager.instance.PlaySFX("enemyShot");
             }
         }
