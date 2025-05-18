@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         // to turn off the reticle
         reticle.SetActive(false);
-        SoundManager.instance.musicSource.Stop();
+        SoundManager.instance.musicSource.Pause();
         // stop the player from shooting 
         playerScript.enabled = false;
     }
