@@ -3,13 +3,14 @@ using UnityEngine;
 public class PlatformMovement : MonoBehaviour
 {
 
+    static bool shouldResetPlayerParent;
+
     [Header("Direction")]
     [SerializeField] Vector3 destination;
     [SerializeField] bool relative;
 
     [Header("Movement")]
     [SerializeField] float speed = 1.0f;
-    [SerializeField] float playerMomentumMod = 0.25f;
     [SerializeField] bool lerp;
 
     [Header("Behavior")]
@@ -19,10 +20,16 @@ public class PlatformMovement : MonoBehaviour
     [SerializeField] bool pingPong;
     [SerializeField] bool backToStart;
 
+    [Header("Player Passenger")]
+    [SerializeField] bool carryPlayer;
+    [SerializeField] bool onlyMoveWhenPlayer;
+
     [Header("Destruction")]
     [SerializeField] float destroyAfterTime;
     [SerializeField] int destroyAfterCycles;
     [SerializeField] float destroyAtDestinationDelay;
+
+    BoxCollider carryPlayerCollider;
 
     Vector3 startPosition;
     Vector3 dest;
@@ -32,21 +39,38 @@ public class PlatformMovement : MonoBehaviour
     float cycles;
     float destroyAtDestinationTime;
 
-    bool isMoving;
+    bool startedMoving;
     bool toStart;
     bool waited;
     bool finished;
+    bool hasPlayer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         startPosition = transform.position;
         dest = relative ? startPosition + destination : destination;
+        
+        if (carryPlayer)
+        {
+            carryPlayerCollider = gameObject.AddComponent<BoxCollider>();
+            carryPlayerCollider.enabled = true;
+            carryPlayerCollider.isTrigger = true;
+            carryPlayerCollider.size = new Vector3(1.0f, 2.0f, 1.0f);
+            carryPlayerCollider.center = new Vector3(0.0f, 1.4f, 0.0f);
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (onlyMoveWhenPlayer && !hasPlayer && !startedMoving)
+        {
+            return;
+        }
+
+        startedMoving = true;
+
         // Count up elapsed life time
         lifeTime += Time.deltaTime;
 
@@ -102,7 +126,7 @@ public class PlatformMovement : MonoBehaviour
             // If this object does not ping pong
             // (does not move back and forth between start and destination),
             // then the object has finished moving, and no longer needs to do anything
-            if (!pingPong && !backToStart)
+            if (!pingPong && !backToStart && !carryPlayer)
             {
                 finished = true;
                 return;
@@ -155,11 +179,8 @@ public class PlatformMovement : MonoBehaviour
     {
         if (Vector3.Distance(from, to) <= 0.1f)
         {
-            isMoving = false;
             return true;
         }
-
-        isMoving = true;
 
         if (lerp)
         {
@@ -180,17 +201,31 @@ public class PlatformMovement : MonoBehaviour
         two = temp;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && isMoving)
+        if (!carryPlayer || other.tag != "Player")
         {
-            AddMomentumToPlayer(dest - transform.position, speed);
+            return;
         }
+
+        if (other.transform.parent != null) {
+            shouldResetPlayerParent = false;
+        }
+
+        hasPlayer = true;
+        other.transform.parent = carryPlayerCollider.transform;
     }
 
-    void AddMomentumToPlayer(Vector3 direction, float speed)
+    private void OnTriggerExit(Collider other)
     {
-        GameManager.instance.playerScript.AddMomentum(direction, speed * playerMomentumMod);
+        if (!carryPlayer || other.tag != "Player" || !shouldResetPlayerParent)
+        {
+            shouldResetPlayerParent = true;
+            return;
+        }
+
+        hasPlayer = false;
+        other.transform.parent = null;
     }
 
 }

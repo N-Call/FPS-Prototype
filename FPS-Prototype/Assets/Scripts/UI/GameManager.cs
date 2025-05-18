@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject elapsedTime;
     [SerializeField] TMP_Text enemyWinCount;
 
-
     List<Enemy> enemiesToRespawn;
        
     public Vector3 respawnPosition;
@@ -32,7 +31,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerDamageScreen;
     public Image playerHPbar;
     public GameObject player;
-    public PMovement playerScript;
+    public PlayerScript playerScript;
 
     public bool isPaused;
     public float timeScaleOrig;
@@ -48,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
-        playerScript = player.GetComponent<PMovement>();
+        playerScript = player.GetComponent<PlayerScript>();
         timeScaleOrig = Time.timeScale;
        
         enemiesToRespawn = new List<Enemy>();
@@ -181,7 +180,7 @@ public class GameManager : MonoBehaviour
         playerScript.GetComponent<CharacterController>().enabled = false;
 
         player.transform.position = respawnPosition;
-        playerScript.HP = playerScript.origHealth;
+        playerScript.ResetPlayerStats();
 
         playerScript.GetComponent<CharacterController>().enabled = true;
 

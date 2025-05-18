@@ -12,7 +12,9 @@ public class Spawner : MonoBehaviour
     [SerializeField] float rate;
     [SerializeField] int stopSpawningAfter;
     [SerializeField] bool deleteWhenFinished;
+    [SerializeField] bool onlySpawnOne;
 
+    GameObject lastSpawned;
     float spawnTime;
     float elapsedTime;
     int objectsSpawned;
@@ -49,7 +51,13 @@ public class Spawner : MonoBehaviour
         }
 
         spawnTime = 0.0f;
-        Instantiate(objectToSpawn, transform.position + offset, rotation);
+
+        if (onlySpawnOne && lastSpawned != null)
+        {
+            return;
+        }
+
+        lastSpawned = Instantiate(objectToSpawn, transform.position + offset, rotation);
         objectsSpawned++;
     }
 
