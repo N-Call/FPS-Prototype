@@ -22,7 +22,7 @@ public class ButtonFunctions : MonoBehaviour
     {
         // this is for the start game menu after button pushed then moves to first level
         SceneManager.LoadScene(1);
-        GameManager.instance.StateUnpause();
+        
     }
 
     public void Resume()

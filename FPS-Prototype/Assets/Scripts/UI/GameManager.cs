@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
-    [SerializeField] GameObject menuStart;
+    
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
     [SerializeField] GameObject ammoCount;
@@ -116,12 +116,7 @@ public class GameManager : MonoBehaviour
         menuActive = menuLose;
         menuActive.SetActive(true);
     }
-    public void StartGame()
-    {
-        StatePause();
-        menuActive = menuStart;
-        menuActive.SetActive(true);
-    }
+   
 
     public void WinCondition(int amount)
     {
