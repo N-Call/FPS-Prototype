@@ -50,7 +50,6 @@ MonoBehaviour:
   destination: {x: 0, y: -18.5, z: 0}
   relative: 1
   speed: 5
-  playerMomentumMod: 0.25
   lerp: 0
   startDelay: 0
   startDelayInitial: 0
@@ -59,7 +58,7 @@ MonoBehaviour:
   backToStart: 0
   destroyAfterTime: 0
   destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0.01
+  destroyAtDestinationDelay: 5
 --- !u!114 &786867419020988684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,17 +71,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a94a29f135adf44497706f0686903df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 1
-  destination: {x: 0, y: 0, z: 0}
-  relative: 1
-  speed: 0
-  lerp: 0
-  startDelay: 0
-  destinationDelay: 0
-  pingPong: 1
   artToDisable: {fileID: 6426859011829082979}
+  HP: 1
   elem: 1
-  speedMod: 2
+  speedMod: 0.5
   speedModTime: 5
   jumpMod: 1
   jumpModTime: 0
