@@ -82,25 +82,35 @@ public class PlayerScript : MonoBehaviour, IDamage
 
     void Movement()
     {
+        // Horizontal direction
         float horizontal = Input.GetAxis("Horizontal");
+        // If moving sideways
         bool sideways = horizontal != 0;
 
+        // Vertical direction
         float vertical = Input.GetAxis("Vertical");
+        // If moving forward
         bool forward = vertical > 0;
+        // If moving backwards
         bool backwards = vertical < 0;
 
+        // The direction the player is going
         Vector3 inputDirection = transform.right * horizontal + transform.forward * vertical;
 
+        // Vertical & horizontal speed
         verticalSpeed = forward && backwards ? 0.0f : forward ? walkForwardSpeed : backwards ? walkBackwardsSpeed : 0.0f;
         horizontalSpeed = sideways ? walkSidewaysSpeed : 0.0f;
 
+        // The current speed calculated
         float speed = CalculateSpeed();
         
+        // Move the player the direction and speed
         controller.Move(inputDirection * speed * Time.deltaTime);
     }
 
     float CalculateSpeed()
     {
+        // The base speed (vertical prioritized over horizontal)
         float speed = verticalSpeed > 0 ? verticalSpeed : horizontalSpeed;
         
         if (isSprinting)
@@ -113,15 +123,21 @@ public class PlayerScript : MonoBehaviour, IDamage
             speed *= crouchSpeedMultiplier;
         }
 
+        // If there's a jump speed bonus...
         if (jumpSpeedBonus > 0.0f)
         {
+            // Apply jump speed bonus
             speed += jumpSpeedBonus;
+
             if (jumpSpeedBonus > slideJumpMinimumSpeed)
             {
+                // Gradually decrease the jump speed bonus
+                // until it is <= slide jump minimum speed
                 jumpSpeedBonus -= slideJumpRate;
             }
         }
 
+        // Handle slide speed
         if (isSliding)
         {
             float calculatedCrouchSpeed = speed * crouchSpeedMultiplier;
@@ -137,6 +153,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             currentSlideSpeed -= slideRate;
         }
 
+        // Return the calculated speed, and factor in external speed modifiers
         return speed + (speed * speedModifier);
     }
 
@@ -144,11 +161,14 @@ public class PlayerScript : MonoBehaviour, IDamage
     {
         if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
         {
+            // Handle slide jump
             if (isSliding)
             {
+                // Apply slide jump speed boost
                 jumpSpeedBonus = slideJumpSpeedBonus;
             }
 
+            // Handle jump force (with external jump multiplier factored in)
             verticalVelocity.y = jumpForce + (jumpForce * jumpModifier);
             jumpCount++;
         }
@@ -157,6 +177,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         verticalVelocity.y = Mathf.Max(verticalVelocity.y, -maxGravity);
         controller.Move(verticalVelocity * Time.deltaTime);
 
+        // Reset jumps, slide jump speed bonus, and applied gravity
         if (controller.isGrounded)
         {
             verticalVelocity.y = 0.0f;
@@ -165,6 +186,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         }
     }
 
+    // Handle sprint inputs
     void Sprint()
     {
         if (Input.GetButtonDown("Sprint") && controller.isGrounded && !isSliding)
@@ -177,6 +199,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         }
     }
 
+    // Handle crouch and slide inputs
     void Crouch()
     {
         if (Input.GetButtonDown("Crouch"))
@@ -331,6 +354,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         invulnerable = isInvulnerable;
     }
 
+    // Gradually crouch and uncrouch
     IEnumerator HandleCrouchHeight(bool crouch)
     {
         if (crouch)
