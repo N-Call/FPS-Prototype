@@ -36,8 +36,6 @@ public class GameManager : MonoBehaviour
     public bool isPaused;
     public float timeScaleOrig;
     public Vector3 startPos;
-
-
     
     int gameGoalCount;
     int enemyCount;
@@ -47,14 +45,15 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
-        playerScript = player.GetComponent<PlayerScript>();
+        if (player != null)
+        {
+            playerScript = player.GetComponent<PlayerScript>();
+            startPos = player.transform.position;
+        }
+
         timeScaleOrig = Time.timeScale;
-       
         enemiesToRespawn = new List<Enemy>();
-        startPos = player.transform.position;
-        
     }
- 
 
     // Update is called once per frame
     void Update()

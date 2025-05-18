@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour, IDamage
     Color mineTopColor;
 
     public Transform robotHead;
+    Transform robotMouth;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -75,26 +76,26 @@ public class Enemy : MonoBehaviour, IDamage
 
             StartCoroutine(Rotate());
 
-            turretBase = transform.Find("Base");
-            turretBaseColor = turretBase.GetComponent<MeshRenderer>().material.color;
+            //turretBase = transform.Find("Base");
+            //turretBaseColor = turretBase.GetComponent<MeshRenderer>().material.color;
 
-            turretBarrel = transform.Find("Head/Barrel");
+            turretBarrel = transform.Find("Head/CannonBase/Cannon");
             turretBarrelColor = turretBarrel.GetComponent<MeshRenderer>().material.color;
 
-            turretLeftEye = transform.Find("Head/Left Eye");
-            turretLeftEyeColor = turretLeftEye.GetComponent<MeshRenderer>().material.color;
+            //turretLeftEye = transform.Find("Head/Left Eye");
+            //turretLeftEyeColor = turretLeftEye.GetComponent<MeshRenderer>().material.color;
 
-            turretLeftEyebrow = transform.Find("Head/Left Eye/Left Eyebrow");
-            turretLeftEyebrowColor = turretLeftEyebrow.GetComponent<MeshRenderer>().material.color;
+            //turretLeftEyebrow = transform.Find("Head/Left Eye/Left Eyebrow");
+            //turretLeftEyebrowColor = turretLeftEyebrow.GetComponent<MeshRenderer>().material.color;
 
-            turretRightEye = transform.Find("Head/Right Eye");
-            turretRightEyeColor = turretRightEye.GetComponent<MeshRenderer>().material.color;
+            //turretRightEye = transform.Find("Head/Right Eye");
+            //turretRightEyeColor = turretRightEye.GetComponent<MeshRenderer>().material.color;
 
-            turretRightEyebrow = transform.Find("Head/Right Eye/Right Eyebrow");
-            turretRightEyebrowColor = turretRightEyebrow.GetComponent<MeshRenderer>().material.color;
+            //turretRightEyebrow = transform.Find("Head/Right Eye/Right Eyebrow");
+            //turretRightEyebrowColor = turretRightEyebrow.GetComponent<MeshRenderer>().material.color;
         }
+        robotMouth = transform.Find("RobotMouth.001");
 
-       
     }
 
     // Update is called once per frame
@@ -138,8 +139,10 @@ public class Enemy : MonoBehaviour, IDamage
         if (playerInRange && isTurret)
         {
             Debug.Log("looking");
+            
             turretHead.LookAt(GameManager.instance.player.transform);
             turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
+            
         }
 
         if (shootTimer >= shootRate && playerAttackRange && isShooting)
@@ -231,19 +234,19 @@ public class Enemy : MonoBehaviour, IDamage
     IEnumerator flashRed()
     {
         model.material.color = Color.red;
-        if (isTurret)
-        {
-            FlashTurretRed();
-        }
+        //if (isTurret)
+        //{
+        //    FlashTurretRed();
+        //}
        
 
         yield return new WaitForSeconds(0.05f);
 
         model.material.color = colorOrig;
-        if (isTurret)
-        {
-            ReturnTurretColor();
-        }
+        //if (isTurret)
+        //{
+        //    ReturnTurretColor();
+        //}
         
     }
 
@@ -329,7 +332,7 @@ public class Enemy : MonoBehaviour, IDamage
             if (agent.isStopped == false)
             {
                 shootTimer = 0;
-                Instantiate(bullet, shootPos.position, transform.rotation);
+                Instantiate(bullet, shootPos.position, robotMouth.rotation);
                 SoundManager.instance.PlaySFX("enemyShot");
             }
         }
@@ -337,8 +340,7 @@ public class Enemy : MonoBehaviour, IDamage
         if (isTurret)
         {
             shootTimer = 0.0f;
-            Instantiate(bullet, shootPos.position, transform.rotation);
-            
+            Instantiate(bullet, shootPos.position, turretBarrel.rotation);
             SoundManager.instance.PlaySFX("turretShot");
         }
     }
