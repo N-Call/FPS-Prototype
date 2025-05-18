@@ -137,12 +137,12 @@ public class GameManager : MonoBehaviour
     {
         enemyCount += amount;
         enemyCountUI.text = enemyCount.ToString("F0");
-        enemyWinCount.text = enemyCount.ToString(enemyCount + " * 5s ");
+        enemyWinCount.text = enemyCount + " * 10s";
     }
 
     public float EnemyTimePenalty(float totalTime)
     { 
-        return totalTime + enemyCount * 5; 
+        return totalTime + enemyCount * 10; 
     }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
