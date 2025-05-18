@@ -3523,6 +3523,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8132270546419777645}
   - component: {fileID: 6227796996290228672}
+  - component: {fileID: 5936324991273818310}
   m_Layer: 5
   m_Name: Gamemanager
   m_TagString: Untagged
@@ -3576,12 +3577,30 @@ MonoBehaviour:
   enemyWinCount: {fileID: 7763808701359002444}
   respawnPosition: {x: 0, y: 0, z: 0}
   playerDamageScreen: {fileID: 7938001656103578483}
-  playerHPbar: {fileID: 6579848326692649394}
   player: {fileID: 0}
+  playerHPbar: {fileID: 6579848326692649394}
   playerScript: {fileID: 0}
+  sceneData: {fileID: 0}
+  sceneLoader: {fileID: 0}
   isPaused: 0
   timeScaleOrig: 0
   startPos: {x: 0, y: 0, z: 0}
+--- !u!114 &5936324991273818310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6266222961184111208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 138b4c6bbb07eff4d924941798494632, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneDataSOArray:
+  - {fileID: 11400000, guid: ffae65e38be150f40aa76024acdee890, type: 2}
+  - {fileID: 11400000, guid: 6b6d2f9be82e97a49a51bc944c9495a9, type: 2}
+  - {fileID: 11400000, guid: 1ae5b7f3cefede94e9979aaf57decb2f, type: 2}
 --- !u!1 &6268598877598806463
 GameObject:
   m_ObjectHideFlags: 0

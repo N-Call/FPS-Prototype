@@ -2342,13 +2342,14 @@ MonoBehaviour:
   destination: {x: 5, y: 0, z: 0}
   relative: 1
   speed: 5
-  playerMomentumMod: 0.25
   lerp: 0
   startDelay: 0
   startDelayInitial: 0
   destinationDelay: 0
   pingPong: 1
   backToStart: 0
+  carryPlayer: 0
+  onlyMoveWhenPlayer: 0
   destroyAfterTime: 0
   destroyAfterCycles: 0
   destroyAtDestinationDelay: 0
@@ -2735,6 +2736,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
   m_PrefabInstance: {fileID: 1827465869}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1884418208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1884418210}
+  - component: {fileID: 1884418209}
+  m_Layer: 0
+  m_Name: SceneData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1884418209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884418208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ef86c20c3112048949397ddb4bbcc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneData: {fileID: 0}
+--- !u!4 &1884418210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884418208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.8599746, y: 2.575281, z: 2.5070283}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1933576412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3344,6 +3390,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4550209352901690113, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Respawn
+      objectReference: {fileID: 0}
     - target: {fileID: 5576316668830323436, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
       propertyPath: m_fontColor.b
       value: 0.8238993
@@ -3451,6 +3501,10 @@ PrefabInstance:
     - target: {fileID: 8030430765072617065, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438981382900561972, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Restart
       objectReference: {fileID: 0}
     - target: {fileID: 8835552038678017734, guid: 46fb5515e4bd32e41994075fb0827186, type: 3}
       propertyPath: m_fontColor.b
@@ -3920,3 +3974,4 @@ SceneRoots:
   - {fileID: 802453167387261244}
   - {fileID: 5791903635480948981}
   - {fileID: 84393946}
+  - {fileID: 1884418210}
