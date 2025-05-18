@@ -159,6 +159,7 @@ public class PlayerScript : MonoBehaviour, IDamage
 
         if (controller.isGrounded)
         {
+            verticalVelocity.y = 0.0f;
             jumpCount = 0;
             jumpSpeedBonus = 0.0f;
         }
