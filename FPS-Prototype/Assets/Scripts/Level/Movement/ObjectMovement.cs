@@ -29,7 +29,8 @@ public class ObjectMovement : MonoBehaviour
 
     protected Vector3 currentDestination;
 
-    float startTimer;
+    protected float startTimer;
+    protected float destinationTimer;
     float destroyTimer;
 
     bool waitedForPlayer;
