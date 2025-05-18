@@ -507,6 +507,9 @@ MonoBehaviour:
   waitForPlayer: 1
   startDelay: 0
   destroyAfterTime: 0
+  debugMode: 0
+  initialStartDelay: 0
+  destinationDelay: 0
   destroyAfterCycle: 0
 --- !u!4 &401475471 stripped
 Transform:
@@ -641,7 +644,7 @@ MonoBehaviour:
   carryPassengers: 1
   moveWithoutPlayer: 1
   waitForPlayer: 0
-  startDelay: 5
+  startDelay: 0
   destroyAfterTime: 0
   destroyAtDestinationDelay: 3
 --- !u!1 &533001485
@@ -1127,8 +1130,11 @@ MonoBehaviour:
   carryPassengers: 1
   moveWithoutPlayer: 1
   waitForPlayer: 1
-  startDelay: 3
+  startDelay: 1
   destroyAfterTime: 0
+  debugMode: 1
+  initialStartDelay: 3
+  destinationDelay: 3
   destroyAfterCycle: 0
 --- !u!1001 &805108164
 PrefabInstance:
@@ -1690,8 +1696,11 @@ MonoBehaviour:
   carryPassengers: 1
   moveWithoutPlayer: 1
   waitForPlayer: 0
-  startDelay: 3
+  startDelay: 0
   destroyAfterTime: 0
+  debugMode: 0
+  initialStartDelay: 0
+  destinationDelay: 0
   destroyAfterCycle: 5
 --- !u!1 &1258810517
 GameObject:
