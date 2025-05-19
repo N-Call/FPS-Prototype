@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using JetBrains.Annotations;
+using UnityEngine.Rendering.PostProcessing;
 
 public class GameManager : MonoBehaviour
 {
@@ -83,6 +84,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        //PostProcessVolume ppVolume = Camera.main.GetComponent<Find player camera>(); then need to toggle 
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();

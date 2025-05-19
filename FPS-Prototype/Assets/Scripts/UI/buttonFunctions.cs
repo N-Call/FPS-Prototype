@@ -29,7 +29,8 @@ public class ButtonFunctions : MonoBehaviour
         // need the button to take what level is selected in the
         // level selecte scene and start that scene if only that level is unlocked 
     }
-    // buttons needed for level scelection levels need to be made first 5 in total  
+    // buttons needed for level scelection levels need to be made first 5 in total
+    // Setting button needed as well 
 
     public void Resume()
     {
