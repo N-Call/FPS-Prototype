@@ -68,7 +68,7 @@ public class Damage : MonoBehaviour
 
         if (damageType == DamageType.homing)
         {
-            SoundManager.instance.PlaySFX("turretDestroy");
+            SoundManager.instance.PlaySFX("turretDestroy", 1f);
         }
     }
 

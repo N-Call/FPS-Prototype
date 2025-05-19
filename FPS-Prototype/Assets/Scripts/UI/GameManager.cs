@@ -84,7 +84,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        //PostProcessVolume ppVolume = Camera.main.GetComponent<Find player camera>(); then need to toggle 
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();
@@ -110,6 +109,12 @@ public class GameManager : MonoBehaviour
     public void ToggleReticle()
     {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
+    }
+
+    public void TogglePPVolume()
+    {// toggle the blurr for menus 
+        // PostProcessVolume ppVolume = Camera.main.GetComponent<Player>(); need to connect to player camera
+        // ppVolume.enabled = !ppVolume.enabled; 
     }
 
     public void YouLose() 

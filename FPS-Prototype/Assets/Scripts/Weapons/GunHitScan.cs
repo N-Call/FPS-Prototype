@@ -10,7 +10,7 @@ public class GunHitScan : Range
         if (ammoCount > 0 && shootRate <= shootTimer)
         {
             PlayShootAnim();
-            SoundManager.instance.PlaySFX("pistol");
+            SoundManager.instance.PlaySFX("pistol", 0.2f);
 
             //see if you hit an object
             RaycastHit hit;

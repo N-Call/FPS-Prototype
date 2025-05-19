@@ -17,14 +17,14 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [Header("Speed Element")]
     [SerializeField][Range(0.0f, 2.0f)] float speedMod;
     [SerializeField] float speedModTime;
+    [SerializeField] float speedFOVMod;
 
     [Header("Jump Element")]
     [SerializeField][Range(0.0f, 5.0f)] float jumpMod;
     [SerializeField] float jumpModTime;
 
-    [Header("Reload Element")]
-    [SerializeField][Range(1, 100)] float reloadPercentBuff;
-    [SerializeField][Range(1, 100)] float reloadPercentDebuff;
+    [Header("Shield Element")]
+    [SerializeField] int shieldMod;
 
     Collider targCollider;
 
@@ -47,7 +47,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public void TakeDamage(int amount)
     {
-        SoundManager.instance.PlaySFX("targetHit");
+        SoundManager.instance.PlaySFX("targetHit", 1f);
         GameManager.instance.ToggleReticle();
         HP -= amount;
 
@@ -109,7 +109,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 }
                 break;
             case 3:
-                AmmoBuff();
+                ShieldBuff();
                 
                 break;
         }
@@ -148,27 +148,29 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 }
                 break;
             case 3:
-                AmmoDebuff();
+                ShieldDebuff();
                 break;
         }
     }
 
     public IEnumerator SpeedBuff()
     {
-        SoundManager.instance.PlaySFX("powerUp");
+        SoundManager.instance.PlaySFX("powerUp", 1f);
         GameManager.instance.playerScript.AddModifier(speedMod);
+        GameManager.instance.playerScript.SetFOV(speedFOVMod);
 
         yield return new WaitForSeconds(speedModTime);
         
         isSpeedBuffed = false;
         GameManager.instance.playerScript.AddModifier(-speedMod);
+        GameManager.instance.playerScript.SetFOV(-speedFOVMod);
 
         Destroy(gameObject);
     }
 
     public IEnumerator SpeedDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
+        SoundManager.instance.PlaySFX("debuff", 1f);
         GameManager.instance.playerScript.AddModifier(-speedMod);
 
         yield return new WaitForSeconds(speedModTime);
@@ -182,7 +184,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpBuff()
     {
-        SoundManager.instance.PlaySFX("powerUp");
+        SoundManager.instance.PlaySFX("powerUp", 1f);
         GameManager.instance.playerScript.AddModifier(0.0f, jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
@@ -195,7 +197,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
+        SoundManager.instance.PlaySFX("debuff", 1f);
         GameManager.instance.playerScript.AddModifier(0.0f, -jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
@@ -207,25 +209,19 @@ public class Target : MonoBehaviour, IDamage, ITarget
         Destroy(gameObject);
     }
 
-    private void AmmoBuff() 
+    private void ShieldBuff() 
     {
-        SoundManager.instance.PlaySFX("powerUp");
-        for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
-        {
-            IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
-            rld?.SetAmmo(reloadPercentBuff);
-        }
+        SoundManager.instance.PlaySFX("powerUp", 1f);
 
+        GameManager.instance.playerScript.SetShield(shieldMod);
+
+        GameManager.instance.playerScript.UpdatePlayerUI();
     }
 
-    private void AmmoDebuff()
+    private void ShieldDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
-        for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
-        {
-            IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
-            rld?.SetAmmo(-reloadPercentDebuff);
-        }
+        SoundManager.instance.PlaySFX("debuff", 1f);
+        //GameManager.instance.playerScript.isShielded -= GameManager.instance.playerScript.isShielded - shieldMod;
     }
 
 }
