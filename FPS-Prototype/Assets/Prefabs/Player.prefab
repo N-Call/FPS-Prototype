@@ -197,6 +197,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   HP: 5
+  shieldMax: 5
   walkForwardSpeed: 8
   walkSidewaysSpeed: 4
   walkBackwardsSpeed: 4
@@ -205,6 +206,7 @@ MonoBehaviour:
   gravity: 30
   maxGravity: 45
   sprintSpeed: 4
+  fovMod: 3
   crouchSpeedMultiplier: 0.5
   crouchHeightMultiplier: 0.5
   crouchRate: 0.05
@@ -218,6 +220,9 @@ MonoBehaviour:
   - {fileID: 4591319735500982037}
   - {fileID: 5166097307989126926}
   - {fileID: 168810582318518561}
+  changeRate: 0.5
+  tickRate: 0.01
+  isShielded: 0
 --- !u!143 &722909320714874768
 CharacterController:
   m_ObjectHideFlags: 0
