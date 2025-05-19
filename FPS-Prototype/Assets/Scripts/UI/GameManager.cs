@@ -18,12 +18,19 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
+
     [SerializeField] GameObject ammoCount;
     [SerializeField] GameObject weaponIcon;
+
     [SerializeField] TMP_Text enemyCountUI;
     [SerializeField] GameObject timerWinCount;
     [SerializeField] GameObject elapsedTime;
     [SerializeField] TMP_Text enemyWinCount;
+
+    [SerializeField] GameObject buffSprint;
+    [SerializeField] GameObject debuffSprint;
+    [SerializeField] GameObject buffJump;
+    [SerializeField] GameObject debuffJump;
 
     List<Enemy> enemiesToRespawn;
        
@@ -109,6 +116,26 @@ public class GameManager : MonoBehaviour
     public void ToggleReticle()
     {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
+    }
+    public void BuffSprintIcon()
+    {
+        Debug.Log("Icon Pop UP");
+        StartCoroutine(BuffSprintIconsTime());
+    }
+    public void DeBuffSprintIcon()
+    {
+        Debug.Log("Icon Pop UP");
+        StartCoroutine(DeBuffSprintIconsTime());
+    }
+    public void BuffJumpIcon()
+    {
+        Debug.Log("Icon Pop UP");
+        StartCoroutine(BuffJumpIconsTime());
+    }
+    public void DeBuffJumpIcon()
+    {
+        Debug.Log("Icon Pop UP");
+        StartCoroutine(DeBuffJumpIconsTime());
     }
 
     public void TogglePPVolume()
@@ -200,6 +227,30 @@ public class GameManager : MonoBehaviour
         hitMakerReticle.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
+    }
+    IEnumerator BuffSprintIconsTime()
+    {
+        buffSprint.SetActive(true);
+        yield return new WaitForSeconds(5.0F);
+        buffSprint.SetActive(false);
+    }
+    IEnumerator DeBuffSprintIconsTime()
+    {
+        debuffSprint.SetActive(true);
+        yield return new WaitForSeconds(5.0F);
+        debuffSprint.SetActive(false);
+    }
+    IEnumerator BuffJumpIconsTime()
+    {
+        buffJump.SetActive(true);
+        yield return new WaitForSeconds(5.0F);
+        buffJump.SetActive(false);
+    }
+    IEnumerator DeBuffJumpIconsTime()
+    {
+        debuffJump.SetActive(true);
+        yield return new WaitForSeconds(5.0F);
+        debuffJump.SetActive(false);
     }
 
 } 
