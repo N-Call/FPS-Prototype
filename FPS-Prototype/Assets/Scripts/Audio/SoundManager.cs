@@ -26,11 +26,11 @@ public class SoundManager : MonoBehaviour
     }
     private void Start()
     {
-        PlayMusic("Theme");
+        PlayMusic("Theme", .7f);
     }
         
 
-    public void PlayMusic(string name)
+    public void PlayMusic(string name, float volume)
     {
         Sound s = Array.Find(musicSounds, x => x.name == name);
         if (s == null)
@@ -40,10 +40,11 @@ public class SoundManager : MonoBehaviour
         else
         {
             musicSource.clip = s.clip;
+            musicSource.volume = volume;
             musicSource.Play();
         }        
     }
-    public void PlaySFX(string name)
+    public void PlaySFX(string name, float volume)
     {
         Sound s = Array.Find(sfxSounds, x => x.name == name);
         if (s == null)
@@ -52,7 +53,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            
+            sfxSource.volume = volume;
             sfxSource.PlayOneShot(s.clip);
         }
 

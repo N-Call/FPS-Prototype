@@ -62,7 +62,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         if (reloadCap == ammoCount || ammoCap == 0 && ammoCount == 0) {return;}
 
         PlayReloadAnim();
-        SoundManager.instance.PlaySFX(soundFxName);
+        SoundManager.instance.PlaySFX(soundFxName, 1f);
 
         ammoCap -= reloadCap - ammoCount;
         ammoCount = reloadCap;

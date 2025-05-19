@@ -32,7 +32,7 @@ public class Bow : Range
             StopCoroutine(chargeCoroutine);
             chargeCoroutine = null;
 
-            SoundManager.instance.PlaySFX("bowRelease");
+            SoundManager.instance.PlaySFX("bowRelease", 1f);
             Shoot();
             ammoCount--;
             currentCharge = 0;
@@ -67,7 +67,7 @@ public class Bow : Range
     IEnumerator Charge()
     {
         PlayChargeAnim();
-        SoundManager.instance.PlaySFX("bowLoad");
+        SoundManager.instance.PlaySFX("bowLoad", 1f);
         while (currentCharge < chargeMaxRate)
         {
             currentCharge += chargeRate;

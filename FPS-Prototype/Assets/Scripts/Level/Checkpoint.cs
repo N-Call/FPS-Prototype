@@ -15,7 +15,7 @@ public class Checkpoint : MonoBehaviour
         {
             Enemy enemy = GetComponent<Enemy>();
             
-            SoundManager.instance.PlaySFX("checkPoint");
+            SoundManager.instance.PlaySFX("checkPoint", 1f);
             Debug.Log("checkpoint reached");
             GameManager.instance.SetSpawnPosition(transform.position);
             Destroy(gameObject);
@@ -30,7 +30,7 @@ public class Checkpoint : MonoBehaviour
                 Debug.Log("final checkpoint");
                 GameManager.instance.WinCondition(-1);
                 SoundManager.instance.sfxSource.Stop();
-                SoundManager.instance.PlaySFX("victory");
+                SoundManager.instance.PlaySFX("victory", 0.5f);
             }
 
             

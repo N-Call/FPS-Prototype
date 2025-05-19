@@ -305,7 +305,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             return;
         }
 
-        SoundManager.instance.PlaySFX("playerHurt");
+        SoundManager.instance.PlaySFX("playerHurt", 0.2f);
 
         HP -= amount;
         UpdatePlayerUI();

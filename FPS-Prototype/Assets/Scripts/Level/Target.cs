@@ -47,7 +47,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public void TakeDamage(int amount)
     {
-        SoundManager.instance.PlaySFX("targetHit");
+        SoundManager.instance.PlaySFX("targetHit", 1f);
         GameManager.instance.ToggleReticle();
         HP -= amount;
 
@@ -155,7 +155,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator SpeedBuff()
     {
-        SoundManager.instance.PlaySFX("powerUp");
+        SoundManager.instance.PlaySFX("powerUp", 1f);
         GameManager.instance.playerScript.AddModifier(speedMod);
 
         yield return new WaitForSeconds(speedModTime);
@@ -168,7 +168,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator SpeedDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
+        SoundManager.instance.PlaySFX("debuff", 1f);
         GameManager.instance.playerScript.AddModifier(-speedMod);
 
         yield return new WaitForSeconds(speedModTime);
@@ -182,7 +182,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpBuff()
     {
-        SoundManager.instance.PlaySFX("powerUp");
+        SoundManager.instance.PlaySFX("powerUp", 1f);
         GameManager.instance.playerScript.AddModifier(0.0f, jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
@@ -195,7 +195,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
+        SoundManager.instance.PlaySFX("debuff", 1f);
         GameManager.instance.playerScript.AddModifier(0.0f, -jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
@@ -209,7 +209,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void AmmoBuff() 
     {
-        SoundManager.instance.PlaySFX("powerUp");
+        SoundManager.instance.PlaySFX("powerUp", 1f);
         for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
         {
             IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();
@@ -220,7 +220,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void AmmoDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
+        SoundManager.instance.PlaySFX("debuff", 1f);
         for (int i = 0; i < GameManager.instance.playerScript.weaponList.Count; i++)
         {
             IReloadable rld = GameManager.instance.playerScript.weaponList[i].GetComponent<IReloadable>();

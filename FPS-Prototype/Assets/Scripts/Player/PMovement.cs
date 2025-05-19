@@ -150,7 +150,7 @@ public class PMovement : MonoBehaviour, IDamage
 
                 vertVel.y = jumpForce;
                 currJumpCount++;
-                SoundManager.instance.PlaySFX("playerJump");
+                SoundManager.instance.PlaySFX("playerJump", 1f);
             }
 
         }
@@ -162,7 +162,7 @@ public class PMovement : MonoBehaviour, IDamage
             {
                 vertVel.y = jumpForce;
                 currJumpCount++;
-                SoundManager.instance.PlaySFX("playerJump");
+                SoundManager.instance.PlaySFX("playerJump", 1f);
             }
 
             // This applies gravity, when not on the ground.
@@ -183,7 +183,7 @@ public class PMovement : MonoBehaviour, IDamage
         
         if(controller.isGrounded && inputDir.magnitude != 0)
         {
-            SoundManager.instance.PlaySFX("footSteps");
+           // SoundManager.instance.PlaySFX("footSteps");
         }
         
     }
@@ -308,7 +308,7 @@ public class PMovement : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
-        SoundManager.instance.PlaySFX("playerHurt");
+        SoundManager.instance.PlaySFX("playerHurt", 1f);
 
         HP -= amount;
         UpdatePlayerUI();
