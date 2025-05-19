@@ -47,7 +47,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public void TakeDamage(int amount)
     {
-        SoundManager.instance.PlaySFX("targetHit");
+        SoundManager.instance.PlaySFX("targetHit", 1f);
         GameManager.instance.ToggleReticle();
         HP -= amount;
 
@@ -155,7 +155,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator SpeedBuff()
     {
-        SoundManager.instance.PlaySFX("powerUp");
+        SoundManager.instance.PlaySFX("powerUp", 1f);
         GameManager.instance.playerScript.AddModifier(speedMod);
         GameManager.instance.playerScript.SetFOV(speedFOVMod);
 
@@ -170,7 +170,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator SpeedDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
+        SoundManager.instance.PlaySFX("debuff", 1f);
         GameManager.instance.playerScript.AddModifier(-speedMod);
 
         yield return new WaitForSeconds(speedModTime);
@@ -184,7 +184,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpBuff()
     {
-        SoundManager.instance.PlaySFX("powerUp");
+        SoundManager.instance.PlaySFX("powerUp", 1f);
         GameManager.instance.playerScript.AddModifier(0.0f, jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
@@ -197,7 +197,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public IEnumerator JumpDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
+        SoundManager.instance.PlaySFX("debuff", 1f);
         GameManager.instance.playerScript.AddModifier(0.0f, -jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
@@ -211,7 +211,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void ShieldBuff() 
     {
-        SoundManager.instance.PlaySFX("powerUp");
+        SoundManager.instance.PlaySFX("powerUp", 1f);
 
         GameManager.instance.playerScript.SetShield(shieldMod);
 
@@ -220,7 +220,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void ShieldDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff");
+        SoundManager.instance.PlaySFX("debuff", 1f);
         //GameManager.instance.playerScript.isShielded -= GameManager.instance.playerScript.isShielded - shieldMod;
     }
 
