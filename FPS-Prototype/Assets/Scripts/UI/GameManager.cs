@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
 
     public Image playerHPbar;
+    public Image playerShieldBar;
     public PlayerScript playerScript;
     public SceneData sceneData;
     public SceneLoader sceneLoader;
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
+
         if (player != null)
         {
             playerScript = player.GetComponent<PlayerScript>();

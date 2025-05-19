@@ -17,6 +17,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [Header("Speed Element")]
     [SerializeField][Range(0.0f, 2.0f)] float speedMod;
     [SerializeField] float speedModTime;
+    [SerializeField] float speedFOVMod;
 
     [Header("Jump Element")]
     [SerializeField][Range(0.0f, 5.0f)] float jumpMod;
@@ -156,11 +157,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         SoundManager.instance.PlaySFX("powerUp");
         GameManager.instance.playerScript.AddModifier(speedMod);
+        GameManager.instance.playerScript.SetFOV(speedFOVMod);
 
         yield return new WaitForSeconds(speedModTime);
         
         isSpeedBuffed = false;
         GameManager.instance.playerScript.AddModifier(-speedMod);
+        GameManager.instance.playerScript.SetFOV(-speedFOVMod);
 
         Destroy(gameObject);
     }
@@ -210,11 +213,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         SoundManager.instance.PlaySFX("powerUp");
 
-        GameManager.instance.playerScript.isShielded += GameManager.instance.playerScript.isShielded + shieldMod;
-        if(GameManager.instance.playerScript.isShielded > GameManager.instance.playerScript.shieldMax)
-        {
-            GameManager.instance.playerScript.isShielded = GameManager.instance.playerScript.shieldMax;
-        }
+        GameManager.instance.playerScript.SetShield(shieldMod);
 
         GameManager.instance.playerScript.UpdatePlayerUI();
     }
@@ -222,7 +221,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     private void ShieldDebuff()
     {
         SoundManager.instance.PlaySFX("debuff");
-        GameManager.instance.playerScript.isShielded -= GameManager.instance.playerScript.isShielded - shieldMod;
+        //GameManager.instance.playerScript.isShielded -= GameManager.instance.playerScript.isShielded - shieldMod;
     }
 
 }

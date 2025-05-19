@@ -343,7 +343,7 @@ public class PMovement : MonoBehaviour, IDamage
         // update player health bar at full and when taking damage
         GameManager.instance.playerHPbar.fillAmount = (float)HP/ origHealth;
 
-        GameManager.instance.playerShieldBar.fillAmount = (float)isShielded / shieldMax;
+        //GameManager.instance.playerShieldBar.fillAmount = (float)isShielded / shieldMax;
     }
 
     IEnumerator FlashDamageScreen()
