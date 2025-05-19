@@ -1400,7 +1400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2142589906999852406
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1598,8 +1598,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 50a0272a2975b6142a32f13045e96166, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2248,7 +2248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7473337809395852011
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4075,7 +4075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5919407730264593937
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4723,7 +4723,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8753990192244704284
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6942,7 +6942,6 @@ MonoBehaviour:
   menuPause: {fileID: 3001910317758452586}
   menuWin: {fileID: 5746832877078476230}
   menuLose: {fileID: 625873728561073016}
-  menuStart: {fileID: 0}
   reticle: {fileID: 1587999481264362522}
   hitMakerReticle: {fileID: 3182474390950830331}
   ammoCount: {fileID: 2056233293256443540}
@@ -6951,11 +6950,17 @@ MonoBehaviour:
   timerWinCount: {fileID: 1165885017444846059}
   elapsedTime: {fileID: 4015797504107819590}
   enemyWinCount: {fileID: 8913196627509564712}
+  buffSprint: {fileID: 8300657491018133260}
+  debuffSprint: {fileID: 1211115777088137219}
+  buffJump: {fileID: 2100602941923310748}
+  debuffJump: {fileID: 4774126377405150237}
   respawnPosition: {x: 0, y: 0, z: 0}
   playerDamageScreen: {fileID: 1329855875006001824}
-  playerHPbar: {fileID: 4825953440170105395}
   player: {fileID: 0}
+  playerHPbar: {fileID: 4825953440170105395}
   playerScript: {fileID: 0}
+  sceneData: {fileID: 0}
+  sceneLoader: {fileID: 0}
   isPaused: 0
   timeScaleOrig: 0
   startPos: {x: 0, y: 0, z: 0}
@@ -8333,7 +8338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8357511430393430598
 RectTransform:
   m_ObjectHideFlags: 0
