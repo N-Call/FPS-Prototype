@@ -10,23 +10,22 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
+    [Header("Menus")]
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
-    
+    [Header("Reticles")]
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
-
+    [Header("UI Counts")]
     [SerializeField] GameObject ammoCount;
     [SerializeField] GameObject weaponIcon;
-
     [SerializeField] TMP_Text enemyCountUI;
     [SerializeField] GameObject timerWinCount;
     [SerializeField] GameObject elapsedTime;
     [SerializeField] TMP_Text enemyWinCount;
-
+    [Header("Buff Icons")]
     [SerializeField] GameObject buffSprint;
     [SerializeField] GameObject debuffSprint;
     [SerializeField] GameObject buffJump;
@@ -91,6 +90,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        TogglePPVolume();
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();
@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = timeScaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        TogglePPVolume();
         menuActive.SetActive(false);
         menuActive = null;
         // to turn on the reticle
@@ -117,31 +118,28 @@ public class GameManager : MonoBehaviour
     {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
     }
-    public void BuffSprintIcon()
+    // Showing Buffs/DeBuffs top Right of player UI 
+    public void BuffSprintIcon(float time)
     {
-        Debug.Log("Icon Pop UP");
-        StartCoroutine(BuffSprintIconsTime());
+        StartCoroutine(BuffSprintIconsTime(time));
     }
-    public void DeBuffSprintIcon()
+    public void DeBuffSprintIcon(float time)
     {
-        Debug.Log("Icon Pop UP");
-        StartCoroutine(DeBuffSprintIconsTime());
+        StartCoroutine(DeBuffSprintIconsTime(time));
     }
-    public void BuffJumpIcon()
+    public void BuffJumpIcon(float time)
     {
-        Debug.Log("Icon Pop UP");
-        StartCoroutine(BuffJumpIconsTime());
+        StartCoroutine(BuffJumpIconsTime(time));
     }
-    public void DeBuffJumpIcon()
+    public void DeBuffJumpIcon(float time)
     {
-        Debug.Log("Icon Pop UP");
-        StartCoroutine(DeBuffJumpIconsTime());
+        StartCoroutine(DeBuffJumpIconsTime(time));
     }
 
     public void TogglePPVolume()
     {// toggle the blurr for menus 
-        // PostProcessVolume ppVolume = Camera.main.GetComponent<Player>(); need to connect to player camera
-        // ppVolume.enabled = !ppVolume.enabled; 
+        PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
+        ppVolume.enabled = !ppVolume.enabled; 
     }
 
     public void YouLose() 
@@ -199,7 +197,6 @@ public class GameManager : MonoBehaviour
     public void AddEnemyToRespawn(Enemy enemy)
     {
         enemiesToRespawn.Add(enemy);
-        
     }
 
     public void SetSpawnPosition(Vector3 newSpawnPosition)
@@ -228,28 +225,28 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
     }
-    IEnumerator BuffSprintIconsTime()
+    IEnumerator BuffSprintIconsTime(float time)
     {
         buffSprint.SetActive(true);
-        yield return new WaitForSeconds(5.0F);
+        yield return new WaitForSeconds(time);
         buffSprint.SetActive(false);
     }
-    IEnumerator DeBuffSprintIconsTime()
+    IEnumerator DeBuffSprintIconsTime(float time)
     {
         debuffSprint.SetActive(true);
-        yield return new WaitForSeconds(5.0F);
+        yield return new WaitForSeconds(time);
         debuffSprint.SetActive(false);
     }
-    IEnumerator BuffJumpIconsTime()
+    IEnumerator BuffJumpIconsTime(float time)
     {
         buffJump.SetActive(true);
-        yield return new WaitForSeconds(5.0F);
+        yield return new WaitForSeconds(time);
         buffJump.SetActive(false);
     }
-    IEnumerator DeBuffJumpIconsTime()
+    IEnumerator DeBuffJumpIconsTime(float time)
     {
         debuffJump.SetActive(true);
-        yield return new WaitForSeconds(5.0F);
+        yield return new WaitForSeconds(time);
         debuffJump.SetActive(false);
     }
 
