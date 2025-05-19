@@ -45,9 +45,11 @@ public class OpenDoors : MonoBehaviour
             door.position = Vector3.Lerp(startPos, endPosition, time);
             yield return null;
             time += Time.deltaTime * speed;
+            isOpen = true;
         }
+        
         door.position = endPosition;
-        isOpen = true;
+        
 
     }
     private void OnTriggerEnter(Collider other)
@@ -58,7 +60,13 @@ public class OpenDoors : MonoBehaviour
         }
         if (isAlarmDoor && !isOpen)
         {
-            SoundManager.instance.PlaySFX("danger", 0.6f);
+            StartCoroutine(PlayAlarm());
         }
+    }
+
+    private IEnumerator PlayAlarm()
+    {
+        yield return new WaitForSeconds(0.5f);
+        SoundManager.instance.PlaySFX("danger", 0.7f);       
     }
 }

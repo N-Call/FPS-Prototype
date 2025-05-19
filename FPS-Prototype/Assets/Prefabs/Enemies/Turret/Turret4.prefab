@@ -1136,7 +1136,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1534346294550458830}
+  - component: {fileID: 2386640442033230771}
   - component: {fileID: 8923058814578925523}
+  - component: {fileID: 2394741489073993779}
   m_Layer: 6
   m_Name: Turret4
   m_TagString: Enemy
@@ -1176,6 +1178,38 @@ Transform:
   - {fileID: 6645181898210740911}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -96.195, z: 0}
+--- !u!114 &2386640442033230771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4985493243137490967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 981a68c9d4bc2f744b6b0697d5fffbf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 5458597333996461744}
+  agent: {fileID: 0}
+  currentHealth: 0
+  faceTargetSpeed: 0
+  sightRange: 0
+  rangeIsTrigger: 1
+  shootPos: {fileID: 1759411567717399457}
+  bullet: {fileID: 8973326993888958128, guid: 3d478ccae6fa99b48a17177b02922246, type: 3}
+  shootRate: 1
+  pause: 0
+  damageAmount: 0
+  isShooting: 0
+  isTurret: 1
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 8
+  originalPosition: {x: 0, y: 0, z: 0}
+  isDead: 0
+  isRespawned: 0
+  robotHead: {fileID: 0}
 --- !u!136 &8923058814578925523
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1199,6 +1233,27 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &2394741489073993779
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4985493243137490967}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 17, y: 20, z: 17}
+  m_Center: {x: 0, y: 0, z: 10}
 --- !u!1 &5689619643020485786
 GameObject:
   m_ObjectHideFlags: 0

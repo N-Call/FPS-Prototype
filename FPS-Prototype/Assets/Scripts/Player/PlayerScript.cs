@@ -170,6 +170,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     {
         if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
         {
+            SoundManager.instance.PlaySFX("playerJump", 0.3f);
             // Handle slide jump
             if (isSliding)
             {
