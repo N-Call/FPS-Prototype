@@ -94,7 +94,8 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isSpeedBuffed = true;
                     StartCoroutine(SpeedBuff());
-                    
+                    GameManager.instance.BuffSprintIcon();
+
                 }
                 break;
             case 2:
@@ -106,6 +107,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isJumpBuffed = true;
                     StartCoroutine(JumpBuff());
+                    GameManager.instance.BuffJumpIcon();
                 }
                 break;
             case 3:
@@ -132,7 +134,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
                     
                     isSpeedDebuffed = true;
                     StartCoroutine(SpeedDebuff());
+                    GameManager.instance.DeBuffSprintIcon();
                     
+
                 }
                 break;
             case 2:
@@ -144,6 +148,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isJumpDebuffed = true;
                     StartCoroutine(JumpDebuff());
+                    GameManager.instance.DeBuffJumpIcon();
                     
                 }
                 break;
@@ -158,7 +163,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         SoundManager.instance.PlaySFX("powerUp", 1f);
         GameManager.instance.playerScript.AddModifier(speedMod);
         GameManager.instance.playerScript.SetFOV(speedFOVMod);
-
+        
         yield return new WaitForSeconds(speedModTime);
         
         isSpeedBuffed = false;
