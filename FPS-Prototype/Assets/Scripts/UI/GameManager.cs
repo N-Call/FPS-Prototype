@@ -24,22 +24,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject elapsedTime;
     [SerializeField] TMP_Text enemyWinCount;
 
-
     List<Enemy> enemiesToRespawn;
        
     public Vector3 respawnPosition;
 
     public GameObject playerDamageScreen;
-    public Image playerHPbar;
-    public Image playerShieldBar;
     public GameObject player;
-    public PMovement playerScript;
+
+    public Image playerHPbar;
+    public PlayerScript playerScript;
+    public SceneData sceneData;
+    public SceneLoader sceneLoader;
 
     public bool isPaused;
     public float timeScaleOrig;
     public Vector3 startPos;
-
-
     
     int gameGoalCount;
     int enemyCount;
@@ -49,14 +48,15 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
-        playerScript = player.GetComponent<PMovement>();
+        if (player != null)
+        {
+            playerScript = player.GetComponent<PlayerScript>();
+            startPos = player.transform.position;
+        }
+
         timeScaleOrig = Time.timeScale;
-       
         enemiesToRespawn = new List<Enemy>();
-        startPos = player.transform.position;
-        
     }
- 
 
     // Update is called once per frame
     void Update()
@@ -85,8 +85,9 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         // to turn off the reticle
         reticle.SetActive(false);
-        SoundManager.instance.musicSource.Stop();
+        SoundManager.instance.musicSource.Pause();
         // stop the player from shooting 
+        Debug.Log(playerScript);
         playerScript.enabled = false;
     }
 

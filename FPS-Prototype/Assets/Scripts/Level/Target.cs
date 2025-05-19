@@ -1,112 +1,47 @@
-using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
 using UnityEngine;
 
 public class Target : MonoBehaviour, IDamage, ITarget
 {
+    enum ElementType { speed = 1, jump = 2, ammo = 3 }
+
+    [SerializeField] GameObject artToDisable = null;
+
+    [Header("Health")]
     [SerializeField] int HP;
 
-    [Header("Direction")]
-    [SerializeField] Vector3 destination;
-    [SerializeField] bool relative;
+    [Header("Element Type")]
+    [SerializeField] ElementType elem;
 
-    [Header("Movement")]
-    [SerializeField] float speed = 1.0f;
-    [SerializeField] bool lerp;
+    [Header("Speed Element")]
+    [SerializeField][Range(0.0f, 2.0f)] float speedMod;
+    [SerializeField] float speedModTime;
 
-    [Header("Behavior")]
-    [SerializeField] float startDelay;
-    [SerializeField] float destinationDelay;
-    [SerializeField] bool pingPong;
+    [Header("Jump Element")]
+    [SerializeField][Range(0.0f, 5.0f)] float jumpMod;
+    [SerializeField] float jumpModTime;
 
-    Vector3 startPosition;
-    Vector3 dest;
+    [Header("Shield Element")]
+    [SerializeField] int shieldMod;
 
-    float elapsedTime;
-
-    bool toStart;
-    bool waited;
-    bool finished;
+    Collider targCollider;
 
     bool isSpeedBuffed;
     bool isJumpBuffed;
     bool isSpeedDebuffed;
     bool isJumpDebuffed;
 
-    enum ElementType { speed = 1, jump = 2, ammo = 3 }
-
-    private Collider targCollider;
-    [SerializeField] private GameObject artToDisable = null;
-
-    [Header("Element Type")]
-    [SerializeField] ElementType elem;
-    bool affected;
-
-    [Header("Speed Element")]
-    [SerializeField][Range(0.01f, 999999)] float speedMod;
-    [SerializeField] float speedModTime;
-
-    [Header("Jump Element")]
-    [SerializeField][Range(0.01f, 999999)] float jumpMod;
-    [SerializeField] float jumpModTime;
-
-    [Header("Shield Element")]
-    [SerializeField] int shieldMod;
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        startPosition = transform.position;
-        dest = relative ? startPosition + destination : destination;
         targCollider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Movement();
-    }
 
-    void Movement()
-    {
-        // If the object has finished its movement
-        if (finished)
-        {
-            return;
-        }
-
-        // Count up elapsed time
-        elapsedTime += Time.deltaTime;
-
-        // Check if they need to wait at start or destination
-        if (!waited && !Waited())
-        {
-            return;
-        }
-
-        // Handle movement
-        if (Move(transform.position, dest))
-        {
-            // If this object does not ping pong
-            // (does not move back and forth between start and destination),
-            // then the object has finished moving, and no longer needs to do anything
-            if (!pingPong)
-            {
-                finished = true;
-                return;
-            }
-
-            // Swap start & destination to move back and forth
-            Swap(ref startPosition, ref dest);
-
-            // Reset waiting and elapsed time
-            toStart = !toStart;
-            waited = false;
-            elapsedTime = 0.0f;
-        }
     }
 
     public void TakeDamage(int amount)
@@ -170,7 +105,6 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isJumpBuffed = true;
                     StartCoroutine(JumpBuff());
-                    
                 }
                 break;
             case 3:
@@ -221,15 +155,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
     public IEnumerator SpeedBuff()
     {
         SoundManager.instance.PlaySFX("powerUp");
-        GameManager.instance.playerScript.baseSpeed *= speedMod;
-       
+        GameManager.instance.playerScript.AddModifier(speedMod);
 
         yield return new WaitForSeconds(speedModTime);
-
         
         isSpeedBuffed = false;
-        GameManager.instance.playerScript.baseSpeed /= speedMod;
-        
+        GameManager.instance.playerScript.AddModifier(-speedMod);
 
         Destroy(gameObject);
     }
@@ -237,28 +168,26 @@ public class Target : MonoBehaviour, IDamage, ITarget
     public IEnumerator SpeedDebuff()
     {
         SoundManager.instance.PlaySFX("debuff");
-        GameManager.instance.playerScript.baseSpeed /= speedMod;
-        
+        GameManager.instance.playerScript.AddModifier(-speedMod);
+
         yield return new WaitForSeconds(speedModTime);
 
        
         isSpeedDebuffed = false;
-        GameManager.instance.playerScript.baseSpeed *= speedMod;
+        GameManager.instance.playerScript.AddModifier(speedMod);
 
         Destroy(gameObject);
     }
 
     public IEnumerator JumpBuff()
     {
-        Debug.Log("Jumping");
         SoundManager.instance.PlaySFX("powerUp");
-        GameManager.instance.playerScript.jumpForce *= jumpMod;
+        GameManager.instance.playerScript.AddModifier(0.0f, jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
 
-       
         isJumpBuffed = false;
-        GameManager.instance.playerScript.jumpForce /= jumpMod;
+        GameManager.instance.playerScript.AddModifier(0.0f, -jumpMod);
 
         Destroy(gameObject);
     }
@@ -266,13 +195,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
     public IEnumerator JumpDebuff()
     {
         SoundManager.instance.PlaySFX("debuff");
-        GameManager.instance.playerScript.jumpForce /= jumpMod;
+        GameManager.instance.playerScript.AddModifier(0.0f, -jumpMod);
 
         yield return new WaitForSeconds(jumpModTime);
 
         
         isJumpDebuffed = false;
-        GameManager.instance.playerScript.jumpForce *= jumpMod;
+        GameManager.instance.playerScript.AddModifier(0.0f, jumpMod);
 
         Destroy(gameObject);
     }
@@ -296,45 +225,4 @@ public class Target : MonoBehaviour, IDamage, ITarget
         GameManager.instance.playerScript.isShielded -= GameManager.instance.playerScript.isShielded - shieldMod;
     }
 
-    bool Waited()
-    {
-        if (!toStart && elapsedTime < startDelay)
-        {
-            return false;
-        }
-
-        if (toStart && elapsedTime < destinationDelay)
-        {
-            return false;
-        }
-
-        waited = true;
-        return true;
-    }
-
-    bool Move(Vector3 from, Vector3 to)
-    {
-        if (Vector3.Distance(from, to) <= 0.1f)
-        {
-            return true;
-        }
-
-        if (lerp)
-        {
-            transform.position = Vector3.Lerp(from, to, speed * Time.deltaTime);
-        }
-        else
-        {
-            transform.position += (to - from).normalized * speed * Time.deltaTime;
-        }
-
-        return false;
-    }
-
-    void Swap(ref Vector3 one, ref Vector3 two)
-    {
-        Vector3 temp = one;
-        one = two;
-        two = temp;
-    }
 }
