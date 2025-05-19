@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
         StatePause();
         menuActive = menuStart;
         menuActive.SetActive(true);
+        SoundManager.instance.PlayMusic("Start");
     }
 
     public void WinCondition(int amount)
