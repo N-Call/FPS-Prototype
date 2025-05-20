@@ -3456,11 +3456,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
   m_PrefabInstance: {fileID: 1172665342}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &606515636 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5166097307989126926, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-  m_PrefabInstance: {fileID: 1131288114}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &607511313 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 819821589631957472, guid: 51e9db089ff8eb942a06e451e7f3f11a, type: 3}
@@ -6326,11 +6321,6 @@ Transform:
   - {fileID: 630701036}
   m_Father: {fileID: 2128158232}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &929825827 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4591319735500982037, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-  m_PrefabInstance: {fileID: 1131288114}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &955563651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7505,10 +7495,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7230982164112844161, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1764242548}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
 --- !u!4 &1135770210 stripped
 Transform:
@@ -9400,11 +9387,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51e9db089ff8eb942a06e451e7f3f11a, type: 3}
---- !u!1 &1540859041 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 168810582318518561, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-  m_PrefabInstance: {fileID: 1131288114}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1561343674 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
@@ -10772,59 +10754,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
---- !u!1 &1764242543 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7230982164112844161, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-  m_PrefabInstance: {fileID: 1131288114}
-  m_PrefabAsset: {fileID: 0}
---- !u!143 &1764242546 stripped
-CharacterController:
-  m_CorrespondingSourceObject: {fileID: 722909320714874768, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-  m_PrefabInstance: {fileID: 1131288114}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1764242548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1764242543}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7f16c4e43680de409299906842ef188, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 1764242546}
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 8
-  HP: 5
-  shieldMax: 0
-  walkForwardSpeed: 8
-  walkSidewaysSpeed: 4
-  walkBackwardsSpeed: 4
-  maxJumps: 2
-  jumpForce: 10
-  gravity: 30
-  maxGravity: 45
-  sprintSpeed: 4
-  fovMod: 0
-  crouchSpeedMultiplier: 0.5
-  crouchHeightMultiplier: 0.5
-  crouchRate: 0.05
-  crouchWaitTimer: 0.001
-  slideSpeedBonus: 8
-  slideRate: 0.3
-  slideJumpSpeedBonus: 8
-  slideJumpRate: 0.3
-  slideJumpMinimumSpeed: 5
-  weaponList:
-  - {fileID: 929825827}
-  - {fileID: 606515636}
-  - {fileID: 1540859041}
-  changeRate: 0
-  tickRate: 0
-  isShielded: 0
 --- !u!4 &1766841129 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1769775029481149619, guid: 983fbc3aab6f5464183a9837f50dbec0, type: 3}
