@@ -94,7 +94,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isSpeedBuffed = true;
                     StartCoroutine(SpeedBuff());
-                    GameManager.instance.BuffSprintIcon();
+                    GameManager.instance.BuffSprintIcon(speedModTime);
 
                 }
                 break;
@@ -107,7 +107,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isJumpBuffed = true;
                     StartCoroutine(JumpBuff());
-                    GameManager.instance.BuffJumpIcon();
+                    GameManager.instance.BuffJumpIcon(jumpModTime);
                 }
                 break;
             case 3:
@@ -134,8 +134,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                     
                     isSpeedDebuffed = true;
                     StartCoroutine(SpeedDebuff());
-                    GameManager.instance.DeBuffSprintIcon();
-                    
+                    GameManager.instance.DeBuffSprintIcon(speedModTime);
 
                 }
                 break;
@@ -148,7 +147,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 {
                     isJumpDebuffed = true;
                     StartCoroutine(JumpDebuff());
-                    GameManager.instance.DeBuffJumpIcon();
+                    GameManager.instance.DeBuffJumpIcon(jumpModTime);
                     
                 }
                 break;
