@@ -162,13 +162,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         SoundManager.instance.PlaySFX("powerUp", 0.3f);
         GameManager.instance.playerScript.AddModifier(speedMod);
-        GameManager.instance.playerScript.SetFOV(speedFOVMod);
+        GameManager.instance.playerScript.SetBaseFOV(speedFOVMod);
         
         yield return new WaitForSeconds(speedModTime);
         
         isSpeedBuffed = false;
         GameManager.instance.playerScript.AddModifier(-speedMod);
-        GameManager.instance.playerScript.SetFOV(-speedFOVMod);
+        GameManager.instance.playerScript.ResetFOV();
 
         Destroy(gameObject);
     }
