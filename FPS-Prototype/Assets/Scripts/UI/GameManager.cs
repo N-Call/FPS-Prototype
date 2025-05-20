@@ -5,6 +5,7 @@ using System.Collections;
 using TMPro;
 using JetBrains.Annotations;
 using UnityEngine.Rendering.PostProcessing;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
     [Header("UI Counts")]
+    [SerializeField] TMP_Text gradeLetter;
     [SerializeField] GameObject ammoCount;
     [SerializeField] GameObject weaponIcon;
     [SerializeField] TMP_Text enemyCountUI;
@@ -63,6 +65,7 @@ public class GameManager : MonoBehaviour
 
         timeScaleOrig = Time.timeScale;
         enemiesToRespawn = new List<Enemy>();
+        
     }
 
     // Update is called once per frame
@@ -157,8 +160,9 @@ public class GameManager : MonoBehaviour
         if (gameGoalCount <= 0)
         {
             StatePause();
-            
+            // show off win menu Time with enemy time added 
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
+            gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
             menuActive = menuWin;
             menuActive.SetActive(true);

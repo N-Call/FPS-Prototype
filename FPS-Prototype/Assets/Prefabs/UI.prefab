@@ -904,6 +904,7 @@ GameObject:
   m_Component:
   - component: {fileID: 790647846020771004}
   - component: {fileID: 2690528702324313722}
+  - component: {fileID: 6977525704894081047}
   - component: {fileID: 4984699460616796842}
   m_Layer: 5
   m_Name: gradeLetter
@@ -939,6 +940,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 849284900712823965}
   m_CullTransparentMesh: 1
+--- !u!114 &6977525704894081047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849284900712823965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 243c48daa7eb61746b81712091008f34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GradeLetter: {fileID: 4984699460616796842}
+  TimeS: 60
+  TimeA: 70
+  TimeB: 80
+  TimeC: 90
+  TimeD: 100
+  TimeE: 110
 --- !u!114 &4984699460616796842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6940,10 +6960,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuActive: {fileID: 0}
   menuPause: {fileID: 3001910317758452586}
-  menuWin: {fileID: 5746832877078476230}
+  menuWin: {fileID: 6832855566900041180}
   menuLose: {fileID: 625873728561073016}
   reticle: {fileID: 1587999481264362522}
   hitMakerReticle: {fileID: 3182474390950830331}
+  gradeLetter: {fileID: 4984699460616796842}
   ammoCount: {fileID: 2056233293256443540}
   weaponIcon: {fileID: 4613523453547458951}
   enemyCountUI: {fileID: 1775457423086197178}
