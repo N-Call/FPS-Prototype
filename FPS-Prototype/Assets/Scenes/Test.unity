@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 919417965464610704, guid: 96e5dc0504a289c499d745707b8c7352, type: 3}
+      propertyPath: speedFOVMod
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 1433148023518323607, guid: 96e5dc0504a289c499d745707b8c7352, type: 3}
       propertyPath: m_Name
       value: Speed Target
@@ -1800,6 +1804,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
   m_PrefabInstance: {fileID: 1454747042}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1413833624 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2874069066421953935, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
+  m_PrefabInstance: {fileID: 1496872557}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1428954372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2140,6 +2155,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 4445831609521904276, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 176.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955773651050755048, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
+      propertyPath: playerShieldbar
+      value: 
+      objectReference: {fileID: 1413833624}
     - target: {fileID: 8352492953440843280, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2609,16 +2632,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7230982164112844161, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 8747573276126559483, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: changeRate
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8747573276126559483, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-      propertyPath: maxGravity
-      value: 45
+      propertyPath: sprintFOVMod
+      value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2769545894233297840, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
