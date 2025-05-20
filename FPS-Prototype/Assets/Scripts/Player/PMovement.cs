@@ -11,6 +11,7 @@ public class PMovement : MonoBehaviour, IDamage
 
     [Header("Health")]
     [SerializeField] public int HP;
+    [SerializeField] public int shieldMax;
 
     [Header("Movement Settings")]
     [SerializeField] public float baseSpeed = 5f;
@@ -54,6 +55,7 @@ public class PMovement : MonoBehaviour, IDamage
     private bool isSliding;
 
     public int origHealth;
+    public int isShielded;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -150,7 +152,7 @@ public class PMovement : MonoBehaviour, IDamage
 
                 vertVel.y = jumpForce;
                 currJumpCount++;
-                SoundManager.instance.PlaySFX("playerJump");
+                SoundManager.instance.PlaySFX("playerJump", 1f);
             }
 
         }
@@ -162,7 +164,7 @@ public class PMovement : MonoBehaviour, IDamage
             {
                 vertVel.y = jumpForce;
                 currJumpCount++;
-                SoundManager.instance.PlaySFX("playerJump");
+                SoundManager.instance.PlaySFX("playerJump", 1f);
             }
 
             // This applies gravity, when not on the ground.
@@ -183,7 +185,7 @@ public class PMovement : MonoBehaviour, IDamage
         
         if(controller.isGrounded && inputDir.magnitude != 0)
         {
-            SoundManager.instance.PlaySFX("footSteps");
+           // SoundManager.instance.PlaySFX("footSteps");
         }
         
     }
@@ -308,11 +310,19 @@ public class PMovement : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
-        SoundManager.instance.PlaySFX("playerHurt");
+        SoundManager.instance.PlaySFX("playerHurt", 1f);
 
-        HP -= amount;
-        UpdatePlayerUI();
-        StartCoroutine(FlashDamageScreen());
+        //Checks to make sure shield takes damage first
+        if (isShielded > 0)
+        {
+            isShielded = isShielded - 1;
+        }
+        else
+        {
+            HP -= amount;
+            UpdatePlayerUI();
+            StartCoroutine(FlashDamageScreen());
+        }
 
         if (HP <= 0)
         {
@@ -332,6 +342,8 @@ public class PMovement : MonoBehaviour, IDamage
     {
         // update player health bar at full and when taking damage
         GameManager.instance.playerHPbar.fillAmount = (float)HP/ origHealth;
+
+        //GameManager.instance.playerShieldBar.fillAmount = (float)isShielded / shieldMax;
     }
 
     IEnumerator FlashDamageScreen()

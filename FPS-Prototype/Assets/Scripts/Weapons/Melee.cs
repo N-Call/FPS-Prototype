@@ -30,7 +30,7 @@ public class Melee : MonoBehaviour, IWeapon
 
     public void AttackBegin(LayerMask playerMask)
     {
-        SoundManager.instance.PlaySFX("swordSwing");
+        SoundManager.instance.PlaySFX("swordSwing", 0.3f);
         //start attack animation
         animator.CrossFade("Attack", 0.1f);
         animator.speed = attackSpeed;

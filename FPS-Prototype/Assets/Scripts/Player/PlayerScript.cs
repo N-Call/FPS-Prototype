@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour, IDamage
@@ -9,6 +11,8 @@ public class PlayerScript : MonoBehaviour, IDamage
 
     [Header("Health")]
     [SerializeField] int HP;
+    [SerializeField] int isShielded;
+    [SerializeField] int shieldMax;
 
     [Header("Walking")]
     [SerializeField][Tooltip("The walk speed of the player walking forwards")] float walkForwardSpeed = 8.0f;
@@ -40,6 +44,10 @@ public class PlayerScript : MonoBehaviour, IDamage
     [Header("Weapon Settings")]
     [SerializeField] public List<GameObject> weaponList;
 
+    [Header("Camera")]
+    [SerializeField] float sprintFOVMod;
+    [SerializeField] float changeRate;
+
     Coroutine crouchCoroutine;
     Coroutine unCrouchCoroutine;
 
@@ -52,6 +60,8 @@ public class PlayerScript : MonoBehaviour, IDamage
     float jumpSpeedBonus;
     float speedModifier;
     float jumpModifier;
+    float origFOV;
+    float baseFOV;
 
     int originalHP;
     int jumpCount;
@@ -66,6 +76,8 @@ public class PlayerScript : MonoBehaviour, IDamage
     {
         originalHP = HP;
         originalHeight = controller.height;
+        origFOV = Camera.main.fieldOfView; 
+        baseFOV = origFOV;
         GameManager.instance.SetSpawnPosition(transform.position);
         UpdatePlayerUI();
     }
@@ -78,6 +90,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         Sprint();
         Crouch();
         WeaponInput();
+        SetCurrentFOV();
     }
 
     void Movement()
@@ -161,6 +174,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     {
         if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
         {
+            SoundManager.instance.PlaySFX("playerJump", 0.3f);
             // Handle slide jump
             if (isSliding)
             {
@@ -271,7 +285,6 @@ public class PlayerScript : MonoBehaviour, IDamage
         {
             IReloadable reloadable = weaponList[0].GetComponent<IReloadable>();
             reloadable?.Reload();
-
         }
     }
 
@@ -305,7 +318,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             return;
         }
 
-        SoundManager.instance.PlaySFX("playerHurt");
+        SoundManager.instance.PlaySFX("playerHurt", 0.2f);
 
         HP -= amount;
         UpdatePlayerUI();
@@ -325,12 +338,15 @@ public class PlayerScript : MonoBehaviour, IDamage
         verticalVelocity.y = 0.0f;
         HP = originalHP;
         invulnerable = false;
+        ResetFOV();
     }
 
     public void UpdatePlayerUI()
     {
         // update player health bar at full and when taking damage
         GameManager.instance.playerHPbar.fillAmount = (float)HP / originalHP;
+
+        GameManager.instance.playerShieldbar.fillAmount = (float)isShielded / shieldMax;
     }
 
     public void SetSpeedModifier(float modifier)
@@ -349,9 +365,33 @@ public class PlayerScript : MonoBehaviour, IDamage
         jumpModifier += jump;
     }
 
-    public void SetInvulnerable(bool isInvulnerable)
+    public void SetShield(int shieldAmount)
     {
-        invulnerable = isInvulnerable;
+        if (isShielded < shieldMax)
+        {
+            isShielded += shieldAmount;
+        }
+    }
+
+    public void SetCurrentFOV()
+    {
+        if (isSprinting == true)
+        {
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, baseFOV + sprintFOVMod, changeRate * Time.deltaTime);
+        }
+        else
+        {
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, baseFOV, changeRate * Time.deltaTime);
+        }
+    }
+
+    public void SetBaseFOV(float target)
+    {
+        baseFOV = target;
+    }
+    public void ResetFOV()
+    {
+        baseFOV = origFOV;
     }
 
     // Gradually crouch and uncrouch

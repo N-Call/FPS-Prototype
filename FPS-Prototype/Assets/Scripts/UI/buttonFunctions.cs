@@ -22,8 +22,15 @@ public class ButtonFunctions : MonoBehaviour
     {
         // this is for the start game menu after button pushed then moves to first level
         SceneManager.LoadScene(1);
-        GameManager.instance.StateUnpause();
+        
     }
+    public void LevelStartGame()
+    {
+        // need the button to take what level is selected in the
+        // level selecte scene and start that scene if only that level is unlocked 
+    }
+    // buttons needed for level scelection levels need to be made first 5 in total
+    // Setting button needed as well 
 
     public void Resume()
     {

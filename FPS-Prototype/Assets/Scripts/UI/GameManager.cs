@@ -4,25 +4,34 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using JetBrains.Annotations;
+using UnityEngine.Rendering.PostProcessing;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
+    [Header("Menus")]
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
-    [SerializeField] GameObject menuStart;
+    [Header("Reticles")]
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
+    [Header("UI Counts")]
+    [SerializeField] TMP_Text gradeLetter;
     [SerializeField] GameObject ammoCount;
     [SerializeField] GameObject weaponIcon;
     [SerializeField] TMP_Text enemyCountUI;
     [SerializeField] GameObject timerWinCount;
     [SerializeField] GameObject elapsedTime;
     [SerializeField] TMP_Text enemyWinCount;
+    [Header("Buff Icons")]
+    [SerializeField] GameObject buffSprint;
+    [SerializeField] GameObject debuffSprint;
+    [SerializeField] GameObject buffJump;
+    [SerializeField] GameObject debuffJump;
 
     List<Enemy> enemiesToRespawn;
        
@@ -32,6 +41,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
 
     public Image playerHPbar;
+    public Image playerShieldbar;
     public PlayerScript playerScript;
     public SceneData sceneData;
     public SceneLoader sceneLoader;
@@ -56,6 +66,7 @@ public class GameManager : MonoBehaviour
 
         timeScaleOrig = Time.timeScale;
         enemiesToRespawn = new List<Enemy>();
+        
     }
 
     // Update is called once per frame
@@ -83,6 +94,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        TogglePPVolume();
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();
@@ -97,6 +109,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = timeScaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        TogglePPVolume();
         menuActive.SetActive(false);
         menuActive = null;
         // to turn on the reticle
@@ -109,6 +122,29 @@ public class GameManager : MonoBehaviour
     {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
     }
+    // Showing Buffs/DeBuffs top Right of player UI 
+    public void BuffSprintIcon(float time)
+    {
+        StartCoroutine(BuffSprintIconsTime(time));
+    }
+    public void DeBuffSprintIcon(float time)
+    {
+        StartCoroutine(DeBuffSprintIconsTime(time));
+    }
+    public void BuffJumpIcon(float time)
+    {
+        StartCoroutine(BuffJumpIconsTime(time));
+    }
+    public void DeBuffJumpIcon(float time)
+    {
+        StartCoroutine(DeBuffJumpIconsTime(time));
+    }
+
+    public void TogglePPVolume()
+    {// toggle the blurr for menus 
+        PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
+        ppVolume.enabled = !ppVolume.enabled; 
+    }
 
     public void YouLose() 
     {
@@ -116,12 +152,7 @@ public class GameManager : MonoBehaviour
         menuActive = menuLose;
         menuActive.SetActive(true);
     }
-    public void StartGame()
-    {
-        StatePause();
-        menuActive = menuStart;
-        menuActive.SetActive(true);
-    }
+   
 
     public void WinCondition(int amount)
     {
@@ -130,8 +161,9 @@ public class GameManager : MonoBehaviour
         if (gameGoalCount <= 0)
         {
             StatePause();
-            
+            // show off win menu Time with enemy time added 
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
+            gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
             menuActive = menuWin;
             menuActive.SetActive(true);
@@ -142,12 +174,12 @@ public class GameManager : MonoBehaviour
     {
         enemyCount += amount;
         enemyCountUI.text = enemyCount.ToString("F0");
-        enemyWinCount.text = enemyCount.ToString(enemyCount + " * 5s ");
+        enemyWinCount.text = enemyCount + " * 10s";
     }
 
     public float EnemyTimePenalty(float totalTime)
     { 
-        return totalTime + enemyCount * 5; 
+        return totalTime + enemyCount * 10; 
     }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
@@ -170,7 +202,6 @@ public class GameManager : MonoBehaviour
     public void AddEnemyToRespawn(Enemy enemy)
     {
         enemiesToRespawn.Add(enemy);
-        
     }
 
     public void SetSpawnPosition(Vector3 newSpawnPosition)
@@ -198,6 +229,30 @@ public class GameManager : MonoBehaviour
         hitMakerReticle.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
+    }
+    IEnumerator BuffSprintIconsTime(float time)
+    {
+        buffSprint.SetActive(true);
+        yield return new WaitForSeconds(time);
+        buffSprint.SetActive(false);
+    }
+    IEnumerator DeBuffSprintIconsTime(float time)
+    {
+        debuffSprint.SetActive(true);
+        yield return new WaitForSeconds(time);
+        debuffSprint.SetActive(false);
+    }
+    IEnumerator BuffJumpIconsTime(float time)
+    {
+        buffJump.SetActive(true);
+        yield return new WaitForSeconds(time);
+        buffJump.SetActive(false);
+    }
+    IEnumerator DeBuffJumpIconsTime(float time)
+    {
+        debuffJump.SetActive(true);
+        yield return new WaitForSeconds(time);
+        debuffJump.SetActive(false);
     }
 
 } 
