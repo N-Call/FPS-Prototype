@@ -346,7 +346,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         // update player health bar at full and when taking damage
         GameManager.instance.playerHPbar.fillAmount = (float)HP / originalHP;
 
-        //GameManager.instance.playerShieldBar.fillAmount = (float)isShielded / shieldMax;
+        GameManager.instance.playerShieldbar.fillAmount = (float)isShielded / shieldMax;
     }
 
     public void SetSpeedModifier(float modifier)

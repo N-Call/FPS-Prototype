@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
 
     public Image playerHPbar;
+    public Image playerShieldbar;
     public PlayerScript playerScript;
     public SceneData sceneData;
     public SceneLoader sceneLoader;
