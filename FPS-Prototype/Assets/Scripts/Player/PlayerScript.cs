@@ -203,7 +203,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     // Handle sprint inputs
     void Sprint()
     {
-        if (Input.GetButtonDown("Sprint") && controller.isGrounded && !isSliding)
+        if (Input.GetButton("Sprint") && controller.isGrounded && !isSliding)
         {
             isSprinting = true;
         }
