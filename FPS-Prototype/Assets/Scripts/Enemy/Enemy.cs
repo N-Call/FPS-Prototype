@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour, IDamage
 {
@@ -10,7 +11,7 @@ public class Enemy : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] int currentHealth;
-
+    
     [Header("Targeting and Shooting")]
     [SerializeField] int faceTargetSpeed;
     [SerializeField] protected int sightRange;
@@ -166,6 +167,7 @@ public class Enemy : MonoBehaviour, IDamage
             agent.SetDestination(GameManager.instance.player.transform.position);
         }
         currentHealth -= amount;
+        
 
         SoundManager.instance.PlaySFX("turretHit", 0.1f);
 
