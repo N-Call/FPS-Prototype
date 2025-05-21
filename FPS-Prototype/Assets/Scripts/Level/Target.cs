@@ -163,11 +163,11 @@ public class Target : MonoBehaviour, IDamage, ITarget
         SoundManager.instance.PlaySFX("powerUp", 0.3f);
         GameManager.instance.playerScript.AddModifier(speedMod);
         GameManager.instance.playerScript.SetBaseFOV(speedFOVMod);
-        GameManager.instance.playerScript.particle.gameObject.SetActive(true);
+        GameManager.instance.playerScript.particleSpMod.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(speedModTime);
 
-        GameManager.instance.playerScript.particle.gameObject.SetActive(false);
+        GameManager.instance.playerScript.particleSpMod.gameObject.SetActive(false);
         isSpeedBuffed = false;
         GameManager.instance.playerScript.AddModifier(-speedMod);
         GameManager.instance.playerScript.ResetFOV();
@@ -194,11 +194,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         SoundManager.instance.PlaySFX("powerUp", 0.3f);
         GameManager.instance.playerScript.AddModifier(0.0f, jumpMod);
+        GameManager.instance.playerScript.particleJpMod.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(jumpModTime);
 
         isJumpBuffed = false;
         GameManager.instance.playerScript.AddModifier(0.0f, -jumpMod);
+        GameManager.instance.playerScript.particleJpMod.gameObject.SetActive(false);
 
         Destroy(gameObject);
     }
