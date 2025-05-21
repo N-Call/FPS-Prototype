@@ -48,6 +48,8 @@ public class PlayerScript : MonoBehaviour, IDamage
     [SerializeField] float sprintFOVMod;
     [SerializeField] float changeRate;
 
+    public ParticleSystem particle;
+
     Coroutine crouchCoroutine;
     Coroutine unCrouchCoroutine;
 
@@ -206,10 +208,13 @@ public class PlayerScript : MonoBehaviour, IDamage
         if (Input.GetButton("Sprint") && controller.isGrounded && !isSliding)
         {
             isSprinting = true;
+            
+
         }
         else if (Input.GetButtonUp("Sprint"))
         {
             isSprinting = false;
+          
         }
     }
 
@@ -418,7 +423,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     IEnumerator FlashDamageScreen()
     {
         GameManager.instance.playerDamageScreen.SetActive(true);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         GameManager.instance.playerDamageScreen.SetActive(false);
     }
 

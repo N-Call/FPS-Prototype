@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
+    
+
     [Header("UI Counts")]
     [SerializeField] TMP_Text gradeLetter;
     [SerializeField] GameObject ammoCount;
@@ -32,6 +34,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject debuffSprint;
     [SerializeField] GameObject buffJump;
     [SerializeField] GameObject debuffJump;
+
+    
 
     List<Enemy> enemiesToRespawn;
        
@@ -67,6 +71,8 @@ public class GameManager : MonoBehaviour
         timeScaleOrig = Time.timeScale;
         enemiesToRespawn = new List<Enemy>();
         
+
+
     }
 
     // Update is called once per frame
@@ -117,6 +123,7 @@ public class GameManager : MonoBehaviour
         playerScript.enabled = true;
 
     }
+ 
     public void ToggleReticle()
     {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
