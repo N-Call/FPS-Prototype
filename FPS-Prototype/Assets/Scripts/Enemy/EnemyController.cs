@@ -169,6 +169,7 @@ public class EnemyController : MonoBehaviour, IDamage
         {
             GameManager.instance.UpdateEnemyCounter(-1);
             gameObject.SetActive(false);
+            isDead = true;
         }
         else
         {
@@ -202,21 +203,21 @@ public class EnemyController : MonoBehaviour, IDamage
     public void ResetEnemies()
     {
         transform.position = originalPosition;
-        agent.isStopped = true;
-
         currentHealth = maxHealth;
 
-        if (isDead)
+        if (isRespawned)
         {
             gameObject.SetActive(true);
-            isDead = false;
-            GameManager.instance.UpdateEnemyCounter(1);
-            if (isRespawned == false)
+           
+            if (isDead)
             {
-                GameManager.instance.UpdateEnemyCounter(-1);
-                gameObject.SetActive(false);
-
+                isDead = false;
+                GameManager.instance.UpdateEnemyCounter(1);
             }
+        }
+        else
+        {
+            gameObject.SetActive(false);
         }
     }
 
