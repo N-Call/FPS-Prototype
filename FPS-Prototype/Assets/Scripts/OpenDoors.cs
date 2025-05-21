@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 public class OpenDoors : MonoBehaviour
 {
+
     public bool isAlarmDoor;
     public bool isOpen = false;
     [SerializeField] private float speed = 1.0f;
     [SerializeField] private Vector3 slideDirection = Vector3.forward;
     [SerializeField] private float slideAmount = 7.0f;
-    [SerializeField] private Transform door;
-
 
     private Vector3 Forward;
     private Vector3 startPosition;
@@ -19,8 +18,9 @@ public class OpenDoors : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        startPosition = door.position;
+        startPosition = transform.position;
     }
+
     private void Open(Vector3 userPosition)
     {
             if (!isOpen)
@@ -33,25 +33,25 @@ public class OpenDoors : MonoBehaviour
             DoorAnimation = StartCoroutine(SlidingDoorOpen());
             }
     }
+
     private IEnumerator SlidingDoorOpen()
     {
         Vector3 endPosition = startPosition + slideAmount * slideDirection;
-        Vector3 startPos = door.position;
+        Vector3 startPos = transform.position;
 
         float time = 0;
         
         while (time < 1)
         {
-            door.position = Vector3.Lerp(startPos, endPosition, time);
+            transform.position = Vector3.Lerp(startPos, endPosition, time);
             yield return null;
             time += Time.deltaTime * speed;
             isOpen = true;
         }
-        
-        door.position = endPosition;
-        
 
+        transform.position = endPosition;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
