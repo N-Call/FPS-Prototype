@@ -48,7 +48,11 @@ public class PlayerScript : MonoBehaviour, IDamage
     [SerializeField] float sprintFOVMod;
     [SerializeField] float changeRate;
 
-    public ParticleSystem particle;
+    [Header("VFXParticleSystem")]
+    public ParticleSystem particleSpMod;
+    public ParticleSystem particleSpRun;
+    public ParticleSystem particleJpMod;
+    
 
     Coroutine crouchCoroutine;
     Coroutine unCrouchCoroutine;
@@ -176,6 +180,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     {
         if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
         {
+            
             SoundManager.instance.PlaySFX("playerJump", 0.3f);
             // Handle slide jump
             if (isSliding)
@@ -196,6 +201,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         // Reset jumps, slide jump speed bonus, and applied gravity
         if (controller.isGrounded)
         {
+            
             verticalVelocity.y = 0.0f;
             jumpCount = 0;
             jumpSpeedBonus = 0.0f;
@@ -208,13 +214,13 @@ public class PlayerScript : MonoBehaviour, IDamage
         if (Input.GetButton("Sprint") && controller.isGrounded && !isSliding)
         {
             isSprinting = true;
-            
-
+            particleSpRun.gameObject.SetActive(true);
         }
         else if (Input.GetButtonUp("Sprint"))
         {
             isSprinting = false;
-          
+            particleSpRun.gameObject.SetActive(false);
+
         }
     }
 
