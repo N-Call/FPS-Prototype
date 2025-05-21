@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject buffJump;
     [SerializeField] GameObject debuffJump;
 
-    List<Enemy> enemiesToRespawn;
+    List<EnemyController> enemiesToRespawn;
        
     public Vector3 respawnPosition;
 
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         }
 
         timeScaleOrig = Time.timeScale;
-        enemiesToRespawn = new List<Enemy>();
+        enemiesToRespawn = new List<EnemyController>();
         
     }
 
@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
         }
     }
    
-    public void AddEnemyToRespawn(Enemy enemy)
+    public void AddEnemyToRespawn(EnemyController enemy)
     {
         enemiesToRespawn.Add(enemy);
     }
@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
 
         playerScript.GetComponent<CharacterController>().enabled = true;
 
-        foreach (Enemy enemy in enemiesToRespawn)
+        foreach (EnemyController enemy in enemiesToRespawn)
         {
             enemy.ResetEnemies();
         }
