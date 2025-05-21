@@ -39,6 +39,7 @@ public class ObjectMovement : MonoBehaviour
     void Start()
     {
         currentDestination = relative ? transform.position + destination : destination;
+
         if (carryPassengers)
         {
             passengerCollider = gameObject.AddComponent<BoxCollider>();
@@ -107,7 +108,7 @@ public class ObjectMovement : MonoBehaviour
 
     protected bool Move(Vector3 from, Vector3 to)
     {
-        if (Vector3.Distance(from, to) <= 0.1f)
+        if (Vector3.Distance(from, to) <= 0.01f)
         {
             return true;
         }
