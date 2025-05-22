@@ -20,13 +20,10 @@ public class Spawner : MonoBehaviour
     [SerializeField][Tooltip("The rate at which objects spawn")]
     float spawnRate;
 
-    [Header("Enemy Specific Spawn Settings")]
-    [SerializeField][Tooltip("Add to enemy counter?")]
-    bool addToEnemyCounter = true;
-
+    [Header("Enemy Spawn Settings")]
     [SerializeField]
-    [Tooltip("Add enemies to enemy counter at the start, or when they spawn in? False adds at start.")]
-    bool addWhenSpawned;
+    [Tooltip("Add enemies to enemy count when they spawn? False adds the enemies that will spawn, at start")]
+    bool addToCountWhenSpawned;
 
     int currentIndex;
     int amountSpawned;
@@ -42,9 +39,9 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         isEnemy = objectToSpawn.CompareTag("Enemy");
-        if (isEnemy && addToEnemyCounter && !addWhenSpawned)
+        if (isEnemy && !addToCountWhenSpawned)
         {
-            GameManager.instance.UpdateEnemyCounter(amountSpawned);
+            GameManager.instance.UpdateEnemyCounter(spawnAmount);
         }
     }
 
@@ -83,7 +80,7 @@ public class Spawner : MonoBehaviour
         int index = GetPositionIndex();
         Instantiate(objectToSpawn, spawnPositions[index].position, spawnPositions[index].rotation);
 
-        if (isEnemy && addToEnemyCounter && addWhenSpawned)
+        if (isEnemy && addToCountWhenSpawned)
         {
             GameManager.instance.UpdateEnemyCounter(1);
         }
