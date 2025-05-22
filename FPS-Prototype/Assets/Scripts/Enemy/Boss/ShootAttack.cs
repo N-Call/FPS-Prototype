@@ -17,7 +17,7 @@ public class ShootAttack : BaseState
     {
         base.StateLogic();
         if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") &&
-            !bossSM.animator.GetNextAnimatorStateInfo(0).IsName("Shooting"))
+            !bossSM.animator.GetNextAnimatorStateInfo(0).IsName("Shoot"))
             bossSM.ChangeState(bossSM.idle);
     }
     public override void Action()
