@@ -205,19 +205,17 @@ public class EnemyController : MonoBehaviour, IDamage
         transform.position = originalPosition;
         currentHealth = maxHealth;
 
-        if (isRespawned)
+        if(isDead)
         {
             gameObject.SetActive(true);
-           
-            if (isDead)
+            isDead = false;
+            GameManager.instance.UpdateEnemyCounter(1);
+            if (isRespawned == false)
             {
-                isDead = false;
-                GameManager.instance.UpdateEnemyCounter(1);
+                GameManager.instance.UpdateEnemyCounter(-1);
+                gameObject.SetActive(false);
+
             }
-        }
-        else
-        {
-            gameObject.SetActive(false);
         }
     }
 
