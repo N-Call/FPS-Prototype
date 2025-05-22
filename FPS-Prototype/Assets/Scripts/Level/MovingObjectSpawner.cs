@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class MovingObjectSpawner : MonoBehaviour
 {
 
     [Header("Spawner Settings")]
