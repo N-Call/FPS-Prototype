@@ -58,7 +58,6 @@ public class EnemyController : MonoBehaviour, IDamage
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
-        GameManager.instance.UpdateEnemyCounter(1);
     }
 
     // Update is called once per frame

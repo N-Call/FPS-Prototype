@@ -955,6 +955,8 @@ MonoBehaviour:
   lockVertMin: -90
   lockVertMax: 90
   invertY: 0
+  wallRunTiltAngle: 1
+  wallRunTiltSpeed: 5
 --- !u!20 &8404867771657897733
 Camera:
   m_ObjectHideFlags: 0
@@ -57863,15 +57865,25 @@ MonoBehaviour:
   crouchHeightMultiplier: 0.5
   crouchRate: 0.05
   crouchWaitTimer: 0.001
-  slideSpeedBonus: 8
+  slideSpeedBonus: 16
   slideRate: 0.3
-  slideJumpSpeedBonus: 8
+  slideJumpSpeedBonus: 16
   slideJumpRate: 0.3
-  slideJumpMinimumSpeed: 5
+  slideJumpMinimumSpeed: 8
   weaponList:
   - {fileID: 4591319735500982037}
   - {fileID: 5166097307989126926}
   - {fileID: 168810582318518561}
+  wallRunDur: 1.5
+  wallRunGravity: 1
+  wallJumpForce: 8
+  wallCheckDist: 0.65
+  wallJumpHoriForce: 24
+  wallRunCooldown: 0.4
+  wallRunMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  wallStickForce: 24
   sprintFOVMod: 3
   changeRate: 10
   particleSpMod: {fileID: 1916699316069464853}

@@ -27,7 +27,12 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     protected float shootTimer;
 
     private Animator animator;
-    
+
+    private void Awake()
+    {
+        //Grab the animator from object
+        animator = GetComponent<Animator>();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,9 +41,6 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         ammoCount = reloadCap;
         ammoCap = ammoOrigCap;
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
-
-        //Grab the animator from object
-        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -89,6 +91,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     {
         animator?.CrossFade("Charge", 0.1f);
     }
+
     protected void PlayIdle()
     {
         animator?.CrossFade("Idle", 0f);
