@@ -56,6 +56,8 @@ MonoBehaviour:
   destinationDelay: 0
   pingPong: 0
   backToStart: 0
+  carryPlayer: 0
+  onlyMoveWhenPlayer: 0
   destroyAfterTime: 0
   destroyAfterCycles: 0
   destroyAtDestinationDelay: 5
@@ -76,10 +78,10 @@ MonoBehaviour:
   elem: 1
   speedMod: 0.5
   speedModTime: 5
+  speedFOVMod: 5
   jumpMod: 1
   jumpModTime: 0
-  reloadPercentBuff: 1
-  reloadPercentDebuff: 1
+  shieldMod: 0
 --- !u!136 &2974001234082551326
 CapsuleCollider:
   m_ObjectHideFlags: 0
