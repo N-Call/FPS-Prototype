@@ -956,9 +956,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1162990775811529464}
   - component: {fileID: 9154420906425740561}
-  - component: {fileID: 3717127350718192397}
   - component: {fileID: 1328580736883950344}
   - component: {fileID: 659712612865461418}
+  - component: {fileID: 7346634556156526692}
   m_Layer: 0
   m_Name: newminerobot
   m_TagString: Untagged
@@ -1031,38 +1031,6 @@ MonoBehaviour:
   isRespawned: 0
   RangeTrigger: {fileID: 8746852382963367737}
   ExplosionTrigger: {fileID: 6942004578865680284}
---- !u!114 &3717127350718192397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5841436841894323896}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 981a68c9d4bc2f744b6b0697d5fffbf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 7397072717057599289}
-  agent: {fileID: 1328580736883950344}
-  currentHealth: 2
-  faceTargetSpeed: 5
-  sightRange: 25
-  rangeIsTrigger: 0
-  shootPos: {fileID: 0}
-  bullet: {fileID: 0}
-  shootRate: 0
-  pause: 0
-  damageAmount: 1
-  isShooting: 0
-  isTurret: 0
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 8
-  originalPosition: {x: 0, y: 0, z: 0}
-  isDead: 0
-  isRespawned: 0
-  robotHead: {fileID: 0}
 --- !u!195 &1328580736883950344
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1108,6 +1076,26 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &7346634556156526692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5841436841894323896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &6318012452576755192
 GameObject:
   m_ObjectHideFlags: 0
