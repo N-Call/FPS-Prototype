@@ -21,12 +21,10 @@ public class DialogueManager : MonoBehaviour
         GameManager.instance.textComponent.text = string.Empty;
         GameManager.instance.textPopUp.SetActive(true);
         index = 0;
-        Debug.Log("Start: before if\t" + activeCoroutine);
         if (activeCoroutine == null)
         {
             activeCoroutine = RunDialogue(dialogue);
             StartCoroutine(activeCoroutine);
-            Debug.Log("Start: After if\t" + activeCoroutine);
         }
     }
 
@@ -37,11 +35,9 @@ public class DialogueManager : MonoBehaviour
     }
 
     private void StopText()
-    {
-        Debug.Log("Stop: before if\t" + activeCoroutine);
+    { 
         if (activeCoroutine != null)
-        {
-            Debug.Log("Stop: After if\t" + activeCoroutine);
+        { 
             StopCoroutine(activeCoroutine);
             activeCoroutine = null;
         }
@@ -81,6 +77,5 @@ public class DialogueManager : MonoBehaviour
         }
         GameManager.instance.textPopUp.SetActive(false);
         activeCoroutine = null;
-        Debug.Log("End of srcipt");
     }
 }
