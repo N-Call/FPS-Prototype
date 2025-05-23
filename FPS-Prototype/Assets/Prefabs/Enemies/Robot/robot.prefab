@@ -989,10 +989,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 907906030600421959}
-  - component: {fileID: 6483578436710854500}
+  - component: {fileID: 1637463051839197967}
   - component: {fileID: 6479720693941824355}
   - component: {fileID: 6176202240796123562}
   - component: {fileID: 3671346797217003067}
+  - component: {fileID: 1772439209512191237}
   m_Layer: 6
   m_Name: robot
   m_TagString: Enemy
@@ -1035,7 +1036,7 @@ Transform:
   - {fileID: 7423573183508281029}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6483578436710854500
+--- !u!114 &1637463051839197967
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1044,29 +1045,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 3004313089188389485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 981a68c9d4bc2f744b6b0697d5fffbf8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4bcd264d725449244827ec4e2ebb7c4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 2231724958933429924}
   agent: {fileID: 6479720693941824355}
   currentHealth: 2
-  faceTargetSpeed: 5
-  sightRange: 25
-  rangeIsTrigger: 0
+  faceTargetSpeed: 20
+  FOV: 180
+  roamDist: 5
+  roamPauseTime: 3
+  pause: 0
   shootPos: {fileID: 4144004761838785728}
   bullet: {fileID: 8973326993888958128, guid: 3d478ccae6fa99b48a17177b02922246, type: 3}
   shootRate: 0.5
-  pause: 0
   damageAmount: 0
-  isShooting: 1
-  isTurret: 0
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 8
   originalPosition: {x: 0, y: 0, z: 0}
   isDead: 0
   isRespawned: 0
-  robotHead: {fileID: 0}
+  RangeTrigger: {fileID: 0}
+  ExplosionTrigger: {fileID: 0}
 --- !u!195 &6479720693941824355
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1080,8 +1078,8 @@ NavMeshAgent:
   m_Speed: 4
   m_Acceleration: 32
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 3
+  m_AngularSpeed: 600
+  m_StoppingDistance: 8
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
@@ -1131,8 +1129,28 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 8
+  m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1772439209512191237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004313089188389485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &3037926506764095485
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class Checkpoint : MonoBehaviour
 
         if (other.tag == "Player")
         {
-            Enemy enemy = GetComponent<Enemy>();
+            EnemyController enemy = GetComponent<EnemyController>();
             
             SoundManager.instance.PlaySFX("checkPoint", 1f);
             Debug.Log("checkpoint reached");

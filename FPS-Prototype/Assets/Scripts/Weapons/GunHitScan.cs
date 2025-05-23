@@ -30,6 +30,10 @@ public class GunHitScan : Range
             ammoCount--;
             GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
         }
+        else if (ammoCount <= 0)
+        {
+            SoundManager.instance.PlaySFX("gunEmpty", 0.5f);
+        }
     }
 
 }

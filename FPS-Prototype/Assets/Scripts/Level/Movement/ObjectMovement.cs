@@ -4,7 +4,7 @@ public class ObjectMovement : MonoBehaviour
 {
 
     // Prevents the player's parent being reset when moving onto a second moving platform
-    static bool shouldResetPlayerParent;
+    static bool shouldResetPlayerParent = true;
 
     [Header("Destination Settings")]
     [SerializeField] Vector3 destination;
@@ -18,6 +18,7 @@ public class ObjectMovement : MonoBehaviour
     [SerializeField] bool carryPassengers;
     [SerializeField] bool moveWithoutPlayer = true;
     [SerializeField] bool waitForPlayer;
+    [SerializeField] float triggerHeight;
 
     [Header("Time Delay Settings")]
     [SerializeField] float startDelay;
@@ -25,6 +26,7 @@ public class ObjectMovement : MonoBehaviour
     [Header("Destruction Settings")]
     [SerializeField] float destroyAfterTime;
 
+    protected GameObject emptyParent;
     BoxCollider passengerCollider;
 
     protected Vector3 currentDestination;
@@ -36,16 +38,28 @@ public class ObjectMovement : MonoBehaviour
     bool waitedForPlayer;
     bool hasPlayer;
 
+    private void Awake()
+    {
+        if (carryPassengers)
+        {
+            emptyParent = new GameObject(name + " Parent");
+            emptyParent.transform.parent = transform.parent;
+            transform.parent = emptyParent.transform;
+        }
+    }
+
     void Start()
     {
+
         currentDestination = relative ? transform.position + destination : destination;
+
         if (carryPassengers)
         {
             passengerCollider = gameObject.AddComponent<BoxCollider>();
             passengerCollider.enabled = true;
             passengerCollider.isTrigger = true;
-            passengerCollider.size = new Vector3(1.0f, 2.0f, 1.0f);
-            passengerCollider.center = new Vector3(0.0f, 1.4f, 0.0f);
+            passengerCollider.size = new Vector3(1.0f, triggerHeight, 1.0f);
+            passengerCollider.center = new Vector3(0.0f, 0.0f, 0.0f);
         }
 
         OnStart();
@@ -107,17 +121,27 @@ public class ObjectMovement : MonoBehaviour
 
     protected bool Move(Vector3 from, Vector3 to)
     {
-        if (Vector3.Distance(from, to) <= 0.1f)
+        if (Vector3.Distance(from, to) <= 0.01f)
         {
             return true;
         }
 
         if (lerp)
         {
+            if (emptyParent != null)
+            {
+                emptyParent.transform.position = Vector3.Lerp(from, to, moveSpeed * Time.deltaTime);
+            }
+
             transform.position = Vector3.Lerp(from, to, moveSpeed * Time.deltaTime);
         }
         else
         {
+            if (emptyParent != null)
+            {
+                emptyParent.transform.position += (to - from).normalized * moveSpeed * Time.deltaTime;
+            }
+
             transform.position += (to - from).normalized * moveSpeed * Time.deltaTime;
         }
 
@@ -135,7 +159,7 @@ public class ObjectMovement : MonoBehaviour
     {
         if (gameObject.transform.childCount == 0)
         {
-            Destroy(gameObject);
+            HandleDestruction();
             return;
         }
 
@@ -144,12 +168,24 @@ public class ObjectMovement : MonoBehaviour
             Transform child = gameObject.transform.GetChild(i);
             if (child.tag == "Player")
             {
-                child.parent = null;
+                child.SetParent(null, true);
                 break;
             }
         }
 
-        Destroy(gameObject);
+        HandleDestruction();
+    }
+
+    void HandleDestruction()
+    {
+        if (emptyParent != null)
+        {
+            Destroy(emptyParent);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -165,19 +201,24 @@ public class ObjectMovement : MonoBehaviour
         }
 
         hasPlayer = true;
-        other.transform.parent = passengerCollider.transform;
+        other.transform.SetParent(emptyParent.transform, true);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!carryPassengers || other.tag != "Player" || !shouldResetPlayerParent)
+        if (!carryPassengers || other.tag != "Player")
+        {
+            return;
+        }
+
+        if (!shouldResetPlayerParent)
         {
             shouldResetPlayerParent = true;
             return;
         }
 
         hasPlayer = false;
-        other.transform.parent = null;
+        other.transform.SetParent(null, true);
     }
 
 }
