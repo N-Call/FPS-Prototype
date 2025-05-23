@@ -559,9 +559,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1673461869}
     - target: {fileID: 4955773651050755048, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
+      propertyPath: speakerUI
+      value: 
+      objectReference: {fileID: 1526932116}
+    - target: {fileID: 4955773651050755048, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
       propertyPath: textPopUp
       value: 
       objectReference: {fileID: 1925951982}
+    - target: {fileID: 4955773651050755048, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
+      propertyPath: textComponent
+      value: 
+      objectReference: {fileID: 1673461869}
     - target: {fileID: 5814989744002049504, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -665,6 +673,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8352492953440843280, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1080190649}
     - targetCorrespondingSourceObject: {fileID: 8334092517873745463, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1673461868}
@@ -691,8 +702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823d34137fc2e914983739660322c1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speakerUI: {fileID: 1526932116}
-  textComponent: {fileID: 1673461869}
   lines:
   - 'this this this '
   - 'is is is '
@@ -836,6 +845,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
   m_PrefabInstance: {fileID: 1174109849}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &447402021 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8352492953440843280, guid: 01df0d6cafd370141866ed3a04a26f6c, type: 3}
+  m_PrefabInstance: {fileID: 321239275}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &516670128
 PrefabInstance:
@@ -1544,6 +1558,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1769775029481149619, guid: 983fbc3aab6f5464183a9837f50dbec0, type: 3}
   m_PrefabInstance: {fileID: 149829441}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1080190648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1080190649}
+  - component: {fileID: 1080190650}
+  m_Layer: 5
+  m_Name: DialogueManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1080190649
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080190648}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 447402021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1080190650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080190648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ac64859d4f2de45bee89ec2d049abb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1105325496 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
@@ -2575,7 +2637,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ac64859d4f2de45bee89ec2d049abb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
 --- !u!4 &1933414921 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1769775029481149619, guid: 983fbc3aab6f5464183a9837f50dbec0, type: 3}
@@ -2697,10 +2758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823d34137fc2e914983739660322c1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speakerUI: {fileID: 1526932116}
-  textComponent: {fileID: 1673461869}
   lines:
-  - this is the longer
+  - Why is there no q
   - if it was
   - words that you read
   speaker:
