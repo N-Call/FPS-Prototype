@@ -94,7 +94,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     protected void PlayIdle()
     {
-        animator?.CrossFade("Idle", 0f);
+        if(animator != null) { animator.CrossFade("Idle", 0f); }
     }
 
     protected void PlaySeconedIdle(bool answer)
