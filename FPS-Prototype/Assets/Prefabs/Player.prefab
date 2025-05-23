@@ -57884,6 +57884,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   wallStickForce: 24
+  speedElemMod: 2
+  speedElemFOVMod: 70
+  speedElemModTime: 5
+  jumpElemMod: 1.5
+  jumpElemModTime: 5
+  shieldElemMod: 1
   sprintFOVMod: 3
   changeRate: 10
   particleSpMod: {fileID: 1916699316069464853}
@@ -58319,6 +58325,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 184390610210017928, guid: a7777c20ad1370846957c831740ff370, type: 3}
+      propertyPath: jumpElemMod
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 184390610210017928, guid: a7777c20ad1370846957c831740ff370, type: 3}
+      propertyPath: speedElemMod
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 184390610210017928, guid: a7777c20ad1370846957c831740ff370, type: 3}
+      propertyPath: shieldElemMod
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 184390610210017928, guid: a7777c20ad1370846957c831740ff370, type: 3}
+      propertyPath: jumpElemModTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 184390610210017928, guid: a7777c20ad1370846957c831740ff370, type: 3}
+      propertyPath: speedElemFOVMod
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 184390610210017928, guid: a7777c20ad1370846957c831740ff370, type: 3}
+      propertyPath: speedElemModTime
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3502339836656149280, guid: a7777c20ad1370846957c831740ff370, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
