@@ -8,7 +8,6 @@ public class TurretEnemy : EnemyController
         GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
         colorOrig = model.material.color;
-        Debug.Log("head found");
         turretHead = transform.Find("Head");
         turretBarrel = transform.Find("Head/CannonBase/Cannon");
         StartCoroutine(Rotate());
@@ -34,7 +33,6 @@ public class TurretEnemy : EnemyController
         {
             if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
-                Debug.Log("target tracked");
                 turretHead.LookAt(GameManager.instance.player.transform);
                 turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
             }
@@ -56,8 +54,9 @@ public class TurretEnemy : EnemyController
         if (currentHealth <= 0)
         {
             GameManager.instance.UpdateEnemyCounter(-1);
-            gameObject.SetActive(false);
-            isDead = true;
+            //gameObject.SetActive(false);
+            //isDead = true;
+            Destroy(gameObject);
             SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
         }
         else

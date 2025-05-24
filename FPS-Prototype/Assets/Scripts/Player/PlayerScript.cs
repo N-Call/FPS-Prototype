@@ -89,6 +89,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     float baseFOV;
 
     int originalHP;
+    int checkPointHP;
     int jumpCount;
 
     bool isSprinting;
@@ -101,6 +102,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     void Start()
     {
         originalHP = HP;
+        checkPointHP = HP;  
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
         origFOV = Camera.main.fieldOfView; 
@@ -501,9 +503,15 @@ public class PlayerScript : MonoBehaviour, IDamage
         speedModifier = 0.0f;
         jumpModifier = 0.0f;
         verticalVelocity.y = 0.0f;
-        HP = originalHP;
+        HP = checkPointHP;
         invulnerable = false;
         ResetFOV();
+        UpdatePlayerUI();
+    }
+
+    public void UpdateCheckpointHealth()
+    {
+        checkPointHP = HP;  
     }
 
     public void UpdatePlayerUI()
