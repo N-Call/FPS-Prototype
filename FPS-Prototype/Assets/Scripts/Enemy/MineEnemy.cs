@@ -52,8 +52,9 @@ public class MineEnemy : EnemyController
         IDamage damage = GameManager.instance.player.GetComponent<IDamage>();
         damage?.TakeDamage(damageAmount);
         GameManager.instance.ToggleReticle();
-        gameObject.SetActive(false);
-        isDead = true;
+        //gameObject.SetActive(false);
+        //isDead = true; 
+        Destroy(gameObject);
         GameManager.instance.UpdateEnemyCounter(-1);
     }
 }

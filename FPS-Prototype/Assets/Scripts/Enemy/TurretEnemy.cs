@@ -15,7 +15,6 @@ public class TurretEnemy : EnemyController
         GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
         colorOrig = model.material.color;
-        Debug.Log("head found");
         turretHead = transform.Find("Head");
         turretBarrel = transform.Find("Head/CannonBase/Cannon");
 
@@ -82,8 +81,9 @@ public class TurretEnemy : EnemyController
         if (currentHealth <= 0)
         {
             GameManager.instance.UpdateEnemyCounter(-1);
-            gameObject.SetActive(false);
-            isDead = true;
+            //gameObject.SetActive(false);
+            //isDead = true;
+            Destroy(gameObject);
             SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
         }
         else

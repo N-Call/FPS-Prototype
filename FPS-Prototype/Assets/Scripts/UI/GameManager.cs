@@ -219,10 +219,10 @@ public class GameManager : MonoBehaviour
 
         playerScript.GetComponent<CharacterController>().enabled = true;
 
-        foreach (EnemyController enemy in enemiesToRespawn)
-        {
-            enemy.ResetEnemies();
-        }
+        //foreach (EnemyController enemy in enemiesToRespawn)
+        //{
+        //    enemy.ResetEnemies();
+        //}
 
     }
     IEnumerator ReticleWaitTime()

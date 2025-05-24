@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Melee : MonoBehaviour, IWeapon
 {
-    public enum ElementType { speed = 1, jump = 2, ammo = 3 }
+    public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
     
     [Header("Referencess")]
