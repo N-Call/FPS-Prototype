@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-public class BossSM : StateMachine
+public class BossSM : StateMachine, IDamage
 {
     [HideInInspector] public IdleDecide idle;
     [HideInInspector] public JumpAttack jump;
@@ -11,12 +12,19 @@ public class BossSM : StateMachine
     [Header ("Refereances")]
     public Rigidbody rigidBody;
     public Animator animator;
+    public NavMeshAgent agent;
+    public Transform lShoulder;
+    public Transform rShoulder;
+    public Damage Bullet;
+    public GameObject lShootPos;
+    public GameObject rShootPos;
 
     [Header("Boss Settings")]
     public int health;
     public int currentHealth;
-    public int currentDecideDis;
+    public float currentDecideDis;
     public bool isAnimDone;
+    public int currentDamage;
 
     [Header("Idle Settings")]
     public int decideDis;
@@ -27,7 +35,7 @@ public class BossSM : StateMachine
 
     [Header("Roll Attack Settings")]
     public float rollForce;
-    public int rollDecideDis;
+    public float rollDecideDis;
 
 
 
@@ -54,6 +62,33 @@ public class BossSM : StateMachine
 
     public void SetDecideAnim()
     {
-        animator.SetInteger("DecideDis", currentDecideDis);
+        animator.SetFloat("DecideDis", currentDecideDis);
     }
+
+    public void TakeDamage(int amount)
+    {
+        currentHealth -= amount;
+        Dead();
+    }
+
+    public void SpawnLeftProjectile()
+    {
+        Instantiate(Bullet, lShootPos.transform.position, transform.rotation);
+    }
+
+    public void SpawnRightProjectile()
+    {
+        Instantiate(Bullet, rShootPos.transform.position, transform.rotation);
+    }
+
+    private void Dead()
+    {
+        //Death animation
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        other.GetComponent<IDamage>()?.TakeDamage(currentDamage);
+    }
+
 }

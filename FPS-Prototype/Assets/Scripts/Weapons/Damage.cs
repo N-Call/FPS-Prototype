@@ -15,23 +15,41 @@ public class Damage : MonoBehaviour
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
+    [SerializeField] float chaseDist;
 
     [Header("Damage Over Time Settings")]
     [SerializeField] private int dotDamage;
     [SerializeField] private int dotDamageRate;
 
     private bool isDamaging;
+    private bool stopChasing;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (damageType == DamageType.moving)
+        if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
             Destroy(gameObject, destroyTime);
 
             if (damageType == DamageType.moving)
             {
                 rb.linearVelocity = transform.forward * speed;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (damageType == DamageType.homing)
+        {
+            if(Vector3.Distance(GameManager.instance.player.transform.position, transform.position) > chaseDist && !stopChasing)
+            {
+                rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position) * speed;
+            }
+            else if(!stopChasing)
+            {
+                stopChasing = true;
+                rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position) * speed;
             }
         }
     }

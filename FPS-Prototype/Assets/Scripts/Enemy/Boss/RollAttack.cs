@@ -18,7 +18,7 @@ public class RollAttack : BaseState
     {
         base.StateLogic();
         if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("RollTransform"))
-            bossSM.currentDecideDis = (int)Vector3.Distance(GameManager.instance.player.transform.position, bossSM.rigidBody.position) - bossSM.rollDecideDis;
+            bossSM.currentDecideDis = Vector3.Distance(GameManager.instance.player.transform.position, bossSM.rigidBody.position) - bossSM.rollDecideDis;
 
         if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("BallToNormal"))
             bossSM.ChangeState(bossSM.idle);
@@ -32,6 +32,6 @@ public class RollAttack : BaseState
     {
         base.Exit();
         bossSM.currentDecideDis = 0;
-        bossSM.animator.SetInteger("DecideDis", bossSM.currentDecideDis);
+        bossSM.animator.SetFloat("DecideDis", bossSM.currentDecideDis);
     }
 }
