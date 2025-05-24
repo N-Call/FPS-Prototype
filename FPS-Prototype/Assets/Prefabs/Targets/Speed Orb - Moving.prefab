@@ -9677,12 +9677,13 @@ GameObject:
   m_Component:
   - component: {fileID: 8620150882502633554}
   - component: {fileID: 3675130624134493221}
+  - component: {fileID: -8203749666991030885}
   - component: {fileID: 9049900620604290542}
   - component: {fileID: 1083374146709489344}
   - component: {fileID: 3872715874935935776}
   - component: {fileID: -2372778831385049182}
   m_Layer: 8
-  m_Name: Speed Orb
+  m_Name: Speed Orb - Moving
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9724,6 +9725,32 @@ MonoBehaviour:
   explosionVisual: {fileID: 5055903540904832851}
   HP: 1
   elem: 3
+--- !u!114 &-8203749666991030885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3806270064288589785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destination: {x: 0, y: 0, z: 0}
+  relative: 0
+  speed: 1
+  lerp: 0
+  startDelay: 0
+  startDelayInitial: 0
+  destinationDelay: 0
+  pingPong: 0
+  backToStart: 0
+  carryPlayer: 0
+  onlyMoveWhenPlayer: 0
+  destroyAfterTime: 0
+  destroyAfterCycles: 0
+  destroyAtDestinationDelay: 0
 --- !u!33 &9049900620604290542
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9839,7 +9866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &359776353553087547
 Transform:
   m_ObjectHideFlags: 0
