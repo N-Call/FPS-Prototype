@@ -492,7 +492,6 @@ public class PlayerScript : MonoBehaviour, IDamage
         if (HP <= 0)
         {
             GameManager.instance.YouLose();
-            //GameManager.instance.Respawn();
         }
     }
 
@@ -536,6 +535,22 @@ public class PlayerScript : MonoBehaviour, IDamage
         {
             isShielded += shieldAmount;
         }
+    }
+
+    public void AddHP(int amount)
+    {
+        if (amount < 1)
+        {
+            return;
+        }
+
+        HP += amount;
+        if (HP > originalHP)
+        {
+            HP = originalHP;
+        }
+
+        UpdatePlayerUI();
     }
 
     public void SetCurrentFOV()
