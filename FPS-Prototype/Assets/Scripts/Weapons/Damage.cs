@@ -4,7 +4,7 @@ using System.Collections;
 public class Damage : MonoBehaviour
 {
     enum DamageType {DOT, moving, homing, stationary}
-    enum ElementType {speed = 1, jump = 2, time = 3}
+    enum ElementType {speed = 1, jump = 2, shield = 3}
 
     [Header("Resources")]
     [SerializeField] Rigidbody rb;

@@ -4,7 +4,7 @@ using System.Data.SqlTypes;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour, IDamage
+public class PlayerScript : MonoBehaviour, IDamage, IElemental
 {
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask playerMask;
@@ -54,6 +54,14 @@ public class PlayerScript : MonoBehaviour, IDamage
     [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallStickForce;
 
+    [Header("Wall Running/Jumping")]
+    [SerializeField] float speedElemMod;
+    [SerializeField] float speedElemFOVMod;
+    [SerializeField] float speedElemModTime;
+    [SerializeField] float jumpElemMod;
+    [SerializeField] float jumpElemModTime;
+    [SerializeField] int shieldElemMod;
+
     bool isWallRunning;         // Is the player wall jumping?
     bool wallJumped;            // Did the player wall jump?
     float wallRunTimer;         // TImer for the active wall run.
@@ -88,7 +96,10 @@ public class PlayerScript : MonoBehaviour, IDamage
     float origFOV;
     float baseFOV;
 
+    float currSpeed;
+
     int originalHP;
+    int checkPointHP;
     int jumpCount;
 
     bool isSprinting;
@@ -101,6 +112,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     void Start()
     {
         originalHP = HP;
+        checkPointHP = HP;  
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
         origFOV = Camera.main.fieldOfView; 
@@ -322,8 +334,17 @@ public class PlayerScript : MonoBehaviour, IDamage
             currentSlideSpeed -= slideRate;
         }
 
+        if(speedModifier < 1)
+        {
+            currSpeed = speed + (speed * speedModifier);
+        }
+        else
+        {
+            currSpeed = speed *= speedModifier;
+        }
+
         // Return the calculated speed, and factor in external speed modifiers
-        return speed + (speed * speedModifier);
+        return currSpeed;
     }
 
     void Jump()
@@ -339,7 +360,18 @@ public class PlayerScript : MonoBehaviour, IDamage
                 jumpSpeedBonus = slideJumpSpeedBonus;
             }
             // Handle jump force (with external jump multiplier factored in)
-            verticalVelocity.y = jumpForce + (jumpForce * jumpModifier);
+            if (jumpModifier < 1 && jumpModifier != 0)
+            {
+                verticalVelocity.y = jumpForce + (jumpForce * -(1.0f + jumpModifier));
+            }
+            else if (jumpModifier > 0)
+            {
+                verticalVelocity.y = jumpForce * jumpModifier;
+            }
+            else
+            {
+                verticalVelocity.y = jumpForce;
+            }
             jumpCount++;
         }
 
@@ -492,7 +524,6 @@ public class PlayerScript : MonoBehaviour, IDamage
         if (HP <= 0)
         {
             GameManager.instance.YouLose();
-            //GameManager.instance.Respawn();
         }
     }
 
@@ -501,9 +532,15 @@ public class PlayerScript : MonoBehaviour, IDamage
         speedModifier = 0.0f;
         jumpModifier = 0.0f;
         verticalVelocity.y = 0.0f;
-        HP = originalHP;
+        HP = checkPointHP;
         invulnerable = false;
         ResetFOV();
+        UpdatePlayerUI();
+    }
+
+    public void UpdateCheckpointHealth()
+    {
+        checkPointHP = HP;  
     }
 
     public void UpdatePlayerUI()
@@ -536,6 +573,22 @@ public class PlayerScript : MonoBehaviour, IDamage
         {
             isShielded += shieldAmount;
         }
+    }
+
+    public void AddHP(int amount)
+    {
+        if (amount < 1)
+        {
+            return;
+        }
+
+        HP += amount;
+        if (HP > originalHP)
+        {
+            HP = originalHP;
+        }
+
+        UpdatePlayerUI();
     }
 
     public void SetCurrentFOV()
@@ -585,6 +638,110 @@ public class PlayerScript : MonoBehaviour, IDamage
         GameManager.instance.playerDamageScreen.SetActive(true);
         yield return new WaitForSeconds(0.3f);
         GameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    // Element Work
+    public void ElementBuff(int elem)
+    {
+        switch (elem)
+        {
+            case 1:
+                Debug.Log("Speed Buff");
+                StartCoroutine(SpeedBuff());
+                GameManager.instance.BuffSprintIcon(speedElemModTime);
+                break;
+            case 2:
+                Debug.Log("Jump Buff");
+                StartCoroutine(JumpBuff());
+                GameManager.instance.BuffJumpIcon(jumpElemModTime);
+                break;
+            case 3:
+                Debug.Log("Shield Buff");
+                ShieldBuff();
+                break;
+        }
+    }
+    public void ElementDebuff(int elem)
+    {
+        switch (elem)
+        {
+            case 1:
+                Debug.Log("Speed Debuff");
+                StartCoroutine(SpeedDebuff());
+                GameManager.instance.DeBuffSprintIcon(speedElemModTime);
+                break;
+            case 2:
+                Debug.Log("Jump Debuff");
+                StartCoroutine(JumpDebuff());
+                GameManager.instance.DeBuffJumpIcon(jumpElemModTime);
+                break;
+            case 3:
+                Debug.Log("Shield Debuff");
+                ShieldDebuff();
+                break;
+        }
+    }
+    public void ElementInverse()
+    {
+
+    }
+
+    private IEnumerator SpeedBuff()
+    {
+        SoundManager.instance.PlaySFX("powerUp", 0.3f);
+        AddModifier(speedElemMod);
+        SetBaseFOV(baseFOV + speedElemFOVMod);
+        particleSpMod.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(speedElemModTime);
+
+        particleSpMod.gameObject.SetActive(false);
+        AddModifier(-speedElemMod);
+        ResetFOV();
+    }
+    private IEnumerator JumpBuff()
+    {
+        SoundManager.instance.PlaySFX("powerUp", 0.3f);
+        AddModifier(0.0f, jumpElemMod);
+        particleJpMod.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(jumpElemModTime);
+
+        AddModifier(0.0f, -jumpElemMod);
+        particleJpMod.gameObject.SetActive(false);
+    }
+    private IEnumerator SpeedDebuff()
+    {
+        SoundManager.instance.PlaySFX("debuff", 0.4f);
+        AddModifier(-1/speedElemMod);
+        SetBaseFOV(baseFOV - speedElemFOVMod);
+
+        yield return new WaitForSeconds(speedElemModTime);
+
+        AddModifier(1/speedElemMod);
+        ResetFOV();
+    }
+    private IEnumerator JumpDebuff()
+    {
+        SoundManager.instance.PlaySFX("debuff", 0.4f);
+        GameManager.instance.playerScript.AddModifier(0.0f, -1/jumpElemMod);
+
+        yield return new WaitForSeconds(jumpElemModTime);
+
+        GameManager.instance.playerScript.AddModifier(0.0f, 1/jumpElemMod);
+    }
+    private void ShieldBuff()
+    {
+        SoundManager.instance.PlaySFX("powerUp", 0.3f);
+
+        SetShield(shieldElemMod);
+
+        UpdatePlayerUI();
+    }
+    private void ShieldDebuff()
+    {
+        SoundManager.instance.PlaySFX("debuff", 0.4f);
+        SetShield(shieldElemMod);
     }
 
     #region Save and Load

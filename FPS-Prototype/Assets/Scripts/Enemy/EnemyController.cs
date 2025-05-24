@@ -36,12 +36,13 @@ public class EnemyController : MonoBehaviour, IDamage
     protected float stoppingDistanceOrig;
     protected float rotationAmount = 1.0f;
     protected int ticksPerSecond = 60;
+    
 
     bool playerAttackRange;
 
     protected bool playerInRange;
-    public bool isDead;
-    public bool isRespawned;
+    //public bool isDead;
+    //public bool isRespawned;
 
     bool isPlayerDead;
     protected int maxHealth;
@@ -58,6 +59,7 @@ public class EnemyController : MonoBehaviour, IDamage
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
+        GameManager.instance.UpdateEnemyCounter(1);
     }
 
     // Update is called once per frame
@@ -167,8 +169,9 @@ public class EnemyController : MonoBehaviour, IDamage
         if (currentHealth <= 0)
         {
             GameManager.instance.UpdateEnemyCounter(-1);
-            gameObject.SetActive(false);
-            isDead = true;
+            //gameObject.SetActive(false);
+            //isDead = true;
+            Destroy(gameObject);
         }
         else
         {
@@ -183,7 +186,7 @@ public class EnemyController : MonoBehaviour, IDamage
         model.material.color = colorOrig;
     }
 
-    void FaceTarget()
+    protected void FaceTarget()
     {
         Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
 
@@ -199,24 +202,24 @@ public class EnemyController : MonoBehaviour, IDamage
         }
     }
 
-    public void ResetEnemies()
-    {
-        transform.position = originalPosition;
-        currentHealth = maxHealth;
+    //public void ResetEnemies()
+    //{
+    //    transform.position = originalPosition;
+    //    currentHealth = maxHealth;
 
-        if(isDead)
-        {
-            gameObject.SetActive(true);
-            isDead = false;
-            GameManager.instance.UpdateEnemyCounter(1);
-            if (isRespawned == false)
-            {
-                GameManager.instance.UpdateEnemyCounter(-1);
-                gameObject.SetActive(false);
+    //    if(isDead)
+    //    {
+    //        gameObject.SetActive(true);
+    //        isDead = false;
+    //        GameManager.instance.UpdateEnemyCounter(1);
+    //        if (isRespawned == false)
+    //        {
+    //            GameManager.instance.UpdateEnemyCounter(-1);
+    //            gameObject.SetActive(false);
 
-            }
-        }
-    }
+    //        }
+    //    }
+    //}
 
 
 }

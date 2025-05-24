@@ -14,7 +14,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     [SerializeField] protected int damage;
     [SerializeField] protected float shootRate;
 
-    public enum ElementType { speed = 1, jump = 2, ammo = 3 }
+    public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
     [SerializeField] public ElementType elem;
 

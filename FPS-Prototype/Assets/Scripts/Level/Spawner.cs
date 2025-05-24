@@ -34,6 +34,7 @@ public class Spawner : MonoBehaviour
     bool isEnemy;
     bool firstSpawned;
     bool hasPlayer;
+    bool isActive = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,6 +49,11 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isActive)
+        {
+            return;
+        }
+
         if (!hasPlayer || objectToSpawn == null || spawnPositions.Length == 0 || amountSpawned >= spawnAmount)
         {
             return;
@@ -117,6 +123,11 @@ public class Spawner : MonoBehaviour
         {
             hasPlayer = false;
         }
+    }
+
+    public void DisableSpawner()
+    {
+        isActive = false;
     }
 
 }
