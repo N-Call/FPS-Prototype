@@ -3,29 +3,41 @@ using UnityEngine;
 
 public class TurretEnemy : EnemyController
 {
+
+    [SerializeField] bool shouldRotate = true;
+    [SerializeField][Range(0, 90)] float maxPitch;
+    [SerializeField][Range(0, 90)] float minPitch;
+
+    bool canSeePlayer;
+
     protected override void Start()
     {
         GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
         colorOrig = model.material.color;
-        Debug.Log("head found");
         turretHead = transform.Find("Head");
         turretBarrel = transform.Find("Head/CannonBase/Cannon");
-        StartCoroutine(Rotate());
+
+        if (shouldRotate)
+        {
+            StartCoroutine(Rotate());
+        }
+
         GameManager.instance.UpdateEnemyCounter(1);
     }
+
     protected override void Update()
     {
         shootTimer += Time.deltaTime;
         if (playerInRange)
         {
-            CanSeePlayer(); 
+            canSeePlayer = CanSeePlayer();
         }
-
     }
+
     protected override bool CanSeePlayer()
     {
-        playerDir = (GameManager.instance.player.transform.position - transform.position);
+        playerDir = GameManager.instance.player.transform.position - transform.position;
         angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
         Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
 
@@ -34,20 +46,33 @@ public class TurretEnemy : EnemyController
         {
             if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
-                Debug.Log("target tracked");
-                turretHead.LookAt(GameManager.instance.player.transform);
-                turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
-            }
+                Vector3 middlePlayerDir = playerDir;
+                middlePlayerDir.y -= 0.5f;
 
-            if (shootTimer >= shootRate)
-            {
-                Shoot();
-                SoundManager.instance.PlaySFX("turretShot", 0.2f);
+                // Calculate the vertical angle from the direction
+                float pitch = Vector3.SignedAngle(middlePlayerDir, new Vector3(playerDir.x, 0, playerDir.z), turretHead.right);
+                pitch = Mathf.Clamp(-pitch, -maxPitch, minPitch);
+
+                turretHead.LookAt(GameManager.instance.player.transform.position);
+                
+                Vector3 eulerAngles = turretHead.rotation.eulerAngles;
+                eulerAngles.x = pitch;
+
+                turretHead.rotation = Quaternion.Euler(eulerAngles);
+                
+                if (shootTimer >= shootRate)
+                {
+                    Shoot();
+                    SoundManager.instance.PlaySFX("turretShot", 0.2f);
+                }
+
+                return true;
             }
-            return true;
         }
+
         return false;
     }
+
     public override void TakeDamage(int amount)
     {
         currentHealth -= amount;
@@ -56,8 +81,9 @@ public class TurretEnemy : EnemyController
         if (currentHealth <= 0)
         {
             GameManager.instance.UpdateEnemyCounter(-1);
-            gameObject.SetActive(false);
-            isDead = true;
+            //gameObject.SetActive(false);
+            //isDead = true;
+            Destroy(gameObject);
             SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
         }
         else
@@ -65,11 +91,13 @@ public class TurretEnemy : EnemyController
             StartCoroutine(flashRed());
         }
     }
+
     public override void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+            turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
         }
     }
 
@@ -82,16 +110,18 @@ public class TurretEnemy : EnemyController
             Instantiate(bullet, shootPos.position, turretBarrel.rotation);
         }
     }
+
     private IEnumerator Rotate()
     {
         WaitForSeconds wait = new WaitForSeconds(1f / ticksPerSecond);
         while (true)
         {
-            if (!pause && !playerInRange)
+            if (!pause && (!playerInRange || !canSeePlayer))
             {
                 turretHead.Rotate(Vector3.up * rotationAmount);
             }
             yield return wait;
         }
     }
+
 }

@@ -1208,6 +1208,9 @@ MonoBehaviour:
   isRespawned: 0
   RangeTrigger: {fileID: 0}
   ExplosionTrigger: {fileID: 0}
+  shouldRotate: 1
+  maxPitch: 30
+  minPitch: 30
 --- !u!136 &8923058814578925523
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1250,8 +1253,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 30, y: 20, z: 17}
-  m_Center: {x: 0, y: 0, z: 10}
+  m_Size: {x: 100, y: 100, z: 100}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1895995403989883349
 MonoBehaviour:
   m_ObjectHideFlags: 0

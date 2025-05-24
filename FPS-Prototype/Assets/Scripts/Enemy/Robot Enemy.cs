@@ -6,6 +6,10 @@ public class RobotEnemy : EnemyController
     {
         base.TakeDamage(amount);
         SoundManager.instance.PlaySFX("turretHit", 0.2f);
+        if (currentHealth <= 0)
+        {
+            SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
+        }
     }
 
     protected override void Shoot()

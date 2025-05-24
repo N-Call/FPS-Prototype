@@ -1,14 +1,25 @@
+using System;
 using UnityEngine;
 
 public class MineEnemy : EnemyController
 {
     public void Awake()
     {
-        RangeTrigger.EnteredTrigger += OnRangeTriggerEnter;
-        RangeTrigger.ExitedTrigger += OnRangeTriggerExit;
+        RangeTrigger.onTriggerEnter.AddListener(() => OnRangeTriggerEnter(GameManager.instance.player.GetComponent<Collider>()));
+        RangeTrigger.onTriggerExit.AddListener(() => OnRangeTriggerExit(GameManager.instance.player.GetComponent<Collider>()));
 
-        ExplosionTrigger.EnteredTrigger += OnExplosionTriggerEnter;
-       
+        ExplosionTrigger.onTriggerEnter.AddListener(() => OnExplosionTriggerEnter(GameManager.instance.player.GetComponent<Collider>()));
+
+    }
+
+    public override void TakeDamage(int amount)
+    {
+        base.TakeDamage(amount);
+        SoundManager.instance.PlaySFX("turretHit", 0.2f);
+        if (currentHealth <= 0)
+        {
+            SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
+        }
     }
 
     void OnRangeTriggerEnter(Collider other)
@@ -16,7 +27,7 @@ public class MineEnemy : EnemyController
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-        }      
+        }
     }
 
     void OnRangeTriggerExit(Collider other)
@@ -29,7 +40,7 @@ public class MineEnemy : EnemyController
 
     private void OnExplosionTriggerEnter(Collider other)
     {
-      if (other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             Explode();
         }
@@ -41,8 +52,9 @@ public class MineEnemy : EnemyController
         IDamage damage = GameManager.instance.player.GetComponent<IDamage>();
         damage?.TakeDamage(damageAmount);
         GameManager.instance.ToggleReticle();
-        gameObject.SetActive(false);
-        isDead = true;
+        //gameObject.SetActive(false);
+        //isDead = true; 
+        Destroy(gameObject);
         GameManager.instance.UpdateEnemyCounter(-1);
     }
 }
