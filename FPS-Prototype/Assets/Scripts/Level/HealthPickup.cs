@@ -15,6 +15,7 @@ public class HealthPickup : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GameManager.instance.playerScript.AddHP(HP);
+            SoundManager.instance.PlaySFX("Health", 0.5f);
             Destroy(gameObject);
         }
     }
