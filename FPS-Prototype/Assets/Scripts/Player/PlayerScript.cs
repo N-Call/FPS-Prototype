@@ -96,6 +96,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     float origFOV;
     float baseFOV;
 
+    float currSpeed;
+
     int originalHP;
     int jumpCount;
 
@@ -330,8 +332,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             currentSlideSpeed -= slideRate;
         }
 
+        if(speedModifier < 1)
+        {
+            currSpeed = speed + (speed * speedModifier);
+        }
+        else
+        {
+            currSpeed = speed *= speedModifier;
+        }
+
         // Return the calculated speed, and factor in external speed modifiers
-        return speed + (speed * speedModifier);
+        return currSpeed;
     }
 
     void Jump()
@@ -347,7 +358,18 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
                 jumpSpeedBonus = slideJumpSpeedBonus;
             }
             // Handle jump force (with external jump multiplier factored in)
-            verticalVelocity.y = jumpForce + (jumpForce * jumpModifier);
+            if (jumpModifier < 1 && jumpModifier != 0)
+            {
+                verticalVelocity.y = jumpForce + (jumpForce * -(1.0f + jumpModifier));
+            }
+            else if (jumpModifier > 0)
+            {
+                verticalVelocity.y = jumpForce * jumpModifier;
+            }
+            else
+            {
+                verticalVelocity.y = jumpForce;
+            }
             jumpCount++;
         }
 
@@ -636,12 +658,16 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
                 break;
         }
     }
+    public void ElementInverse()
+    {
+
+    }
 
     private IEnumerator SpeedBuff()
     {
         SoundManager.instance.PlaySFX("powerUp", 0.3f);
         AddModifier(speedElemMod);
-        SetBaseFOV(speedElemFOVMod);
+        SetBaseFOV(baseFOV + speedElemFOVMod);
         particleSpMod.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(speedElemModTime);
@@ -664,22 +690,22 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     private IEnumerator SpeedDebuff()
     {
         SoundManager.instance.PlaySFX("debuff", 0.4f);
-        AddModifier(-speedElemMod);
-        SetBaseFOV(-speedElemFOVMod);
+        AddModifier(-1/speedElemMod);
+        SetBaseFOV(baseFOV - speedElemFOVMod);
 
         yield return new WaitForSeconds(speedElemModTime);
 
-        AddModifier(speedElemMod);
+        AddModifier(1/speedElemMod);
         ResetFOV();
     }
     private IEnumerator JumpDebuff()
     {
         SoundManager.instance.PlaySFX("debuff", 0.4f);
-        GameManager.instance.playerScript.AddModifier(0.0f, -jumpElemMod);
+        GameManager.instance.playerScript.AddModifier(0.0f, -1/jumpElemMod);
 
         yield return new WaitForSeconds(jumpElemModTime);
 
-        GameManager.instance.playerScript.AddModifier(0.0f, jumpElemMod);
+        GameManager.instance.playerScript.AddModifier(0.0f, 1/jumpElemMod);
     }
     private void ShieldBuff()
     {

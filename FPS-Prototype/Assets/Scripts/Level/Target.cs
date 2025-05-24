@@ -7,8 +7,8 @@ public class Target : MonoBehaviour, IDamage, ITarget
 {
     enum ElementType { speed = 1, jump = 2, shield = 3 }
 
-    //[SerializeField] GameObject artToDisable = null;
     [SerializeField] Collider explosionRadius;
+    [SerializeField] GameObject explosionVisual;
 
     [Header("Health")]
     [SerializeField] int HP;
@@ -74,8 +74,10 @@ public class Target : MonoBehaviour, IDamage, ITarget
     IEnumerator InitiateExplosion()
     {
         explosionRadius.enabled = true;
-        yield return new WaitForSeconds(0.1f);
+        explosionVisual.SetActive(true);
+        yield return new WaitForSeconds(0.3f);
         explosionRadius.enabled = false;
+        explosionVisual.SetActive(false);
         gameObject.SetActive(false);
     }
 }
