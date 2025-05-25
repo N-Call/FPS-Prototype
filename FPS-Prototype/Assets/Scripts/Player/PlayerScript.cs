@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour, IDamage, IElemental
 {
@@ -140,6 +141,14 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         SetCurrentFOV();
     }
 
+//    public void getDialogue(DialogueSO text)
+//    {
+//        lines = text.lines;
+//        speaker = text.speaker;
+//        textSpeed = text.textSpeed;
+//        speedBetweenText = text.speedBetweenText;
+
+//}
     void WallRunCheck()
     {
         if (controller.isGrounded)
@@ -753,6 +762,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     public void Load(PlayerSaveData data)
     {
         transform.position = data.position;
+    }
+
+    public void getDialogue(Dialogue text)
+    {
+        throw new System.NotImplementedException();
     }
 
     #endregion
