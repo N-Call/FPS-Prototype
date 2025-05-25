@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4950926077385369974}
   - component: {fileID: 1228067036444423180}
   - component: {fileID: 7400233326320296697}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Eyebrow.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6100335118710764499}
   - component: {fileID: 8215423150634262981}
   - component: {fileID: 2042740192907733970}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Eyebrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 7960806977014304128}
   - component: {fileID: 4860553623929676984}
   - component: {fileID: 8928790785198715545}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 6890502785416118658}
   - component: {fileID: 7254175934432119888}
   - component: {fileID: 6837055348354178706}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 7825800319435152841}
   - component: {fileID: 7188226897972620650}
   - component: {fileID: 6390431325328309735}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 1252828228383433430}
   - component: {fileID: 7925121118575645243}
   - component: {fileID: 1496557565985448369}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 1708212876995782455}
   - component: {fileID: 578043504512147372}
   - component: {fileID: 502797270125001155}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wheel Cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 7569810981230367826}
   - component: {fileID: 4767644849378523009}
   - component: {fileID: 9048879753432103701}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -699,7 +699,7 @@ GameObject:
   - component: {fileID: 901300768292507920}
   - component: {fileID: 3885480010263010835}
   - component: {fileID: 3280775873375434999}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 1998962282422799291}
   - component: {fileID: 3516355272384880416}
   - component: {fileID: 1492291839317513339}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -871,7 +871,7 @@ GameObject:
   - component: {fileID: 2724155433699936581}
   - component: {fileID: 2304745449147924218}
   - component: {fileID: 3933127967120754746}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Wheel Inside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -956,12 +956,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1162990775811529464}
   - component: {fileID: 9154420906425740561}
-  - component: {fileID: 3717127350718192397}
   - component: {fileID: 1328580736883950344}
   - component: {fileID: 659712612865461418}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: newminerobot
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1017,52 +1016,18 @@ MonoBehaviour:
   model: {fileID: 7397072717057599289}
   agent: {fileID: 1328580736883950344}
   currentHealth: 2
-  faceTargetSpeed: 5
-  FOV: 90
-  roamDist: 10
-  roamPauseTime: 3
+  faceTargetSpeed: 20
+  FOV: 180
+  roamDist: 3
+  roamPauseTime: 5
   pause: 0
   shootPos: {fileID: 0}
   bullet: {fileID: 0}
   shootRate: 0
   damageAmount: 3
   originalPosition: {x: 0, y: 0, z: 0}
-  isDead: 0
-  isRespawned: 0
   RangeTrigger: {fileID: 8746852382963367737}
   ExplosionTrigger: {fileID: 6942004578865680284}
---- !u!114 &3717127350718192397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5841436841894323896}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 981a68c9d4bc2f744b6b0697d5fffbf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 7397072717057599289}
-  agent: {fileID: 1328580736883950344}
-  currentHealth: 2
-  faceTargetSpeed: 5
-  sightRange: 15
-  rangeIsTrigger: 0
-  shootPos: {fileID: 0}
-  bullet: {fileID: 0}
-  shootRate: 0
-  pause: 0
-  damageAmount: 1
-  isShooting: 0
-  isTurret: 0
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 8
-  originalPosition: {x: 0, y: 0, z: 0}
-  isDead: 0
-  isRespawned: 0
-  robotHead: {fileID: 0}
 --- !u!195 &1328580736883950344
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1073,7 +1038,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 7
   m_Acceleration: 32
   avoidancePriority: 50
   m_AngularSpeed: 600
@@ -1119,7 +1084,7 @@ GameObject:
   - component: {fileID: 7954880424255659703}
   - component: {fileID: 8775355677450619522}
   - component: {fileID: 7586972446245973638}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1205,7 +1170,7 @@ GameObject:
   - component: {fileID: 1931260754068940311}
   - component: {fileID: 1949040823627417741}
   - component: {fileID: 723151645450233823}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1291,7 +1256,7 @@ GameObject:
   - component: {fileID: 3676478191779807951}
   - component: {fileID: 8906083936349593521}
   - component: {fileID: 5600466251159088864}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1377,7 +1342,7 @@ GameObject:
   - component: {fileID: 7245694219581748297}
   - component: {fileID: 7451473076734890903}
   - component: {fileID: 3146308539416846578}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right Wheel Inside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1463,7 +1428,7 @@ GameObject:
   - component: {fileID: 8913468075664352272}
   - component: {fileID: 8058434468668578744}
   - component: {fileID: 8746852382963367737}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RangeTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1518,6 +1483,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cebe04c8251c53049b3b55280e26dd49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onTriggerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onTriggerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7834027417159818124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,7 +1500,7 @@ GameObject:
   - component: {fileID: 526682242711291354}
   - component: {fileID: 4483257129301058026}
   - component: {fileID: 6942004578865680284}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExplosionTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1584,6 +1555,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cebe04c8251c53049b3b55280e26dd49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onTriggerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onTriggerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8136300359106335056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,7 +1572,7 @@ GameObject:
   - component: {fileID: 6632215041765648428}
   - component: {fileID: 4122952593059175918}
   - component: {fileID: 8175862541571688803}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1681,7 +1658,7 @@ GameObject:
   - component: {fileID: 177334833626232826}
   - component: {fileID: 2486413568681077022}
   - component: {fileID: 2854886382819364068}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1767,7 +1744,7 @@ GameObject:
   - component: {fileID: 7285497120796723942}
   - component: {fileID: 6280816023181166382}
   - component: {fileID: 7397072717057599289}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1853,7 +1830,7 @@ GameObject:
   - component: {fileID: 5323395206592098674}
   - component: {fileID: 3552834616072139590}
   - component: {fileID: 4496703436263322284}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
