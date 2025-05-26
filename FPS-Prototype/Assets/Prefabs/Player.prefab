@@ -195,8 +195,8 @@ MonoBehaviour:
   animator: {fileID: 1658318177471434436}
   weaponCollider: {fileID: 6943577338514065090}
   elem: 3
-  damage: 5
-  attackSpeed: 1.5
+  damage: 3
+  attackSpeed: 2
 --- !u!65 &6943577338514065090
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -226,7 +226,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168810582318518561}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.01
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -57850,7 +57850,7 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 8
-  HP: 5
+  HP: 10
   invincHitTime: 1
   isShielded: 0
   shieldMax: 5
