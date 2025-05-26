@@ -22,11 +22,13 @@ public class JumpAttack : BaseState
     public override void StateLogic()
     {
         base.StateLogic();
+        if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("BallToNormal"))
+            bossSM.ChangeState(bossSM.idle);
     }
     public override void Action()
     {
         base.Action();
-        if( !isStopped && Vector3.Distance(bossSM.transform.position, bossSM.targetPoint.position) < 0.5f)
+        if( !isStopped && Vector3.Distance(bossSM.transform.position, bossSM.targetPoint.position) <= 2f)
         {
             bossSM.animator.CrossFade("Slaming", 0.02f);
             bossSM.rigidBody.linearVelocity = Vector3.up * bossSM.gravity;
@@ -37,10 +39,19 @@ public class JumpAttack : BaseState
     public override void Exit()
     {
         base.Exit();
+
+    }
+
+    public void ResetRigid()
+    {
+        bossSM.rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+        bossSM.rigidBody.excludeLayers = 0;
     }
 
     public void JumpToTarget()
     {
+        bossSM.rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        bossSM.rigidBody.excludeLayers = bossSM.ignorelayer;
         Vector3 jumpVelocity = CalculateJumpVelocity(bossSM.transform.position, bossSM.targetPoint.position, bossSM.targetPoint.position.y - bossSM.transform.position.y);
         bossSM.rigidBody.AddForce(jumpVelocity, ForceMode.Impulse);
     }
