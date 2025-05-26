@@ -14,7 +14,6 @@ public class IdleDecide : BaseState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Is Working");
         bossSM.LookAtPlayer(0);
         counter = bossSM.decideTime;
         player = GameManager.instance.player;
@@ -23,41 +22,39 @@ public class IdleDecide : BaseState
     {
         if(counter > 0 || bossSM.GetCurrentState() != bossSM.idle) { return; }
 
-        if (bossSM.GetCurrentHealth() > bossSM.health / 2)
+        //Phase one State Logics
+        base.StateLogic();
+        if (Vector3.Distance(player.transform.position, bossSM.rigidBody.position) < bossSM.decideDis)
         {
-            //Phase one State Logics
-            base.StateLogic();
-            if (Vector3.Distance(player.transform.position, bossSM.rigidBody.position) < bossSM.decideDis)
-            {
-                bossSM.ChangeState(bossSM.roll);
-            }
-            else if(Vector3.Distance(player.transform.position, bossSM.rigidBody.position) < bossSM.decideDis * 2)
-            {
-                bossSM.ChangeState(bossSM.run);
-            }
-            else
-            {
-                bossSM.ChangeState(bossSM.shoot);
-            }
-
+            bossSM.ChangeState(bossSM.roll);
+        }
+        else if(Vector3.Distance(player.transform.position, bossSM.rigidBody.position) < bossSM.decideDis * 2)
+        {
+            bossSM.ChangeState(bossSM.run);
         }
         else
         {
-            //Phase Two State Logics
+            bossSM.ChangeState(bossSM.shoot);
+        }
 
-            base.StateLogic();
-            if (Vector3.Distance(player.transform.position, bossSM.rigidBody.position) < bossSM.decideDis)
+        if (bossSM.GetCurrentHealth() < bossSM.health / 2)
+        {
+            //Phase Two State Logics
+            switch (bossSM.currentAbility)
             {
-                Debug.Log("Activate: Speed");
-                bossSM.ChangeState(bossSM.jump);
-                //bossSM.ChangeState(bossSM.speed);
-            }
-            else
-            {
-                Debug.Log("Activate: Jump");
-                bossSM.ChangeState(bossSM.jump);
+                case BossSM.Ability.speedBoost:
+                    bossSM.ChangeState(bossSM.speed);
+                    break;
+                case BossSM.Ability.jumpBoost:
+                    Debug.Log("Should Jump");
+                    bossSM.ChangeState(bossSM.jump);
+                    break;
+                case BossSM.Ability.invensBoost:
+                    break;
+                default: break;
             }
         }
+
     }
     public override void Action()
     {

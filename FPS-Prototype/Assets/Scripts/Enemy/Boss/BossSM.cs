@@ -12,6 +12,14 @@ public class BossSM : StateMachine, IDamage
     [HideInInspector] public ShootAttack shoot;
     [HideInInspector] public SpeedAttack speed;
 
+    public enum Ability
+    {
+        None,
+        speedBoost = 1,
+        jumpBoost = 2,
+        invensBoost = 3,
+    }
+
     [Header ("Refereances")]
     public Rigidbody rigidBody;
     public Animator animator;
@@ -23,6 +31,7 @@ public class BossSM : StateMachine, IDamage
     public Damage Bullet;
     public GameObject lShootPos;
     public GameObject rShootPos;
+    public LayerMask ignorelayer;
 
     [Header("Boss Settings")]
     public int health;
@@ -43,6 +52,7 @@ public class BossSM : StateMachine, IDamage
     public float rollForce;
     public float rollDecideDis;
 
+    public Ability currentAbility;
     private bool isInvensible;
 
     public void Awake()
@@ -54,7 +64,7 @@ public class BossSM : StateMachine, IDamage
         this.shoot = new ShootAttack(stm:this);
         this.speed = new SpeedAttack(stm:this);
 
-        currentHealth = 49;
+        currentHealth = health;
     }
 
     protected override BaseState GetFirstState()
@@ -113,6 +123,11 @@ public class BossSM : StateMachine, IDamage
     public void SetInvincible(bool answer)
     {
         isInvensible = answer;
+    }
+
+    public void ResetRigid()
+    {
+        jump.ResetRigid();
     }
 
     public void LookAtPlayer(int partIndex)
