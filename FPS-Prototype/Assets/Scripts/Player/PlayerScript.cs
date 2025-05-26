@@ -47,14 +47,15 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     [SerializeField] public List<GameObject> weaponList;
 
     [Header("Wall Running/Jumping")]
+    [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallRunDur;
     [SerializeField] float wallRunGravity;
     [SerializeField] float wallJumpForce;
     [SerializeField] float wallCheckDist;
     [SerializeField] float wallJumpHoriForce;
     [SerializeField] float wallRunCooldown;
-    [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallStickForce;
+    [SerializeField] bool resetJumpCount;
 
     [Header("Elements")]
     [SerializeField] float speedElemMod;
@@ -256,6 +257,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         isWallRunning = true;
         wallNormal = hitNormal;
         wallRunTimer = 0f;
+
+        if (resetJumpCount)
+        {
+            jumpCount = 0;
+        }
 
         float tilt = Vector3.Dot(wallNormal, -transform.right) > 0 ? 1 : -1;
         camControl.SetWallRunTilt(tilt * 15f);
@@ -777,7 +783,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         //SwapBuffs();
     }
 
-    private void SpeedBuff()
+    public void SpeedBuff()
     {
         if (speedBuffed == false && speedBuffTimer < speedElemModTime)
         {
