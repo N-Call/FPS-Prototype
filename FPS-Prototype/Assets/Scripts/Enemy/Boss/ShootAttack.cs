@@ -18,6 +18,7 @@ public class ShootAttack : BaseState
     public override void Enter()
     {
         base.Enter();
+        bossSM.LookAtPlayer(0);
         bossSM.animator.CrossFade("Shoot", 0.2f);
         LShoulderOrig = bossSM.lShoulder.localRotation;
         RShoulderOrig = bossSM.rShoulder.localRotation;
@@ -32,6 +33,7 @@ public class ShootAttack : BaseState
     public override void Action()
     {
         base.Action();
+        bossSM.LookAtPlayer(0);
         playerDir = (GameManager.instance.player.transform.position - bossSM.transform.position);
         angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), bossSM.transform.forward);
 
@@ -48,5 +50,6 @@ public class ShootAttack : BaseState
     public override void Exit()
     {
         base.Exit();
+        bossSM.LookAtPlayer(0);
     }
 }
