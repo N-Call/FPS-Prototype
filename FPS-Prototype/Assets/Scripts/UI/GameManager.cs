@@ -9,8 +9,8 @@ using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance;
+
     [Header("Menus")]
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+
         player = GameObject.FindWithTag("Player");
         if (player != null)
         {
