@@ -3,13 +3,6 @@ using UnityEngine;
 
 public class TurretEnemy : EnemyController
 {
-
-    [SerializeField] bool shouldRotate = true;
-    [SerializeField][Range(0, 90)] float maxPitch;
-    [SerializeField][Range(0, 90)] float minPitch;
-
-    bool canSeePlayer;
-
     protected override void Start()
     {
         GameManager.instance.AddEnemyToRespawn(this);
@@ -63,34 +56,16 @@ public class TurretEnemy : EnemyController
                 if (shootTimer >= shootRate)
                 {
                     Shoot();
-                    SoundManager.instance.PlaySFX("turretShot", 0.2f);
+                    SoundManager.instance.PlaySFX("turretShot", 0.3f);
                 }
 
                 return true;
             }
         }
-
         return false;
     }
 
-    public override void TakeDamage(int amount)
-    {
-        currentHealth -= amount;
-        SoundManager.instance.PlaySFX("turretHit", 0.2f);
-
-        if (currentHealth <= 0)
-        {
-            GameManager.instance.UpdateEnemyCounter(-1);
-            //gameObject.SetActive(false);
-            //isDead = true;
-            Destroy(gameObject);
-            SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
-        }
-        else
-        {
-            StartCoroutine(flashRed());
-        }
-    }
+    
 
     public override void OnTriggerExit(Collider other)
     {
@@ -106,7 +81,6 @@ public class TurretEnemy : EnemyController
         if (shootPos != null)
         {
             shootTimer = 0;
-            Debug.Log("shooting");
             Instantiate(bullet, shootPos.position, turretBarrel.rotation);
         }
     }
@@ -116,7 +90,7 @@ public class TurretEnemy : EnemyController
         WaitForSeconds wait = new WaitForSeconds(1f / ticksPerSecond);
         while (true)
         {
-            if (!pause && (!playerInRange || !canSeePlayer))
+            if ((!playerInRange || !canSeePlayer))
             {
                 turretHead.Rotate(Vector3.up * rotationAmount);
             }

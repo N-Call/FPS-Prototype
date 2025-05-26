@@ -777,7 +777,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         //SwapBuffs();
     }
 
-    private void SpeedBuff()
+    public void SpeedBuff()
     {
         if (speedBuffed == false && speedBuffTimer < speedElemModTime)
         {
