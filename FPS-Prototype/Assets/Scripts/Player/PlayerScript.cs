@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerScript : MonoBehaviour, IDamage, IElemental
 {
@@ -11,6 +12,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
     [Header("Health")]
     [SerializeField] int HP;
+    [SerializeField] float invincHitTime;
     [SerializeField] int isShielded;
     [SerializeField] int shieldMax;
 
@@ -54,7 +56,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallStickForce;
 
-    [Header("Wall Running/Jumping")]
+    [Header("Elements")]
     [SerializeField] float speedElemMod;
     [SerializeField] float speedElemFOVMod;
     [SerializeField] float speedElemModTime;
@@ -95,8 +97,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     float jumpModifier;
     float origFOV;
     float baseFOV;
-
     float currSpeed;
+    float iFrameTimer;
+    // Element Timers
+    float speedBuffTimer;
+    float jumpBuffTimer;
+    float speedDebuffTimer;
+    float jumpDebuffTimer;
 
     int originalHP;
     int checkPointHP;
@@ -107,6 +114,12 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     bool isSliding;
     bool invulnerable;
     bool wallJumpOccurredThisFrame = false;
+    //Element Buff/Debuff
+    bool speedBuffed;
+    bool jumpBuffed;
+    bool speedDebuffed;
+    bool jumpDebuffed;
+    bool elemInversed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -138,6 +151,19 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         Crouch();
         WeaponInput();
         SetCurrentFOV();
+        
+        if (speedBuffed || jumpBuffed || speedDebuffed || jumpDebuffed)
+        {
+            HandleElements();
+        }
+        if (invulnerable)
+        {
+            iFrameTimer += Time.deltaTime;
+            if (iFrameTimer >= invincHitTime)
+            {
+                invulnerable = false;
+            }
+        }
     }
 
     void WallRunCheck()
@@ -511,15 +537,26 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     {
         if (invulnerable)
         {
-            invulnerable = false;
+            Debug.Log("Invulnerable Hit");
             return;
         }
 
+        
         SoundManager.instance.PlaySFX("playerHurt", 0.2f);
 
-        HP -= amount;
+
+        if (isShielded > 0)
+        {
+            isShielded -= 1;
+        } 
+        else
+        {
+            HP -= amount;
+            StartCoroutine(FlashDamageScreen());
+        }
         UpdatePlayerUI();
-        StartCoroutine(FlashDamageScreen());
+        iFrameTimer = 0;
+        invulnerable = true;
 
         if (HP <= 0)
         {
@@ -548,6 +585,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         // update player health bar at full and when taking damage
         GameManager.instance.playerHPbar.fillAmount = (float)HP / originalHP;
 
+        // update player shield bar at full and when taking damage
         GameManager.instance.playerShieldbar.fillAmount = (float)isShielded / shieldMax;
     }
 
@@ -569,9 +607,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
     public void SetShield(int shieldAmount)
     {
-        if (isShielded < shieldMax)
+        if (shieldAmount > shieldMax)
         {
-            isShielded += shieldAmount;
+            return;
+        }
+        else
+        {
+            isShielded = shieldAmount;
         }
     }
 
@@ -641,23 +683,60 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     }
 
     // Element Work
+    void HandleElements()
+    {
+        if (speedBuffed)
+        {
+            speedBuffTimer += Time.deltaTime;
+            if (speedBuffTimer >= speedElemModTime)
+            {
+                SpeedBuff();
+            }
+        }
+        if (jumpBuffed)
+        {
+            jumpBuffTimer += Time.deltaTime;
+            if (jumpBuffTimer >= jumpElemModTime)
+            {
+                JumpBuff();
+            }
+        }
+        if (speedDebuffed)
+        {
+            speedDebuffTimer += Time.deltaTime;
+            if (speedDebuffTimer >= speedElemModTime)
+            {
+                SpeedDebuff();
+            }
+        }
+        if (jumpDebuffed)
+        {
+            jumpDebuffTimer += Time.deltaTime;
+            if (jumpDebuffTimer >= jumpElemModTime)
+            {
+                JumpDebuff();
+            }
+        }
+    }
+
     public void ElementBuff(int elem)
     {
         switch (elem)
         {
             case 1:
-                Debug.Log("Speed Buff");
-                StartCoroutine(SpeedBuff());
-                GameManager.instance.BuffSprintIcon(speedElemModTime);
+                
+                if (elemInversed) { SpeedDebuff(); }
+                else { SpeedBuff(); }
                 break;
             case 2:
                 Debug.Log("Jump Buff");
-                StartCoroutine(JumpBuff());
-                GameManager.instance.BuffJumpIcon(jumpElemModTime);
+                if (elemInversed) { JumpDebuff(); }
+                else { JumpBuff(); }
                 break;
             case 3:
                 Debug.Log("Shield Buff");
-                ShieldBuff();
+                if (elemInversed) { ShieldDebuff(); }
+                else { ShieldBuff(); }
                 break;
         }
     }
@@ -666,82 +745,150 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         switch (elem)
         {
             case 1:
-                Debug.Log("Speed Debuff");
-                StartCoroutine(SpeedDebuff());
-                GameManager.instance.DeBuffSprintIcon(speedElemModTime);
+                
+                if (!elemInversed) { SpeedDebuff(); }
+                else { SpeedBuff(); }
                 break;
             case 2:
                 Debug.Log("Jump Debuff");
-                StartCoroutine(JumpDebuff());
-                GameManager.instance.DeBuffJumpIcon(jumpElemModTime);
+                if (!elemInversed) { JumpDebuff(); }
+                else { JumpBuff(); }
                 break;
             case 3:
                 Debug.Log("Shield Debuff");
-                ShieldDebuff();
+                if (!elemInversed) { ShieldDebuff(); }
+                else { ShieldBuff(); }
                 break;
         }
     }
     public void ElementInverse()
     {
-
+        Debug.Log("Inversing");
+        if (elemInversed)
+        {
+            elemInversed = false;
+            GameManager.instance.playerInInverseScreen.SetActive(false);
+        }
+        else
+        {
+            elemInversed = true;
+            GameManager.instance.playerInInverseScreen.SetActive(true);
+        }
+        //SwapBuffs();
     }
 
-    private IEnumerator SpeedBuff()
+    private void SpeedBuff()
     {
-        SoundManager.instance.PlaySFX("powerUp", 0.3f);
-        AddModifier(speedElemMod);
-        SetBaseFOV(baseFOV + speedElemFOVMod);
-        particleSpMod.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(speedElemModTime);
-
-        particleSpMod.gameObject.SetActive(false);
-        AddModifier(-speedElemMod);
-        ResetFOV();
+        if (speedBuffed == false && speedBuffTimer < speedElemModTime)
+        {
+            Debug.Log("Speed Buff");
+            SoundManager.instance.PlaySFX("powerUp", 0.3f);
+            GameManager.instance.BuffSprintIcon(speedElemModTime);
+            AddModifier(speedElemMod);
+            SetBaseFOV(baseFOV + speedElemFOVMod);
+            particleSpMod.gameObject.SetActive(true);
+            speedBuffTimer = 0;
+            speedBuffed = true;
+        }
+        else
+        {
+            particleSpMod.gameObject.SetActive(false);
+            AddModifier(-speedElemMod);
+            ResetFOV();
+            speedBuffed = false;
+        }
     }
-    private IEnumerator JumpBuff()
+    private void JumpBuff()
     {
-        SoundManager.instance.PlaySFX("powerUp", 0.3f);
-        AddModifier(0.0f, jumpElemMod);
-        particleJpMod.gameObject.SetActive(true);
+        if (jumpBuffed == false && jumpBuffTimer < jumpElemModTime)
+        {
+            SoundManager.instance.PlaySFX("powerUp", 0.3f);
+            GameManager.instance.BuffJumpIcon(jumpElemModTime);
+            AddModifier(0.0f, jumpElemMod);
+            particleJpMod.gameObject.SetActive(true);
+            jumpBuffTimer = 0;
+            jumpBuffed = true;
+        }
+        else
+        {
+            AddModifier(0.0f, -jumpElemMod);
+            particleJpMod.gameObject.SetActive(false);
+            jumpBuffed = false;
+        }
 
-        yield return new WaitForSeconds(jumpElemModTime);
-
-        AddModifier(0.0f, -jumpElemMod);
-        particleJpMod.gameObject.SetActive(false);
     }
-    private IEnumerator SpeedDebuff()
+    private void SpeedDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff", 0.4f);
-        AddModifier(-1/speedElemMod);
-        SetBaseFOV(baseFOV - speedElemFOVMod);
-
-        yield return new WaitForSeconds(speedElemModTime);
-
-        AddModifier(1/speedElemMod);
-        ResetFOV();
+        if (speedDebuffed == false && speedDebuffTimer < speedElemModTime)
+        {
+            Debug.Log("Speed Debuff");
+            SoundManager.instance.PlaySFX("debuff", 0.4f);
+            GameManager.instance.DeBuffSprintIcon(speedElemModTime);
+            AddModifier(-1 / speedElemMod);
+            SetBaseFOV(baseFOV - speedElemFOVMod);
+            speedDebuffTimer = 0;
+            speedDebuffed = true;
+        }
+        else
+        {
+            AddModifier(1 / speedElemMod);
+            ResetFOV();
+            speedDebuffed = false;
+        }
     }
-    private IEnumerator JumpDebuff()
+    private void JumpDebuff()
     {
-        SoundManager.instance.PlaySFX("debuff", 0.4f);
-        GameManager.instance.playerScript.AddModifier(0.0f, -1/jumpElemMod);
-
-        yield return new WaitForSeconds(jumpElemModTime);
-
-        GameManager.instance.playerScript.AddModifier(0.0f, 1/jumpElemMod);
+        if (jumpDebuffed == false && jumpDebuffTimer < jumpElemModTime)
+        {
+            SoundManager.instance.PlaySFX("debuff", 0.4f);
+            GameManager.instance.DeBuffJumpIcon(jumpElemModTime);
+            AddModifier(0.0f, -1 / jumpElemMod);
+            jumpBuffTimer = 0;
+            jumpDebuffed = true;
+        }
+        else
+        {
+            AddModifier(0.0f, 1 / jumpElemMod);
+            jumpDebuffed = false;
+        }
     }
     private void ShieldBuff()
     {
         SoundManager.instance.PlaySFX("powerUp", 0.3f);
 
-        SetShield(shieldElemMod);
+        SetShield(isShielded = shieldElemMod);
 
         UpdatePlayerUI();
     }
     private void ShieldDebuff()
     {
         SoundManager.instance.PlaySFX("debuff", 0.4f);
-        SetShield(shieldElemMod);
+
+        SetShield(isShielded - shieldElemMod);
+
+        UpdatePlayerUI();
+    }
+    private void SwapBuffs()
+    {
+        //Swaps bools
+        bool temp1 = speedBuffed;
+        bool temp2 = speedDebuffed;
+        speedBuffed = temp2;
+        speedDebuffed = temp1;
+        bool temp3 = jumpBuffed;
+        bool temp4 = jumpDebuffed;
+        jumpBuffed = temp4;
+        jumpDebuffed = temp3;
+
+        //Swap Timers
+        float timer1 = speedBuffTimer;
+        float timer2 = speedDebuffTimer;
+        speedBuffTimer = timer2;
+        speedDebuffTimer = timer1;
+        float timer3 = jumpBuffTimer;
+        float timer4 = jumpDebuffTimer;
+        jumpBuffTimer = timer4;
+        jumpDebuffTimer = timer3;
     }
 
     #region Save and Load

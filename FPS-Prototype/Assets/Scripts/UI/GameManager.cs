@@ -38,7 +38,14 @@ public class GameManager : MonoBehaviour
     public Vector3 respawnPosition;
 
     public GameObject playerDamageScreen;
+    public GameObject playerInInverseScreen;
     public GameObject player;
+
+    [Header("Dialogue")]
+    public GameObject textPopUp;
+    public TextMeshProUGUI speakerUI;
+    public TextMeshProUGUI textComponent;
+
 
     public Image playerHPbar;
     public Image playerShieldbar;
