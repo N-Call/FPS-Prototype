@@ -9,6 +9,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     [SerializeField] Collider explosionRadius;
     [SerializeField] GameObject explosionVisual;
+    [SerializeField] float explosionSize;
 
     [Header("Health")]
     [SerializeField] int HP;
@@ -17,11 +18,15 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [SerializeField] ElementType elem;
 
     bool buff;
+    Vector3 explosionScale;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        explosionScale = new Vector3(explosionSize, explosionSize, explosionSize);
+        explosionVisual.transform.localScale = explosionScale;
+        SphereCollider explode = explosionRadius.GetComponent<SphereCollider>();
+        explode.radius = explosionSize/2;
     }
 
     // Update is called once per frame
@@ -61,15 +66,19 @@ public class Target : MonoBehaviour, IDamage, ITarget
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Trigger Worked");
-        IElemental affected = other.GetComponent<IElemental>();
-        if (buff)
+        if (other.CompareTag("Player Bullet") == false)
         {
-            affected.ElementBuff((int) elem);
+            IElemental affected = other.GetComponent<IElemental>();
+            if (buff)
+            {
+                affected.ElementBuff((int)elem);
+            }
+            else
+            {
+                affected.ElementDebuff((int)elem);
+            }
         }
-        else
-        {
-            affected.ElementDebuff((int) elem);
-        }
+        
     }
     IEnumerator InitiateExplosion()
     {

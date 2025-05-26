@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     public Vector3 respawnPosition;
 
     public GameObject playerDamageScreen;
+    public GameObject playerInInverseScreen;
     public GameObject player;
 
     [Header("Dialogue")]
