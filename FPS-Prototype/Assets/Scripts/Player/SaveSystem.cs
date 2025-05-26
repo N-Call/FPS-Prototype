@@ -7,6 +7,7 @@ public class SaveSystem
     [System.Serializable]
     struct SaveData
     {
+        public FinalGradeData finalGradeData;
         public PlayerSaveData playerData;
         public SceneSaveData SceneData;
     }
@@ -27,6 +28,7 @@ public class SaveSystem
     {
         GameManager.instance.playerScript.Save(ref saveData.playerData);
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
+        GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
     }
 
     public static void Load()
@@ -41,5 +43,6 @@ public class SaveSystem
     {
         GameManager.instance.playerScript.Load(saveData.playerData);
         GameManager.instance.sceneData.Load(saveData.SceneData);
+        GameManager.instance.gradeSystem.Load(saveData.finalGradeData);
     }
 }
