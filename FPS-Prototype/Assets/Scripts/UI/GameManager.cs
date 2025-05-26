@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuRules;
+    [SerializeField] GameObject menuCredits;
+    [SerializeField] GameObject menuSettings;
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
@@ -79,22 +82,24 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Cancel"))
+        if (menuPause != null)
         {
-            if (menuActive == null)
+            if (Input.GetButtonDown("Cancel"))
             {
-                StatePause();
-                menuActive = menuPause;
-                menuPause.SetActive(isPaused);
+                if (menuActive == null)
+                {
+                    StatePause();
+                    menuActive = menuPause;
+                    menuPause.SetActive(isPaused);
 
-            }
-            else if (menuActive == menuPause)
-            { 
-                StateUnpause();
+                }
+                else if (menuActive == menuPause)
+                {
+                    StateUnpause();
+                }
             }
         }
     }
-
     public void StatePause()
     {
         isPaused = !isPaused;
@@ -125,7 +130,62 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.sfxSource.Play ();
         playerScript.enabled = true;
 
+        menuSettings.SetActive(false);
+
     }
+
+    public void ToggleSettings()
+    {
+        if(menuSettings != null)
+        {
+            if (menuActive == null)
+            {
+                menuActive = menuSettings;
+                menuSettings.SetActive(!menuSettings.activeSelf);
+            }
+            else if (menuActive == menuSettings) 
+            { 
+                menuActive = null;
+                menuSettings.SetActive(!menuSettings.activeSelf);
+            }
+
+        }
+
+    }
+    public void ToggleRules()
+    {
+        if (menuRules != null)
+        {
+            if (menuActive == null)
+            {
+                menuActive = menuRules;
+                menuRules.SetActive(!menuRules.activeSelf);
+            }
+            else if (menuActive == menuRules)
+            {
+                menuActive = null;
+                menuRules.SetActive(!menuRules.activeSelf);
+            }
+        }
+    }
+    
+    public void ToggleCredits()
+    {
+        if (menuCredits != null)
+        {
+            if (menuActive == null)
+            {
+                menuActive = menuCredits;
+                menuCredits.SetActive(!menuCredits.activeSelf);
+            }
+            else if (menuActive == menuCredits)
+            {
+                menuActive = null;
+                menuCredits.SetActive(!menuCredits.activeSelf);
+            }
+        }
+    }
+
     public void ToggleReticle()
     {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
@@ -161,7 +221,6 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(true);
     }
    
-
     public void WinCondition(int amount)
     {
         gameGoalCount += amount;
@@ -177,7 +236,6 @@ public class GameManager : MonoBehaviour
             menuActive.SetActive(true);
         }
     }
-
     public void UpdateEnemyCounter(int amount)
     {
         enemyCount += amount;
@@ -189,7 +247,6 @@ public class GameManager : MonoBehaviour
     { 
         return totalTime + enemyCount * 10; 
     }
-
     public void GlobalAmmoCount(int amount, int ammoCap)
     {
         if (ammoCount != null)
@@ -206,12 +263,10 @@ public class GameManager : MonoBehaviour
             weaponIcon.GetComponent<Image>().sprite = icon;
         }
     }
-   
     public void AddEnemyToRespawn(EnemyController enemy)
     {
         enemiesToRespawn.Add(enemy);
     }
-
     public void SetSpawnPosition(Vector3 newSpawnPosition)
     {
         respawnPosition = newSpawnPosition;
