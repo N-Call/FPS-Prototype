@@ -21,6 +21,9 @@ public class Laser : MonoBehaviour
     RaycastHit hit;
 
     bool isDamaging;
+    public bool laserCanToggle;
+    public float onTime;
+    public float offTime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,11 +32,19 @@ public class Laser : MonoBehaviour
         lineRenderer.material = material;
         lineRenderer.startWidth = startWidth;
         lineRenderer.endWidth = endWidth;
+        if (laserCanToggle )
+        {
+            StartCoroutine(ToggleLaser());
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+       
+        if (!lineRenderer.enabled)
+            return;
+
         ray = new Ray(transform.position, transform.forward);
 
         lineRenderer.positionCount = 1;
@@ -73,6 +84,18 @@ public class Laser : MonoBehaviour
         other?.TakeDamage(damage);
         yield return new WaitForSeconds(damageRate);
         isDamaging = false;
+    }
+
+    private IEnumerator ToggleLaser()
+    {
+        while (true)
+        {
+            lineRenderer.enabled = true;
+            yield return new WaitForSeconds(onTime);
+
+            lineRenderer.enabled = false;
+            yield return new WaitForSeconds(offTime);
+        }
     }
 
 }

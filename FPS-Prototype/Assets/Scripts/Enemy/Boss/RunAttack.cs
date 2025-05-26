@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RunAttack : BaseState
@@ -12,6 +13,7 @@ public class RunAttack : BaseState
     {
         base.Enter();
         bossSM.animator.CrossFade("SpinAttack", 0.2f);
+        bossSM.agent.isStopped = false;
     }
     public override void StateLogic()
     {
@@ -23,10 +25,19 @@ public class RunAttack : BaseState
     public override void Action()
     {
         base.Action();
+
+        if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("SpinAttack") &&
+            !bossSM.animator.GetNextAnimatorStateInfo(0).IsName("Idle"))
+        {
+            bossSM.agent.SetDestination(GameManager.instance.player.transform.position);
+            bossSM.transform.LookAt(new Vector3(GameManager.instance.player.transform.position.x, bossSM.transform.position.y, GameManager.instance.player.transform.position.z));
+
+        }
     }
 
     public override void Exit()
     {
+        bossSM.agent.isStopped = true;
         base.Exit();
     }
 }

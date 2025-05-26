@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9066972259462393989}
   - component: {fileID: 1467375481155544375}
+  - component: {fileID: 1416037783497543206}
   - component: {fileID: 8901731194909117881}
   - component: {fileID: 7007835026480125926}
   - component: {fileID: 4925518629992445665}
@@ -55,8 +56,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionRadius: {fileID: 4925518629992445665}
   explosionVisual: {fileID: 3306680123987400849}
+  explosionSize: 1
   HP: 1
   elem: 2
+--- !u!114 &1416037783497543206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56946303037653314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9898e28624f6af47abc0903cbd6a756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 1
+  y: 0
+  z: 0
+  speed: 60
 --- !u!33 &8901731194909117881
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4998,14 +5016,13 @@ GameObject:
   - component: {fileID: 4720955150705265764}
   - component: {fileID: 6234454661283473578}
   - component: {fileID: 9110150347422844796}
-  - component: {fileID: 5993164611120499842}
   m_Layer: 0
   m_Name: Jump Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4720955150705265764
 Transform:
   m_ObjectHideFlags: 0
@@ -5074,27 +5091,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5993164611120499842
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3306680123987400849}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3844451704305548717
 GameObject:
   m_ObjectHideFlags: 0
