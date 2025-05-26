@@ -143,15 +143,19 @@ public class GameManager : MonoBehaviour
                 menuActive = menuSettings;
                 menuSettings.SetActive(!menuSettings.activeSelf);
             }
-            else if (menuActive == menuSettings) 
-            { 
+            else if( menuActive == menuPause)
+            {
+                menuActive = menuPause;
+                menuSettings.SetActive(!menuSettings.activeSelf);
+            }
+            else if (menuActive == menuPause || menuActive == menuSettings)
+            {
                 menuActive = null;
                 menuSettings.SetActive(!menuSettings.activeSelf);
             }
-
         }
-
     }
+
     public void ToggleRules()
     {
         if (menuRules != null)
@@ -210,8 +214,12 @@ public class GameManager : MonoBehaviour
 
     public void TogglePPVolume()
     {// toggle the blurr for menus 
+        
         PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
-        ppVolume.enabled = !ppVolume.enabled; 
+        if (ppVolume != null)
+        {
+            ppVolume.enabled = !ppVolume.enabled;
+        }
     }
 
     public void YouLose() 
