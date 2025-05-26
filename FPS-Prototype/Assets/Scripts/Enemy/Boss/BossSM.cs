@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,13 +10,16 @@ public class BossSM : StateMachine, IDamage
     [HideInInspector] public RollAttack roll;
     [HideInInspector] public RunAttack run;
     [HideInInspector] public ShootAttack shoot;
+    [HideInInspector] public SpeedAttack speed;
 
     [Header ("Refereances")]
     public Rigidbody rigidBody;
     public Animator animator;
     public NavMeshAgent agent;
+    public Transform[] bodyParts;
     public Transform lShoulder;
     public Transform rShoulder;
+    public Transform targetPoint;
     public Damage Bullet;
     public GameObject lShootPos;
     public GameObject rShootPos;
@@ -31,13 +36,14 @@ public class BossSM : StateMachine, IDamage
     public int decideTime;
 
     [Header("Jump Attack Settings")]
-    public float jumpForce;
+    public float jumpHeight;
+    public float gravity;
 
     [Header("Roll Attack Settings")]
     public float rollForce;
     public float rollDecideDis;
 
-
+    private bool isInvensible;
 
     public void Awake()
     {
@@ -46,8 +52,9 @@ public class BossSM : StateMachine, IDamage
         this.roll = new RollAttack(stm:this);
         this.run = new RunAttack(stm:this);
         this.shoot = new ShootAttack(stm:this);
+        this.speed = new SpeedAttack(stm:this);
 
-        currentHealth = health;
+        currentHealth = 49;
     }
 
     protected override BaseState GetFirstState()
@@ -67,6 +74,8 @@ public class BossSM : StateMachine, IDamage
 
     public void TakeDamage(int amount)
     {
+        if(isInvensible) { return; }
+
         currentHealth -= amount;
         Dead();
     }
@@ -91,4 +100,23 @@ public class BossSM : StateMachine, IDamage
         other.GetComponent<IDamage>()?.TakeDamage(currentDamage);
     }
 
+    public void ActivateJumpAnim()
+    {
+        jump.JumpToTarget();
+    }
+
+    public bool GetInvincible()
+    {
+        return isInvensible;
+    }
+
+    public void SetInvincible(bool answer)
+    {
+        isInvensible = answer;
+    }
+
+    public void LookAtPlayer(int partIndex)
+    {
+        bodyParts[partIndex].transform.LookAt(new Vector3(GameManager.instance.player.transform.position.x, bodyParts[partIndex].transform.position.y, GameManager.instance.player.transform.position.z));
+    }
 }

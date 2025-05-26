@@ -3,6 +3,8 @@ using UnityEngine;
 public class JumpAttack : BaseState
 {
     private BossSM bossSM;
+
+    private bool isStopped;
     public JumpAttack(StateMachine stm) : base(name: "Jumping", stm)
     {
 
@@ -12,26 +14,49 @@ public class JumpAttack : BaseState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Is jumping");
-        bossSM.rigidBody.AddForce(Vector3.up * bossSM.jumpForce, ForceMode.Impulse);
+        bossSM.animator.CrossFade("Jumping", 0.02f);
+        bossSM.agent.enabled = false;
+        bossSM.transform.LookAt(new Vector3(bossSM.targetPoint.position.x, bossSM.transform.position.y, bossSM.targetPoint.position.z));
+
     }
     public override void StateLogic()
     {
         base.StateLogic();
-        RaycastHit hit;
-        if (Physics.Raycast(bossSM.transform.position, -bossSM.transform.up, out hit, 2))
-        {
-            bossSM.ChangeState(bossSM.idle);
-        }
     }
     public override void Action()
     {
         base.Action();
-
+        if( !isStopped && Vector3.Distance(bossSM.transform.position, bossSM.targetPoint.position) < 0.5f)
+        {
+            bossSM.animator.CrossFade("Slaming", 0.02f);
+            bossSM.rigidBody.linearVelocity = Vector3.up * bossSM.gravity;
+            isStopped = true;
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
+    }
+
+    public void JumpToTarget()
+    {
+        Vector3 jumpVelocity = CalculateJumpVelocity(bossSM.transform.position, bossSM.targetPoint.position, bossSM.targetPoint.position.y - bossSM.transform.position.y);
+        bossSM.rigidBody.AddForce(jumpVelocity, ForceMode.Impulse);
+    }
+
+    Vector3 CalculateJumpVelocity(Vector3 start, Vector3 end, float height)
+    {
+        float gravity = Physics.gravity.y;
+        float verticalDistance = end.y - start.y;
+        Vector3 horizontalDistance = new Vector3(end.x - start.x, 0, end.z - start.z);
+
+        float timeToApex = Mathf.Sqrt(-2 * height / gravity);
+        float totalTime = timeToApex + Mathf.Sqrt(2 * Mathf.Abs(verticalDistance - height) / -gravity);
+
+        Vector3 horizontalVelocity = horizontalDistance / totalTime;
+        float verticalVelocity = Mathf.Sqrt(-2 * gravity * height);
+
+        return horizontalVelocity + Vector3.up * verticalVelocity;
     }
 }
