@@ -219,7 +219,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             // This calculateds the bobbing effect offset using a sine wave system.
             // The Mathf.Sin function allows me to create a smooth, oscillating value betrween -1 and 1.
             // Also, multiplying by the currAmp scales this oscillation to any desired bobbing height as you wish.
-            float bobbingOffset = Mathf.Sin(bobTimer) * currAmp;
+            float bobbingOffset = (-0.5f * Mathf.Sin(bobTimer) - 0.5f) * currAmp;
             //Debug.Log($"Bob Timer: {bobTimer}, Bobbing Offset: {bobbingOffset}");
 
             // Then I apply the offset to the camera's local Y position.
