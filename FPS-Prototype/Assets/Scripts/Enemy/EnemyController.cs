@@ -1,25 +1,38 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
+
 
 public class EnemyController : MonoBehaviour, IDamage
 {
     [SerializeField] protected Renderer model;
-    [SerializeField] protected UnityEngine.AI.NavMeshAgent agent;
-    //[SerializeField] Transform headPos;
-    //[SerializeField] Animator anim;
-
     [SerializeField] protected int currentHealth;
+    
+    //[SerializeField] Animator anim;
+    //[SerializeField] int animTransSpeed;
+
+    [Header("Agent Settings")]
+    [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected int faceTargetSpeed;
     [SerializeField] protected int FOV;
     [SerializeField] protected int roamDist;
     [SerializeField] protected int roamPauseTime;
-    [SerializeField] protected bool pause;
-    //[SerializeField] int animTransSpeed;
+    [SerializeField] protected Transform headPos;
 
+    [Header("Shooting Settings")]
     [SerializeField] protected Transform shootPos;
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
     [SerializeField] protected int damageAmount;
+
+    [Header("Turret Settings")]
+    [SerializeField]protected bool shouldRotate = true;
+    [SerializeField][Range(0, 90)]protected float maxPitch;
+    [SerializeField][Range(0, 90)]protected float minPitch;
+
+    [Header("Model 2 Setteings")]
+    [SerializeField] protected Transform shootPosL;
+    [SerializeField] protected Transform shootPosR;
 
     protected Transform turretHead;
     protected Transform turretBarrel;
@@ -29,23 +42,21 @@ public class EnemyController : MonoBehaviour, IDamage
     public Vector3 originalPosition;
     Vector3 startingPos;
 
-
     protected float shootTimer;
     protected float angleToPlayer;
     protected float roamTimer;
     protected float stoppingDistanceOrig;
     protected float rotationAmount = 1.0f;
     protected int ticksPerSecond = 60;
-    
-
-    bool playerAttackRange;
+    protected float originalShootRate;
+    protected int maxHealth;
 
     protected bool playerInRange;
-    //public bool isDead;
-    //public bool isRespawned;
+    protected bool shootRateBuffed = false;
+    protected bool canSeePlayer;
+    protected bool canShoot;
+    protected bool leftShot;
 
-    bool isPlayerDead;
-    protected int maxHealth;
     public CustomTrigger RangeTrigger;
     public CustomTrigger ExplosionTrigger;
 
@@ -59,7 +70,6 @@ public class EnemyController : MonoBehaviour, IDamage
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
-        //GameManager.instance.UpdateEnemyCounter(1);
     }
 
     // Update is called once per frame
@@ -116,34 +126,9 @@ public class EnemyController : MonoBehaviour, IDamage
 
     protected virtual bool CanSeePlayer()
     {
-        playerDir = (GameManager.instance.player.transform.position - transform.position);
-        angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
-        Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, playerDir, out hit))
-        {
-            if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
-            {
-                agent.SetDestination(GameManager.instance.player.transform.position);
-
-                if (shootTimer >= shootRate)
-                {
-                    Shoot();
-                }
-
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    FaceTarget();
-                }
-                agent.stoppingDistance = stoppingDistanceOrig;
-                return true;
-            }
-        }
-        agent.stoppingDistance = 0;
-        return false;
+        return true;
     }
-    public void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -163,15 +148,14 @@ public class EnemyController : MonoBehaviour, IDamage
     public virtual void TakeDamage(int amount)
     {
         currentHealth -= amount;
-
-        agent.SetDestination(GameManager.instance.player.transform.position);
-
+        SoundManager.instance.PlaySFX("turretHit", 0.3f);
         if (currentHealth <= 0)
+
+            if (currentHealth <= 0)
         {
             GameManager.instance.UpdateEnemyCounter(-1);
-            //gameObject.SetActive(false);
-            //isDead = true;
             Destroy(gameObject);
+            SoundManager.instance.PlaySFX("turretDestroy", 0.3f); 
         }
         else
         {
@@ -188,38 +172,13 @@ public class EnemyController : MonoBehaviour, IDamage
 
     protected void FaceTarget()
     {
-        Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
+        Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
 
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
     protected virtual void Shoot()
     {
-        if (shootPos != null)
-        {
-            shootTimer = 0;
-            Instantiate(bullet, shootPos.position, transform.rotation);
-        }
+        
     }
-
-    //public void ResetEnemies()
-    //{
-    //    transform.position = originalPosition;
-    //    currentHealth = maxHealth;
-
-    //    if(isDead)
-    //    {
-    //        gameObject.SetActive(true);
-    //        isDead = false;
-    //        GameManager.instance.UpdateEnemyCounter(1);
-    //        if (isRespawned == false)
-    //        {
-    //            GameManager.instance.UpdateEnemyCounter(-1);
-    //            gameObject.SetActive(false);
-
-    //        }
-    //    }
-    //}
-
-
 }

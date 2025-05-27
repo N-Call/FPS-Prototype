@@ -457,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 1817614777672477376}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.17, y: 2.39, z: 1.82}
+  m_LocalPosition: {x: 0.024, y: 2.4889991, z: 1.194992}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1049,20 +1049,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 2231724958933429924}
-  agent: {fileID: 6479720693941824355}
   currentHealth: 2
+  agent: {fileID: 6479720693941824355}
   faceTargetSpeed: 20
   FOV: 180
   roamDist: 5
   roamPauseTime: 3
-  pause: 0
+  headPos: {fileID: 0}
   shootPos: {fileID: 4144004761838785728}
   bullet: {fileID: 8973326993888958128, guid: 3d478ccae6fa99b48a17177b02922246, type: 3}
-  shootRate: 0.5
+  shootRate: 1
   damageAmount: 0
+  shouldRotate: 1
+  maxPitch: 0
+  minPitch: 0
+  shootPosL: {fileID: 0}
+  shootPosR: {fileID: 0}
+  shootRateL: 0
+  shootRateR: 0
   originalPosition: {x: 0, y: 0, z: 0}
-  isDead: 0
-  isRespawned: 0
   RangeTrigger: {fileID: 0}
   ExplosionTrigger: {fileID: 0}
 --- !u!195 &6479720693941824355

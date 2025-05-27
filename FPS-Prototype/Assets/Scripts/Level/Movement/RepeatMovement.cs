@@ -6,6 +6,7 @@ public class RepeatMovement : ObjectMovement
     [Header("Repeat Time Delay Settings")]
     [SerializeField] float initialStartDelay;
 
+    [Header("Repeat Passenger Settings")]
     [SerializeField] bool resetPlayerWithPlatform;
 
     Vector3 parentStartPosition;

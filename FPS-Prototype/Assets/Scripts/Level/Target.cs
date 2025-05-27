@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Target : MonoBehaviour, IDamage, ITarget
 {
-    enum ElementType { speed = 1, jump = 2, shield = 3 }
+    public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
     [SerializeField] Collider explosionRadius;
     [SerializeField] GameObject explosionVisual;
@@ -15,10 +15,11 @@ public class Target : MonoBehaviour, IDamage, ITarget
     [SerializeField] int HP;
 
     [Header("Element Type")]
-    [SerializeField] ElementType elem;
+    [SerializeField] public ElementType elem;
 
     bool buff;
     Vector3 explosionScale;
+    public bool enemyBuff; 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
