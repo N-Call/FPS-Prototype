@@ -192,7 +192,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
         // This determines the amplitude and frequency based on the movement state.
         // And is only applied while grounded.
-        if (controller.isGrounded)
+        if (controller.isGrounded && !isCrouching && !isSliding)
         {
             if (isMoveInput)
             {
@@ -211,7 +211,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             }
         }
 
-        if (currAmp > 0f)
+        if (currAmp > 0f && !isCrouching && !isSliding)
         {
             // This timer increments based on the frequency;
             bobTimer += Time.deltaTime * currFreq;
@@ -829,6 +829,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
                 break;
         }
     }
+
     public void ElementDebuff(int elem)
     {
         switch (elem)
@@ -850,6 +851,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
                 break;
         }
     }
+
     public void ElementInverse()
     {
         Debug.Log("Inversing");
@@ -887,6 +889,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             speedBuffed = false;
         }
     }
+
     private void JumpBuff()
     {
         if (jumpBuffed == false && jumpBuffTimer < jumpElemModTime)
@@ -906,6 +909,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         }
 
     }
+
     private void SpeedDebuff()
     {
         if (speedDebuffed == false && speedDebuffTimer < speedElemModTime)
@@ -925,6 +929,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             speedDebuffed = false;
         }
     }
+
     private void JumpDebuff()
     {
         if (jumpDebuffed == false && jumpDebuffTimer < jumpElemModTime)
@@ -941,6 +946,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             jumpDebuffed = false;
         }
     }
+
     private void ShieldBuff()
     {
         SoundManager.instance.PlaySFX("powerUp", 0.3f);
@@ -949,6 +955,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
         UpdatePlayerUI();
     }
+
     private void ShieldDebuff()
     {
         SoundManager.instance.PlaySFX("debuff", 0.4f);
@@ -957,6 +964,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
         UpdatePlayerUI();
     }
+
     private void SwapBuffs()
     {
         //Swaps bools
