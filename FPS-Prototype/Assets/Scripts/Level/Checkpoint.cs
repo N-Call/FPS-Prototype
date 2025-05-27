@@ -17,7 +17,7 @@ public class Checkpoint : MonoBehaviour
             
             SoundManager.instance.PlaySFX("checkPoint", 1f);
             Debug.Log("checkpoint reached");
-            GameManager.instance.SetSpawnPosition(transform.position);
+            GameManager.instance.SetSpawnPosition(GameManager.instance.player.transform.position);
             GameManager.instance.playerScript.UpdateCheckpointHealth();
             Destroy(gameObject);
 
@@ -28,7 +28,6 @@ public class Checkpoint : MonoBehaviour
 
             if (isFinalCheckPoint)
             {
-                Debug.Log("final checkpoint");
                 GameManager.instance.WinCondition(-1);
                 SoundManager.instance.sfxSource.Stop();
                 SoundManager.instance.PlaySFX("victory", 0.5f);

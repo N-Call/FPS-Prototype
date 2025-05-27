@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7633959675591518108}
   - component: {fileID: 1131977219086359581}
-  - component: {fileID: 1094289668856671642}
   - component: {fileID: 7025849570103296549}
   - component: {fileID: 8965270937196066684}
   - component: {fileID: 3599561528721329554}
@@ -54,25 +53,6 @@ MonoBehaviour:
   speed: 0.5
   slideDirection: {x: -1, y: 0, z: 0}
   slideAmount: 4
-  door: {fileID: 7633959675591518108}
---- !u!114 &1094289668856671642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5177013812196074130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e704e459ee9667b4f8698e15da855a0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAlarmDoor: 0
-  isOpen: 0
-  speed: 0.5
-  slideDirection: {x: -1, y: 0, z: 0}
-  slideAmount: 4
-  door: {fileID: 7633959675591518108}
 --- !u!33 &7025849570103296549
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -145,7 +125,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 60, y: 1, z: 1}
+  m_Size: {x: 30, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &4778409426016088129
 BoxCollider:
