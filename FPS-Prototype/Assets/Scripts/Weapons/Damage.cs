@@ -23,6 +23,7 @@ public class Damage : MonoBehaviour
 
     private bool isDamaging;
     private bool stopChasing;
+    float DOTTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -102,14 +103,17 @@ public class Damage : MonoBehaviour
         {
             return;
         }
-
-        StartCoroutine(DamageOther(damage));
+        else
+        {
+            StartCoroutine(DamageOther(damage));
+        }
     }
 
     IEnumerator DamageOther(IDamage other)
     {
-        isDamaging = true;
         other?.TakeDamage(dotDamage);
+        isDamaging = true;
+        
         yield return new WaitForSeconds(dotDamageRate);
         isDamaging = false;
     }

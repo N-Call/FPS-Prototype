@@ -99,7 +99,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     float origFOV;
     float baseFOV;
     float currSpeed;
-    float iFrameTimer;
+    float iFrameTimer = 0;
     // Element Timers
     float speedBuffTimer;
     float jumpBuffTimer;
@@ -113,7 +113,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     bool isSprinting;
     bool isCrouching;
     bool isSliding;
-    bool invulnerable;
+    bool invulnerable = false;
     bool wallJumpOccurredThisFrame = false;
     //Element Buff/Debuff
     bool speedBuffed;
@@ -133,6 +133,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         baseFOV = origFOV;
         GameManager.instance.SetSpawnPosition(transform.position);
         UpdatePlayerUI();
+
+
+        invulnerable = false;
+        iFrameTimer = 0;
     }
 
     // Update is called once per frame
@@ -541,28 +545,32 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
     public void TakeDamage(int amount)
     {
-        if (invulnerable)
-        {
-            Debug.Log("Invulnerable Hit");
-            return;
-        }
+        //if (invulnerable)
+        //{
+        //    Debug.Log("Invulnerable Hit");
+        //    return;
+        //}
 
-        
         SoundManager.instance.PlaySFX("playerHurt", 0.2f);
 
-
-        if (isShielded > 0)
+        if (isShielded > 0 && invulnerable == false)
         {
             isShielded -= 1;
-        } 
-        else
+            iFrameTimer = 0;
+            invulnerable = true;
+        }
+        else if (isShielded <= 0 && invulnerable == false)
         {
             HP -= amount;
             StartCoroutine(FlashDamageScreen());
+            iFrameTimer = 0;
+            invulnerable = true;
+        }
+        else
+        {
+            Debug.Log("Invulnerable");
         }
         UpdatePlayerUI();
-        iFrameTimer = 0;
-        invulnerable = true;
 
         if (HP <= 0)
         {
