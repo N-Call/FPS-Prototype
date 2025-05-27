@@ -73,6 +73,16 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
     CameraController camControl;// TThis is referencing the CameraController for the tilting capabilities during wall running.
 
+    [Header("Head Bobbing")]
+    [SerializeField][Tooltip("The amplitude of the head bobbing when walking.")] float walkBobAmp;
+    [SerializeField][Tooltip("The frequency of the head bobbing when walking.")] float walkBobFreq;
+    [SerializeField][Tooltip("The amplitude of the head bobbing when sprinting.")] float sprintBobAmp;
+    [SerializeField][Tooltip("The frequency of the head bobbing when sprinting.")] float sprintBobFreq;
+    [SerializeField][Tooltip("The speed of the camera returning to its original position.")] float bobReturnSpeed;
+
+    private Vector3 cameraLocalPosOrig;
+    private float bobTimer;
+
     [Header("Camera")]
     [SerializeField] float sprintFOVMod;
     [SerializeField] float changeRate;
@@ -132,6 +142,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         baseFOV = origFOV;
         GameManager.instance.SetSpawnPosition(transform.position);
         UpdatePlayerUI();
+        cameraLocalPosOrig = Camera.main.transform.localPosition;
+        Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
@@ -151,7 +163,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         Crouch();
         WeaponInput();
         SetCurrentFOV();
-        
+        HandleHeadBobbing();
+
         if (speedBuffed || jumpBuffed || speedDebuffed || jumpDebuffed)
         {
             HandleElements();
@@ -163,6 +176,65 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             {
                 invulnerable = false;
             }
+        }
+    }
+
+    void HandleHeadBobbing()
+    {
+        float currAmp = 0f;
+        float currFreq = 0f;
+
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        bool isMoveInput = (Mathf.Abs(horizontalInput) > 0.01f || Mathf.Abs(verticalInput) > 0.01f);
+
+        //Debug.Log($"Frame: {Time.frameCount} | isMoveInput: {isMoveInput} | isGrounded: {controller.isGrounded}");
+
+        // This determines the amplitude and frequency based on the movement state.
+        // And is only applied while grounded.
+        if (controller.isGrounded)
+        {
+            if (isMoveInput)
+            {
+                if (isSprinting) // Is the player sprinting?
+                {
+                    currAmp = sprintBobAmp;
+                    currFreq = sprintBobFreq;
+                    //Debug.Log($"Sprinting - Amp: {currAmp}, Freq: {currFreq}");
+                }
+                else // Is the player walking?
+                {
+                    currAmp = walkBobAmp;
+                    currFreq = walkBobFreq;
+                    //Debug.Log($"Walking - Amp: {currAmp}, Freq: {currFreq}");
+                }
+            }
+        }
+
+        if (currAmp > 0f)
+        {
+            // This timer increments based on the frequency;
+            bobTimer += Time.deltaTime * currFreq;
+
+            // This calculateds the bobbing effect offset using a sine wave system.
+            // The Mathf.Sin function allows me to create a smooth, oscillating value betrween -1 and 1.
+            // Also, multiplying by the currAmp scales this oscillation to any desired bobbing height as you wish.
+            float bobbingOffset = Mathf.Sin(bobTimer) * currAmp;
+            //Debug.Log($"Bob Timer: {bobTimer}, Bobbing Offset: {bobbingOffset}");
+
+            // Then I apply the offset to the camera's local Y position.
+            Vector3 newCamLocalPos = cameraLocalPosOrig;
+            newCamLocalPos.y += bobbingOffset;
+
+            Camera.main.transform.localPosition = newCamLocalPos;
+            //Debug.Log($"[Bobbing Active] Frame: {Time.frameCount} | bobTimer: {bobTimer:F4} | Offset: {bobbingOffset:F4} | Final Local Pos: {Camera.main.transform.localPosition:F4}");
+        }
+        else // If the player is either not moving at all, or is in the air. This includes wall running, jumping, falling, etc.
+        {
+            bobTimer = 0f; // This resets the timer, when not moving
+            // This smoothly returns the camera back to its original position.
+            Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, cameraLocalPosOrig, Time.deltaTime * bobReturnSpeed);
+            //Debug.Log($"[Bobbing Reset] Frame: {Time.frameCount} | Final Local Pos: {Camera.main.transform.localPosition:F4}");
         }
     }
 
@@ -278,8 +350,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     void StopWallRun()
     {
         if (isWallRunning)
+        {
             camControl.SetWallRunTilt(0f);
-
+            wallRunCooldownTimer = wallRunCooldown;
+        }
+        wallJumped = false;
         isWallRunning = false;
         wallJumped = false;
         wallRunTimer = 0f;
