@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuRules;
     [SerializeField] GameObject menuCredits;
     [SerializeField] GameObject menuSettings;
+    [SerializeField] GameObject nextLvlBtn;
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
@@ -63,6 +64,8 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
+
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -130,6 +133,10 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.sfxSource.Play();
         playerScript.enabled = true;
 
+    }
+    public void NextLvlBtnOff()
+    {
+        nextLvlBtn.SetActive(false);
     }
     public void ToggleSettings()
     {
@@ -210,8 +217,12 @@ public class GameManager : MonoBehaviour
 
     public void TogglePPVolume()
     {// toggle the blurr for menus 
+        
         PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
-        ppVolume.enabled = !ppVolume.enabled;
+        if (ppVolume != null)
+        {
+            ppVolume.enabled = !ppVolume.enabled;
+        }
     }
     public void YouLose()
     {
