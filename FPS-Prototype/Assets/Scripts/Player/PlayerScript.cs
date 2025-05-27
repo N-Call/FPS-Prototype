@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class PlayerScript : MonoBehaviour, IDamage
+public class PlayerScript : MonoBehaviour, IDamage, IElemental
 {
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask playerMask;
 
     [Header("Health")]
     [SerializeField] int HP;
+    [SerializeField] float invincHitTime;
     [SerializeField] int isShielded;
     [SerializeField] int shieldMax;
 
@@ -45,33 +47,32 @@ public class PlayerScript : MonoBehaviour, IDamage
     [SerializeField] public List<GameObject> weaponList;
 
     [Header("Wall Running/Jumping")]
+    [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallRunDur;
     [SerializeField] float wallRunGravity;
     [SerializeField] float wallJumpForce;
     [SerializeField] float wallCheckDist;
     [SerializeField] float wallJumpHoriForce;
     [SerializeField] float wallRunCooldown;
-    [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallStickForce;
-    [SerializeField][Tooltip("Provides the player with an additional jump if they used all of them before running on the wall.")] bool provideExtraJumpIfNeeded;
+    [SerializeField] bool resetJumpCount;
 
-    CameraController camControl;// This is referencing the CameraController for the tilting capabilities during wall running.
-    Vector3 wallNormal;         // Normal of the wall being run on in question.
-    Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
+    [Header("Elements")]
+    [SerializeField] float speedElemMod;
+    [SerializeField] float speedElemFOVMod;
+    [SerializeField] float speedElemModTime;
+    [SerializeField] float jumpElemMod;
+    [SerializeField] float jumpElemModTime;
+    [SerializeField] int shieldElemMod;
+
+    bool isWallRunning;         // Is the player wall jumping?
+    bool wallJumped;            // Did the player wall jump?
     float wallRunTimer;         // TImer for the active wall run.
     float wallRunCooldownTimer; // Cooldown before another wall run can be made.
-    public bool isWallRunning;  // Is the player wall jumping?
-    bool wallJumped;            // Did the player wall jump?
+    Vector3 wallNormal;         // Normal of the wall being run on in question.
+    Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
 
-    [Header("Head Bobbing")]
-    [SerializeField][Tooltip("The amplitude of the head bobbing when walking.")] float walkBobAmp;
-    [SerializeField][Tooltip("The frequency of the head bobbing when walking.")] float walkBobFreq;
-    [SerializeField][Tooltip("The amplitude of the head bobbing when sprinting.")] float sprintBobAmp;
-    [SerializeField][Tooltip("The frequency of the head bobbing when sprinting.")] float sprintBobFreq;
-    [SerializeField][Tooltip("The speed of the camera returning to its original position.")] float bobReturnSpeed;
-
-    private Vector3 cameraLocalPosOrig;
-    private float bobTimer;
+    CameraController camControl;// TThis is referencing the CameraController for the tilting capabilities during wall running.
 
     [Header("Camera")]
     [SerializeField] float sprintFOVMod;
@@ -97,28 +98,41 @@ public class PlayerScript : MonoBehaviour, IDamage
     float jumpModifier;
     float origFOV;
     float baseFOV;
+    float currSpeed;
+    float iFrameTimer;
+    // Element Timers
+    float speedBuffTimer;
+    float jumpBuffTimer;
+    float speedDebuffTimer;
+    float jumpDebuffTimer;
 
     int originalHP;
+    int checkPointHP;
     int jumpCount;
 
-    bool isSprinting = false;
+    bool isSprinting;
     bool isCrouching;
     bool isSliding;
     bool invulnerable;
     bool wallJumpOccurredThisFrame = false;
+    //Element Buff/Debuff
+    bool speedBuffed;
+    bool jumpBuffed;
+    bool speedDebuffed;
+    bool jumpDebuffed;
+    bool elemInversed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         originalHP = HP;
+        checkPointHP = HP;  
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
         origFOV = Camera.main.fieldOfView; 
         baseFOV = origFOV;
         GameManager.instance.SetSpawnPosition(transform.position);
         UpdatePlayerUI();
-        cameraLocalPosOrig = Camera.main.transform.localPosition;
-        Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
@@ -138,72 +152,24 @@ public class PlayerScript : MonoBehaviour, IDamage
         Crouch();
         WeaponInput();
         SetCurrentFOV();
-        HandleHeadBobbing();
-    }
-
-    void HandleHeadBobbing()
-    {
-        float currAmp = 0f;
-        float currFreq = 0f;
-
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        bool isMoveInput = (Mathf.Abs(horizontalInput) > 0.01f || Mathf.Abs(verticalInput) > 0.01f);
-
-        //Debug.Log($"Frame: {Time.frameCount} | isMoveInput: {isMoveInput} | isGrounded: {controller.isGrounded}");
-
-        // This determines the amplitude and frequency based on the movement state.
-        // And is only applied while grounded.
-        if (controller.isGrounded)
+        
+        if (speedBuffed || jumpBuffed || speedDebuffed || jumpDebuffed)
         {
-            if (isMoveInput)
+            HandleElements();
+        }
+        if (invulnerable)
+        {
+            iFrameTimer += Time.deltaTime;
+            if (iFrameTimer >= invincHitTime)
             {
-                if (isSprinting) // Is the player sprinting?
-                {
-                    currAmp = sprintBobAmp;
-                    currFreq = sprintBobFreq;
-                    //Debug.Log($"Sprinting - Amp: {currAmp}, Freq: {currFreq}");
-                }
-                else // Is the player walking?
-                {
-                    currAmp = walkBobAmp;
-                    currFreq = walkBobFreq;
-                    //Debug.Log($"Walking - Amp: {currAmp}, Freq: {currFreq}");
-                }
+                invulnerable = false;
             }
-        }
-
-        if (currAmp > 0f)
-        {
-            // This timer increments based on the frequency;
-            bobTimer += Time.deltaTime * currFreq;
-
-            // This calculateds the bobbing effect offset using a sine wave system.
-            // The Mathf.Sin function allows me to create a smooth, oscillating value betrween -1 and 1.
-            // Also, multiplying by the currAmp scales this oscillation to any desired bobbing height as you wish.
-            float bobbingOffset = Mathf.Sin(bobTimer) * currAmp;
-            //Debug.Log($"Bob Timer: {bobTimer}, Bobbing Offset: {bobbingOffset}");
-
-            // Then I apply the offset to the camera's local Y position.
-            Vector3 newCamLocalPos = cameraLocalPosOrig;
-            newCamLocalPos.y += bobbingOffset;
-
-            Camera.main.transform.localPosition = newCamLocalPos;
-            //Debug.Log($"[Bobbing Active] Frame: {Time.frameCount} | bobTimer: {bobTimer:F4} | Offset: {bobbingOffset:F4} | Final Local Pos: {Camera.main.transform.localPosition:F4}");
-        }
-        else // If the player is either not moving at all, or is in the air. This includes wall running, jumping, falling, etc.
-        {
-            bobTimer = 0f; // This resets the timer, when not moving
-            // This smoothly returns the camera back to its original position.
-            Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, cameraLocalPosOrig, Time.deltaTime * bobReturnSpeed);
-            //Debug.Log($"[Bobbing Reset] Frame: {Time.frameCount} | Final Local Pos: {Camera.main.transform.localPosition:F4}");
         }
     }
 
     void WallRunCheck()
     {
-        // This stops the wall running and resets the wall jump state, if grounded.
-        if (controller.isGrounded) 
+        if (controller.isGrounded)
         {
             //Debug.Log("Grounded: stopping wall run.");
             StopWallRun();
@@ -211,7 +177,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             camControl.SetWallRunTilt(0f);
             return;
         }
-        // If wall jumped recently or wall run cooldown is active, then stop the wall running.
+
         if (wallJumped || wallRunCooldownTimer > 0f)
         {
             //Debug.Log("Wall jump cooldown or already wall jumped.");
@@ -219,7 +185,6 @@ public class PlayerScript : MonoBehaviour, IDamage
             return;
         }
 
-        // This chcecks if there is no forward input, to then stop wall running this way.
         float forwardInput = Input.GetAxis("Vertical");
         if (forwardInput <= 0.2f)
         {
@@ -231,23 +196,19 @@ public class PlayerScript : MonoBehaviour, IDamage
         RaycastHit hit;
         bool wallDetectedThisFrame = false;
 
-        if (!controller.isGrounded)
+        if (Physics.Raycast(transform.position, -transform.right, out hit, wallCheckDist, wallRunMask))
         {
-            // This checks for walls on either the left or right side of the player, and is within proper distance to do so.
-            if (Physics.Raycast(transform.position, -transform.right, out hit, wallCheckDist, wallRunMask))
-            {
-                //Debug.Log("Wall detected on left");
-                StartWallRun(hit.normal);
-                wallDetectedThisFrame = true;
-            }
-            else if (Physics.Raycast(transform.position, transform.right, out hit, wallCheckDist, wallRunMask))
-            {
-                //Debug.Log("Wall detected on right");
-                StartWallRun(hit.normal);
-                wallDetectedThisFrame = true;
-            }
+            //Debug.Log("Wall detected on left");
+            StartWallRun(hit.normal);
+            wallDetectedThisFrame = true;
         }
-        // This forces the player to stop wall running, when there's no wall detected in the middle of wall running.
+        else if (Physics.Raycast(transform.position, transform.right, out hit, wallCheckDist, wallRunMask))
+        {
+            //Debug.Log("Wall detected on right");
+            StartWallRun(hit.normal);
+            wallDetectedThisFrame = true;
+        }
+
         if (isWallRunning && !wallDetectedThisFrame)
         {
             //Debug.Log("No direct wall detected. Checking for edge.");
@@ -261,7 +222,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         {
             //Debug.Log("Wall running...");
             wallRunTimer += Time.deltaTime;
-            // Stop wall running, once the duration has been fully reached.
+
             if (wallRunTimer > wallRunDur)
             {
                 //Debug.Log("Wall run duration exceeded.");
@@ -269,10 +230,8 @@ public class PlayerScript : MonoBehaviour, IDamage
                 return;
             }
 
-            // Gravity is significantly reduced, as you wall run.
             verticalVelocity.y = -wallRunGravity;
 
-            // This checks for any jump input being made, ensuring that the player has not wall jumped yet, with a cleared cooldown.
             if (Input.GetButtonDown("Jump"))
             {
                 if (!wallJumped && wallRunCooldownTimer <= 0f)
@@ -299,11 +258,11 @@ public class PlayerScript : MonoBehaviour, IDamage
         wallNormal = hitNormal;
         wallRunTimer = 0f;
 
-        if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
-            jumpCount -= 1;
+        if (resetJumpCount)
+        {
+            jumpCount = 0;
+        }
 
-        // This calculates and applies the camera tilting based on the wall normal that the player is running on.
-        // It also adjusts itself, based on what side of the wall that the player is running on.
         float tilt = Vector3.Dot(wallNormal, -transform.right) > 0 ? 1 : -1;
         camControl.SetWallRunTilt(tilt * 15f);
     }
@@ -311,11 +270,8 @@ public class PlayerScript : MonoBehaviour, IDamage
     void StopWallRun()
     {
         if (isWallRunning)
-        {
             camControl.SetWallRunTilt(0f);
-            wallRunCooldownTimer = wallRunCooldown;
-        }
-        wallJumped = false;
+
         isWallRunning = false;
         wallRunTimer = 0f;
     }
@@ -410,8 +366,17 @@ public class PlayerScript : MonoBehaviour, IDamage
             currentSlideSpeed -= slideRate;
         }
 
+        if(speedModifier < 1)
+        {
+            currSpeed = speed + (speed * speedModifier);
+        }
+        else
+        {
+            currSpeed = speed *= speedModifier;
+        }
+
         // Return the calculated speed, and factor in external speed modifiers
-        return speed + (speed * speedModifier);
+        return currSpeed;
     }
 
     void Jump()
@@ -427,7 +392,18 @@ public class PlayerScript : MonoBehaviour, IDamage
                 jumpSpeedBonus = slideJumpSpeedBonus;
             }
             // Handle jump force (with external jump multiplier factored in)
-            verticalVelocity.y = jumpForce + (jumpForce * jumpModifier);
+            if (jumpModifier < 1 && jumpModifier != 0)
+            {
+                verticalVelocity.y = jumpForce + (jumpForce * -(1.0f + jumpModifier));
+            }
+            else if (jumpModifier > 0)
+            {
+                verticalVelocity.y = jumpForce * jumpModifier;
+            }
+            else
+            {
+                verticalVelocity.y = jumpForce;
+            }
             jumpCount++;
         }
 
@@ -567,20 +543,30 @@ public class PlayerScript : MonoBehaviour, IDamage
     {
         if (invulnerable)
         {
-            invulnerable = false;
+            Debug.Log("Invulnerable Hit");
             return;
         }
 
+        
         SoundManager.instance.PlaySFX("playerHurt", 0.2f);
 
-        HP -= amount;
+
+        if (isShielded > 0)
+        {
+            isShielded -= 1;
+        } 
+        else
+        {
+            HP -= amount;
+            StartCoroutine(FlashDamageScreen());
+        }
         UpdatePlayerUI();
-        StartCoroutine(FlashDamageScreen());
+        iFrameTimer = 0;
+        invulnerable = true;
 
         if (HP <= 0)
         {
             GameManager.instance.YouLose();
-            //GameManager.instance.Respawn();
         }
     }
 
@@ -589,9 +575,15 @@ public class PlayerScript : MonoBehaviour, IDamage
         speedModifier = 0.0f;
         jumpModifier = 0.0f;
         verticalVelocity.y = 0.0f;
-        HP = originalHP;
+        HP = checkPointHP;
         invulnerable = false;
         ResetFOV();
+        UpdatePlayerUI();
+    }
+
+    public void UpdateCheckpointHealth()
+    {
+        checkPointHP = HP;  
     }
 
     public void UpdatePlayerUI()
@@ -599,6 +591,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         // update player health bar at full and when taking damage
         GameManager.instance.playerHPbar.fillAmount = (float)HP / originalHP;
 
+        // update player shield bar at full and when taking damage
         GameManager.instance.playerShieldbar.fillAmount = (float)isShielded / shieldMax;
     }
 
@@ -620,10 +613,30 @@ public class PlayerScript : MonoBehaviour, IDamage
 
     public void SetShield(int shieldAmount)
     {
-        if (isShielded < shieldMax)
+        if (shieldAmount > shieldMax)
         {
-            isShielded += shieldAmount;
+            return;
         }
+        else
+        {
+            isShielded = shieldAmount;
+        }
+    }
+
+    public void AddHP(int amount)
+    {
+        if (amount < 1)
+        {
+            return;
+        }
+
+        HP += amount;
+        if (HP > originalHP)
+        {
+            HP = originalHP;
+        }
+
+        UpdatePlayerUI();
     }
 
     public void SetCurrentFOV()
@@ -673,6 +686,215 @@ public class PlayerScript : MonoBehaviour, IDamage
         GameManager.instance.playerDamageScreen.SetActive(true);
         yield return new WaitForSeconds(0.3f);
         GameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    // Element Work
+    void HandleElements()
+    {
+        if (speedBuffed)
+        {
+            speedBuffTimer += Time.deltaTime;
+            if (speedBuffTimer >= speedElemModTime)
+            {
+                SpeedBuff();
+            }
+        }
+        if (jumpBuffed)
+        {
+            jumpBuffTimer += Time.deltaTime;
+            if (jumpBuffTimer >= jumpElemModTime)
+            {
+                JumpBuff();
+            }
+        }
+        if (speedDebuffed)
+        {
+            speedDebuffTimer += Time.deltaTime;
+            if (speedDebuffTimer >= speedElemModTime)
+            {
+                SpeedDebuff();
+            }
+        }
+        if (jumpDebuffed)
+        {
+            jumpDebuffTimer += Time.deltaTime;
+            if (jumpDebuffTimer >= jumpElemModTime)
+            {
+                JumpDebuff();
+            }
+        }
+    }
+
+    public void ElementBuff(int elem)
+    {
+        switch (elem)
+        {
+            case 1:
+                
+                if (elemInversed) { SpeedDebuff(); }
+                else { SpeedBuff(); }
+                break;
+            case 2:
+                Debug.Log("Jump Buff");
+                if (elemInversed) { JumpDebuff(); }
+                else { JumpBuff(); }
+                break;
+            case 3:
+                Debug.Log("Shield Buff");
+                if (elemInversed) { ShieldDebuff(); }
+                else { ShieldBuff(); }
+                break;
+        }
+    }
+    public void ElementDebuff(int elem)
+    {
+        switch (elem)
+        {
+            case 1:
+                
+                if (!elemInversed) { SpeedDebuff(); }
+                else { SpeedBuff(); }
+                break;
+            case 2:
+                Debug.Log("Jump Debuff");
+                if (!elemInversed) { JumpDebuff(); }
+                else { JumpBuff(); }
+                break;
+            case 3:
+                Debug.Log("Shield Debuff");
+                if (!elemInversed) { ShieldDebuff(); }
+                else { ShieldBuff(); }
+                break;
+        }
+    }
+    public void ElementInverse()
+    {
+        Debug.Log("Inversing");
+        if (elemInversed)
+        {
+            elemInversed = false;
+            GameManager.instance.playerInInverseScreen.SetActive(false);
+        }
+        else
+        {
+            elemInversed = true;
+            GameManager.instance.playerInInverseScreen.SetActive(true);
+        }
+        //SwapBuffs();
+    }
+
+    public void SpeedBuff()
+    {
+        if (speedBuffed == false && speedBuffTimer < speedElemModTime)
+        {
+            Debug.Log("Speed Buff");
+            SoundManager.instance.PlaySFX("powerUp", 0.3f);
+            GameManager.instance.BuffSprintIcon(speedElemModTime);
+            AddModifier(speedElemMod);
+            SetBaseFOV(baseFOV + speedElemFOVMod);
+            particleSpMod.gameObject.SetActive(true);
+            speedBuffTimer = 0;
+            speedBuffed = true;
+        }
+        else
+        {
+            particleSpMod.gameObject.SetActive(false);
+            AddModifier(-speedElemMod);
+            ResetFOV();
+            speedBuffed = false;
+        }
+    }
+    private void JumpBuff()
+    {
+        if (jumpBuffed == false && jumpBuffTimer < jumpElemModTime)
+        {
+            SoundManager.instance.PlaySFX("powerUp", 0.3f);
+            GameManager.instance.BuffJumpIcon(jumpElemModTime);
+            AddModifier(0.0f, jumpElemMod);
+            particleJpMod.gameObject.SetActive(true);
+            jumpBuffTimer = 0;
+            jumpBuffed = true;
+        }
+        else
+        {
+            AddModifier(0.0f, -jumpElemMod);
+            particleJpMod.gameObject.SetActive(false);
+            jumpBuffed = false;
+        }
+
+    }
+    private void SpeedDebuff()
+    {
+        if (speedDebuffed == false && speedDebuffTimer < speedElemModTime)
+        {
+            Debug.Log("Speed Debuff");
+            SoundManager.instance.PlaySFX("debuff", 0.4f);
+            GameManager.instance.DeBuffSprintIcon(speedElemModTime);
+            AddModifier(-1 / speedElemMod);
+            SetBaseFOV(baseFOV - speedElemFOVMod);
+            speedDebuffTimer = 0;
+            speedDebuffed = true;
+        }
+        else
+        {
+            AddModifier(1 / speedElemMod);
+            ResetFOV();
+            speedDebuffed = false;
+        }
+    }
+    private void JumpDebuff()
+    {
+        if (jumpDebuffed == false && jumpDebuffTimer < jumpElemModTime)
+        {
+            SoundManager.instance.PlaySFX("debuff", 0.4f);
+            GameManager.instance.DeBuffJumpIcon(jumpElemModTime);
+            AddModifier(0.0f, -1 / jumpElemMod);
+            jumpBuffTimer = 0;
+            jumpDebuffed = true;
+        }
+        else
+        {
+            AddModifier(0.0f, 1 / jumpElemMod);
+            jumpDebuffed = false;
+        }
+    }
+    private void ShieldBuff()
+    {
+        SoundManager.instance.PlaySFX("powerUp", 0.3f);
+
+        SetShield(isShielded = shieldElemMod);
+
+        UpdatePlayerUI();
+    }
+    private void ShieldDebuff()
+    {
+        SoundManager.instance.PlaySFX("debuff", 0.4f);
+
+        SetShield(isShielded - shieldElemMod);
+
+        UpdatePlayerUI();
+    }
+    private void SwapBuffs()
+    {
+        //Swaps bools
+        bool temp1 = speedBuffed;
+        bool temp2 = speedDebuffed;
+        speedBuffed = temp2;
+        speedDebuffed = temp1;
+        bool temp3 = jumpBuffed;
+        bool temp4 = jumpDebuffed;
+        jumpBuffed = temp4;
+        jumpDebuffed = temp3;
+
+        //Swap Timers
+        float timer1 = speedBuffTimer;
+        float timer2 = speedDebuffTimer;
+        speedBuffTimer = timer2;
+        speedDebuffTimer = timer1;
+        float timer3 = jumpBuffTimer;
+        float timer4 = jumpDebuffTimer;
+        jumpBuffTimer = timer4;
+        jumpDebuffTimer = timer3;
     }
 
     #region Save and Load

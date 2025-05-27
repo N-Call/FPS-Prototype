@@ -41,7 +41,7 @@ AudioSource:
   m_GameObject: {fileID: 1978491144218508443}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -4015399208048272689, guid: dc31931df67a57a4fba184abe4e40386, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -170,7 +170,7 @@ AudioSource:
   m_GameObject: {fileID: 5267732481913920290}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1077324817128690042, guid: dc31931df67a57a4fba184abe4e40386, type: 2}
   m_audioClip: {fileID: 8300000, guid: c6a01920aaafe9f42a7f3965d9d5b56d, type: 3}
   m_Resource: {fileID: 8300000, guid: c6a01920aaafe9f42a7f3965d9d5b56d, type: 3}
   m_PlayOnAwake: 0
@@ -371,6 +371,12 @@ MonoBehaviour:
     volume: 0
   - name: danger
     clip: {fileID: 8300000, guid: d9b26801c8b774b41944d08fa5338cfa, type: 3}
+    volume: 0
+  - name: gunEmpty
+    clip: {fileID: 8300000, guid: c6011bfddc6da634a88676c79a44d737, type: 3}
+    volume: 0
+  - name: Health
+    clip: {fileID: 8300000, guid: 614d258c7f252384291a572c9569f5ca, type: 3}
     volume: 0
   musicSource: {fileID: 1344707143303592047}
   sfxSource: {fileID: 8650406183274668991}

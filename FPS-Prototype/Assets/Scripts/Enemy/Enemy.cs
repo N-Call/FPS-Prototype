@@ -68,7 +68,6 @@ public class Enemy : MonoBehaviour, IDamage
         maxHealth = currentHealth;
         originalPosition = transform.position;
         colorOrig = model.material.color;
-        GameManager.instance.UpdateEnemyCounter(1);
 
         if (isTurret)
         {

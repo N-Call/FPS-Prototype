@@ -34,22 +34,30 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject debuffJump;
 
     List<EnemyController> enemiesToRespawn;
-       
+
     public Vector3 respawnPosition;
 
     public GameObject playerDamageScreen;
+    public GameObject playerInInverseScreen;
     public GameObject player;
+
+    [Header("Dialogue")]
+    public GameObject textPopUp;
+    public TextMeshProUGUI speakerUI;
+    public TextMeshProUGUI textComponent;
+
 
     public Image playerHPbar;
     public Image playerShieldbar;
     public PlayerScript playerScript;
     public SceneData sceneData;
     public SceneLoader sceneLoader;
+    public FinalGradeSystem gradeSystem;
 
     public bool isPaused;
     public float timeScaleOrig;
     public Vector3 startPos;
-    
+
     int gameGoalCount;
     int enemyCount;
 
@@ -66,13 +74,13 @@ public class GameManager : MonoBehaviour
 
         timeScaleOrig = Time.timeScale;
         enemiesToRespawn = new List<EnemyController>();
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel"))
         {
             if (menuActive == null)
             {
@@ -82,7 +90,7 @@ public class GameManager : MonoBehaviour
 
             }
             else if (menuActive == menuPause)
-            { 
+            {
                 StateUnpause();
             }
         }
@@ -98,6 +106,7 @@ public class GameManager : MonoBehaviour
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();
+        SoundManager.instance.sfxSource.Pause();
         // stop the player from shooting
         playerScript.enabled = false;
     }
@@ -114,6 +123,7 @@ public class GameManager : MonoBehaviour
         // to turn on the reticle
         reticle.SetActive(true);
         SoundManager.instance.musicSource.Play();
+        SoundManager.instance.sfxSource.Play();
         playerScript.enabled = true;
 
     }
@@ -142,16 +152,16 @@ public class GameManager : MonoBehaviour
     public void TogglePPVolume()
     {// toggle the blurr for menus 
         PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
-        ppVolume.enabled = !ppVolume.enabled; 
+        ppVolume.enabled = !ppVolume.enabled;
     }
 
-    public void YouLose() 
+    public void YouLose()
     {
         StatePause();
         menuActive = menuLose;
         menuActive.SetActive(true);
     }
-   
+
 
     public void WinCondition(int amount)
     {
@@ -164,6 +174,7 @@ public class GameManager : MonoBehaviour
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
             gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
+            gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
             menuActive = menuWin;
             menuActive.SetActive(true);
         }
@@ -177,8 +188,8 @@ public class GameManager : MonoBehaviour
     }
 
     public float EnemyTimePenalty(float totalTime)
-    { 
-        return totalTime + enemyCount * 10; 
+    {
+        return totalTime + enemyCount * 10;
     }
 
     public void GlobalAmmoCount(int amount, int ammoCap)
@@ -197,7 +208,7 @@ public class GameManager : MonoBehaviour
             weaponIcon.GetComponent<Image>().sprite = icon;
         }
     }
-   
+
     public void AddEnemyToRespawn(EnemyController enemy)
     {
         enemiesToRespawn.Add(enemy);
@@ -217,10 +228,10 @@ public class GameManager : MonoBehaviour
 
         playerScript.GetComponent<CharacterController>().enabled = true;
 
-        foreach (EnemyController enemy in enemiesToRespawn)
-        {
-            enemy.ResetEnemies();
-        }
+        //foreach (EnemyController enemy in enemiesToRespawn)
+        //{
+        //    enemy.ResetEnemies();
+        //}
 
     }
     IEnumerator ReticleWaitTime()
@@ -254,4 +265,4 @@ public class GameManager : MonoBehaviour
         debuffJump.SetActive(false);
     }
 
-} 
+}

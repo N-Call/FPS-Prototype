@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Checkpoint : MonoBehaviour
 {
-
+    public List<Spawner> spawnersToDisable;
     public bool isFinalCheckPoint;
     
 
@@ -18,11 +18,12 @@ public class Checkpoint : MonoBehaviour
             SoundManager.instance.PlaySFX("checkPoint", 1f);
             Debug.Log("checkpoint reached");
             GameManager.instance.SetSpawnPosition(transform.position);
+            GameManager.instance.playerScript.UpdateCheckpointHealth();
             Destroy(gameObject);
-            if (enemy != null && enemy.isDead == true)
+
+            foreach (Spawner spawner in spawnersToDisable)
             {
-                enemy.isRespawned = false;
-                Destroy(enemy); 
+                spawner.DisableSpawner();
             }
 
             if (isFinalCheckPoint)
