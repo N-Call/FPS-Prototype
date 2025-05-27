@@ -231,9 +231,9 @@ public class GameManager : MonoBehaviour
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
             gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
-            gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
             menuActive = menuWin;
             menuActive.SetActive(true);
+            gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
         }
     }
 
