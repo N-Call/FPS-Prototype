@@ -110,13 +110,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382434999312407388}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.00611, y: 0.01381, z: 0.00946}
+  m_LocalRotation: {x: 0, y: -0.034899585, z: 0, w: 0.99939084}
+  m_LocalPosition: {x: 0.00629, y: 0.01444, z: 0.01198}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 587272156730863872}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -4, z: 0}
 --- !u!1 &596345779243897770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1354,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7171828315217700792}
   m_Father: {fileID: 4907504224174195284}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1237999224125052014
@@ -1679,6 +1680,8 @@ GameObject:
   - component: {fileID: 4907504224174195284}
   - component: {fileID: 1667353925157049509}
   - component: {fileID: 1226563634270312871}
+  - component: {fileID: 2520155381011581346}
+  - component: {fileID: 2523490022070901203}
   m_Layer: 6
   m_Name: robothover
   m_TagString: Enemy
@@ -1729,17 +1732,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 4674833119946100073}
-  agent: {fileID: 1226563634270312871}
   currentHealth: 5
-  faceTargetSpeed: 20
+  agent: {fileID: 1226563634270312871}
+  faceTargetSpeed: 50
   FOV: 180
   roamDist: 5
   roamPauseTime: 5
-  pause: 0
-  shootPos: {fileID: 980495516536666772}
+  headPos: {fileID: 0}
+  shootPos: {fileID: 0}
   bullet: {fileID: 8973326993888958128, guid: 3d478ccae6fa99b48a17177b02922246, type: 3}
-  shootRate: 0.5
+  shootRate: 0.7
   damageAmount: 0
+  shouldRotate: 1
+  maxPitch: 0
+  minPitch: 0
+  shootPosL: {fileID: 7171828315217700792}
+  shootPosR: {fileID: 980495516536666772}
+  shootRateL: 0.5
+  shootRateR: 1
   originalPosition: {x: 0, y: 0, z: 0}
   RangeTrigger: {fileID: 0}
   ExplosionTrigger: {fileID: 0}
@@ -1753,18 +1763,62 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 4
+  m_Acceleration: 32
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_AngularSpeed: 600
+  m_StoppingDistance: 8
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &2520155381011581346
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5912148288244651500}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!135 &2523490022070901203
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5912148288244651500}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 12
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6629721526429595727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,6 +2692,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &9135664026149114213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7171828315217700792}
+  m_Layer: 6
+  m_Name: shootPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7171828315217700792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9135664026149114213}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.03489949, z: 0, w: 0.99939084}
+  m_LocalPosition: {x: -0.00575, y: 0.01422, z: 0.01334}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6233123398117901856}
+  m_LocalEulerAnglesHint: {x: 0, y: 4, z: 0}
 --- !u!1 &9188626816788961761
 GameObject:
   m_ObjectHideFlags: 0
