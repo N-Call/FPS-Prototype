@@ -281,6 +281,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             camControl.SetWallRunTilt(0f);
 
         isWallRunning = false;
+        wallJumped = false;
         wallRunTimer = 0f;
     }
 
