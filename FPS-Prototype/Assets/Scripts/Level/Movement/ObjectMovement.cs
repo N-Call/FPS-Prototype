@@ -9,6 +9,7 @@ public class ObjectMovement : MonoBehaviour
     [Header("Destination Settings")]
     [SerializeField] Vector3 destination;
     [SerializeField] bool relative = true;
+    [SerializeField] float stoppingDistance = 0.01f;
 
     [Header("Movement Settings")]
     [SerializeField] float moveSpeed;
@@ -34,9 +35,15 @@ public class ObjectMovement : MonoBehaviour
     protected float startTimer;
     protected float destinationTimer;
     float destroyTimer;
+    float distanceLeft;
 
     bool waitedForPlayer;
     bool hasPlayer;
+
+    private void OnValidate()
+    {
+        stoppingDistance = Mathf.Clamp(stoppingDistance, 0.001f, float.MaxValue);
+    }
 
     private void Awake()
     {
@@ -121,7 +128,8 @@ public class ObjectMovement : MonoBehaviour
 
     protected bool Move(Vector3 from, Vector3 to)
     {
-        if (Vector3.Distance(from, to) <= 0.01f)
+        distanceLeft = Vector3.Distance(from, to);
+        if (distanceLeft <= stoppingDistance)
         {
             return true;
         }
