@@ -1,8 +1,10 @@
 
 using UnityEngine;
 
-public class Model2Enemy : EnemyController
+public class Model2Enemy : EnemyController, IElemental
 {
+
+    
    
     protected override void Update()
     {
@@ -76,6 +78,21 @@ public class Model2Enemy : EnemyController
         Instantiate(bullet, shootPosR.position, shootPosR.rotation);
 
         }
+
+    }
+
+    public void ElementBuff(int elem)
+    {
+
+    }
+
+    public void ElementDebuff(int elem)
+    {
+
+    }
+
+    public void ElementInverse()
+    {
 
     }
 }
