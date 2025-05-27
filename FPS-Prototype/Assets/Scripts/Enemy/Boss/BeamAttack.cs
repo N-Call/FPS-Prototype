@@ -12,21 +12,21 @@ public class BeamAttack : BaseState
     {
         base.Enter();
         bossSM.LookAtPlayer(0);
-        bossSM.animator.CrossFade("Beam", 0.2f);
+        bossSM.animator.CrossFade("LaserBeam", 0.2f);
         bossSM.SetInvincible(true);
     }
     public override void StateLogic()
     {
         base.StateLogic();
         if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") &&
-            !bossSM.animator.GetNextAnimatorStateInfo(0).IsName("Shoot"))
+            !bossSM.animator.GetNextAnimatorStateInfo(0).IsName("LaserBeam"))
             bossSM.ChangeState(bossSM.idle);
 
     }
     public override void Action()
     {
         base.Action();
-        bossSM.LookAtPlayer(0);
+        bossSM.bodyParts[1].transform.LookAt(GameManager.instance.player.transform.position);
     }
 
     public override void Exit()

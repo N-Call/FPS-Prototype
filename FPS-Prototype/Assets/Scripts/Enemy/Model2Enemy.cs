@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class Model2Enemy : EnemyController, IElemental
@@ -15,6 +16,7 @@ public class Model2Enemy : EnemyController, IElemental
         base.Update();
 
         shootTimer += Time.deltaTime;
+
 
         if (canShoot && shootTimer >= shootRate)
         {
