@@ -55,7 +55,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     [SerializeField] float wallJumpHoriForce;
     [SerializeField] float wallRunCooldown;
     [SerializeField] float wallStickForce;
-    [SerializeField] bool resetJumpCount;
+    
+    [SerializeField][Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
+    bool provideExtraJumpIfNeeded;
 
     [Header("Elements")]
     [SerializeField] float speedElemMod;
@@ -258,9 +260,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         wallNormal = hitNormal;
         wallRunTimer = 0f;
 
-        if (resetJumpCount)
+        if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
         {
-            jumpCount = 0;
+            jumpCount -= 1;
         }
 
         float tilt = Vector3.Dot(wallNormal, -transform.right) > 0 ? 1 : -1;
