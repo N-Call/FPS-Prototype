@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class PlayerScript : MonoBehaviour, IDamage, IElemental
 {
@@ -55,7 +52,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     [SerializeField] float wallJumpHoriForce;
     [SerializeField] float wallRunCooldown;
     [SerializeField] float wallStickForce;
-    [SerializeField][Tooltip("Provides the player with an additional jump if they used all of them before running on the wall.")] bool provideExtraJumpIfNeeded;
+    
+    [SerializeField][Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
+    bool provideExtraJumpIfNeeded;
 
     [Header("Elements")]
     [SerializeField] float speedElemMod;
@@ -67,7 +66,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
     bool isWallRunning;         // Is the player wall jumping?
     bool wallJumped;            // Did the player wall jump?
-    float wallRunTimer;         // TImer for the active wall run.
+    float wallRunTimer;         // Timer for the active wall run.
     float wallRunCooldownTimer; // Cooldown before another wall run can be made.
     Vector3 wallNormal;         // Normal of the wall being run on in question.
     Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
@@ -241,6 +240,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
     void WallRunCheck()
     {
+        // Stop running if grounded
         if (controller.isGrounded)
         {
             //Debug.Log("Grounded: stopping wall run.");
@@ -250,6 +250,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             return;
         }
 
+        // Stop if they wall-jumped or the cooldown isn't over yet
         if (wallJumped || wallRunCooldownTimer > 0f)
         {
             //Debug.Log("Wall jump cooldown or already wall jumped.");
@@ -258,6 +259,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         }
 
         float forwardInput = Input.GetAxis("Vertical");
+        // Stop wall running if they stop moving forward
         if (forwardInput <= 0.2f)
         {
             //Debug.Log("No forward input. Cancelling wall run.");
@@ -268,23 +270,22 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         RaycastHit hit;
         bool wallDetectedThisFrame = false;
 
-        if (!controller.isGrounded)
+        // Check if a runnable wall is on the left or right of the player
+        // Start wall running if so
+        if (Physics.Raycast(transform.position, -transform.right, out hit, wallCheckDist, wallRunMask))
         {
-            // This checks for walls on either the left or right side of the player, and is within proper distance to do so.
-            if (Physics.Raycast(transform.position, -transform.right, out hit, wallCheckDist, wallRunMask))
-            {
-                //Debug.Log("Wall detected on left");
-                StartWallRun(hit.normal);
-                wallDetectedThisFrame = true;
-            }
-            else if (Physics.Raycast(transform.position, transform.right, out hit, wallCheckDist, wallRunMask))
-            {
-                //Debug.Log("Wall detected on right");
-                StartWallRun(hit.normal);
-                wallDetectedThisFrame = true;
-            }
+            //Debug.Log("Wall detected on left");
+            StartWallRun(hit.normal);
+            wallDetectedThisFrame = true;
+        }
+        else if (Physics.Raycast(transform.position, transform.right, out hit, wallCheckDist, wallRunMask))
+        {
+            //Debug.Log("Wall detected on right");
+            StartWallRun(hit.normal);
+            wallDetectedThisFrame = true;
         }
 
+        // Stop wall running if they reach the end of the wall
         if (isWallRunning && !wallDetectedThisFrame)
         {
             //Debug.Log("No direct wall detected. Checking for edge.");
@@ -299,6 +300,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             //Debug.Log("Wall running...");
             wallRunTimer += Time.deltaTime;
 
+            // Stop wall running if they wall run passed the allowed duration
             if (wallRunTimer > wallRunDur)
             {
                 //Debug.Log("Wall run duration exceeded.");
@@ -306,8 +308,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
                 return;
             }
 
+            // Apply gravity
             verticalVelocity.y = -wallRunGravity;
 
+            // Handle wall jump
             if (Input.GetButtonDown("Jump"))
             {
                 if (!wallJumped && wallRunCooldownTimer <= 0f)
@@ -335,7 +339,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         wallRunTimer = 0f;
 
         if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
+        {
             jumpCount -= 1;
+        }
 
         float tilt = Vector3.Dot(wallNormal, -transform.right) > 0 ? 1 : -1;
         camControl.SetWallRunTilt(tilt * 15f);
@@ -350,6 +356,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         }
         wallJumped = false;
         isWallRunning = false;
+        wallJumped = false;
         wallRunTimer = 0f;
     }
 
@@ -624,9 +631,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             return;
         }
 
-        
         SoundManager.instance.PlaySFX("playerHurt", 0.2f);
-
 
         if (isShielded > 0)
         {
@@ -637,6 +642,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             HP -= amount;
             StartCoroutine(FlashDamageScreen());
         }
+
         UpdatePlayerUI();
         iFrameTimer = 0;
         invulnerable = true;
