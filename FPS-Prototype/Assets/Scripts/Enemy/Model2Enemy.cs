@@ -1,14 +1,15 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class Model2Enemy : EnemyController
 {
-   
     protected override void Update()
     {
         base.Update();
 
         shootTimer += Time.deltaTime;
+
 
         if (canShoot && shootTimer >= shootRate)
         {

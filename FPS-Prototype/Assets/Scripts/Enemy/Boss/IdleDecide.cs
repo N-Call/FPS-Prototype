@@ -50,6 +50,7 @@ public class IdleDecide : BaseState
                     bossSM.ChangeState(bossSM.jump);
                     break;
                 case BossSM.Ability.invensBoost:
+                    bossSM.ChangeState(bossSM.beam);
                     break;
                 default: break;
             }
