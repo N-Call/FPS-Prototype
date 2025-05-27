@@ -52,8 +52,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     [SerializeField] float wallJumpHoriForce;
     [SerializeField] float wallRunCooldown;
     [SerializeField] float wallStickForce;
-    
-    [SerializeField][Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
+
+    [SerializeField]
+    [Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
     bool provideExtraJumpIfNeeded;
 
     [Header("Elements")]
@@ -91,7 +92,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     public ParticleSystem particleSpMod;
     public ParticleSystem particleSpRun;
     public ParticleSystem particleJpMod;
-    
+
 
     Coroutine crouchCoroutine;
     Coroutine unCrouchCoroutine;
@@ -135,10 +136,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     void Start()
     {
         originalHP = HP;
-        checkPointHP = HP;  
+        checkPointHP = HP;
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
-        origFOV = Camera.main.fieldOfView; 
+        origFOV = Camera.main.fieldOfView;
         baseFOV = origFOV;
         GameManager.instance.SetSpawnPosition(transform.position);
         UpdatePlayerUI();
@@ -409,7 +410,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     {
         // The base speed (vertical prioritized over horizontal)
         float speed = verticalSpeed > 0 ? verticalSpeed : horizontalSpeed;
-        
+
         if (isSprinting)
         {
             speed += sprintSpeed;
@@ -450,7 +451,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             currentSlideSpeed -= slideRate;
         }
 
-        if(speedModifier < 1)
+        if (speedModifier < 1)
         {
             currSpeed = speed + (speed * speedModifier);
         }
@@ -636,7 +637,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         if (isShielded > 0)
         {
             isShielded -= 1;
-        } 
+        }
         else
         {
             HP -= amount;
@@ -666,7 +667,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
     public void UpdateCheckpointHealth()
     {
-        checkPointHP = HP;  
+        checkPointHP = HP;
     }
 
     public void UpdatePlayerUI()
@@ -813,7 +814,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         switch (elem)
         {
             case 1:
-                
+
                 if (elemInversed) { SpeedDebuff(); }
                 else { SpeedBuff(); }
                 break;
@@ -835,7 +836,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         switch (elem)
         {
             case 1:
-                
+
                 if (!elemInversed) { SpeedDebuff(); }
                 else { SpeedBuff(); }
                 break;
@@ -988,22 +989,4 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         jumpDebuffTimer = timer3;
     }
 
-    #region Save and Load
-    public void Save(ref PlayerSaveData data)
-    {
-        data.position = transform.position;
-    }
-
-    public void Load(PlayerSaveData data)
-    {
-        transform.position = data.position;
-    }
-
-    #endregion
-}
-
-[System.Serializable]
-public struct PlayerSaveData
-{
-    public Vector3 position;
 }

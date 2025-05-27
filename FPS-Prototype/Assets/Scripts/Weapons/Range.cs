@@ -61,18 +61,35 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void Reload()
     {
-        if (reloadCap == ammoCount || ammoCap == 0 && ammoCount == 0) {return;}
+        //if (reloadCap == ammoCount || ammoCap == 0 && ammoCount == 0) {return;}
 
-        PlayReloadAnim();
-        SoundManager.instance.PlaySFX(soundFxName, 0.3f);
+        //PlayReloadAnim();
+        //SoundManager.instance.PlaySFX(soundFxName, 0.3f);
 
-        ammoCap -= reloadCap - ammoCount;
-        ammoCount = reloadCap;
+        //ammoCap -= reloadCap - ammoCount;
+        //ammoCount = reloadCap;
 
-        if (ammoCap < 0)
+        //if (ammoCap < 0)
+        //{
+        //    ammoCount += ammoCap;
+        //    ammoCap = 0;
+        //}
+        //GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
+
+        // This calculates how much ammo is needed for the current magazine.
+        int ammoNeeded = reloadCap - ammoCount;
+
+        // This reloading algorithm has been readjusted, to now it takes reloading a partial magazine into account.
+        // Helps conserve more ammo in the reserves.
+        if (ammoCap - ammoCount >= ammoNeeded)
         {
-            ammoCount += ammoCap;
-            ammoCap = 0;
+            ammoCount += ammoNeeded;
+            ammoCap -= ammoNeeded;
+        }
+        else
+        {
+            ammoCount += (ammoCap - ammoCount);
+            ammoCap = ammoCount;
         }
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
     }
@@ -113,14 +130,26 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void SetAmmo(float percent)
     {
-        float temp = percent / 100;
-        int newAmmo = (int)(ammoOrigCap * temp);
-        ammoCap += newAmmo;
+        //float temp = percent / 100;
+        //int newAmmo = (int)(ammoOrigCap * temp);
+        //ammoCap += newAmmo;
 
-        if (gameObject.activeSelf)
-        {
-            GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
-        }
+        //if (gameObject.activeSelf)
+        //{
+        //    GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
+        //}
+
+        // I thought of using this method to set the total ammo capacity.
+        // Normally used for initial setups of full refills.
+        float amountToAdd = ammoOrigCap * (percent / 100f);
+        ammoCap = Mathf.Min(ammoOrigCap, ammoCap + (int)amountToAdd);
+        GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
+    }
+
+    public void AddAmmoToReserve(int amount)
+    {
+        ammoCap = Mathf.Min(ammoOrigCap, ammoCap + amount);
+        GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
     }
 }
 
