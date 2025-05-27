@@ -2447,6 +2447,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 14569909}
     - target: {fileID: 5372966775382062236, guid: 2d651a180e770f94f8bbf80cdc4f3eac, type: 3}
+      propertyPath: decideTime
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372966775382062236, guid: 2d651a180e770f94f8bbf80cdc4f3eac, type: 3}
       propertyPath: speedAmount
       value: 30
       objectReference: {fileID: 0}
@@ -4580,10 +4584,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3655189731681401059, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-      propertyPath: m_Mass
-      value: 0.01
-      objectReference: {fileID: 0}
     - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.97
@@ -4624,25 +4624,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4980963994565993665, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-      propertyPath: damage
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980963994565993665, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-      propertyPath: attackSpeed
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7230982164112844161, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7230982164112844161, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8747573276126559483, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
-      propertyPath: HP
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
