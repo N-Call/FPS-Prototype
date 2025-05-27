@@ -53,15 +53,25 @@ public class PlayerScript : MonoBehaviour, IDamage
     [SerializeField] float wallRunCooldown;
     [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallStickForce;
+    [SerializeField][Tooltip("Provides the player with an additional jump if they used all of them before running on the wall.")] bool provideExtraJumpIfNeeded;
 
-    bool isWallRunning;         // Is the player wall jumping?
-    bool wallJumped;            // Did the player wall jump?
-    float wallRunTimer;         // TImer for the active wall run.
-    float wallRunCooldownTimer; // Cooldown before another wall run can be made.
+    CameraController camControl;// This is referencing the CameraController for the tilting capabilities during wall running.
     Vector3 wallNormal;         // Normal of the wall being run on in question.
     Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
+    float wallRunTimer;         // TImer for the active wall run.
+    float wallRunCooldownTimer; // Cooldown before another wall run can be made.
+    public bool isWallRunning;  // Is the player wall jumping?
+    bool wallJumped;            // Did the player wall jump?
 
-    CameraController camControl;// TThis is referencing the CameraController for the tilting capabilities during wall running.
+    [Header("Head Bobbing")]
+    [SerializeField][Tooltip("The amplitude of the head bobbing when walking.")] float walkBobAmp;
+    [SerializeField][Tooltip("The frequency of the head bobbing when walking.")] float walkBobFreq;
+    [SerializeField][Tooltip("The amplitude of the head bobbing when sprinting.")] float sprintBobAmp;
+    [SerializeField][Tooltip("The frequency of the head bobbing when sprinting.")] float sprintBobFreq;
+    [SerializeField][Tooltip("The speed of the camera returning to its original position.")] float bobReturnSpeed;
+
+    private Vector3 cameraLocalPosOrig;
+    private float bobTimer;
 
     [Header("Camera")]
     [SerializeField] float sprintFOVMod;
@@ -91,7 +101,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     int originalHP;
     int jumpCount;
 
-    bool isSprinting;
+    bool isSprinting = false;
     bool isCrouching;
     bool isSliding;
     bool invulnerable;
@@ -107,6 +117,8 @@ public class PlayerScript : MonoBehaviour, IDamage
         baseFOV = origFOV;
         GameManager.instance.SetSpawnPosition(transform.position);
         UpdatePlayerUI();
+        cameraLocalPosOrig = Camera.main.transform.localPosition;
+        Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
@@ -126,11 +138,72 @@ public class PlayerScript : MonoBehaviour, IDamage
         Crouch();
         WeaponInput();
         SetCurrentFOV();
+        HandleHeadBobbing();
+    }
+
+    void HandleHeadBobbing()
+    {
+        float currAmp = 0f;
+        float currFreq = 0f;
+
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        bool isMoveInput = (Mathf.Abs(horizontalInput) > 0.01f || Mathf.Abs(verticalInput) > 0.01f);
+
+        //Debug.Log($"Frame: {Time.frameCount} | isMoveInput: {isMoveInput} | isGrounded: {controller.isGrounded}");
+
+        // This determines the amplitude and frequency based on the movement state.
+        // And is only applied while grounded.
+        if (controller.isGrounded)
+        {
+            if (isMoveInput)
+            {
+                if (isSprinting) // Is the player sprinting?
+                {
+                    currAmp = sprintBobAmp;
+                    currFreq = sprintBobFreq;
+                    //Debug.Log($"Sprinting - Amp: {currAmp}, Freq: {currFreq}");
+                }
+                else // Is the player walking?
+                {
+                    currAmp = walkBobAmp;
+                    currFreq = walkBobFreq;
+                    //Debug.Log($"Walking - Amp: {currAmp}, Freq: {currFreq}");
+                }
+            }
+        }
+
+        if (currAmp > 0f)
+        {
+            // This timer increments based on the frequency;
+            bobTimer += Time.deltaTime * currFreq;
+
+            // This calculateds the bobbing effect offset using a sine wave system.
+            // The Mathf.Sin function allows me to create a smooth, oscillating value betrween -1 and 1.
+            // Also, multiplying by the currAmp scales this oscillation to any desired bobbing height as you wish.
+            float bobbingOffset = Mathf.Sin(bobTimer) * currAmp;
+            //Debug.Log($"Bob Timer: {bobTimer}, Bobbing Offset: {bobbingOffset}");
+
+            // Then I apply the offset to the camera's local Y position.
+            Vector3 newCamLocalPos = cameraLocalPosOrig;
+            newCamLocalPos.y += bobbingOffset;
+
+            Camera.main.transform.localPosition = newCamLocalPos;
+            //Debug.Log($"[Bobbing Active] Frame: {Time.frameCount} | bobTimer: {bobTimer:F4} | Offset: {bobbingOffset:F4} | Final Local Pos: {Camera.main.transform.localPosition:F4}");
+        }
+        else // If the player is either not moving at all, or is in the air. This includes wall running, jumping, falling, etc.
+        {
+            bobTimer = 0f; // This resets the timer, when not moving
+            // This smoothly returns the camera back to its original position.
+            Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, cameraLocalPosOrig, Time.deltaTime * bobReturnSpeed);
+            //Debug.Log($"[Bobbing Reset] Frame: {Time.frameCount} | Final Local Pos: {Camera.main.transform.localPosition:F4}");
+        }
     }
 
     void WallRunCheck()
     {
-        if (controller.isGrounded)
+        // This stops the wall running and resets the wall jump state, if grounded.
+        if (controller.isGrounded) 
         {
             //Debug.Log("Grounded: stopping wall run.");
             StopWallRun();
@@ -138,7 +211,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             camControl.SetWallRunTilt(0f);
             return;
         }
-
+        // If wall jumped recently or wall run cooldown is active, then stop the wall running.
         if (wallJumped || wallRunCooldownTimer > 0f)
         {
             //Debug.Log("Wall jump cooldown or already wall jumped.");
@@ -146,6 +219,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             return;
         }
 
+        // This chcecks if there is no forward input, to then stop wall running this way.
         float forwardInput = Input.GetAxis("Vertical");
         if (forwardInput <= 0.2f)
         {
@@ -157,19 +231,23 @@ public class PlayerScript : MonoBehaviour, IDamage
         RaycastHit hit;
         bool wallDetectedThisFrame = false;
 
-        if (Physics.Raycast(transform.position, -transform.right, out hit, wallCheckDist, wallRunMask))
+        if (!controller.isGrounded)
         {
-            //Debug.Log("Wall detected on left");
-            StartWallRun(hit.normal);
-            wallDetectedThisFrame = true;
+            // This checks for walls on either the left or right side of the player, and is within proper distance to do so.
+            if (Physics.Raycast(transform.position, -transform.right, out hit, wallCheckDist, wallRunMask))
+            {
+                //Debug.Log("Wall detected on left");
+                StartWallRun(hit.normal);
+                wallDetectedThisFrame = true;
+            }
+            else if (Physics.Raycast(transform.position, transform.right, out hit, wallCheckDist, wallRunMask))
+            {
+                //Debug.Log("Wall detected on right");
+                StartWallRun(hit.normal);
+                wallDetectedThisFrame = true;
+            }
         }
-        else if (Physics.Raycast(transform.position, transform.right, out hit, wallCheckDist, wallRunMask))
-        {
-            //Debug.Log("Wall detected on right");
-            StartWallRun(hit.normal);
-            wallDetectedThisFrame = true;
-        }
-
+        // This forces the player to stop wall running, when there's no wall detected in the middle of wall running.
         if (isWallRunning && !wallDetectedThisFrame)
         {
             //Debug.Log("No direct wall detected. Checking for edge.");
@@ -183,7 +261,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         {
             //Debug.Log("Wall running...");
             wallRunTimer += Time.deltaTime;
-
+            // Stop wall running, once the duration has been fully reached.
             if (wallRunTimer > wallRunDur)
             {
                 //Debug.Log("Wall run duration exceeded.");
@@ -191,8 +269,10 @@ public class PlayerScript : MonoBehaviour, IDamage
                 return;
             }
 
+            // Gravity is significantly reduced, as you wall run.
             verticalVelocity.y = -wallRunGravity;
 
+            // This checks for any jump input being made, ensuring that the player has not wall jumped yet, with a cleared cooldown.
             if (Input.GetButtonDown("Jump"))
             {
                 if (!wallJumped && wallRunCooldownTimer <= 0f)
@@ -219,6 +299,11 @@ public class PlayerScript : MonoBehaviour, IDamage
         wallNormal = hitNormal;
         wallRunTimer = 0f;
 
+        if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
+            jumpCount -= 1;
+
+        // This calculates and applies the camera tilting based on the wall normal that the player is running on.
+        // It also adjusts itself, based on what side of the wall that the player is running on.
         float tilt = Vector3.Dot(wallNormal, -transform.right) > 0 ? 1 : -1;
         camControl.SetWallRunTilt(tilt * 15f);
     }
@@ -226,8 +311,11 @@ public class PlayerScript : MonoBehaviour, IDamage
     void StopWallRun()
     {
         if (isWallRunning)
+        {
             camControl.SetWallRunTilt(0f);
-
+            wallRunCooldownTimer = wallRunCooldown;
+        }
+        wallJumped = false;
         isWallRunning = false;
         wallRunTimer = 0f;
     }
