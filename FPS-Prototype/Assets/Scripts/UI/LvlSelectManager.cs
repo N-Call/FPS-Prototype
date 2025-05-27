@@ -1,27 +1,26 @@
+using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 public class LvlSelectManager : MonoBehaviour
 {
     public static LvlSelectManager instance;
 
     [Header("Images")]
-    // put is sprite array 
-    [SerializeField] GameObject Lvl1;
-    [SerializeField] GameObject Lvl2;
-    [SerializeField] GameObject Lvl3;
-    [SerializeField] GameObject Lvl4;
-    [SerializeField] GameObject Lvl5;
+    // put is sprite array
+    public GameObject[] lvlIamges;
+    
     [Header("Buttons")]
     // look at lists/array
-    [SerializeField] GameObject Btnlvl1;
-    [SerializeField] GameObject Btnlvl2;
-    [SerializeField] GameObject Btnlvl3;
-    [SerializeField] GameObject Btnlvl4;
-    [SerializeField] GameObject Btnlvl5;
-    [SerializeField] GameObject StartGame;
+    //public GameObject[] lvlRecords;
 
-    [SerializeField] GameObject ActiveBtn;
+    [SerializeField] GameObject StartGame;
+    
+    [SerializeField] GameObject ActiveImage;
 
     public int SelectedScene;
 
@@ -34,23 +33,29 @@ public class LvlSelectManager : MonoBehaviour
     {
         SceneManager.LoadScene(SelectedScene);
     }
-
-    public void lvl1()
+ 
+    public void Setlevel(int Index)
     {
-        if (ActiveBtn == null)
+        // set scene manager index to scene of the btn
+        if (ActiveImage != null)
         {
-            // set scene manager index to scene of the btn
-            ActiveBtn = Btnlvl1;
-            SelectedScene = 1;
-            Debug.Log(SelectedScene);
-            Lvl1.SetActive(true);
+            ActiveImage.SetActive(false);
         }
-        else
-        {
-            ActiveBtn = null;
-        }
-        // show your best times of that lvl 
-        // on button click background image needs to pop up
-        // start game should be only button that take you to the lvlv
+
+        ActiveImage = lvlIamges[Index];
+        ActiveImage.SetActive(true);
+
+
+        //if (ActiveRecord != null)
+        //{
+        //    ActiveRecord.SetActive(false);
+        //}
+
+        //ActiveRecord = lvlRecords[Index];
+        //ActiveRecord.SetActive(true);
+
+        SelectedScene = Index + 2;
     }
+
+
 }
