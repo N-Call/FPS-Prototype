@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class Model2Enemy : EnemyController, IElemental
 {
-
-    
+    [Header("Element Effects")]
+    [SerializeField] protected float elementEffectTime;
+    [SerializeField] protected float elementSpeedMod;
+    bool elemBuffed;
+    bool elemDebuffed;
+    float effectTimer;
    
     protected override void Update()
     {
@@ -28,6 +32,16 @@ public class Model2Enemy : EnemyController, IElemental
             SoundManager.instance.PlaySFX("enemyShot", 0.2f);
 
         }
+        HandleElements();
+        if (elemBuffed || elemDebuffed)
+        {
+            effectTimer += Time.deltaTime;
+            if (effectTimer >= elementEffectTime)
+            {
+                effectTimer = 0f;
+            }
+        }
+        
     }
     protected override bool CanSeePlayer()
     {
@@ -81,14 +95,26 @@ public class Model2Enemy : EnemyController, IElemental
 
     }
 
+    void HandleElements()
+    {
+        if (elemBuffed)
+        {
+            agent.speed *= elementSpeedMod;
+        }
+        if (elemDebuffed)
+        {
+            agent.speed /= elementSpeedMod;
+        }
+    }
+
     public void ElementBuff(int elem)
     {
-
+        elemBuffed = true;
     }
 
     public void ElementDebuff(int elem)
     {
-
+        elemDebuffed = true;
     }
 
     public void ElementInverse()
