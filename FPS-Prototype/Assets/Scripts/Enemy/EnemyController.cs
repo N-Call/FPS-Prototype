@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
+
 
 public class EnemyController : MonoBehaviour, IDamage
 {
@@ -10,7 +12,7 @@ public class EnemyController : MonoBehaviour, IDamage
     //[SerializeField] int animTransSpeed;
 
     [Header("Agent Settings")]
-    [SerializeField] protected UnityEngine.AI.NavMeshAgent agent;
+    [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected int faceTargetSpeed;
     [SerializeField] protected int FOV;
     [SerializeField] protected int roamDist;
@@ -31,8 +33,6 @@ public class EnemyController : MonoBehaviour, IDamage
     [Header("Model 2 Setteings")]
     [SerializeField] protected Transform shootPosL;
     [SerializeField] protected Transform shootPosR;
-    [SerializeField] protected float shootRateL;
-    [SerializeField] protected float shootRateR;
 
     protected Transform turretHead;
     protected Transform turretBarrel;
@@ -42,8 +42,6 @@ public class EnemyController : MonoBehaviour, IDamage
     public Vector3 originalPosition;
     Vector3 startingPos;
 
-    protected float shootTimerL;
-    protected float shootTimerR;
     protected float shootTimer;
     protected float angleToPlayer;
     protected float roamTimer;
@@ -174,7 +172,7 @@ public class EnemyController : MonoBehaviour, IDamage
 
     protected void FaceTarget()
     {
-        Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
+        Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, 0, playerDir.z));
 
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
