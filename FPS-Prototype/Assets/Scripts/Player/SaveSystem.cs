@@ -7,9 +7,8 @@ public class SaveSystem
     [System.Serializable]
     struct SaveData
     {
-        public FinalGradeData finalGradeData;
-        public PlayerSaveData playerData;
         public SceneSaveData SceneData;
+        public FinalGradeData finalGradeData;
     }
 
     public static string SaveFileName()
@@ -20,13 +19,13 @@ public class SaveSystem
 
     public static void Save()
     {
+        Debug.Log("isSaving");
         HandleSaveData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
 
     private static void HandleSaveData()
     {
-        GameManager.instance.playerScript.Save(ref saveData.playerData);
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
     }
@@ -41,7 +40,6 @@ public class SaveSystem
 
     private static void HandleLoadData()
     {
-        GameManager.instance.playerScript.Load(saveData.playerData);
         GameManager.instance.sceneData.Load(saveData.SceneData);
         GameManager.instance.gradeSystem.Load(saveData.finalGradeData);
     }

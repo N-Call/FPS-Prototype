@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuRules;
+    [SerializeField] GameObject menuCredits;
+    [SerializeField] GameObject menuSettings;
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
@@ -65,6 +68,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        
         player = GameObject.FindWithTag("Player");
         if (player != null)
         {
@@ -127,6 +131,61 @@ public class GameManager : MonoBehaviour
         playerScript.enabled = true;
 
     }
+    public void ToggleSettings()
+    {
+        if (menuSettings != null)
+        {
+            if (menuActive == null)
+            {
+                menuActive = menuSettings;
+                menuSettings.SetActive(!menuSettings.activeSelf);
+            }
+            else if (menuActive == menuPause)
+            {
+                menuActive = menuPause;
+                menuSettings.SetActive(!menuSettings.activeSelf);
+            }
+            else if (menuActive == menuPause || menuActive == menuSettings)
+            {
+                menuActive = null;
+                menuSettings.SetActive(!menuSettings.activeSelf);
+            }
+        }
+    }
+
+    public void ToggleRules()
+    {
+        if (menuRules != null)
+        {
+            if (menuActive == null)
+            {
+                menuActive = menuRules;
+                menuRules.SetActive(!menuRules.activeSelf);
+            }
+            else if (menuActive == menuRules)
+            {
+                menuActive = null;
+                menuRules.SetActive(!menuRules.activeSelf);
+            }
+        }
+    }
+
+    public void ToggleCredits()
+    {
+        if (menuCredits != null)
+        {
+            if (menuActive == null)
+            {
+                menuActive = menuCredits;
+                menuCredits.SetActive(!menuCredits.activeSelf);
+            }
+            else if (menuActive == menuCredits)
+            {
+                menuActive = null;
+                menuCredits.SetActive(!menuCredits.activeSelf);
+            }
+        }
+    }
     public void ToggleReticle()
     {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
@@ -154,14 +213,12 @@ public class GameManager : MonoBehaviour
         PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
         ppVolume.enabled = !ppVolume.enabled;
     }
-
     public void YouLose()
     {
         StatePause();
         menuActive = menuLose;
         menuActive.SetActive(true);
     }
-
 
     public void WinCondition(int amount)
     {
@@ -174,9 +231,9 @@ public class GameManager : MonoBehaviour
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
             gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
-            gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
             menuActive = menuWin;
             menuActive.SetActive(true);
+            gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
         }
     }
 

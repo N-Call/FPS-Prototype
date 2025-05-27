@@ -52,8 +52,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     [SerializeField] float wallJumpHoriForce;
     [SerializeField] float wallRunCooldown;
     [SerializeField] float wallStickForce;
-    
-    [SerializeField][Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
+
+    [SerializeField]
+    [Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
     bool provideExtraJumpIfNeeded;
 
     [Header("Elements")]
@@ -91,7 +92,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     public ParticleSystem particleSpMod;
     public ParticleSystem particleSpRun;
     public ParticleSystem particleJpMod;
-    
+
 
     Coroutine crouchCoroutine;
     Coroutine unCrouchCoroutine;
@@ -135,10 +136,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     void Start()
     {
         originalHP = HP;
-        checkPointHP = HP;  
+        checkPointHP = HP;
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
-        origFOV = Camera.main.fieldOfView; 
+        origFOV = Camera.main.fieldOfView;
         baseFOV = origFOV;
         GameManager.instance.SetSpawnPosition(transform.position);
         UpdatePlayerUI();
@@ -192,7 +193,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
         // This determines the amplitude and frequency based on the movement state.
         // And is only applied while grounded.
-        if (controller.isGrounded)
+        if (controller.isGrounded && !isCrouching && !isSliding)
         {
             if (isMoveInput)
             {
@@ -211,7 +212,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             }
         }
 
-        if (currAmp > 0f)
+        if (currAmp > 0f && !isCrouching && !isSliding)
         {
             // This timer increments based on the frequency;
             bobTimer += Time.deltaTime * currFreq;
@@ -219,7 +220,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             // This calculateds the bobbing effect offset using a sine wave system.
             // The Mathf.Sin function allows me to create a smooth, oscillating value betrween -1 and 1.
             // Also, multiplying by the currAmp scales this oscillation to any desired bobbing height as you wish.
-            float bobbingOffset = Mathf.Sin(bobTimer) * currAmp;
+            float bobbingOffset = (-0.5f * Mathf.Sin(bobTimer) - 0.5f) * currAmp;
             //Debug.Log($"Bob Timer: {bobTimer}, Bobbing Offset: {bobbingOffset}");
 
             // Then I apply the offset to the camera's local Y position.
@@ -409,7 +410,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     {
         // The base speed (vertical prioritized over horizontal)
         float speed = verticalSpeed > 0 ? verticalSpeed : horizontalSpeed;
-        
+
         if (isSprinting)
         {
             speed += sprintSpeed;
@@ -450,7 +451,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             currentSlideSpeed -= slideRate;
         }
 
-        if(speedModifier < 1)
+        if (speedModifier < 1)
         {
             currSpeed = speed + (speed * speedModifier);
         }
@@ -636,7 +637,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         if (isShielded > 0)
         {
             isShielded -= 1;
-        } 
+        }
         else
         {
             HP -= amount;
@@ -666,7 +667,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
     public void UpdateCheckpointHealth()
     {
-        checkPointHP = HP;  
+        checkPointHP = HP;
     }
 
     public void UpdatePlayerUI()
@@ -813,7 +814,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         switch (elem)
         {
             case 1:
-                
+
                 if (elemInversed) { SpeedDebuff(); }
                 else { SpeedBuff(); }
                 break;
@@ -829,12 +830,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
                 break;
         }
     }
+
     public void ElementDebuff(int elem)
     {
         switch (elem)
         {
             case 1:
-                
+
                 if (!elemInversed) { SpeedDebuff(); }
                 else { SpeedBuff(); }
                 break;
@@ -850,6 +852,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
                 break;
         }
     }
+
     public void ElementInverse()
     {
         Debug.Log("Inversing");
@@ -887,6 +890,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             speedBuffed = false;
         }
     }
+
     private void JumpBuff()
     {
         if (jumpBuffed == false && jumpBuffTimer < jumpElemModTime)
@@ -906,6 +910,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         }
 
     }
+
     private void SpeedDebuff()
     {
         if (speedDebuffed == false && speedDebuffTimer < speedElemModTime)
@@ -925,6 +930,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             speedDebuffed = false;
         }
     }
+
     private void JumpDebuff()
     {
         if (jumpDebuffed == false && jumpDebuffTimer < jumpElemModTime)
@@ -941,6 +947,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             jumpDebuffed = false;
         }
     }
+
     private void ShieldBuff()
     {
         SoundManager.instance.PlaySFX("powerUp", 0.3f);
@@ -949,6 +956,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
         UpdatePlayerUI();
     }
+
     private void ShieldDebuff()
     {
         SoundManager.instance.PlaySFX("debuff", 0.4f);
@@ -957,6 +965,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
 
         UpdatePlayerUI();
     }
+
     private void SwapBuffs()
     {
         //Swaps bools
@@ -980,22 +989,4 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         jumpDebuffTimer = timer3;
     }
 
-    #region Save and Load
-    public void Save(ref PlayerSaveData data)
-    {
-        data.position = transform.position;
-    }
-
-    public void Load(PlayerSaveData data)
-    {
-        transform.position = data.position;
-    }
-
-    #endregion
-}
-
-[System.Serializable]
-public struct PlayerSaveData
-{
-    public Vector3 position;
 }

@@ -11,6 +11,7 @@ public class BossSM : StateMachine, IDamage
     [HideInInspector] public RunAttack run;
     [HideInInspector] public ShootAttack shoot;
     [HideInInspector] public SpeedAttack speed;
+    [HideInInspector] public BeamAttack beam;
 
     public enum Ability
     {
@@ -48,6 +49,12 @@ public class BossSM : StateMachine, IDamage
     public float jumpHeight;
     public float gravity;
 
+    [Header("Speed Attack Settings")]
+    public float speedAttackRate;
+    public float speedAttackRange;
+    public int speedAmount;
+    public int speedDuration;
+
     [Header("Roll Attack Settings")]
     public float rollForce;
     public float rollDecideDis;
@@ -63,6 +70,7 @@ public class BossSM : StateMachine, IDamage
         this.run = new RunAttack(stm:this);
         this.shoot = new ShootAttack(stm:this);
         this.speed = new SpeedAttack(stm:this);
+        this.beam = new BeamAttack(stm:this);
 
         currentHealth = health;
     }
@@ -128,6 +136,7 @@ public class BossSM : StateMachine, IDamage
     public void ResetRigid()
     {
         jump.ResetRigid();
+        speed.ChangeToIdle();
     }
 
     public void LookAtPlayer(int partIndex)
