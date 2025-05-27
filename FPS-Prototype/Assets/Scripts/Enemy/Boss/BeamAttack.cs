@@ -26,7 +26,7 @@ public class BeamAttack : BaseState
     public override void Action()
     {
         base.Action();
-        bossSM.bodyParts[1].transform.LookAt(GameManager.instance.player.transform.position);
+        bossSM.bodyParts[1].transform.LookAt(GameManager.instance.player.transform.position + Vector3.down);
     }
 
     public override void Exit()
