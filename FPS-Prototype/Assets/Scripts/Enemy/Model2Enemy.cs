@@ -109,14 +109,17 @@ public class Model2Enemy : EnemyController, IElemental
         }
     }
 
-    public void ElementBuff(int elem)
+    public void ApplyElement(int elem, bool buffStatus, float speedMod = 0f, float jumpMod = 0f)
     {
-        elemBuffed = true;
-    }
-
-    public void ElementDebuff(int elem)
-    {
-        elemDebuffed = true;
+        if (buffStatus)
+        {
+            elemBuffed = true;
+        }
+        else
+        {
+            elemDebuffed = true;
+        }
+        
     }
 
     public void ElementInverse()
