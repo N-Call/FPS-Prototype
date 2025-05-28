@@ -57859,7 +57859,7 @@ MonoBehaviour:
   walkBackwardsSpeed: 4
   maxJumps: 2
   jumpForce: 12
-  gravity: 25
+  gravity: 30
   maxGravity: 45
   sprintSpeed: 4
   crouchSpeedMultiplier: 0.5
@@ -57875,22 +57875,28 @@ MonoBehaviour:
   - {fileID: 4591319735500982037}
   - {fileID: 5166097307989126926}
   - {fileID: 168810582318518561}
+  wallRunMask:
+    serializedVersion: 2
+    m_Bits: 4096
   wallRunDur: 1.5
   wallRunGravity: 1
   wallJumpForce: 8
   wallCheckDist: 0.65
   wallJumpHoriForce: 24
   wallRunCooldown: 0.4
-  wallRunMask:
-    serializedVersion: 2
-    m_Bits: 4096
   wallStickForce: 24
+  provideExtraJumpIfNeeded: 1
   speedElemMod: 2
   speedElemFOVMod: 10
   speedElemModTime: 5
   jumpElemMod: 1.25
   jumpElemModTime: 5
   shieldElemMod: 1
+  walkBobAmp: 0
+  walkBobFreq: 0
+  sprintBobAmp: 0
+  sprintBobFreq: 0
+  bobReturnSpeed: 0
   sprintFOVMod: 3
   changeRate: 10
   particleSpMod: {fileID: 1916699316069464853}
