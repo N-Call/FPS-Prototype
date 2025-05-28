@@ -15,25 +15,33 @@ public class Melee : MonoBehaviour, IWeapon
     [SerializeField] public ElementType elem;
     [SerializeField] private int damage;
     [SerializeField] private float attackSpeed;
+    [SerializeField] private float attackRate;
+
+    private float attackTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        attackTimer = attackRate;
+        GetComponentInChildren<Damage>().AddDamageAmount(damage);
+        GetComponentInChildren<Damage>().SetElement((int)elem);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        attackTimer += Time.deltaTime;
     }
 
     public void AttackBegin(LayerMask playerMask)
     {
+        if(attackTimer < attackRate) { return; }
+
         SoundManager.instance.PlaySFX("swordSwing", 0.3f);
         //start attack animation
         animator.CrossFade("Attack", 0.1f);
         animator.speed = attackSpeed;
+        attackTimer = 0;
     }
 
     private void OnTriggerEnter(Collider other)

@@ -58,6 +58,7 @@ public class BossSM : StateMachine, IDamage
     [Header("Roll Attack Settings")]
     public float rollForce;
     public float rollDecideDis;
+    public float rollSpeed;
 
     public Ability currentAbility;
     private bool isInvensible;
@@ -72,6 +73,8 @@ public class BossSM : StateMachine, IDamage
         this.speed = new SpeedAttack(stm:this);
         this.beam = new BeamAttack(stm:this);
 
+        targetPoint = new GameObject("Jump Pos").transform;
+        targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
         currentHealth = health;
     }
 
@@ -100,12 +103,12 @@ public class BossSM : StateMachine, IDamage
 
     public void SpawnLeftProjectile()
     {
-        Instantiate(Bullet, lShootPos.transform.position, transform.rotation);
+        Instantiate(Bullet, lShootPos.transform.position, lShootPos.transform.rotation);
     }
 
     public void SpawnRightProjectile()
     {
-        Instantiate(Bullet, rShootPos.transform.position, transform.rotation);
+        Instantiate(Bullet, rShootPos.transform.position, rShootPos.transform.rotation);
     }
 
     private void Dead()
