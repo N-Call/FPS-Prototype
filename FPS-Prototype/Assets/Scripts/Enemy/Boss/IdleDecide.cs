@@ -61,7 +61,10 @@ public class IdleDecide : BaseState
     {
         bossSM.LookAtPlayer(0);
         base.Action();
+        if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
         counter--;
+        }
     }
 
     public override void Exit() 
