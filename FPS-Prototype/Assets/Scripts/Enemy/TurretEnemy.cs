@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class TurretEnemy : EnemyController
 {
+
+    [Header("Turret Settings")]
+    [SerializeField] float shootDistance = 1000.0f;
+    [SerializeField] Transform aimPos;
+    [SerializeField] LayerMask layerToIgnore;
+
+    float resetPitchTimer;
+
     protected override void Start()
     {
         GameManager.instance.AddEnemyToRespawn(this);
@@ -22,28 +30,29 @@ public class TurretEnemy : EnemyController
     protected override void Update()
     {
         shootTimer += Time.deltaTime;
-        if (playerInRange)
-        {
-            canSeePlayer = CanSeePlayer();
-        }
+        canSeePlayer = CanSeePlayer();
     }
 
     protected override bool CanSeePlayer()
     {
-        playerDir = GameManager.instance.player.transform.position - transform.position;
-        angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
-        Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
+        playerDir = (GameManager.instance.player.transform.position + (Vector3.up * 0.5f)) - aimPos.position;
+        angleToPlayer = Vector3.Angle(playerDir, aimPos.forward);
+        Debug.DrawRay(aimPos.position, playerDir);
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, playerDir, out hit))
+        if (Physics.Raycast(aimPos.position, playerDir, out hit, shootDistance, ~layerToIgnore))
         {
+            //if (Vector3.Distance(GameManager.instance.player.transform.position, hit.point) > shootDistance)
+            //{
+            //    return false;
+            //}
+
             if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
-                Vector3 middlePlayerDir = playerDir;
-                middlePlayerDir.y -= 0.5f;
+                Vector3 middlePlayerDir = (GameManager.instance.player.transform.position - (Vector3.up * 0.5f)) - turretHead.position;
 
                 // Calculate the vertical angle from the direction
-                float pitch = Vector3.SignedAngle(middlePlayerDir, new Vector3(playerDir.x, 0, playerDir.z), turretHead.right);
+                float pitch = Vector3.SignedAngle(middlePlayerDir, new Vector3(middlePlayerDir.x, 0, middlePlayerDir.z), turretHead.right);
                 pitch = Mathf.Clamp(-pitch, -maxPitch, minPitch);
 
                 turretHead.LookAt(GameManager.instance.player.transform.position);
@@ -62,17 +71,24 @@ public class TurretEnemy : EnemyController
                 return true;
             }
         }
+
+        if (resetPitchTimer < 1.0f)
+        {
+            resetPitchTimer += Time.deltaTime;
+            return false;
+        }
+
+        turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
+        resetPitchTimer = 0.0f;
         return false;
     }
-
-    
 
     public override void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
+            //turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
         }
     }
 
@@ -95,6 +111,20 @@ public class TurretEnemy : EnemyController
                 turretHead.Rotate(Vector3.up * rotationAmount);
             }
             yield return wait;
+        }
+    }
+
+    public void SetShootDistance(float distance)
+    {
+        shootDistance = distance;
+    }
+
+    public void SetBulletDestroyTime(float time)
+    {
+        Damage dmg = bullet.GetComponent<Damage>();
+        if (dmg != null)
+        {
+            dmg.SetDestroyTime(time);
         }
     }
 

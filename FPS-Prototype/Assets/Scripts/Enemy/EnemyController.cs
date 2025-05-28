@@ -128,6 +128,7 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         return true;
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

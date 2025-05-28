@@ -57,7 +57,6 @@ public class ObjectMovement : MonoBehaviour
 
     void Start()
     {
-
         currentDestination = relative ? transform.position + destination : destination;
 
         if (carryPassengers)
@@ -198,7 +197,7 @@ public class ObjectMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!carryPassengers || other.tag != "Player")
+        if (!carryPassengers || !other.CompareTag("Player"))
         {
             return;
         }
@@ -214,7 +213,7 @@ public class ObjectMovement : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!carryPassengers || other.tag != "Player")
+        if (!carryPassengers || !other.CompareTag("Player"))
         {
             return;
         }
