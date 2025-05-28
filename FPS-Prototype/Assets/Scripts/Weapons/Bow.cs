@@ -17,10 +17,14 @@ public class Bow : Range
     public override void AttackBegin(LayerMask playerMask)
     {
         //See if they have bullets
-        if (ammoCount > 0 && shootTimer >= shootRate)
+        if (ammoCount > 0 && currTotalBullets > 0 && shootTimer >= shootRate)
         {
             chargeCoroutine = StartCoroutine(Charge());
         }
+        else if (ammoCount <= 0 && currTotalBullets <= 0)
+            SoundManager.instance.PlaySFX("bowEmpty", 0.5f);
+        else if (ammoCount <= 0 && currTotalBullets > 0)
+            SoundManager.instance.PlaySFX("bowEmpty", 0.5f);
     }
 
     public override void AttackEnd(LayerMask playerMask)
@@ -35,13 +39,14 @@ public class Bow : Range
             SoundManager.instance.PlaySFX("bowRelease", 1f);
             Shoot();
             ammoCount--;
+            currTotalBullets--;
             currentCharge = 0;
 
             //see if out of ammo, if so change idle animation
             PlaySeconedIdle(ammoCount == 0 && ammoCap == 0);
 
             //Update Ammo Display
-            GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
+            GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
         }
     }
 
@@ -56,11 +61,11 @@ public class Bow : Range
 
     private void OnEnable()
     {
-        PlaySeconedIdle(ammoCap == 0 && ammoCount == 0);
+        PlaySeconedIdle(currTotalBullets == 0);
         PlayIdle();
 
 
-        GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
+        GameManager.instance?.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
 

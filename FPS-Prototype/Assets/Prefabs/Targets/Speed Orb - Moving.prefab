@@ -9721,11 +9721,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a94a29f135adf44497706f0686903df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 0}
   explosionRadius: {fileID: -2372778831385049182}
   explosionVisual: {fileID: 5055903540904832851}
   explosionSize: 0.4
-  HP: 1
   elem: 3
+  speedElemMod: 2
+  speedElemFOVMod: 10
+  speedElemTime: 5
+  jumpElemMod: 1.5
+  jumpElemTime: 5
+  shieldElemMod: 1
+  HP: 1
+  enemyBuff: 0
 --- !u!114 &-8203749666991030885
 MonoBehaviour:
   m_ObjectHideFlags: 0
