@@ -286,6 +286,7 @@ public class GameManager : MonoBehaviour
         {
             // display ammo count for the UI 
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+            Debug.Log($"<color=green>UI Update Call: Magazine={amount}, Reserve={ammoCap}</color>");
         }
     }
 
