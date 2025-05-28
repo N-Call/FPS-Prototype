@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
         TogglePPVolume();
         // to turn off the reticle
         reticle.SetActive(false);
-        SoundManager.instance.musicSource.Pause();
+        SoundManager.instance.musicSource.Stop();
         SoundManager.instance.sfxSource.Pause();
         // stop the player from shooting
         playerScript.enabled = false;
@@ -223,17 +223,21 @@ public class GameManager : MonoBehaviour
     public void WinCondition(int amount)
     {
         gameGoalCount += amount;
+        
 
         if (gameGoalCount <= 0)
         {
+            
             StatePause();
             // show off win menu Time with enemy time added 
+            SoundManager.instance.PlaySFX("victory", 0.1f);
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
             gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
             menuActive = menuWin;
             menuActive.SetActive(true);
             gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
+            
         }
     }
 
