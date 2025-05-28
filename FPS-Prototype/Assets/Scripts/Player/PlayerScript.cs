@@ -123,7 +123,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     bool isSprinting;
     bool isCrouching;
     bool isSliding;
-    bool invulnerable;
+    bool invulnerable = false;
     bool wallJumpOccurredThisFrame = false;
     //Element Buff/Debuff
     bool speedBuffed;
@@ -628,7 +628,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     {
         if (invulnerable)
         {
-            Debug.Log("Invulnerable Hit");
             return;
         }
 
