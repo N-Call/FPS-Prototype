@@ -2,7 +2,6 @@ using UnityEngine;
 
 public interface IElemental
 {
-    void ElementBuff(int elem);
-    void ElementDebuff(int elem);
+    void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod);
     void ElementInverse();
 }

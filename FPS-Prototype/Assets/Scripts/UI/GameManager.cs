@@ -62,6 +62,16 @@ public class GameManager : MonoBehaviour
     public float timeScaleOrig;
     public Vector3 startPos;
 
+    public float speedBuffTimer;
+    public float jumpBuffTimer;
+    public float speedDebuffTimer;
+    public float jumpDebuffTimer;
+
+    public float speedBuffLimit;
+    public float jumpBuffLimit;
+    public float speedDebuffLimit;
+    public float jumpDebuffLimit;
+
     int gameGoalCount;
     int enemyCount;
 
@@ -100,6 +110,11 @@ public class GameManager : MonoBehaviour
             {
                 StateUnpause();
             }
+        }
+
+        if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
+        {
+            HandleElemTimers();
         }
     }
 
@@ -271,6 +286,7 @@ public class GameManager : MonoBehaviour
         {
             // display ammo count for the UI 
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+            Debug.Log($"<color=green>UI Update Call: Magazine={amount}, Reserve={ammoCap}</color>");
         }
     }
 
@@ -307,6 +323,77 @@ public class GameManager : MonoBehaviour
         //}
 
     }
+
+    public void SetElemParam(int elem, bool buffStatus, float totalTime)
+    {
+
+        if (buffStatus)
+        {
+            switch (elem)
+            {
+                case 1:
+                    Debug.Log("Timer Started");
+                    speedBuffLimit = totalTime;
+                    speedBuffTimer = 0;
+                    break;
+                case 2:
+                    jumpBuffLimit = totalTime;
+                    jumpBuffTimer = 0;
+                    break;
+            }
+        }
+        else
+        {
+            switch (elem)
+            {
+                case 1:
+                    speedDebuffLimit = totalTime;
+                    speedDebuffTimer = 0;
+                    break;
+                case 2:
+                    jumpDebuffLimit = totalTime;
+                    jumpDebuffTimer = 0;
+                    break;
+            }
+        }
+        
+    }
+    void HandleElemTimers()
+    {
+        if (playerScript.speedBuffed)
+        {
+            speedBuffTimer += Time.deltaTime;
+            if (speedBuffTimer >= speedBuffLimit)
+            {
+                playerScript.ElementReverse();
+            }
+        }
+        if (playerScript.jumpBuffed)
+        {
+            jumpBuffTimer += Time.deltaTime;
+            if (jumpBuffTimer >= jumpBuffLimit)
+            {
+                playerScript.ElementReverse();
+            }
+        }
+        if (playerScript.speedDebuffed)
+        {
+            speedDebuffTimer += Time.deltaTime;
+            if (speedDebuffTimer >= speedDebuffLimit)
+            {
+                playerScript.ElementReverse();
+            }
+        }
+        if (playerScript.jumpDebuffed)
+        {
+            jumpDebuffTimer += Time.deltaTime;
+            if (jumpDebuffTimer >= jumpDebuffLimit)
+            {
+                playerScript.ElementReverse();
+            }
+        }
+    }
+
     IEnumerator ReticleWaitTime()
     {
         hitMakerReticle.SetActive(true);

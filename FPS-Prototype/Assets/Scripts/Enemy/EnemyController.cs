@@ -34,6 +34,7 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected Transform shootPosL;
     [SerializeField] protected Transform shootPosR;
 
+
     protected Transform turretHead;
     protected Transform turretBarrel;
     
@@ -121,7 +122,6 @@ public class EnemyController : MonoBehaviour, IDamage
         UnityEngine.AI.NavMeshHit hit;
         UnityEngine.AI.NavMesh.SamplePosition(randPos, out hit, roamDist, 1);
         agent.SetDestination(hit.position);
-
     }
 
     protected virtual bool CanSeePlayer()
