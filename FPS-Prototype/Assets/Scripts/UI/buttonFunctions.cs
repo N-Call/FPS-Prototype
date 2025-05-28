@@ -27,10 +27,14 @@ public class ButtonFunctions : MonoBehaviour
     public void LvlStartGame()
     {
         LvlSelectManager.instance.StartGameBtn();
+        
     }
 
     public void BackToMenu()
     {
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SoundManager.instance.sfxSource.Play();
         SceneManager.LoadScene(0);
     }
 
@@ -39,7 +43,6 @@ public class ButtonFunctions : MonoBehaviour
         LvlSelectManager.instance.Setlevel(level);
     }
   
-
     public void Resume()
     {
         GameManager.instance.StateUnpause();
@@ -55,19 +58,28 @@ public class ButtonFunctions : MonoBehaviour
     public void NextLevel()
     {
         // this is to load the next level but does a check first on making sure your in scene count 
-        if (SceneManager.GetActiveScene().buildIndex + 1 <= 5)
+        if (SceneManager.GetActiveScene().buildIndex + 1 < 6)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             SoundManager.instance.sfxSource.Stop();
             GameManager.instance.StateUnpause();
-        }//else if at end sends you to level selection menu 
+        }
+        else if (SceneManager.GetActiveScene().buildIndex == 6)
+        {
+            // only works after the button is clicked if prefab is updated of UI then go to last lvl turn off next button and save scene
+            GameManager.instance.NextLvlBtnOff();
+        }
     }
-    
+    public void LvlSelectScene()
+    {
+        SceneManager.LoadScene(1);
+    }
+
     public void Settings()
     {
         GameManager.instance.ToggleSettings();
     }
-
+ 
     public void Rules()
     {
         GameManager.instance.ToggleRules();
@@ -82,7 +94,6 @@ public class ButtonFunctions : MonoBehaviour
     {
         SaveSystem.Save();
     }
-
     public void Load()
     {
         SaveSystem.Load();
