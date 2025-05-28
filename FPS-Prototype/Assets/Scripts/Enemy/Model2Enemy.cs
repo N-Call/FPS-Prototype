@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Model2Enemy : EnemyController
 {
+    [Header("Model 2 Setteings")]
+    [SerializeField] protected Transform shootPosL;
+    [SerializeField] protected Transform shootPosR;
+
+    bool canShoot;
+    bool leftShot;
     protected override void Update()
     {
         base.Update();

@@ -3,6 +3,16 @@ using UnityEngine;
 
 public class TurretEnemy : EnemyController
 {
+    [Header("Turret Settings")]
+    [SerializeField] bool shouldRotate = true;
+    [SerializeField][Range(0, 90)] float maxPitch;
+    [SerializeField][Range(0, 90)] float minPitch;
+
+    Transform turretHead;
+    Transform turretBarrel;
+
+    float rotationAmount = 1.0f;
+    int ticksPerSecond = 60;
     protected override void Start()
     {
         GameManager.instance.AddEnemyToRespawn(this);
@@ -15,8 +25,6 @@ public class TurretEnemy : EnemyController
         {
             StartCoroutine(Rotate());
         }
-
-        //GameManager.instance.UpdateEnemyCounter(1);
     }
 
     protected override void Update()

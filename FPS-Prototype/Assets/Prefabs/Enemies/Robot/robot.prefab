@@ -1050,6 +1050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 2231724958933429924}
   currentHealth: 2
+  parent: {fileID: 3004313089188389485}
   agent: {fileID: 6479720693941824355}
   faceTargetSpeed: 20
   FOV: 180
@@ -1059,17 +1060,7 @@ MonoBehaviour:
   shootPos: {fileID: 4144004761838785728}
   bullet: {fileID: 8973326993888958128, guid: 3d478ccae6fa99b48a17177b02922246, type: 3}
   shootRate: 1
-  damageAmount: 0
-  shouldRotate: 1
-  maxPitch: 0
-  minPitch: 0
-  shootPosL: {fileID: 0}
-  shootPosR: {fileID: 0}
-  shootRateL: 0
-  shootRateR: 0
   originalPosition: {x: 0, y: 0, z: 0}
-  RangeTrigger: {fileID: 0}
-  ExplosionTrigger: {fileID: 0}
 --- !u!195 &6479720693941824355
 NavMeshAgent:
   m_ObjectHideFlags: 0

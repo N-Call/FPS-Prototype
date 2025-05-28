@@ -131,6 +131,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
     bool speedDebuffed;
     bool jumpDebuffed;
     bool elemInversed;
+    bool isPlayingStep;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -396,6 +397,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         {
             // Move the player the direction and speed
             controller.Move(inputDirection * speed * Time.deltaTime);
+            if (inputDirection != Vector3.zero &&!isPlayingStep && controller.isGrounded)
+            {
+                StartCoroutine(PlaySteps());
+            }
         }
 
         // This applies the wall jump directional momentum
@@ -769,6 +774,26 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
         GameManager.instance.playerDamageScreen.SetActive(true);
         yield return new WaitForSeconds(0.3f);
         GameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    IEnumerator PlaySteps()
+    {
+        isPlayingStep = true;
+
+        SoundManager.instance.PlaySFX("footsteps", 0.075f);
+
+        if (isSprinting)
+        {
+            yield return new WaitForSeconds(0.25f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.45f);
+            
+        }
+        isPlayingStep = false;
+
+
     }
 
     // Element Work
