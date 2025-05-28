@@ -111,10 +111,12 @@ public class GameManager : MonoBehaviour
                 StateUnpause();
             }
         }
-
-        if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
+        if (playerScript != null)
         {
-            HandleElemTimers();
+            if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
+            {
+                HandleElemTimers();
+            }
         }
     }
 
@@ -286,6 +288,7 @@ public class GameManager : MonoBehaviour
         {
             // display ammo count for the UI 
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
+            Debug.Log($"<color=green>UI Update Call: Magazine={amount}, Reserve={ammoCap}</color>");
         }
     }
 

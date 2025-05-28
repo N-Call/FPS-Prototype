@@ -7,7 +7,7 @@ public class GunHitScan : Range
     {
 
         //See if they have bullets
-        if (ammoCount > 0 && shootRate <= shootTimer)
+        if (ammoCount > 0 && currTotalBullets > 0 && shootRate <= shootTimer)
         {
             PlayShootAnim();
             SoundManager.instance.PlaySFX("pistol", 0.2f);
@@ -28,12 +28,13 @@ public class GunHitScan : Range
 
             shootTimer = 0;
             ammoCount--;
-            GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
+            currTotalBullets--;
+            GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
         }
-        else if (ammoCount <= 0)
-        {
+        else if (ammoCount <= 0 && currTotalBullets <= 0)
             SoundManager.instance.PlaySFX("gunEmpty", 0.5f);
-        }
+        else if (ammoCount <= 0 && currTotalBullets > 0)
+            SoundManager.instance.PlaySFX("gunClick", 0.5f);
     }
 
 }
