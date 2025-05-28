@@ -27,6 +27,7 @@ public class LvlSelectManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        
     }
 
     public void StartGameBtn()

@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuRules;
     [SerializeField] GameObject menuCredits;
     [SerializeField] GameObject menuSettings;
+    [SerializeField] GameObject nextLvlBtn;
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
@@ -74,6 +75,8 @@ public class GameManager : MonoBehaviour
     int gameGoalCount;
     int enemyCount;
 
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -124,7 +127,7 @@ public class GameManager : MonoBehaviour
         TogglePPVolume();
         // to turn off the reticle
         reticle.SetActive(false);
-        SoundManager.instance.musicSource.Pause();
+        SoundManager.instance.musicSource.Stop();
         SoundManager.instance.sfxSource.Pause();
         // stop the player from shooting
         playerScript.enabled = false;
@@ -145,6 +148,10 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.sfxSource.Play();
         playerScript.enabled = true;
 
+    }
+    public void NextLvlBtnOff()
+    {
+        nextLvlBtn.SetActive(false);
     }
     public void ToggleSettings()
     {
@@ -167,6 +174,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
 
     public void ToggleRules()
     {
@@ -225,8 +233,12 @@ public class GameManager : MonoBehaviour
 
     public void TogglePPVolume()
     {// toggle the blurr for menus 
+        
         PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
-        ppVolume.enabled = !ppVolume.enabled;
+        if (ppVolume != null)
+        {
+            ppVolume.enabled = !ppVolume.enabled;
+        }
     }
     public void YouLose()
     {
@@ -238,17 +250,21 @@ public class GameManager : MonoBehaviour
     public void WinCondition(int amount)
     {
         gameGoalCount += amount;
+        
 
         if (gameGoalCount <= 0)
         {
+            
             StatePause();
             // show off win menu Time with enemy time added 
+            SoundManager.instance.PlaySFX("victory", 0.1f);
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
             gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
             menuActive = menuWin;
             menuActive.SetActive(true);
             gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
+            
         }
     }
 
