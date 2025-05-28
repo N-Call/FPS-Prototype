@@ -369,6 +369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {x: 0, y: -10, z: 0}
   relative: 1
+  stoppingDistance: 0.01
   moveSpeed: 2
   lerp: 0
   carryPassengers: 1
@@ -501,6 +502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {x: 0, y: 11, z: 0}
   relative: 1
+  stoppingDistance: 0.01
   moveSpeed: 3
   lerp: 0
   carryPassengers: 1
@@ -640,6 +642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {x: 0, y: 5, z: 0}
   relative: 1
+  stoppingDistance: 0.01
   moveSpeed: 10
   lerp: 0
   carryPassengers: 1
@@ -772,6 +775,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {x: 0, y: 50, z: 0}
   relative: 1
+  stoppingDistance: 0.01
   moveSpeed: 10
   lerp: 0
   carryPassengers: 1
@@ -1128,6 +1132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {x: 0, y: 5, z: 0}
   relative: 1
+  stoppingDistance: 0.01
   moveSpeed: 3
   lerp: 0
   carryPassengers: 1
@@ -1504,6 +1509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {x: 0, y: -10, z: 0}
   relative: 1
+  stoppingDistance: 0.01
   moveSpeed: 2
   lerp: 0
   carryPassengers: 1
@@ -1760,6 +1766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {x: 0, y: 5, z: 0}
   relative: 1
+  stoppingDistance: 0.01
   moveSpeed: 3
   lerp: 0
   carryPassengers: 1
@@ -1815,6 +1822,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
   m_PrefabInstance: {fileID: 1454747042}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1402087978
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2900476
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0050001144
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.1986704
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907504224174195284, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5912148288244651500, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
+      propertyPath: m_Name
+      value: robothover
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c1a5e1775d4988e45bc4fd865d746ec9, type: 3}
 --- !u!1001 &1428954372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2065,6 +2129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {x: 0, y: -10, z: 0}
   relative: 1
+  stoppingDistance: 0.01
   moveSpeed: 2
   lerp: 0
   carryPassengers: 1
@@ -2853,6 +2918,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8747573276126559483, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: invincHitTime
+      value: 0.01
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2927,3 +2996,4 @@ SceneRoots:
   - {fileID: 2008642665}
   - {fileID: 983096535}
   - {fileID: 8579868221623309988}
+  - {fileID: 1402087978}
