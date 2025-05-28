@@ -58,6 +58,10 @@ public class Damage : MonoBehaviour
     {
         damageAmount += damage;
     }
+    public void SetElement(int type)
+    {
+        elem = (ElementType)type;
+    }
 
     public void AddSpeedAmount(int range)
     {
