@@ -12,6 +12,7 @@ public class BossSM : StateMachine, IDamage
     [HideInInspector] public ShootAttack shoot;
     [HideInInspector] public SpeedAttack speed;
     [HideInInspector] public BeamAttack beam;
+    [HideInInspector] public DeadState dead;
 
     public enum Ability
     {
@@ -40,6 +41,7 @@ public class BossSM : StateMachine, IDamage
     public float currentDecideDis;
     public bool isAnimDone;
     public int currentDamage;
+    public float deathTimer;
 
     [Header("Idle Settings")]
     public int decideDis;
@@ -72,6 +74,8 @@ public class BossSM : StateMachine, IDamage
         this.shoot = new ShootAttack(stm:this);
         this.speed = new SpeedAttack(stm:this);
         this.beam = new BeamAttack(stm:this);
+        this.dead = new DeadState(stm:this);
+
 
         targetPoint = new GameObject("Jump Pos").transform;
         targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
@@ -98,7 +102,10 @@ public class BossSM : StateMachine, IDamage
         if(isInvensible) { return; }
 
         currentHealth -= amount;
+        if (currentHealth <= 0)
+        {
         Dead();
+        }
     }
 
     public void SpawnLeftProjectile()
@@ -114,6 +121,7 @@ public class BossSM : StateMachine, IDamage
     private void Dead()
     {
         //Death animation
+        ChangeState(dead);
     }
 
     private void OnTriggerEnter(Collider other)
