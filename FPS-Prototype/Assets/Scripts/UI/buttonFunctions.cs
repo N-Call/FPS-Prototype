@@ -27,6 +27,7 @@ public class ButtonFunctions : MonoBehaviour
     public void LvlStartGame()
     {
         LvlSelectManager.instance.StartGameBtn();
+        GameManager.instance.StateUnpause();
     }
 
     public void BackToMenu()
@@ -69,13 +70,14 @@ public class ButtonFunctions : MonoBehaviour
     public void LvlSelectScene()
     {
         SceneManager.LoadScene(1);
+        GameManager.instance.StateUnpause();
     }
 
     public void Settings()
     {
         GameManager.instance.ToggleSettings();
     }
-
+ 
     public void Rules()
     {
         GameManager.instance.ToggleRules();

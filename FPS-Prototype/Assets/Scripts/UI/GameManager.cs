@@ -160,6 +160,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     public void ToggleRules()
     {
         if (menuRules != null)
