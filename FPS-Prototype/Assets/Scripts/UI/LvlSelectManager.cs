@@ -32,7 +32,9 @@ public class LvlSelectManager : MonoBehaviour
 
     public void StartGameBtn()
     {
+        if(SelectedScene != 0)
         SceneManager.LoadScene(SelectedScene);
+        Time.timeScale = GameManager.instance.timeScaleOrig;
     }
  
     public void Setlevel(int Index)

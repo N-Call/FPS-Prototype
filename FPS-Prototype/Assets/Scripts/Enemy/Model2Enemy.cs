@@ -75,7 +75,10 @@ public class Model2Enemy : EnemyController, IElemental
     public override void TakeDamage(int amount)
     {
         base.TakeDamage(amount);
-        agent.SetDestination(GameManager.instance.player.transform.position);
+        if (currentHealth > 0.0f)
+        {
+            agent.SetDestination(GameManager.instance.player.transform.position);
+        }
     }
     void LShoot()
     {

@@ -116,7 +116,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     bool isSprinting;
     bool isCrouching;
     bool isSliding;
-    bool invulnerable;
+    bool invulnerable = false;
     bool wallJumpOccurredThisFrame = false;
     //Element Buff/Debuff
     public bool speedBuffed;
