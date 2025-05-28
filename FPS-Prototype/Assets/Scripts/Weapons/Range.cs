@@ -92,7 +92,8 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
             ammoCap = ammoCount;
         }
         GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
-        SoundManager.instance.PlaySFX("reload", 0.3f);
+        SoundManager.instance.PlaySFX(soundFxName, 0.3f);
+
     }
 
     private void PlayReloadAnim()
