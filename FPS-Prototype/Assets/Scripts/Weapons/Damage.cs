@@ -15,14 +15,18 @@ public class Damage : MonoBehaviour
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
+    [SerializeField] private float FOV;
     [SerializeField] float chaseDist;
 
     [Header("Damage Over Time Settings")]
     [SerializeField] private int dotDamage;
     [SerializeField] private int dotDamageRate;
 
+    private Vector3 playerDir;
+    private float angleToPlayer;
     private bool isDamaging;
     private bool stopChasing;
+    private bool isLocked;
     float DOTTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,9 +47,15 @@ public class Damage : MonoBehaviour
     {
         if (damageType == DamageType.homing)
         {
-            if(Vector3.Distance(GameManager.instance.player.transform.position, transform.position) > chaseDist && !stopChasing)
+            if(Vector3.Distance(GameManager.instance.player.transform.position, transform.position) > chaseDist && !stopChasing && CanSeePlayer())
             {
                 rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position) * speed;
+                transform.LookAt(GameManager.instance.player.transform.position);
+                isLocked = true;
+            }else if (!CanSeePlayer() && !isLocked)
+            {
+                rb.linearVelocity = transform.forward * Vector3.Distance(GameManager.instance.player.transform.position, transform.position) * speed;
+                stopChasing = true;
             }
             else if(!stopChasing)
             {
@@ -53,6 +63,24 @@ public class Damage : MonoBehaviour
                 rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position) * speed;
             }
         }
+
+    }
+
+    bool CanSeePlayer()
+    {
+        playerDir = (GameManager.instance.player.transform.position - transform.position);
+        angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
+        Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, playerDir, out hit))
+        {
+            if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void AddDamageAmount(int damage)
