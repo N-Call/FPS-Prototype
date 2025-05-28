@@ -69,12 +69,12 @@ public class Target : MonoBehaviour, IDamage, ITarget
         if ((int)elem == element)
         {
             buff = true;
-            GameManager.instance.playerScript.ApplyElement(element, buff, speedElemMod, jumpElemMod);
+            GameManager.instance.playerScript.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
         }
         else
         {
             buff = false;
-            GameManager.instance.playerScript.ApplyElement(element, buff, speedElemMod, jumpElemMod);
+            GameManager.instance.playerScript.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
             
         }
         switch ((int)elem)
@@ -91,22 +91,21 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log("Trigger Worked");
-    //    if (other.CompareTag("Player Bullet") == false)
-    //    {
-    //        IElemental affected = other.GetComponent<IElemental>();
-    //        if (buff)
-    //        {
-    //            affected.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-    //        }
-    //        else
-    //        {
-    //            affected.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-    //        }
-    //    }
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Trigger Worked");
+       
+            IElemental affected = other.GetComponent<IElemental>();
+            if (buff)
+            {
+                affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
+            }
+            else
+            {
+                affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
+            }
+        
+    }
 
     IEnumerator InitiateExplosion()
     {
@@ -117,7 +116,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         yield return new WaitForSeconds(0.3f);
         //explosionRadius.enabled = false;
         //explosionVisual.SetActive(false);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void ApplySpeedElem()

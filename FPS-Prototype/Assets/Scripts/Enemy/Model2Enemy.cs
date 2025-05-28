@@ -6,7 +6,7 @@ public class Model2Enemy : EnemyController, IElemental
 {
     [Header("Element Effects")]
     [SerializeField] protected float elementEffectTime;
-    [SerializeField] protected float elementSpeedMod;
+    float elementSpeedMod;
     bool elemBuffed;
     bool elemDebuffed;
     float effectTimer;
@@ -34,13 +34,13 @@ public class Model2Enemy : EnemyController, IElemental
             SoundManager.instance.PlaySFX("enemyShot", 0.2f);
 
         }
-        HandleElements();
+        //HandleElements();
         if (elemBuffed || elemDebuffed)
         {
             effectTimer += Time.deltaTime;
             if (effectTimer >= elementEffectTime)
             {
-                effectTimer = 0f;
+                EndElement();
             }
         }
         
@@ -97,33 +97,52 @@ public class Model2Enemy : EnemyController, IElemental
 
     }
 
-    void HandleElements()
+    //void HandleElements()
+    //{
+    //    if (elemBuffed)
+    //    {
+    //        agent.speed += elementSpeedMod;
+    //    }
+    //    if (elemDebuffed)
+    //    {
+    //        agent.speed -= elementSpeedMod;
+    //    }
+    //}
+
+    void EndElement()
     {
         if (elemBuffed)
         {
-            agent.speed *= elementSpeedMod;
+            agent.speed -= elementSpeedMod;
+            elemBuffed = false;
         }
-        if (elemDebuffed)
+        else if (elemDebuffed)
         {
-            agent.speed /= elementSpeedMod;
+            agent.speed += elementSpeedMod;
+            elemDebuffed = false;
         }
     }
 
-    public void ApplyElement(int elem, bool buffStatus, float speedMod = 0f, float jumpMod = 0f)
+    public void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod)
     {
+        elementSpeedMod = speedMod;
         if (buffStatus)
         {
             elemBuffed = true;
+            agent.speed *= elementSpeedMod;
+            Debug.Log("Enemy buffed");
         }
-        else
+        else if (!buffStatus)
         {
             elemDebuffed = true;
+            agent.speed /= elementSpeedMod;
+            Debug.Log("Enemey debuffed");
         }
-        
+        effectTimer = 0f;
     }
 
     public void ElementInverse()
     {
-
+        // Not yet implemented
     }
 }

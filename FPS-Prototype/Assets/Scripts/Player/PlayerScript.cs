@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour, IDamage, IElemental
+public class PlayerScript : MonoBehaviour, IDamage
 {
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask playerMask;
@@ -840,6 +840,4 @@ public class PlayerScript : MonoBehaviour, IDamage, IElemental
             GameManager.instance.playerInInverseScreen.SetActive(true);
         }
     }
-
-
 }
