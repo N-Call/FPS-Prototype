@@ -10,6 +10,14 @@ public class Model2Enemy : EnemyController, IElemental
     bool elemBuffed;
     bool elemDebuffed;
     float effectTimer;
+
+    [Header("Model 2 Settings")]
+    [SerializeField] Transform shootPosL;
+    [SerializeField] Transform shootPosR;
+
+
+    bool canShoot;
+    bool leftShot;
    
     protected override void Update()
     {
