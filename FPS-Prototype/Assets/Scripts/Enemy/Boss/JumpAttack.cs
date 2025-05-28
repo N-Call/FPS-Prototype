@@ -15,6 +15,7 @@ public class JumpAttack : BaseState
     {
         base.Enter();
         bossSM.animator.CrossFade("Jumping", 0.02f);
+        isStopped = false;
         bossSM.agent.enabled = false;
         bossSM.transform.LookAt(new Vector3(bossSM.targetPoint.position.x, bossSM.transform.position.y, bossSM.targetPoint.position.z));
 

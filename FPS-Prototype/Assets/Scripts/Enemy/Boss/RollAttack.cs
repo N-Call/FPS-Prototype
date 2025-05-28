@@ -4,6 +4,7 @@ public class RollAttack : BaseState
 {
 
     private BossSM bossSM;
+    private float currentSpeed;
     public RollAttack(StateMachine stm) : base(name: "Rolling", stm)
     {
         bossSM = (BossSM)this.stateMachine;
@@ -12,7 +13,12 @@ public class RollAttack : BaseState
     public override void Enter()
     {
         base.Enter();
+        currentSpeed = bossSM.agent.speed;
+        bossSM.agent.speed = bossSM.rollSpeed;
+        bossSM.currentDecideDis = 0;
+        bossSM.animator.SetFloat("DecideDis", bossSM.currentDecideDis);
         bossSM.animator.CrossFade("RollTransform", 0.2f);
+        bossSM.agent.isStopped =false;
     }
     public override void StateLogic()
     {
@@ -26,12 +32,15 @@ public class RollAttack : BaseState
     public override void Action()
     {
         base.Action();
+        if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("SpinBallAttack"))
+        {
+            bossSM.agent.destination = GameManager.instance.player.transform.position;
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
-        bossSM.currentDecideDis = 0;
-        bossSM.animator.SetFloat("DecideDis", bossSM.currentDecideDis);
+        bossSM.agent.isStopped = true;
     }
 }

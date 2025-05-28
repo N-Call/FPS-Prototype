@@ -25,7 +25,15 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected Transform shootPos;
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
-    
+
+    [Header("Turret Settings")]
+    [SerializeField] protected bool shouldRotate = true;
+    [SerializeField] [Range(0,90)] protected float maxPitch;
+    [SerializeField][Range(0, 90)] protected float minPitch;
+
+    protected Transform turretHead;
+    protected Transform turretBarrel;
+
     protected Color colorOrig;
     protected Vector3 playerDir;
     public Vector3 originalPosition;
@@ -35,6 +43,9 @@ public class EnemyController : MonoBehaviour, IDamage
     protected float angleToPlayer;
     protected float roamTimer;
     protected float stoppingDistanceOrig;
+    protected float rotationAmount;
+    protected float ticksPerSecond;
+
     
     protected float originalShootRate;
     protected int maxHealth;
@@ -110,6 +121,7 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         return true;
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

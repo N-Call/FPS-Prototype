@@ -9,7 +9,6 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     [SerializeField] protected int ammoOrigCap;
     [SerializeField] protected int reloadCap;
     [SerializeField] protected int ammoCount;
-    [SerializeField] protected int currTotalBullets;
     [Header("Weapon Settings")]
     [SerializeField] protected float distance;
     [SerializeField] protected int damage;
@@ -24,6 +23,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     [SerializeField] protected float soundFxVolume;
 
     protected int ammoCap;
+    protected int currTotalBullets;
 
     protected float shootTimer;
 
@@ -41,7 +41,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         shootTimer = shootRate;
         ammoCount = reloadCap;
         currTotalBullets = ammoOrigCap + reloadCap;
-        ammoCap = ammoOrigCap;
+        ammoCap = reloadCap + ammoOrigCap;
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
     }
 
@@ -188,8 +188,15 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void AddAmmoToReserve(int amount)
     {
+        //Debug.Log($"<color=purple>--- AMMO CRATE PICKUP START ---</color>");
+        //Debug.Log($"<color=purple>Before Add: currTotalBullets={currTotalBullets}, ammoCount={ammoCount}, ammoCap={ammoCap}, AmountToAdd={amount}</color>");
+
         currTotalBullets = Mathf.Min(ammoCap, currTotalBullets + amount);
+
+        //Debug.Log($"<color=purple>After Add: currTotalBullets={currTotalBullets}, ammoCount={ammoCount}</color>");
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+
+        //Debug.Log($"<color=purple>--- AMMO CRATE PICKUP END ---</color>");
     }
 }
 

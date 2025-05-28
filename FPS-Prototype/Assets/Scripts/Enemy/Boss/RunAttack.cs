@@ -31,7 +31,7 @@ public class RunAttack : BaseState
         {
             bossSM.agent.SetDestination(GameManager.instance.player.transform.position);
             bossSM.transform.LookAt(new Vector3(GameManager.instance.player.transform.position.x, bossSM.transform.position.y, GameManager.instance.player.transform.position.z));
-
+            bossSM.LookAtPlayer(0);
         }
     }
 
