@@ -111,10 +111,12 @@ public class GameManager : MonoBehaviour
                 StateUnpause();
             }
         }
-
-        if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
+        if (playerScript != null)
         {
-            HandleElemTimers();
+            if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
+            {
+                HandleElemTimers();
+            }
         }
     }
 
