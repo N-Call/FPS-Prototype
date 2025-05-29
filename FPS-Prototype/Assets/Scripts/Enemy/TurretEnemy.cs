@@ -49,36 +49,28 @@ public class TurretEnemy : EnemyController
         Debug.DrawRay(aimPos.position, playerDir);
 
         RaycastHit hit;
-        if (Physics.Raycast(aimPos.position, playerDir, out hit, shootDistance, ~layerToIgnore))
+        if (Physics.Raycast(aimPos.position, playerDir, out hit, shootDistance, ~layerToIgnore) && angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
         {
-            //if (Vector3.Distance(GameManager.instance.player.transform.position, hit.point) > shootDistance)
-            //{
-            //    return false;
-            //}
+            Vector3 middlePlayerDir = (GameManager.instance.player.transform.position - (Vector3.up * 0.5f)) - turretHead.position;
 
-            if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            // Calculate the vertical angle from the direction
+            float pitch = Vector3.SignedAngle(middlePlayerDir, new Vector3(middlePlayerDir.x, 0, middlePlayerDir.z), turretHead.right);
+            pitch = Mathf.Clamp(-pitch, -maxPitch, minPitch);
+
+            turretHead.LookAt(GameManager.instance.player.transform.position);
+                
+            Vector3 eulerAngles = turretHead.rotation.eulerAngles;
+            eulerAngles.x = pitch;
+
+            turretHead.rotation = Quaternion.Euler(eulerAngles);
+
+            if (shootTimer >= shootRate)
             {
-                Vector3 middlePlayerDir = (GameManager.instance.player.transform.position - (Vector3.up * 0.5f)) - turretHead.position;
-
-                // Calculate the vertical angle from the direction
-                float pitch = Vector3.SignedAngle(middlePlayerDir, new Vector3(middlePlayerDir.x, 0, middlePlayerDir.z), turretHead.right);
-                pitch = Mathf.Clamp(-pitch, -maxPitch, minPitch);
-
-                turretHead.LookAt(GameManager.instance.player.transform.position);
-                
-                Vector3 eulerAngles = turretHead.rotation.eulerAngles;
-                eulerAngles.x = pitch;
-
-                turretHead.rotation = Quaternion.Euler(eulerAngles);
-                
-                if (shootTimer >= shootRate)
-                {
-                    Shoot();
-                    SoundManager.instance.PlaySFX("turretShot", 0.3f);
-                }
-
-                return true;
+                Shoot();
+                SoundManager.instance.PlaySFX("turretShot", 0.3f);
             }
+
+            return true;
         }
 
         if (resetPitchTimer < 1.0f)
@@ -97,7 +89,6 @@ public class TurretEnemy : EnemyController
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            //turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
         }
     }
 
@@ -112,12 +103,12 @@ public class TurretEnemy : EnemyController
 
     private IEnumerator Rotate()
     {
-        WaitForSeconds wait = new WaitForSeconds(1f / ticksPerSecond);
+        WaitForSeconds wait = new WaitForSeconds(0.01f);
         while (true)
         {
-            if ((!playerInRange || !canSeePlayer))
+            if (!playerInRange || !canSeePlayer)
             {
-                turretHead.Rotate(Vector3.up * rotationAmount);
+                turretHead.Rotate(Vector3.up);
             }
             yield return wait;
         }
