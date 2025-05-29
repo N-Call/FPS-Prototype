@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI speakerUI;
     public TextMeshProUGUI textComponent;
 
+    public Image bossHPbar;
+
     public Image playerHPbar;
     public Image playerShieldbar;
     public PlayerScript playerScript;

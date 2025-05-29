@@ -112,6 +112,7 @@ public class BossSM : StateMachine, IDamage
         currentHealth -= amount;
         if (currentHealth > 0)
         {
+            GameManager.instance.bossHPbar.fillAmount = (float)amount / currentHealth;
             StartCoroutine(FlashRed());
         }
 
