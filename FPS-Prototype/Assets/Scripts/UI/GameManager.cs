@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-    static bool isOnStartScreen = true;
+    static bool isOnStartScreen = false;
 
     [Header("Menus")]
     [SerializeField] GameObject menuActive;
