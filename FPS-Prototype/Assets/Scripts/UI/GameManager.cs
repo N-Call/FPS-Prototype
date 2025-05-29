@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuRules;
     [SerializeField] GameObject menuCredits;
     [SerializeField] GameObject menuSettings;
+    [SerializeField] GameObject menuShowBoard;
     [SerializeField] GameObject nextLvlBtn;
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
@@ -198,6 +199,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void LoadScoreBoard()
+    {
+        enemyCountUI.text = "" + gradeSystem.enemyCount;
+        gradeLetter.text = gradeSystem.finalGrade;
+        timerWinCount.GetComponent<TMP_Text>().text = gradeSystem.finalTime;
+    }
+
+    public void ToggleShowBoard()
+    {
+        if (menuShowBoard != null)
+        {
+            if (menuActive == null)
+            {
+                menuActive = menuShowBoard;
+                menuShowBoard.SetActive(!menuShowBoard.activeSelf);
+            }
+            else if (menuActive == menuShowBoard)
+            {
+                menuActive = null;
+                menuShowBoard.SetActive(!menuShowBoard.activeSelf);
+            }
+        }
+    }
+
     public void ToggleRules()
     {
         if (menuRules != null)
@@ -295,8 +320,12 @@ public class GameManager : MonoBehaviour
             menuActive = menuWin;
             menuActive.SetActive(true);
             textPopUp.SetActive(true);
-            gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
             
+            float elapsedTempTime = EnemyTimePenalty(elapsedTime.GetComponent<Timer>().elapsedTime);
+            int minutes = Mathf.FloorToInt(elapsedTempTime / 60);
+            int seconds = Mathf.FloorToInt(elapsedTempTime % 60);
+
+            gradeSystem.SaveFinal(enemyCount, string.Format("{0:00}:{1:00}", minutes, seconds), gradeLetter.text);
         }
     }
 

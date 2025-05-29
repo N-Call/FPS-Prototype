@@ -34,5 +34,7 @@ public class BeamAttack : BaseState
         base.Exit();
         bossSM.LookAtPlayer(0);
         bossSM.SetInvincible(false);
+        bossSM.currentAbility = BossSM.Ability.None;
+
     }
 }

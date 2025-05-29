@@ -8,7 +8,7 @@ public class SaveSystem
     struct SaveData
     {
         public SceneSaveData SceneData;
-        public FinalGradeData finalGradeData;
+        //public FinalGradeData finalGradeData;
     }
 
     public static string SaveFileName()
@@ -27,20 +27,24 @@ public class SaveSystem
     private static void HandleSaveData()
     {
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
-        GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
+        //GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
     }
 
     public static void Load()
     {
-        string saveContent = File.ReadAllText(SaveFileName());
+        if (File.Exists(SaveFileName()))
+        {
+            string saveContent = File.ReadAllText(SaveFileName());
 
-        saveData = JsonUtility.FromJson<SaveData>(saveContent);
-        HandleLoadData();
+            saveData = JsonUtility.FromJson<SaveData>(saveContent);
+            HandleLoadData();
+        }
     }
 
     private static void HandleLoadData()
     {
         GameManager.instance.sceneData.Load(saveData.SceneData);
-        GameManager.instance.gradeSystem.Load(saveData.finalGradeData);
+        //GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
+
     }
 }

@@ -40,6 +40,7 @@ public class ButtonFunctions : MonoBehaviour
     public void SetLevelBtn(int level)
     {
         LvlSelectManager.instance.Setlevel(level);
+        GameManager.instance.LoadScoreBoard();
     }
   
     public void Resume()
@@ -98,7 +99,6 @@ public class ButtonFunctions : MonoBehaviour
     public void Load()
     {
         SaveSystem.Load();
-        GameManager.instance.StateUnpause();
     }
 
     public void Quit()
