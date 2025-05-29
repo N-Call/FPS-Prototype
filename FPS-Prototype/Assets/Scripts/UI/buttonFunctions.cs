@@ -21,13 +21,13 @@ public class ButtonFunctions : MonoBehaviour
     public void StartGame()
     {
         // this is for the start game menu after button pushed then moves to first level
+        GameManager.instance.SetOnStartScreen(false);
         SceneManager.LoadScene(2);
     }
 
     public void LvlStartGame()
     {
         LvlSelectManager.instance.StartGameBtn();
-        
     }
 
     public void BackToMenu()
