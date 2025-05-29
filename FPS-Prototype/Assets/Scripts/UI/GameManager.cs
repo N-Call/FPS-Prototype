@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-    static bool isOnStartScreen = false;
 
     [Header("Menus")]
     [SerializeField] GameObject menuActive;
@@ -81,6 +80,8 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
+
+    bool isOnStartScreen = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
