@@ -1,9 +1,8 @@
-
-using System.Collections;
 using UnityEngine;
 
 public class Model2Enemy : EnemyController, IElemental
 {
+
     [Header("Element Effects")]
     [SerializeField] protected float elementEffectTime;
     float elementSpeedMod;
@@ -15,7 +14,6 @@ public class Model2Enemy : EnemyController, IElemental
     [SerializeField] Transform shootPosL;
     [SerializeField] Transform shootPosR;
 
-
     bool canShoot;
     bool leftShot;
    
@@ -25,7 +23,6 @@ public class Model2Enemy : EnemyController, IElemental
         base.Update();
 
         shootTimer += Time.deltaTime;
-
 
         if (canShoot && shootTimer >= shootRate)
         {
@@ -38,11 +35,12 @@ public class Model2Enemy : EnemyController, IElemental
             {
                 RShoot();
             }
+
             leftShot = !leftShot;
             shootTimer = 0f;
             SoundManager.instance.PlaySFX("enemyShot", 0.2f);
-
         }
+
         //HandleElements();
         if (elemBuffed || elemDebuffed)
         {
@@ -51,36 +49,34 @@ public class Model2Enemy : EnemyController, IElemental
             {
                 EndElement();
             }
-        }
-        
+        }  
     }
+
     protected override bool CanSeePlayer()
     {
-         playerDir = (GameManager.instance.player.transform.position - transform.position);
-         angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
-         Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
+        playerDir = (GameManager.instance.player.transform.position - transform.position);
+        angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
+        //Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
 
-            RaycastHit hit;
-        if (Physics.Raycast(transform.position, playerDir, out hit))
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, playerDir, out hit) && angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
         {
+            agent.SetDestination(GameManager.instance.player.transform.position);
 
-            if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                agent.SetDestination(GameManager.instance.player.transform.position);
-
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    FaceTarget();
-                }
-                canShoot = true;
-                agent.stoppingDistance = stoppingDistanceOrig;
-                return true;
+                FaceTarget();
             }
+            canShoot = true;
+            agent.stoppingDistance = stoppingDistanceOrig;
+            return true;
         }
+
         canShoot = false;
         agent.stoppingDistance = 0;
         return false;    
     }
+
     public override void TakeDamage(int amount)
     {
         base.TakeDamage(amount);
@@ -89,11 +85,11 @@ public class Model2Enemy : EnemyController, IElemental
             agent.SetDestination(GameManager.instance.player.transform.position);
         }
     }
+
     void LShoot()
     {
         if (shootPosL != null)
         {
-            
             Instantiate(bullet, shootPosL.position, shootPosL.rotation);
         }
     }
@@ -102,11 +98,8 @@ public class Model2Enemy : EnemyController, IElemental
     {
         if (shootPosR != null)
         {
-        
-        Instantiate(bullet, shootPosR.position, shootPosR.rotation);
-
+            Instantiate(bullet, shootPosR.position, shootPosR.rotation);
         }
-
     }
 
     //void HandleElements()
@@ -142,13 +135,11 @@ public class Model2Enemy : EnemyController, IElemental
         {
             elemBuffed = true;
             agent.speed *= elementSpeedMod;
-            Debug.Log("Enemy buffed");
         }
         else if (!buffStatus)
         {
             elemDebuffed = true;
             agent.speed /= elementSpeedMod;
-            Debug.Log("Enemey debuffed");
         }
         effectTimer = 0f;
     }

@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Target : MonoBehaviour, IDamage, ITarget
@@ -25,10 +23,14 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     [Header("Health")]
     [SerializeField] int HP;
+    [SerializeField] float respawnTime;
 
     float baseFOV;
+    float respawnTimer;
 
     bool buff;
+    bool respawn;
+
     Vector3 explosionScale;
     public bool enemyBuff; 
 
@@ -45,7 +47,18 @@ public class Target : MonoBehaviour, IDamage, ITarget
     // Update is called once per frame
     void Update()
     {
-
+        if (respawn)
+        {
+            Debug.Log("Respawning!");
+            respawnTimer += Time.deltaTime;
+            if (respawnTimer >= respawnTime)
+            {
+                Debug.Log("Toggled!");
+                respawn = false;
+                respawnTimer = 0.0f;
+                ToggleVisuals();
+            }
+        }
     }
 
     public void TakeDamage(int amount)
@@ -93,89 +106,113 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void OnTriggerEnter(Collider other)
     {
-       
-            IElemental affected = other.GetComponent<IElemental>();
-            if (buff)
-            {
-                affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-            }
-            else
-            {
-                affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-            }
-        
+        IElemental affected = other.GetComponent<IElemental>();
+        if (buff)
+        {
+            affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
+        }
+        else
+        {
+            affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
+        }
+    }
+
+    void ToggleVisuals()
+    {
+        explosionRadius.enabled = !explosionRadius.enabled;
+        explosionVisual.SetActive(!explosionVisual.activeSelf);
+
+        CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
+        if (collider != null)
+        {
+            collider.enabled = !collider.enabled;
+        }
+
+        model.SetActive(!model.activeSelf);
     }
 
     IEnumerator InitiateExplosion()
     {
-        explosionRadius.enabled = true;
-        explosionVisual.SetActive(true);
-        model.SetActive(false);
-        gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        ToggleVisuals();
         yield return new WaitForSeconds(0.3f);
-        //explosionRadius.enabled = false;
-        //explosionVisual.SetActive(false);
-        gameObject.SetActive(false);
+
+        if (respawnTime > 0.0f)
+        {
+            respawn = true;
+        }
+        else
+        {
+            Debug.Log("Set inactive!");
+            gameObject.SetActive(false);
+        }
     }
 
     public void ApplySpeedElem()
     {
-        if (buff && (GameManager.instance.speedBuffTimer > speedElemTime || GameManager.instance.speedBuffTimer == 0))
+        if (buff)
         {
-            Debug.Log("Speed Buff");
             SoundManager.instance.PlaySFX("powerUp", 0.3f);
-            GameManager.instance.BuffSprintIcon(speedElemTime);
-            GameManager.instance.playerScript.AddModifier(speedElemMod);
-            GameManager.instance.playerScript.SetBaseFOV(baseFOV + speedElemFOVMod);
-            GameManager.instance.playerScript.particleSpMod.gameObject.SetActive(true);
-            
+
+            if (GameManager.instance.speedBuffTimer > speedElemTime || GameManager.instance.speedBuffTimer == 0)
+            {
+                GameManager.instance.playerScript.AddModifier(speedElemMod);
+                GameManager.instance.playerScript.SetBaseFOV(baseFOV + speedElemFOVMod);
+                GameManager.instance.BuffSprintIcon(true);
+                GameManager.instance.playerScript.particleSpMod.gameObject.SetActive(true);
+            }
         }
-        else if (!buff)
+
+        else
         {
-            Debug.Log("Speed Debuff");
             SoundManager.instance.PlaySFX("debuff", 0.4f);
-            GameManager.instance.DeBuffSprintIcon(speedElemTime);
             GameManager.instance.playerScript.AddModifier(-1 / speedElemMod);
+            GameManager.instance.DeBuffSprintIcon(true);
             GameManager.instance.playerScript.SetBaseFOV(baseFOV - speedElemFOVMod);
         }
+
         GameManager.instance.SetElemParam((int)elem, buff, speedElemTime);
     }
+
     private void ApplyJumpElem()
     {
-        if (buff && (GameManager.instance.jumpBuffTimer > jumpElemTime || GameManager.instance.jumpBuffTimer == 0))
+        if (buff)
         {
-            Debug.Log("Jump Buff");
             SoundManager.instance.PlaySFX("powerUp", 0.3f);
-            GameManager.instance.BuffJumpIcon(jumpElemTime);
-            GameManager.instance.playerScript.AddModifier(0.0f, jumpElemMod);
-            GameManager.instance.playerScript.particleJpMod.gameObject.SetActive(true);
+
+            if (GameManager.instance.jumpBuffTimer > jumpElemTime || GameManager.instance.jumpBuffTimer == 0) {
+                GameManager.instance.playerScript.AddModifier(0.0f, jumpElemMod);
+                GameManager.instance.BuffJumpIcon(true);
+                GameManager.instance.playerScript.particleJpMod.gameObject.SetActive(true);
+            }
         }
-        else if (!buff)
+
+        else
         {
-            Debug.Log("Jump Debuff");
+            //Debug.Log("Jump Debuff");
             SoundManager.instance.PlaySFX("debuff", 0.4f);
-            GameManager.instance.DeBuffJumpIcon(jumpElemTime);
             GameManager.instance.playerScript.AddModifier(0.0f, -1 / jumpElemMod);
+            GameManager.instance.DeBuffJumpIcon(true);
         }
+        
         GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime);
     }
+
     private void ApplyShieldElem()
     {
         if (buff)
         {
-            Debug.Log("Shield Given");
-
+            //Debug.Log("Shield Given");
             SoundManager.instance.PlaySFX("powerUp", 0.3f);
-
             GameManager.instance.playerScript.SetShield(shieldElemMod);
         }
         else if (!buff)
         {
-            Debug.Log("Shield Taken");
+            //Debug.Log("Shield Taken");
             SoundManager.instance.PlaySFX("debuff", 0.4f);
-
             GameManager.instance.playerScript.SetShield(-shieldElemMod);
         }
+
         GameManager.instance.playerScript.UpdatePlayerUI();
     }
+
 }
