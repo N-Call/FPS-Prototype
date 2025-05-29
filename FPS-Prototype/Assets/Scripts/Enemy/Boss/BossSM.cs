@@ -116,7 +116,6 @@ public class BossSM : StateMachine, IDamage
         }
 
         Dead();
-        }
     }
 
     IEnumerator FlashRed()
