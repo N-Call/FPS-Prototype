@@ -23,10 +23,14 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     [Header("Health")]
     [SerializeField] int HP;
+    [SerializeField] float respawnTime;
 
     float baseFOV;
+    float respawnTimer;
 
     bool buff;
+    bool respawn;
+
     Vector3 explosionScale;
     public bool enemyBuff; 
 
@@ -43,7 +47,18 @@ public class Target : MonoBehaviour, IDamage, ITarget
     // Update is called once per frame
     void Update()
     {
-
+        if (respawn)
+        {
+            Debug.Log("Respawning!");
+            respawnTimer += Time.deltaTime;
+            if (respawnTimer >= respawnTime)
+            {
+                Debug.Log("Toggled!");
+                respawn = false;
+                respawnTimer = 0.0f;
+                ToggleVisuals();
+            }
+        }
     }
 
     public void TakeDamage(int amount)
@@ -102,16 +117,34 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
     }
 
+    void ToggleVisuals()
+    {
+        explosionRadius.enabled = !explosionRadius.enabled;
+        explosionVisual.SetActive(!explosionVisual.activeSelf);
+
+        CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
+        if (collider != null)
+        {
+            collider.enabled = !collider.enabled;
+        }
+
+        model.SetActive(!model.activeSelf);
+    }
+
     IEnumerator InitiateExplosion()
     {
-        explosionRadius.enabled = true;
-        explosionVisual.SetActive(true);
-        model.SetActive(false);
-        gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        ToggleVisuals();
         yield return new WaitForSeconds(0.3f);
-        //explosionRadius.enabled = false;
-        //explosionVisual.SetActive(false);
-        gameObject.SetActive(false);
+
+        if (respawnTime > 0.0f)
+        {
+            respawn = true;
+        }
+        else
+        {
+            Debug.Log("Set inactive!");
+            gameObject.SetActive(false);
+        }
     }
 
     public void ApplySpeedElem()
