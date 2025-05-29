@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuRules;
     [SerializeField] GameObject menuCredits;
     [SerializeField] GameObject menuSettings;
+    [SerializeField] GameObject menuShowBoard;
     [SerializeField] GameObject nextLvlBtn;
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
@@ -176,6 +177,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void LoadScoreBoard()
+    {
+        enemyCountUI.text = "" + gradeSystem.enemyCount;
+        gradeLetter.text = gradeSystem.finalGrade;
+        timerWinCount.GetComponent<TMP_Text>().text = gradeSystem.finalTime;
+    }
+
+    public void ToggleShowBoard()
+    {
+        if (menuShowBoard != null)
+        {
+            if (menuActive == null)
+            {
+                menuActive = menuShowBoard;
+                menuShowBoard.SetActive(!menuShowBoard.activeSelf);
+            }
+            else if (menuActive == menuShowBoard)
+            {
+                menuActive = null;
+                menuShowBoard.SetActive(!menuShowBoard.activeSelf);
+            }
+        }
+    }
 
     public void ToggleRules()
     {

@@ -41,6 +41,7 @@ public class ButtonFunctions : MonoBehaviour
     public void SetLevelBtn(int level)
     {
         LvlSelectManager.instance.Setlevel(level);
+        GameManager.instance.LoadScoreBoard();
     }
   
     public void Resume()

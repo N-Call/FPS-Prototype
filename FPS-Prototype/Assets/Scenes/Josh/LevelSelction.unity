@@ -1794,6 +1794,7 @@ MonoBehaviour:
   - {fileID: 2110995672}
   StartGame: {fileID: 101829506}
   ActiveImage: {fileID: 0}
+  ActiveRecord: {fileID: 3664739029970566778}
   SelectedScene: 0
 --- !u!1 &1463871705
 GameObject:
@@ -14304,14 +14305,15 @@ MonoBehaviour:
   menuRules: {fileID: 795156866167432178}
   menuCredits: {fileID: 0}
   menuSettings: {fileID: 0}
+  menuShowBoard: {fileID: 0}
   nextLvlBtn: {fileID: 0}
   reticle: {fileID: 4887089517942252084}
   hitMakerReticle: {fileID: 8786998427035178709}
   gradeLetter: {fileID: 2965018833169027340}
   ammoCount: {fileID: 0}
   weaponIcon: {fileID: 0}
-  enemyCountUI: {fileID: 5582328311303761812}
-  timerWinCount: {fileID: 0}
+  enemyCountUI: {fileID: 1709925639566261902}
+  timerWinCount: {fileID: 8946092158721925709}
   elapsedTime: {fileID: 0}
   enemyWinCount: {fileID: 1709925639566261902}
   buffSprint: {fileID: 0}
@@ -14334,6 +14336,14 @@ MonoBehaviour:
   isPaused: 0
   timeScaleOrig: 0
   startPos: {x: 0, y: 0, z: 0}
+  speedBuffTimer: 0
+  jumpBuffTimer: 0
+  speedDebuffTimer: 0
+  jumpDebuffTimer: 0
+  speedBuffLimit: 0
+  jumpBuffLimit: 0
+  speedDebuffLimit: 0
+  jumpDebuffLimit: 0
 --- !u!114 &2965018833169027340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15620,7 +15630,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 84}
+  m_AnchoredPosition: {x: -515.1906, y: 84}
   m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &3617380854204460515
@@ -17996,6 +18006,7 @@ MonoBehaviour:
   elem: 3
   damage: 3
   attackSpeed: 2
+  attackRate: 0
 --- !u!33 &4989885650442841266
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -74431,12 +74442,6 @@ MonoBehaviour:
   wallRunCooldown: 0.4
   wallStickForce: 24
   provideExtraJumpIfNeeded: 0
-  speedElemMod: 2
-  speedElemFOVMod: 10
-  speedElemModTime: 5
-  jumpElemMod: 1.25
-  jumpElemModTime: 5
-  shieldElemMod: 1
   walkBobAmp: 0
   walkBobFreq: 0
   sprintBobAmp: 0
@@ -74447,6 +74452,10 @@ MonoBehaviour:
   particleSpMod: {fileID: 1916699315684391879}
   particleSpRun: {fileID: 8179249695283840634}
   particleJpMod: {fileID: 8248517680054926940}
+  speedBuffed: 0
+  jumpBuffed: 0
+  speedDebuffed: 0
+  jumpDebuffed: 0
 --- !u!222 &8760636628496701968
 CanvasRenderer:
   m_ObjectHideFlags: 0

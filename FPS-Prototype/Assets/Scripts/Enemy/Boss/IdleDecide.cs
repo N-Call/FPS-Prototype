@@ -3,7 +3,7 @@ using UnityEngine;
 public class IdleDecide : BaseState 
 {
     private BossSM bossSM;
-    public int counter;
+    private float counter;
     private GameObject player;
 
     public IdleDecide(StateMachine stm) : base(name: "decide", stm) 
@@ -63,7 +63,7 @@ public class IdleDecide : BaseState
         base.Action();
         if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-        counter--;
+        counter -= Time.deltaTime;
         }
     }
 

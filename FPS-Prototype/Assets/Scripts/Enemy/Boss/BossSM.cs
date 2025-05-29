@@ -45,7 +45,7 @@ public class BossSM : StateMachine, IDamage
 
     [Header("Idle Settings")]
     public int decideDis;
-    public int decideTime;
+    public float decideTime;
 
     [Header("Jump Attack Settings")]
     public float jumpHeight;

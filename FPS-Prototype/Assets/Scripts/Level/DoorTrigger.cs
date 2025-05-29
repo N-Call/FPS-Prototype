@@ -4,10 +4,11 @@ using UnityEngine;
 public class DoorTrigger : MonoBehaviour
 {
     [SerializeField] private List<OpenDoors> doorScript;
+    [SerializeField] private string colliderObject = "Player";
     
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(colliderObject))
         {
             foreach (OpenDoors door in doorScript)
             {
@@ -18,7 +19,7 @@ public class DoorTrigger : MonoBehaviour
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(colliderObject))
         {
             foreach (OpenDoors door in doorScript)
             {
