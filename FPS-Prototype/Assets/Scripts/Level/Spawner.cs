@@ -21,9 +21,12 @@ public class Spawner : MonoBehaviour
     float spawnRate;
 
     [Header("Enemy Spawn Settings")]
-    [SerializeField]
-    [Tooltip("Add enemies to enemy count when they spawn? False adds the enemies that will spawn, at start")]
+    [SerializeField][Tooltip("Add enemies to enemy count when they spawn? False adds the enemies that will spawn, at start")]
     bool addToCountWhenSpawned;
+    [SerializeField][Tooltip("Overrides for the turret's view distance (x), and bullet life time (y)")]
+    Vector2[] turretBullets;
+    [SerializeField][Tooltip("Should we override the turret bullets?")]
+    bool overrideTurretBullets;
 
     int currentIndex;
     int amountSpawned;
@@ -84,7 +87,17 @@ public class Spawner : MonoBehaviour
         firstSpawned = true;
         
         int index = GetPositionIndex();
-        Instantiate(objectToSpawn, spawnPositions[index].position, spawnPositions[index].rotation);
+        GameObject spawned = Instantiate(objectToSpawn, spawnPositions[index].position, spawnPositions[index].rotation);
+
+        if (overrideTurretBullets && turretBullets.Length == spawnPositions.Length)
+        {
+            TurretEnemy turret = spawned.GetComponent<TurretEnemy>();
+            if (turret != null)
+            {
+                turret.SetShootDistance(turretBullets[index].x);
+                turret.SetBulletDestroyTime(turretBullets[index].y);
+            }
+        }
 
         if (isEnemy && addToCountWhenSpawned)
         {

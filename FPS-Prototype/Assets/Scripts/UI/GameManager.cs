@@ -129,8 +129,8 @@ public class GameManager : MonoBehaviour
         TogglePPVolume();
         // to turn off the reticle
         reticle.SetActive(false);
-        SoundManager.instance.musicSource.Stop();
-        SoundManager.instance.sfxSource.Pause();
+        SoundManager.instance.musicSource.Pause();
+        SoundManager.instance.sfxSource.Stop();
         // stop the player from shooting
         playerScript.enabled = false;
     }
@@ -147,7 +147,6 @@ public class GameManager : MonoBehaviour
         // to turn on the reticle
         reticle.SetActive(true);
         SoundManager.instance.musicSource.Play();
-        SoundManager.instance.sfxSource.Play();
         playerScript.enabled = true;
 
     }
@@ -317,6 +316,8 @@ public class GameManager : MonoBehaviour
         player.transform.position = respawnPosition;
         playerScript.ResetPlayerStats();
 
+        ResetElemTimers();
+
         playerScript.GetComponent<CharacterController>().enabled = true;
 
         //foreach (EnemyController enemy in enemiesToRespawn)
@@ -324,6 +325,24 @@ public class GameManager : MonoBehaviour
         //    enemy.ResetEnemies();
         //}
 
+    }
+
+    private void ResetElemTimers()
+    {
+        speedBuffTimer = 0.0f;
+        jumpBuffTimer = 0.0f;
+        speedDebuffTimer = 0.0f;
+        jumpDebuffTimer = 0.0f;
+
+        speedBuffLimit = 0.0f;
+        jumpBuffLimit = 0.0f;
+        speedDebuffLimit = 0.0f;
+        jumpDebuffLimit = 0.0f;
+
+        buffSprint.SetActive( false );
+        buffJump.SetActive( false );
+        debuffSprint.SetActive( false );
+        debuffJump.SetActive( false );
     }
 
     public void SetElemParam(int elem, bool buffStatus, float totalTime)

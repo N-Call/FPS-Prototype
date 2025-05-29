@@ -14,7 +14,7 @@ public class Damage : MonoBehaviour
     [SerializeField] ElementType elem;
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
-    [SerializeField] int destroyTime;
+    [SerializeField] float destroyTime;
     [SerializeField] private float FOV;
     [SerializeField] float chaseDist;
 
@@ -148,6 +148,11 @@ public class Damage : MonoBehaviour
         
         yield return new WaitForSeconds(dotDamageRate);
         isDamaging = false;
+    }
+
+    public void SetDestroyTime(float time)
+    {
+        destroyTime = time;
     }
 
 }

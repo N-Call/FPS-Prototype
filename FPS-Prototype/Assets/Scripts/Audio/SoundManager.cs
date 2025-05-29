@@ -23,38 +23,46 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        sfxSource.playOnAwake = false;
     }
     private void Start()
     {
         PlayMusic("Theme", .7f);
     }
-        
+
 
     public void PlayMusic(string name, float volume)
     {
-        Sound s = Array.Find(musicSounds, x => x.name == name);
-        if (s == null)
+        foreach (Sound s in musicSounds)
         {
-            Debug.Log("Sound Not Found");
+            if (s.name == name && s.isMusic)
+            {
+                AudioClip clip = s.GetClip();
+                if (clip != null)
+                {
+                    musicSource.clip = clip;
+                    musicSource.volume = s.volume;
+                    musicSource.loop = true;
+                    musicSource.Play();
+                }
+                return;
+            }
         }
-        else
-        {
-            musicSource.clip = s.clip;
-            musicSource.volume = volume;
-            musicSource.Play();
-        }        
     }
     public void PlaySFX(string name, float volume)
     {
-        Sound s = Array.Find(sfxSounds, x => x.name == name);
-        if (s == null)
+        foreach(Sound s in sfxSounds)
         {
-            Debug.Log("Sound Not Found");
-        }
-        else
-        {
-            sfxSource.volume = volume;
-            sfxSource.PlayOneShot(s.clip);
+            if (s.name == name)
+            {
+                AudioClip fxClip = s.GetClip();
+                if (fxClip != null)
+                {
+                    sfxSource.PlayOneShot(fxClip, volume);
+                }
+                return;
+            }
+
         }
 
     }

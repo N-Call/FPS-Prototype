@@ -124,6 +124,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     public bool speedDebuffed;
     public bool jumpDebuffed;
     bool elemInversed;
+    bool isPlayingStep;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -385,6 +386,10 @@ public class PlayerScript : MonoBehaviour, IDamage
         {
             // Move the player the direction and speed
             controller.Move(inputDirection * speed * Time.deltaTime);
+            if (inputDirection != Vector3.zero &&!isPlayingStep && controller.isGrounded)
+            {
+                StartCoroutine(PlaySteps());
+            }
         }
 
         // This applies the wall jump directional momentum
@@ -650,6 +655,8 @@ public class PlayerScript : MonoBehaviour, IDamage
         verticalVelocity.y = 0.0f;
         HP = checkPointHP;
         invulnerable = false;
+
+        ResetElems();
         ResetFOV();
         UpdatePlayerUI();
     }
@@ -761,6 +768,26 @@ public class PlayerScript : MonoBehaviour, IDamage
         GameManager.instance.playerDamageScreen.SetActive(false);
     }
 
+    IEnumerator PlaySteps()
+    {
+        isPlayingStep = true;
+
+        SoundManager.instance.PlaySFX("footsteps", 0.075f);
+
+        if (isSprinting)
+        {
+            yield return new WaitForSeconds(0.25f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.45f);
+            
+        }
+        isPlayingStep = false;
+
+
+    }
+
     // Element Work
 
     public void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod)
@@ -839,5 +866,17 @@ public class PlayerScript : MonoBehaviour, IDamage
             elemInversed = true;
             GameManager.instance.playerInInverseScreen.SetActive(true);
         }
+    }
+
+    void ResetElems()
+    {
+        speedBuffed = false;
+        jumpBuffed = false;
+        speedDebuffed = false;
+        jumpDebuffed = false;
+        speedElemMod = 0.0f;
+        jumpElemMod = 0.0f;
+        particleSpMod.gameObject.SetActive(false);
+        particleJpMod.gameObject.SetActive(false);
     }
 }
