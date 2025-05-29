@@ -256,6 +256,9 @@ public class GameManager : MonoBehaviour
         {
             
             StatePause();
+            speakerUI.text = string.Empty;
+            textComponent.text = string.Empty;
+            
             // show off win menu Time with enemy time added 
             SoundManager.instance.PlaySFX("victory", 0.1f);
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
@@ -263,6 +266,7 @@ public class GameManager : MonoBehaviour
 
             menuActive = menuWin;
             menuActive.SetActive(true);
+            textPopUp.SetActive(true);
             gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
             
         }
