@@ -70,7 +70,10 @@ public class BossSM : StateMachine, IDamage
     public Ability currentAbility;
 
     public float orbSpawnCounter;
+    float winTimer;
+
     private bool isInvensible;
+    bool isDead;
 
     public void Awake()
     {
@@ -87,6 +90,25 @@ public class BossSM : StateMachine, IDamage
         targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
         currentHealth = health;
         orbSpawnCounter = orbSpawnTimer;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        GameManager.instance.WinCondition(1);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        if (isDead)
+        {
+            winTimer += Time.deltaTime;
+            if (winTimer > 5.0f)
+            {
+                GameManager.instance.WinCondition(-1);
+            }
+        }
     }
 
     protected override BaseState GetFirstState()
@@ -172,6 +194,7 @@ public class BossSM : StateMachine, IDamage
     {
         //Death animation
         ChangeState(dead);
+        isDead = true;
     }
 
     private void OnTriggerEnter(Collider other)
