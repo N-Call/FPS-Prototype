@@ -237,22 +237,26 @@ public class GameManager : MonoBehaviour
     {// this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
     }
+
     // Showing Buffs/DeBuffs top Right of player UI 
-    public void BuffSprintIcon(float time)
+    public void BuffSprintIcon(bool active)
     {
-        StartCoroutine(BuffSprintIconsTime(time));
+        buffSprint.SetActive(active);
     }
-    public void DeBuffSprintIcon(float time)
+
+    public void DeBuffSprintIcon(bool active)
     {
-        StartCoroutine(DeBuffSprintIconsTime(time));
+        debuffSprint.SetActive(active);
     }
-    public void BuffJumpIcon(float time)
+
+    public void BuffJumpIcon(bool active)
     {
-        StartCoroutine(BuffJumpIconsTime(time));
+        buffJump.SetActive(active);
     }
-    public void DeBuffJumpIcon(float time)
+
+    public void DeBuffJumpIcon(bool active)
     {
-        StartCoroutine(DeBuffJumpIconsTime(time));
+        debuffJump.SetActive(active);
     }
 
     public void TogglePPVolume()
@@ -453,30 +457,6 @@ public class GameManager : MonoBehaviour
         hitMakerReticle.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
-    }
-    IEnumerator BuffSprintIconsTime(float time)
-    {
-        buffSprint.SetActive(true);
-        yield return new WaitForSeconds(time);
-        buffSprint.SetActive(false);
-    }
-    IEnumerator DeBuffSprintIconsTime(float time)
-    {
-        debuffSprint.SetActive(true);
-        yield return new WaitForSeconds(time);
-        debuffSprint.SetActive(false);
-    }
-    IEnumerator BuffJumpIconsTime(float time)
-    {
-        buffJump.SetActive(true);
-        yield return new WaitForSeconds(time);
-        buffJump.SetActive(false);
-    }
-    IEnumerator DeBuffJumpIconsTime(float time)
-    {
-        debuffJump.SetActive(true);
-        yield return new WaitForSeconds(time);
-        debuffJump.SetActive(false);
     }
 
 }
