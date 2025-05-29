@@ -136,7 +136,10 @@ public class BossSM : StateMachine, IDamage
         int index = 0;
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-            renderer.material.color = colors[index];
+            if (index < colors.Count)
+            {
+                renderer.material.color = colors[index];
+            }
             index++;
         }
     }
