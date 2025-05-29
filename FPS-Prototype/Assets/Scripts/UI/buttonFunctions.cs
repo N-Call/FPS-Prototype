@@ -34,7 +34,6 @@ public class ButtonFunctions : MonoBehaviour
     {
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
-        SoundManager.instance.sfxSource.Play();
         SceneManager.LoadScene(0);
     }
 
@@ -74,7 +73,6 @@ public class ButtonFunctions : MonoBehaviour
     {
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
-        SoundManager.instance.sfxSource.Play();
         SceneManager.LoadScene(1);
     }
 
