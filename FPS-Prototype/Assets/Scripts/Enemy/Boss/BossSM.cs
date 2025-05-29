@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -98,7 +100,33 @@ public class BossSM : StateMachine, IDamage
         if(isInvensible) { return; }
 
         currentHealth -= amount;
+        if (currentHealth > 0)
+        {
+            StartCoroutine(FlashRed());
+        }
+
         Dead();
+    }
+
+    IEnumerator FlashRed()
+    {
+        List<Color> colors = new List<Color>();
+
+        // Set children's colors to red
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            colors.Add(renderer.material.color);
+            renderer.material.color = Color.red;
+        }
+
+        yield return new WaitForSeconds(0.05f);
+
+        int index = 0;
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.material.color = colors[index];
+            index++;
+        }
     }
 
     public void SpawnLeftProjectile()
