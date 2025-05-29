@@ -112,11 +112,14 @@ public class BossSM : StateMachine, IDamage
         currentHealth -= amount;
         if (currentHealth > 0)
         {
-            GameManager.instance.bossHPbar.fillAmount = (float)amount / currentHealth;
+            GameManager.instance.bossHPbar.gameObject.SetActive(true);
+            GameManager.instance.bossHPbar.fillAmount = (float)currentHealth / (float)health;
             StartCoroutine(FlashRed());
         }
-
-        Dead();
+        else
+        {
+            Dead();
+        }
     }
 
     IEnumerator FlashRed()
@@ -165,6 +168,7 @@ public class BossSM : StateMachine, IDamage
     private void Dead()
     {
         //Death animation
+        GameManager.instance.bossHPbar.gameObject.SetActive(true);
         ChangeState(dead);
     }
 
