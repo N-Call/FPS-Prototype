@@ -83,7 +83,6 @@ public class BossSM : StateMachine, IDamage
         this.beam = new BeamAttack(stm:this);
         this.dead = new DeadState(stm:this);
 
-
         targetPoint = new GameObject("Jump Pos").transform;
         targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
         currentHealth = health;
@@ -112,7 +111,6 @@ public class BossSM : StateMachine, IDamage
         currentHealth -= amount;
         if (currentHealth > 0)
         {
-            GameManager.instance.bossHPbar.gameObject.SetActive(true);
             GameManager.instance.bossHPbar.fillAmount = (float)currentHealth / (float)health;
             StartCoroutine(FlashRed());
         }
@@ -133,7 +131,7 @@ public class BossSM : StateMachine, IDamage
             renderer.material.color = Color.red;
         }
 
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.01f);
 
         int index = 0;
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
@@ -155,9 +153,11 @@ public class BossSM : StateMachine, IDamage
 
     public void SpawnOrb()
     {
-        int store = UnityEngine.Random.Range(0, orbs.Length - 1);
-        BossOrb orb = Instantiate(orbs[store], orbLocation.transform.position, orbLocation.transform.rotation);
-        orb.boss = this;
+        //int store = UnityEngine.Random.Range(0, orbs.Length - 1);
+        //BossOrb orb = Instantiate(orbs[store], orbLocation.transform.position, orbLocation.transform.rotation);
+        //orb.boss = this;
+
+        currentAbility = (Ability)UnityEngine.Random.Range(1, 3);
     }
 
     public void ActivateAbility()
@@ -168,7 +168,6 @@ public class BossSM : StateMachine, IDamage
     private void Dead()
     {
         //Death animation
-        GameManager.instance.bossHPbar.gameObject.SetActive(true);
         ChangeState(dead);
     }
 
