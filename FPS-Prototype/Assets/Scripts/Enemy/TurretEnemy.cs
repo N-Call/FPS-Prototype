@@ -8,6 +8,12 @@ public class TurretEnemy : EnemyController
     [SerializeField] float shootDistance = 1000.0f;
     [SerializeField] Transform aimPos;
     [SerializeField] LayerMask layerToIgnore;
+    [SerializeField] protected bool idleRotate = true;
+    [SerializeField][Range(0, 90)] protected float maxPitch;
+    [SerializeField][Range(0, 90)] protected float minPitch;
+
+    Transform turretHead;
+    Transform turretBarrel;
 
     float resetPitchTimer;
 
@@ -19,7 +25,7 @@ public class TurretEnemy : EnemyController
         turretHead = transform.Find("Head");
         turretBarrel = transform.Find("Head/CannonBase/Cannon");
 
-        if (shouldRotate)
+        if (idleRotate)
         {
             StartCoroutine(Rotate());
         }
