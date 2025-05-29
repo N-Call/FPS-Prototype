@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour
             else if (menuActive == menuPause)
             {
                 StateUnpause();
+                menuSettings.SetActive(false);
             }
         }
         if (playerScript != null)

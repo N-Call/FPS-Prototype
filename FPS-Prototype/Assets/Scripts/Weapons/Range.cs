@@ -28,6 +28,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     protected float shootTimer;
 
     private Animator animator;
+    private bool reloadInProgress = false;
 
     private void Awake()
     {
@@ -49,6 +50,20 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     void Update()
     {
         shootTimer += Time.deltaTime;
+
+        if (reloadInProgress && animator != null)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            if (stateInfo.IsName("Reload") && stateInfo.normalizedTime >= 0.9f)
+            {
+                if (!animator.IsInTransition(0))
+                {
+                    OnReloadAnimationEnd();
+                    reloadInProgress = false;
+                }
+            }
+        }
     }
 
     public virtual void AttackBegin(LayerMask playerMask)
@@ -63,34 +78,13 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void Reload()
     {
-        //if (reloadCap == ammoCount || ammoCap == 0 && ammoCount == 0) {return;}
-
-
-        //ammoCap -= reloadCap - ammoCount;
-        //ammoCount = reloadCap;
-
-        //if (ammoCap < 0)
-        //{
-        //    ammoCount += ammoCap;
-        //    ammoCap = 0;
-        //}
-        //GameManager.instance.GlobalAmmoCount(ammoCount, ammoCap);
-
-        //Debug.Log($"--- RELOAD START ---");
-        //Debug.Log($"Initial: ammoCount={ammoCount}, currTotalBulletr={currTotalBullets}, reloadCap={reloadCap}");
-
-        // Here's how it's set up, since it's taking both the processing and the animations into account.
-
-        // Step 1 - This checks if the mag is already full.
         if (ammoCount == reloadCap)
         {
-            //Debug.Log("Mag already full. Can't reload.");
             return;
         }
         // Step 2 - Checks if there are no bullets left in total.
         if (currTotalBullets <= 0)
         {
-            //Debug.Log("No ammo in mag and reserve. Can't reload.");
             SoundManager.instance.PlaySFX("gunEmpty", 0.3f);
             return;
         }
@@ -99,14 +93,9 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         //  no ammo in both the mag and reserve.
         if (ammoCount == 0 && currTotalBullets - ammoCount <= 0)
         {
-            //Debug.Log("No ammo in mag and reserve. Can't reload.");
             SoundManager.instance.PlaySFX("gunEmpty", 0.3f);
             return;
         }
-
-        // Reload animation plays and sound, after checking the above conditions.
-        PlayReloadAnim();
-        SoundManager.instance.PlaySFX(soundFxName, 0.3f);
 
         // Now we calculate how much space is empty in the current mag.
         int spaceInMag = reloadCap - ammoCount;
@@ -117,21 +106,23 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         // This determines the amount of ammo transfering.
         int ammoToTransfer = Mathf.Min(spaceInMag, currReserveAmmo);
 
-        //Debug.Log($"Calculated: spaceInMag={spaceInMag}, currReserveAmmo={currReserveAmmo}");
-        //Debug.Log($"Ammo to Transfer: {ammoToTransfer}");
 
         // Then perform the transfer of the bullets into the mag.
         if (ammoToTransfer > 0)
         {
             ammoCount += ammoToTransfer;
-            //Debug.Log($"After Transfer: ammoCount={ammoCount}, currTotalBullets={currTotalBullets}");
         }
-        else
-        {
-            //Debug.Log("No ammo to transfer (magazine already full or no reserve ammo).");
-        }
+
+        // Reload animation plays and sound, after checking the above conditions.
+        PlayReloadAnim();
+        SoundManager.instance.PlaySFX(soundFxName, 0.3f);
+
+        reloadInProgress = true;
+    }
+
+    public void OnReloadAnimationEnd()
+    {
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
-        //Debug.Log($"--- RELOAD END ---");
     }
 
     private void PlayReloadAnim()

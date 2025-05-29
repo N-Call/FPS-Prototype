@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamage
 {
+
     [SerializeField] protected Renderer model;
     [SerializeField] protected int currentHealth;
 
@@ -38,7 +39,6 @@ public class EnemyController : MonoBehaviour, IDamage
     protected float angleToPlayer;
     protected float roamTimer;
     protected float stoppingDistanceOrig;
-
     
     protected float originalShootRate;
     protected int maxHealth;
@@ -47,7 +47,6 @@ public class EnemyController : MonoBehaviour, IDamage
     protected bool shootRateBuffed = false;
     protected bool canSeePlayer;
     
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
