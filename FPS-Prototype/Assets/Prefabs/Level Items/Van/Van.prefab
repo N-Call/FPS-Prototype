@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6575229551009730898}
   - component: {fileID: 3204004280909766326}
   - component: {fileID: 6497873343218815990}
+  - component: {fileID: 123161035087965831}
   m_Layer: 0
   m_Name: Van
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2603111947675284064}
   serializedVersion: 2
-  m_LocalRotation: {x: -4.3297806e-17, y: 0.7071068, z: 0.7071068, w: -4.3297806e-17}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 558.8663, y: 5.9551187, z: 326.64758}
-  m_LocalScale: {x: 500, y: 500, z: 500}
+  m_LocalScale: {x: 250, y: 250, z: 250}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: -180}
 --- !u!33 &3204004280909766326
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -106,3 +107,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &123161035087965831
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603111947675284064}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.021497553, y: 0.047229387, z: 0.01953618}
+  m_Center: {x: -0.00026083147, y: 0.00015952587, z: 0.009549412}

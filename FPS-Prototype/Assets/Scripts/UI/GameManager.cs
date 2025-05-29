@@ -3,9 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
-using JetBrains.Annotations;
 using UnityEngine.Rendering.PostProcessing;
-using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -287,7 +285,7 @@ public class GameManager : MonoBehaviour
         {
             // display ammo count for the UI 
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
-            Debug.Log($"<color=green>UI Update Call: Magazine={amount}, Reserve={ammoCap}</color>");
+            //Debug.Log($"<color=green>UI Update Call: Magazine={amount}, Reserve={ammoCap}</color>");
         }
     }
 
@@ -312,9 +310,16 @@ public class GameManager : MonoBehaviour
     public void Respawn()
     {
         playerScript.GetComponent<CharacterController>().enabled = false;
+        
+        if (player.transform.parent != null)
+        {
+            player.transform.parent = null;
+        }
 
         player.transform.position = respawnPosition;
         playerScript.ResetPlayerStats();
+
+        ResetElemTimers();
 
         playerScript.GetComponent<CharacterController>().enabled = true;
 
@@ -323,6 +328,24 @@ public class GameManager : MonoBehaviour
         //    enemy.ResetEnemies();
         //}
 
+    }
+
+    private void ResetElemTimers()
+    {
+        speedBuffTimer = 0.0f;
+        jumpBuffTimer = 0.0f;
+        speedDebuffTimer = 0.0f;
+        jumpDebuffTimer = 0.0f;
+
+        speedBuffLimit = 0.0f;
+        jumpBuffLimit = 0.0f;
+        speedDebuffLimit = 0.0f;
+        jumpDebuffLimit = 0.0f;
+
+        buffSprint.SetActive( false );
+        buffJump.SetActive( false );
+        debuffSprint.SetActive( false );
+        debuffJump.SetActive( false );
     }
 
     public void SetElemParam(int elem, bool buffStatus, float totalTime)
