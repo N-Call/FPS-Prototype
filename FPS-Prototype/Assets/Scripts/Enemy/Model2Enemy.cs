@@ -21,6 +21,7 @@ public class Model2Enemy : EnemyController, IElemental
    
     protected override void Update()
     {
+        canShoot = false;
         base.Update();
 
         shootTimer += Time.deltaTime;
