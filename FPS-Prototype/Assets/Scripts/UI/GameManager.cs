@@ -320,7 +320,6 @@ public class GameManager : MonoBehaviour
             menuActive = menuWin;
             menuActive.SetActive(true);
             textPopUp.SetActive(true);
-            gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
             
             float elapsedTempTime = EnemyTimePenalty(elapsedTime.GetComponent<Timer>().elapsedTime);
             int minutes = Mathf.FloorToInt(elapsedTempTime / 60);
