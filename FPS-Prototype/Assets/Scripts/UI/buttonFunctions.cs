@@ -15,6 +15,7 @@ public class ButtonFunctions : MonoBehaviour
         {
             GameManager.instance.Respawn();
         }
+
         GameManager.instance.StateUnpause();
     }
 

@@ -120,7 +120,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     void ToggleVisuals()
     {
         explosionRadius.enabled = !explosionRadius.enabled;
-        explosionVisual.SetActive(!explosionVisual.activeSelf);
+        //explosionVisual.SetActive(!explosionVisual.activeSelf);
 
         CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
         if (collider != null)
