@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GunHitScan : Range
 {
-   
+    public GameObject hitEffect;
     public override void AttackBegin(LayerMask playerMask)
     {
 
@@ -17,6 +17,9 @@ public class GunHitScan : Range
 
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, distance, ~playerMask))
             {
+                GameObject effectHit = Instantiate(hitEffect, hit.point, Quaternion.identity);
+                Destroy(effectHit, 2f);
+                
                 //damage enemy
                 IDamage dmg = hit.collider.GetComponent<IDamage>();
                 dmg?.TakeDamage(damage);
