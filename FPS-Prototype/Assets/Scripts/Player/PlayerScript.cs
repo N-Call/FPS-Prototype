@@ -655,6 +655,8 @@ public class PlayerScript : MonoBehaviour, IDamage
         verticalVelocity.y = 0.0f;
         HP = checkPointHP;
         invulnerable = false;
+
+        ResetElems();
         ResetFOV();
         UpdatePlayerUI();
     }
@@ -864,5 +866,17 @@ public class PlayerScript : MonoBehaviour, IDamage
             elemInversed = true;
             GameManager.instance.playerInInverseScreen.SetActive(true);
         }
+    }
+
+    void ResetElems()
+    {
+        speedBuffed = false;
+        jumpBuffed = false;
+        speedDebuffed = false;
+        jumpDebuffed = false;
+        speedElemMod = 0.0f;
+        jumpElemMod = 0.0f;
+        particleSpMod.gameObject.SetActive(false);
+        particleJpMod.gameObject.SetActive(false);
     }
 }

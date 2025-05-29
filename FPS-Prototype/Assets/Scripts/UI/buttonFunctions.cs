@@ -21,7 +21,7 @@ public class ButtonFunctions : MonoBehaviour
     public void StartGame()
     {
         // this is for the start game menu after button pushed then moves to first level
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public void LvlStartGame()
@@ -73,6 +73,9 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void LvlSelectScene()
     {
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SoundManager.instance.sfxSource.Play();
         SceneManager.LoadScene(1);
     }
 
