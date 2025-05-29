@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Target : MonoBehaviour, IDamage, ITarget
@@ -93,18 +91,15 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Worked");
-       
-            IElemental affected = other.GetComponent<IElemental>();
-            if (buff)
-            {
-                affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-            }
-            else
-            {
-                affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-            }
-        
+        IElemental affected = other.GetComponent<IElemental>();
+        if (buff)
+        {
+            affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
+        }
+        else
+        {
+            affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
+        }
     }
 
     IEnumerator InitiateExplosion()
