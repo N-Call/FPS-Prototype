@@ -30,7 +30,10 @@ public class TurretEnemy : EnemyController
             StartCoroutine(Rotate());
         }
 
-        //GameManager.instance.UpdateEnemyCounter(1);
+        if (addToEnemyCount)
+        {
+            GameManager.instance.UpdateEnemyCounter(1);
+        }
     }
 
     protected override void Update()
