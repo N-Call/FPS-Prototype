@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Windows;
 
 public class FinalGradeSystem : MonoBehaviour
 {

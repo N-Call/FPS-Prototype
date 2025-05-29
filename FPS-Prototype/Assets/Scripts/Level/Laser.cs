@@ -65,8 +65,13 @@ public class Laser : MonoBehaviour
             ray = new Ray(hit.point, Vector3.Reflect(ray.direction, hit.normal));
             remainingLength -= Vector3.Distance(ray.origin, hit.point);
 
-            if (hit.collider.tag != "Reflector")
+            if (!hit.collider.CompareTag("Reflector"))
             {
+                if (!hit.collider.CompareTag("Player"))
+                {
+                    break;
+                }
+
                 IDamage damageable = hit.collider.GetComponent<IDamage>();
                 if (damageable != null && !isDamaging)
                 {
