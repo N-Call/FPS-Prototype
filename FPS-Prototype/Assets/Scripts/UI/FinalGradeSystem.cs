@@ -45,7 +45,7 @@ public class FinalGradeSystem : MonoBehaviour
 
         if (scoreDataList.TryGetValue(levelIndex, out List<string> data))
         {
-
+            Debug.Log("is Converting");
             if (ConvertToInt(data[1]) > ConvertToInt(scores[1]))
             {
                 data = scores;
@@ -54,7 +54,7 @@ public class FinalGradeSystem : MonoBehaviour
         scoreDataList.TryAdd(levelIndex, scores);
     }
 
-    private int ConvertToInt(string time)
+    public int ConvertToInt(string time)
     {
         string[] parts = time.Split(':');
 
@@ -69,12 +69,13 @@ public class FinalGradeSystem : MonoBehaviour
 
     public bool LoadData(int index)
     {
-        if(scoreDataList.TryGetValue(index, out List<string> data))
+        if(scoreDataList == null) { return false; }
+        if (scoreDataList.TryGetValue(index, out List<string> data))
         {
+
             enemyCount = int.Parse(data[0]);
             finalTime = data[1];
             finalGrade = data[2];
-
             return true;
         }
         return false;
@@ -84,12 +85,14 @@ public class FinalGradeSystem : MonoBehaviour
     #region Save and Load
     public void Save(ref FinalGradeData data)
     {
+
         data.scoreDataList = scoreDataList;
     }
 
-    public void Load(FinalGradeData data)
+    public void Load(ref FinalGradeData data)
     {
         scoreDataList = data.scoreDataList;
+        Debug.Log(data.scoreDataList);
     }
 
     #endregion

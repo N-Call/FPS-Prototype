@@ -13,7 +13,7 @@ public class LvlSelectManager : MonoBehaviour
     [Header("Images")]
     // put is sprite array
     public GameObject[] lvlIamges;
-    
+
     [Header("Buttons")]
     // look at lists/array
     //public GameObject[] lvlRecords;
@@ -21,19 +21,20 @@ public class LvlSelectManager : MonoBehaviour
     [SerializeField] GameObject StartGame;
     
     [SerializeField] GameObject ActiveImage;
+    [SerializeField] GameObject ActiveRecord;
 
     public int SelectedScene;
 
     private void Awake()
     {
         instance = this;
-        
     }
 
     public void StartGameBtn()
     {
-        if(SelectedScene != 0)
-        SceneManager.LoadScene(SelectedScene);
+        if (SelectedScene != 0)
+            SceneManager.LoadScene(SelectedScene);
+
         Time.timeScale = GameManager.instance.timeScaleOrig;
     }
  
@@ -49,13 +50,14 @@ public class LvlSelectManager : MonoBehaviour
         ActiveImage.SetActive(true);
 
 
-        //if (ActiveRecord != null)
-        //{
-        //    ActiveRecord.SetActive(false);
-        //}
-
-        //ActiveRecord = lvlRecords[Index];
-        //ActiveRecord.SetActive(true);
+        if (GameManager.instance.gradeSystem.LoadData(Index + 2))
+        {
+            ActiveRecord.SetActive(true);
+        }
+        else
+        {
+            ActiveRecord.SetActive(false);
+        }
 
         SelectedScene = Index + 2;
     }

@@ -17,7 +17,6 @@ public class Checkpoint : MonoBehaviour
             SoundManager.instance.PlaySFX("checkPoint", 1f);
             Debug.Log("checkpoint reached");
             GameManager.instance.SetSpawnPosition(GameManager.instance.player.transform.position);
-            GameManager.instance.playerScript.UpdateCheckpointHealth();
             Destroy(gameObject);
 
             foreach (Spawner spawner in spawnersToDisable)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI timerCount;
+    public TextMeshProUGUI timerCount;
     [SerializeField] float timerDelay;
 
     float elapsedDelayTime;
