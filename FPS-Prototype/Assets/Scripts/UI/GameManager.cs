@@ -281,15 +281,18 @@ public class GameManager : MonoBehaviour
         {
             
             StatePause();
+            menuActive = menuWin;
+            menuActive.SetActive(true);
             // show off win menu Time with enemy time added 
             SoundManager.instance.PlaySFX("victory", 0.1f);
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
             gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
-            menuActive = menuWin;
-            menuActive.SetActive(true);
-            gradeSystem.SaveFinal(enemyCount, timerWinCount.GetComponent<TMP_Text>().text, gradeLetter.text);
-            
+            float elapsedTempTime = EnemyTimePenalty(elapsedTime.GetComponent<Timer>().elapsedTime);
+            int minutes = Mathf.FloorToInt(elapsedTempTime / 60);
+            int seconds = Mathf.FloorToInt(elapsedTempTime % 60);
+
+            gradeSystem.SaveFinal(enemyCount, string.Format("{0:00}:{1:00}", minutes, seconds), gradeLetter.text);
         }
     }
 

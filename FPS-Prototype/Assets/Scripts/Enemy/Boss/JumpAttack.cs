@@ -40,7 +40,7 @@ public class JumpAttack : BaseState
     public override void Exit()
     {
         base.Exit();
-
+        bossSM.currentAbility = BossSM.Ability.None;
     }
 
     public void ResetRigid()

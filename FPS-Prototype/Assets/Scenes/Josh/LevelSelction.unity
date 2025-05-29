@@ -1794,6 +1794,7 @@ MonoBehaviour:
   - {fileID: 2110995672}
   StartGame: {fileID: 101829506}
   ActiveImage: {fileID: 0}
+  ActiveRecord: {fileID: 3664739029970566778}
   SelectedScene: 0
 --- !u!1 &1463871705
 GameObject:
@@ -4656,7 +4657,6 @@ MonoBehaviour:
   ammoOrigCap: 45
   reloadCap: 15
   ammoCount: 0
-  currTotalBullets: 0
   distance: 150
   damage: 1
   shootRate: 0.25
@@ -5914,21 +5914,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1269131063747403741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8946092158721925709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee167b8f6366e1944b51cc40b9acf636, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timerCount: {fileID: 904998865223064966}
-  timerDelay: 0
-  elapsedTime: 0
 --- !u!222 &1288716297770367136
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13946,14 +13931,15 @@ MonoBehaviour:
   menuRules: {fileID: 795156866167432178}
   menuCredits: {fileID: 0}
   menuSettings: {fileID: 0}
+  menuShowBoard: {fileID: 0}
   nextLvlBtn: {fileID: 0}
   reticle: {fileID: 4887089517942252084}
   hitMakerReticle: {fileID: 8786998427035178709}
   gradeLetter: {fileID: 2965018833169027340}
   ammoCount: {fileID: 0}
   weaponIcon: {fileID: 0}
-  enemyCountUI: {fileID: 5582328311303761812}
-  timerWinCount: {fileID: 0}
+  enemyCountUI: {fileID: 1709925639566261902}
+  timerWinCount: {fileID: 8946092158721925709}
   elapsedTime: {fileID: 0}
   enemyWinCount: {fileID: 1709925639566261902}
   buffSprint: {fileID: 0}
@@ -15102,7 +15088,6 @@ MonoBehaviour:
   ammoOrigCap: 25
   reloadCap: 1
   ammoCount: 0
-  currTotalBullets: 0
   distance: 10
   damage: 2
   shootRate: 0.7
@@ -15199,7 +15184,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 84}
+  m_AnchoredPosition: {x: -488.91495, y: 84}
   m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &3617380854204460515
@@ -73669,7 +73654,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1034080023512404552}
   - component: {fileID: 8338597787879975228}
-  - component: {fileID: 1269131063747403741}
   - component: {fileID: 904998865223064966}
   m_Layer: 5
   m_Name: timerWinCount

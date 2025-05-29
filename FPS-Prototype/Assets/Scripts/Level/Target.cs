@@ -93,7 +93,6 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Worked");
        
             IElemental affected = other.GetComponent<IElemental>();
             if (buff)

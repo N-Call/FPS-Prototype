@@ -101,7 +101,6 @@ public class ButtonFunctions : MonoBehaviour
     public void Load()
     {
         SaveSystem.Load();
-        GameManager.instance.StateUnpause();
     }
 
     public void Quit()

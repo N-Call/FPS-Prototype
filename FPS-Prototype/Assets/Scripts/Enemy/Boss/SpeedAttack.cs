@@ -57,8 +57,11 @@ public class SpeedAttack : BaseState
     public override void Exit()
     {
         base.Exit();
+        speedTimer = 0;
+        isTransforming = false;
         bossSM.agent.isStopped = true;
         bossSM.agent.acceleration = origSpeed;
+        bossSM.currentAbility = BossSM.Ability.None;
 
     }
 }

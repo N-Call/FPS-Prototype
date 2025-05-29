@@ -27,6 +27,7 @@ public class BossSM : StateMachine, IDamage
     public Animator animator;
     public NavMeshAgent agent;
     public Transform[] bodyParts;
+    public BossOrb[] orbs;
     public Transform lShoulder;
     public Transform rShoulder;
     public Transform targetPoint;
@@ -34,6 +35,7 @@ public class BossSM : StateMachine, IDamage
     public GameObject lShootPos;
     public GameObject rShootPos;
     public LayerMask ignorelayer;
+    public GameObject orbLocation;
 
     [Header("Boss Settings")]
     public int health;
@@ -42,6 +44,7 @@ public class BossSM : StateMachine, IDamage
     public bool isAnimDone;
     public int currentDamage;
     public float deathTimer;
+    public float orbSpawnTimer;
 
     [Header("Idle Settings")]
     public int decideDis;
@@ -63,6 +66,8 @@ public class BossSM : StateMachine, IDamage
     public float rollSpeed;
 
     public Ability currentAbility;
+
+    public float orbSpawnCounter;
     private bool isInvensible;
 
     public void Awake()
@@ -80,6 +85,7 @@ public class BossSM : StateMachine, IDamage
         targetPoint = new GameObject("Jump Pos").transform;
         targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
         currentHealth = health;
+        orbSpawnCounter = orbSpawnTimer;
     }
 
     protected override BaseState GetFirstState()
@@ -116,6 +122,18 @@ public class BossSM : StateMachine, IDamage
     public void SpawnRightProjectile()
     {
         Instantiate(Bullet, rShootPos.transform.position, rShootPos.transform.rotation);
+    }
+
+    public void SpawnOrb()
+    {
+        int store = UnityEngine.Random.Range(0, orbs.Length - 1);
+        BossOrb orb = Instantiate(orbs[store], orbLocation.transform.position, orbLocation.transform.rotation);
+        orb.boss = this;
+    }
+
+    public void ActivateAbility()
+    {
+
     }
 
     private void Dead()
