@@ -9,7 +9,9 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected int currentHealth;
 
     [SerializeField] GameObject parent;
-    
+
+    [SerializeField] protected bool addToEnemyCount;
+
     //[SerializeField] Animator anim;
     //[SerializeField] int animTransSpeed;
 
@@ -63,6 +65,11 @@ public class EnemyController : MonoBehaviour, IDamage
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
+
+        if (addToEnemyCount)
+        {
+            GameManager.instance.UpdateEnemyCounter(1);
+        }
     }
 
     // Update is called once per frame
