@@ -13,11 +13,13 @@ public class MovingObjectSpawner : MonoBehaviour
     [SerializeField] int stopSpawningAfter;
     [SerializeField] bool deleteWhenFinished;
     [SerializeField] bool onlySpawnOne;
+    
 
     GameObject lastSpawned;
     float spawnTime;
     float elapsedTime;
     int objectsSpawned;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,7 +42,6 @@ public class MovingObjectSpawner : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-
             return;
         }
 

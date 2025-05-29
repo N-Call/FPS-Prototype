@@ -21,9 +21,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuSettings;
     [SerializeField] GameObject menuShowBoard;
     [SerializeField] GameObject nextLvlBtn;
+
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
     [SerializeField] GameObject hitMakerReticle;
+
     [Header("UI Counts")]
     [SerializeField] TMP_Text gradeLetter;
     [SerializeField] GameObject ammoCount;
@@ -32,11 +34,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject timerWinCount;
     [SerializeField] GameObject elapsedTime;
     [SerializeField] TMP_Text enemyWinCount;
+
     [Header("Buff Icons")]
     [SerializeField] GameObject buffSprint;
     [SerializeField] GameObject debuffSprint;
     [SerializeField] GameObject buffJump;
     [SerializeField] GameObject debuffJump;
+
+    
 
     List<EnemyController> enemiesToRespawn;
 
@@ -50,6 +55,8 @@ public class GameManager : MonoBehaviour
     public GameObject textPopUp;
     public TextMeshProUGUI speakerUI;
     public TextMeshProUGUI textComponent;
+
+    public Image bossHPbar;
 
     public Image playerHPbar;
     public Image playerShieldbar;
