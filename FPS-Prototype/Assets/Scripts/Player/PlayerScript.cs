@@ -829,6 +829,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         {
             Debug.Log("Reversing Speed");
             particleSpMod.gameObject.SetActive(false);
+            GameManager.instance.BuffSprintIcon(false);
             AddModifier(-speedElemMod);
             ResetFOV();
             speedBuffed = false;
@@ -838,16 +839,19 @@ public class PlayerScript : MonoBehaviour, IDamage
             Debug.Log("Reversing Jump");
             AddModifier(0.0f, -jumpElemMod);
             particleJpMod.gameObject.SetActive(false);
+            GameManager.instance.BuffJumpIcon(false);
             jumpBuffed = false;
         }
         if (speedDebuffed && GameManager.instance.speedDebuffTimer >= GameManager.instance.speedDebuffLimit)
         {
+            GameManager.instance.DeBuffSprintIcon(false);
             AddModifier(1 / speedElemMod);
             ResetFOV();
             speedDebuffed = false;
         }
         if (jumpDebuffed && GameManager.instance.jumpDebuffTimer >= GameManager.instance.jumpDebuffLimit)
         {
+            GameManager.instance.DeBuffJumpIcon(false);
             AddModifier(0.0f, 1 / jumpElemMod);
             jumpDebuffed = false;
         }
