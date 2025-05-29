@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -140,25 +141,44 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         currentHealth -= amount;
         SoundManager.instance.PlaySFX("turretHit", 0.2f);
-        if (currentHealth <= 0)
 
-            if (currentHealth <= 0)
-            {
-                Destroy(gameObject);
-                GameManager.instance.UpdateEnemyCounter(-1);
-                SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
-            }
-            else
-            {
-                StartCoroutine(flashRed());
-            }
-            
+        if (currentHealth <= 0)
+        {
+            Destroy(gameObject);
+            GameManager.instance.UpdateEnemyCounter(-1);
+            SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
+        }
+        else
+        {
+            StartCoroutine(flashRed());
+        }        
     }
+
     protected IEnumerator flashRed()
-    {    
+    {
+        // Set this object's color to red
         model.material.color = Color.red;
+
+        List<Color> colors = new List<Color>();
+
+        // Set children's colors to red
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            colors.Add(renderer.material.color);
+            renderer.material.color = Color.red;
+        }
+
         yield return new WaitForSeconds(0.05f);
+
+        // Set this object's color back to its original
         model.material.color = colorOrig;
+
+        int index = 0;
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.material.color = colors[index];
+            index++;
+        }
     }
 
     protected void FaceTarget()
@@ -172,4 +192,5 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         
     }
+
 }
