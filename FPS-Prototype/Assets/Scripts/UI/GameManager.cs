@@ -88,7 +88,6 @@ public class GameManager : MonoBehaviour
 
         timeScaleOrig = Time.timeScale;
         enemiesToRespawn = new List<EnemyController>();
-
     }
 
     // Update is called once per frame
@@ -234,7 +233,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void ToggleReticle()
-    {// this is for the Hit Marker 
+    {
+        // this is for the Hit Marker 
         StartCoroutine(ReticleWaitTime());
     }
 
