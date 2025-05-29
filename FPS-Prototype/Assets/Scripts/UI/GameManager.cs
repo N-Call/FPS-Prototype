@@ -312,6 +312,11 @@ public class GameManager : MonoBehaviour
     public void Respawn()
     {
         playerScript.GetComponent<CharacterController>().enabled = false;
+        
+        if (player.transform.parent != null)
+        {
+            player.transform.parent = null;
+        }
 
         player.transform.position = respawnPosition;
         playerScript.ResetPlayerStats();
