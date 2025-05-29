@@ -129,8 +129,8 @@ public class GameManager : MonoBehaviour
         TogglePPVolume();
         // to turn off the reticle
         reticle.SetActive(false);
-        SoundManager.instance.musicSource.Stop();
-        SoundManager.instance.sfxSource.Pause();
+        SoundManager.instance.musicSource.Pause();
+        SoundManager.instance.sfxSource.Stop();
         // stop the player from shooting
         playerScript.enabled = false;
     }
@@ -147,7 +147,6 @@ public class GameManager : MonoBehaviour
         // to turn on the reticle
         reticle.SetActive(true);
         SoundManager.instance.musicSource.Play();
-        SoundManager.instance.sfxSource.Play();
         playerScript.enabled = true;
 
     }

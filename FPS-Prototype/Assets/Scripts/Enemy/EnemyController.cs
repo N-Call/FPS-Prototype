@@ -7,6 +7,8 @@ public class EnemyController : MonoBehaviour, IDamage
 {
     [SerializeField] protected Renderer model;
     [SerializeField] protected int currentHealth;
+
+    [SerializeField] GameObject parent;
     
     //[SerializeField] Animator anim;
     //[SerializeField] int animTransSpeed;
@@ -23,21 +25,15 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected Transform shootPos;
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
-    [SerializeField] protected int damageAmount;
 
     [Header("Turret Settings")]
-    [SerializeField]protected bool shouldRotate = true;
-    [SerializeField][Range(0, 90)]protected float maxPitch;
-    [SerializeField][Range(0, 90)]protected float minPitch;
-
-    [Header("Model 2 Setteings")]
-    [SerializeField] protected Transform shootPosL;
-    [SerializeField] protected Transform shootPosR;
-
+    [SerializeField] protected bool shouldRotate = true;
+    [SerializeField] [Range(0,90)] protected float maxPitch;
+    [SerializeField][Range(0, 90)] protected float minPitch;
 
     protected Transform turretHead;
     protected Transform turretBarrel;
-    
+
     protected Color colorOrig;
     protected Vector3 playerDir;
     public Vector3 originalPosition;
@@ -47,21 +43,17 @@ public class EnemyController : MonoBehaviour, IDamage
     protected float angleToPlayer;
     protected float roamTimer;
     protected float stoppingDistanceOrig;
-    protected float rotationAmount = 1.0f;
-    protected int ticksPerSecond = 60;
+    protected float rotationAmount;
+    protected float ticksPerSecond;
+
+    
     protected float originalShootRate;
     protected int maxHealth;
 
     protected bool playerInRange;
     protected bool shootRateBuffed = false;
     protected bool canSeePlayer;
-    protected bool canShoot;
-    protected bool leftShot;
-
-    public CustomTrigger RangeTrigger;
-    public CustomTrigger ExplosionTrigger;
-
-
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
@@ -122,6 +114,7 @@ public class EnemyController : MonoBehaviour, IDamage
         UnityEngine.AI.NavMeshHit hit;
         UnityEngine.AI.NavMesh.SamplePosition(randPos, out hit, roamDist, 1);
         agent.SetDestination(hit.position);
+
     }
 
     protected virtual bool CanSeePlayer()
@@ -149,23 +142,23 @@ public class EnemyController : MonoBehaviour, IDamage
     public virtual void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        SoundManager.instance.PlaySFX("turretHit", 0.3f);
+        SoundManager.instance.PlaySFX("turretHit", 0.2f);
         if (currentHealth <= 0)
 
             if (currentHealth <= 0)
-        {
-            GameManager.instance.UpdateEnemyCounter(-1);
-            Destroy(gameObject);
-            SoundManager.instance.PlaySFX("turretDestroy", 0.3f); 
-        }
-        else
-        {
-            StartCoroutine(flashRed());
-        }
+            {
+                Destroy(gameObject);
+                GameManager.instance.UpdateEnemyCounter(-1);
+                SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
+            }
+            else
+            {
+                StartCoroutine(flashRed());
+            }
+            
     }
-
     protected IEnumerator flashRed()
-    {
+    {    
         model.material.color = Color.red;
         yield return new WaitForSeconds(0.05f);
         model.material.color = colorOrig;

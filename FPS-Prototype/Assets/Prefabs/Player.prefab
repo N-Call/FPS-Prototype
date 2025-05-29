@@ -15878,6 +15878,7 @@ MonoBehaviour:
   ammoOrigCap: 25
   reloadCap: 1
   ammoCount: 0
+  currTotalBullets: 0
   distance: 10
   damage: 2
   shootRate: 0.3
@@ -16747,6 +16748,7 @@ GameObject:
   - component: {fileID: 722909320714874768}
   - component: {fileID: 9065941460940187509}
   - component: {fileID: 7332688296020048352}
+  - component: {fileID: 4695542609834565241}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -16819,25 +16821,23 @@ MonoBehaviour:
   wallJumpForce: 8
   wallCheckDist: 0.65
   wallJumpHoriForce: 24
-  wallRunCooldown: 0.4
+  wallRunCooldown: 0.01
   wallStickForce: 24
-  provideExtraJumpIfNeeded: 0
-  speedElemMod: 2
-  speedElemFOVMod: 10
-  speedElemModTime: 5
-  jumpElemMod: 1.25
-  jumpElemModTime: 5
-  shieldElemMod: 1
-  walkBobAmp: 0
-  walkBobFreq: 0
-  sprintBobAmp: 0
-  sprintBobFreq: 0
-  bobReturnSpeed: 0
+  provideExtraJumpIfNeeded: 1
+  walkBobAmp: 0.1
+  walkBobFreq: 10
+  sprintBobAmp: 0.2
+  sprintBobFreq: 15
+  bobReturnSpeed: 10
   sprintFOVMod: 3
   changeRate: 10
   particleSpMod: {fileID: 1916699316069464853}
   particleSpRun: {fileID: 8179249694728930984}
   particleJpMod: {fileID: 8248517679668018830}
+  speedBuffed: 0
+  jumpBuffed: 0
+  speedDebuffed: 0
+  jumpDebuffed: 0
 --- !u!143 &722909320714874768
 CharacterController:
   m_ObjectHideFlags: 0
@@ -16916,6 +16916,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &4695542609834565241
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7230982164112844161}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &2206619571375698262
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17082,6 +17098,7 @@ MonoBehaviour:
   damageAmount: 0
   speed: 0
   destroyTime: 0
+  FOV: 0
   chaseDist: 0
   dotDamage: 0
   dotDamageRate: 0
@@ -17272,6 +17289,7 @@ MonoBehaviour:
   ammoOrigCap: 45
   reloadCap: 15
   ammoCount: 0
+  currTotalBullets: 0
   distance: 150
   damage: 2
   shootRate: 0.25

@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class MineEnemy : EnemyController
 {
-    public void Awake()
-    {
-        //Unity Events Listening for OnRangeTrigger and OnExplosionTrigger
-        RangeTrigger.onTriggerEnter.AddListener(() => OnRangeTriggerEnter(GameManager.instance.player.GetComponent<Collider>()));
-        RangeTrigger.onTriggerExit.AddListener(() => OnRangeTriggerExit(GameManager.instance.player.GetComponent<Collider>()));
-        ExplosionTrigger.onTriggerEnter.AddListener(() => OnExplosionTriggerEnter(GameManager.instance.player.GetComponent<Collider>()));
-    }
+    [Header("Mine Settings")]
+    [SerializeField] float explosionDistance;
+    [SerializeField] int damageAmount;
+
+
     protected override bool CanSeePlayer()
     {
         playerDir = (GameManager.instance.player.transform.position - transform.position);
@@ -27,6 +25,10 @@ public class MineEnemy : EnemyController
                 {
                     FaceTarget();
                 }
+                if (hit.distance <= explosionDistance)
+                {
+                    Explode();
+                }
                 agent.stoppingDistance = stoppingDistanceOrig;
                 return true;
             }
@@ -34,44 +36,19 @@ public class MineEnemy : EnemyController
         agent.stoppingDistance = 0;
         return false;
     }
- public override void TakeDamage(int amount)
+    public override void TakeDamage(int amount)
     {
         base.TakeDamage(amount);
         if (currentHealth > 0.0f)
         {
             agent.SetDestination(GameManager.instance.player.transform.position);
         }
+    }
           
-    }
-
-    void OnRangeTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-        }
-    }
-
-    void OnRangeTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-        }
-    }
-
-    private void OnExplosionTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Explode();
-        }
-    }
-
     public void Explode()
     {
         SoundManager.instance.PlaySFX("mineExplosion", 0.3f);
-        IDamage damage = GameManager.instance.GetComponent<IDamage>();
+        IDamage damage = GameManager.instance.player.GetComponent<IDamage>();
         damage?.TakeDamage(damageAmount);
         GameManager.instance.ToggleReticle();
         Destroy(gameObject);
