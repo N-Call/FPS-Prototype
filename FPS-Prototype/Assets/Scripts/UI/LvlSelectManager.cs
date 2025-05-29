@@ -27,13 +27,13 @@ public class LvlSelectManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        
     }
 
     public void StartGameBtn()
     {
-        if(SelectedScene != 0)
-        SceneManager.LoadScene(SelectedScene);
+        if (SelectedScene != 0)
+            SceneManager.LoadScene(SelectedScene);
+
         Time.timeScale = GameManager.instance.timeScaleOrig;
     }
  
