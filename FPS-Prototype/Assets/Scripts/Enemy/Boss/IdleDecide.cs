@@ -3,7 +3,8 @@ using UnityEngine;
 public class IdleDecide : BaseState 
 {
     private BossSM bossSM;
-    public int counter;
+    private float counter;
+    private float spawnOrbTimer;
     private GameObject player;
 
     public IdleDecide(StateMachine stm) : base(name: "decide", stm) 
@@ -39,6 +40,12 @@ public class IdleDecide : BaseState
 
         if (bossSM.GetCurrentHealth() < bossSM.health / 2)
         {
+            if(bossSM.orbSpawnCounter >= bossSM.orbSpawnTimer && bossSM.currentAbility == 0)
+            {
+                bossSM.SpawnOrb();
+                bossSM.orbSpawnCounter = 0;
+            }
+
             //Phase Two State Logics
             switch (bossSM.currentAbility)
             {
@@ -63,7 +70,12 @@ public class IdleDecide : BaseState
         base.Action();
         if (bossSM.animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-        counter--;
+            counter -= Time.deltaTime;
+        }
+
+        if (bossSM.GetCurrentHealth() < bossSM.health / 2)
+        {
+            bossSM.orbSpawnCounter += Time.deltaTime;
         }
     }
 
