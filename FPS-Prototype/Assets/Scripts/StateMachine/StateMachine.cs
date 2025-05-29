@@ -9,7 +9,7 @@ public abstract class StateMachine : MonoBehaviour
         return this.currentState != null;
     }
 
-    protected virtual void Start()
+    void Start()
     {
         this.currentState = this.GetFirstState();
         if (this.NotEmptyState()) 
@@ -18,7 +18,7 @@ public abstract class StateMachine : MonoBehaviour
         }
     }
 
-    protected virtual void Update()
+    void Update()
     {
         if (this.NotEmptyState())
         {
