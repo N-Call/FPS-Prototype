@@ -137,7 +137,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        TogglePPVolume();
+        EnablePPVolume();
+
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();
@@ -152,7 +153,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = timeScaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        TogglePPVolume();
+        DisablePPVolume();
 
         // Disable menus
         menuSettings.SetActive(false);
@@ -292,15 +293,24 @@ public class GameManager : MonoBehaviour
         debuffJump.SetActive(active);
     }
 
-    public void TogglePPVolume()
-    {// toggle the blurr for menus 
-        
+    public void DisablePPVolume()
+    {
         PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
         if (ppVolume != null)
         {
-            ppVolume.enabled = !ppVolume.enabled;
+            ppVolume.enabled = false;
         }
     }
+
+    public void EnablePPVolume()
+    {
+        PostProcessVolume ppVolume = Camera.main.GetComponent<PostProcessVolume>();
+        if (ppVolume != null)
+        {
+            ppVolume.enabled = true;
+        }
+    }
+
     public void YouLose()
     {
         StatePause();
@@ -333,7 +343,7 @@ public class GameManager : MonoBehaviour
             int minutes = Mathf.FloorToInt(elapsedTempTime / 60);
             int seconds = Mathf.FloorToInt(elapsedTempTime % 60);
 
-            gradeSystem.SaveFinal(enemyCount, string.Format("{0:00}:{1:00}", minutes, seconds), gradeLetter.text);
+            //gradeSystem.SaveFinal(enemyCount, string.Format("{0:00}:{1:00}", minutes, seconds), gradeLetter.text);
         }
     }
 
