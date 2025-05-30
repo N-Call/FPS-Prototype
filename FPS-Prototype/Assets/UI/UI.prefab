@@ -1811,7 +1811,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 369235244299770383}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VolumeSettings, Assembly-CSharp
         m_MethodName: SetMasterVolume
         m_Mode: 1
@@ -3832,7 +3832,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 369235244299770383}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VolumeSettings, Assembly-CSharp
         m_MethodName: SetMusicVolume
         m_Mode: 1
@@ -6329,7 +6329,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 369235244299770383}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VolumeSettings, Assembly-CSharp
         m_MethodName: SetSFXVolume
         m_Mode: 1
@@ -10246,6 +10246,7 @@ MonoBehaviour:
   sceneData: {fileID: 0}
   sceneLoader: {fileID: 0}
   gradeSystem: {fileID: 0}
+  volumeSystemData: {fileID: 0}
   isPaused: 0
   timeScaleOrig: 0
   startPos: {x: 0, y: 0, z: 0}
@@ -11253,7 +11254,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1736039476933475114}
   - component: {fileID: 8618165681681423165}
-  - component: {fileID: 369235244299770383}
   - component: {fileID: 7895485856173061630}
   m_Layer: 5
   m_Name: Settings
@@ -11301,22 +11301,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7897362285344450270}
   m_CullTransparentMesh: 1
---- !u!114 &369235244299770383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7897362285344450270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2780830165952f4a8e430545dbc77dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myMixer: {fileID: 24100000, guid: dc31931df67a57a4fba184abe4e40386, type: 2}
-  musicSlider: {fileID: 4884531413770577712}
-  SFXSlider: {fileID: 4775786698767492388}
-  masterSlider: {fileID: 2006103402669197063}
 --- !u!114 &7895485856173061630
 MonoBehaviour:
   m_ObjectHideFlags: 0

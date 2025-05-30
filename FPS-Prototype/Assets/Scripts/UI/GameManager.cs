@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
     public SceneData sceneData;
     public SceneLoader sceneLoader;
     public FinalGradeSystem gradeSystem;
+    public VolumeSystemData volumeSystemData;
 
     public bool isPaused;
     public float timeScaleOrig;
@@ -97,6 +98,7 @@ public class GameManager : MonoBehaviour
 
         timeScaleOrig = Time.timeScale;
         enemiesToRespawn = new List<EnemyController>();
+        SaveSettingsSystem.Load();
     }
 
     // Update is called once per frame
@@ -163,6 +165,7 @@ public class GameManager : MonoBehaviour
         // to turn on the reticle
         reticle.SetActive(true);
         SoundManager.instance.musicSource.Play();
+        volumeSystemData.SetVolumes();
         playerScript.enabled = true;
     }
 

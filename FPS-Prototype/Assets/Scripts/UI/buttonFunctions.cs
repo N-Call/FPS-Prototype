@@ -96,6 +96,11 @@ public class ButtonFunctions : MonoBehaviour
     {
         SaveSystem.Save();
     }
+
+    public void SaveSetting()
+    {
+        SaveSettingsSystem.Save();
+    }
     public void Load()
     {
         SaveSystem.Load();
