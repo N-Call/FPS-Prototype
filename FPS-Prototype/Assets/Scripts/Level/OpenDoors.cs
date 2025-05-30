@@ -47,7 +47,6 @@ public class OpenDoors : MonoBehaviour
         {
             if (DoorAnimation != null)
             {
-                Debug.Log("closing door");
                 StopCoroutine(DoorAnimation);
                 
             }
@@ -74,7 +73,6 @@ public class OpenDoors : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("exiting Door Trigger");
             Close(other.transform.position);
         }
     }

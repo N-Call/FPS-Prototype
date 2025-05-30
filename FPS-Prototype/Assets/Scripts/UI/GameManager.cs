@@ -343,7 +343,7 @@ public class GameManager : MonoBehaviour
             int minutes = Mathf.FloorToInt(elapsedTempTime / 60);
             int seconds = Mathf.FloorToInt(elapsedTempTime % 60);
 
-            //gradeSystem.SaveFinal(enemyCount, string.Format("{0:00}:{1:00}", minutes, seconds), gradeLetter.text);
+            gradeSystem.SaveFinal(enemyCount, string.Format("{0:00}:{1:00}", minutes, seconds), gradeLetter.text);
         }
     }
 
