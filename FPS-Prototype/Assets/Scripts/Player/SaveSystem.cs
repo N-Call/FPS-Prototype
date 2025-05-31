@@ -9,6 +9,7 @@ public class SaveSystem
     {
         public SceneSaveData SceneData;
         public FinalGradeData finalGradeData;
+        public DifficultySaveData difficultyData;
     }
 
     public static string SaveFileName()
@@ -28,6 +29,7 @@ public class SaveSystem
     {
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
+        DifficultyManager.Instance.Save(ref saveData.difficultyData);
     }
 
     public static void Load()
@@ -56,11 +58,12 @@ public class SaveSystem
     {
         GameManager.instance.sceneData.Load(saveData.SceneData);
         GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
-
+        DifficultyManager.Instance.Load(saveData.difficultyData);
     }
 
     private static void HandleLoadGradeData()
     {
+        DifficultyManager.Instance.Load(saveData.difficultyData);
         GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
     }
 }
