@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class FinalGradeSystem : MonoBehaviour
@@ -69,10 +70,10 @@ public class FinalGradeSystem : MonoBehaviour
 
     public bool LoadData(int index)
     {
-        if(scoreDataList == null) { return false; }
+        if(scoreDataList == null) {return false; }
+
         if (scoreDataList.TryGetValue(index, out List<string> data))
         {
-
             enemyCount = int.Parse(data[0]);
             finalTime = data[1];
             finalGrade = data[2];
@@ -91,7 +92,6 @@ public class FinalGradeSystem : MonoBehaviour
     public void Load(ref FinalGradeData data)
     {
         scoreDataList = ScoreDataConverter.ConvertToDictionary(data.scoreDataList);
-        Debug.Log("Loaded scoreDataList with " + scoreDataList.Count + " entries.");
     }
     #endregion
 }

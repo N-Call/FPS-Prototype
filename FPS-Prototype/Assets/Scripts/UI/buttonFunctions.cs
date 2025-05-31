@@ -77,6 +77,14 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void LvlSelectStartScene()
+    {
+        SaveSystem.LoadGrades();
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SceneManager.LoadScene(1);
+    }
+
     public void Settings()
     {
         GameManager.instance.ToggleSettings();

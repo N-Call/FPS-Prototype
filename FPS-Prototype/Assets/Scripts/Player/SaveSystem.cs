@@ -41,10 +41,26 @@ public class SaveSystem
         }
     }
 
+    public static void LoadGrades()
+    {
+        if (File.Exists(SaveFileName()))
+        {
+            string saveContent = File.ReadAllText(SaveFileName());
+
+            saveData = JsonUtility.FromJson<SaveData>(saveContent);
+            HandleLoadGradeData();
+        }
+    }
+
     private static void HandleLoadData()
     {
         GameManager.instance.sceneData.Load(saveData.SceneData);
         GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
 
+    }
+
+    private static void HandleLoadGradeData()
+    {
+        GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
     }
 }
