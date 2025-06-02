@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class LvlSelectManager : MonoBehaviour
@@ -19,7 +20,8 @@ public class LvlSelectManager : MonoBehaviour
     //public GameObject[] lvlRecords;
 
     [SerializeField] GameObject StartGame;
-    
+
+    [SerializeField] Button[] lvlsBtn;
     [SerializeField] GameObject ActiveImage;
     [SerializeField] GameObject ActiveRecord;
 
@@ -28,6 +30,27 @@ public class LvlSelectManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+    }
+
+    private void Start()
+    {
+        bool nextlvl = false;
+        for (int i = 0; i < lvlsBtn.Length; i++)
+        {
+            if (!GameManager.instance.gradeSystem.LoadData(i + 2))
+            {
+                if (!nextlvl)
+                {
+                    nextlvl = true;
+                }
+                else
+                {
+                    lvlsBtn[i].interactable = false;
+                }
+            }
+
+        }
     }
 
     public void StartGameBtn()

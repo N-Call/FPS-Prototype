@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.RayTracingAccelerationStructure;
 
 public class ButtonFunctions : MonoBehaviour
 {
@@ -77,6 +78,21 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void LvlSelectStartScene()
+    {
+        SaveSystem.LoadGrades();
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SceneManager.LoadScene(1);
+    }
+
+
+    public void OnSelectDifficulty(int difficultyLevel)
+    {
+        DifficultyManager.Instance.SetDifficulty((EDifficultyLevel)difficultyLevel);
+        StartGame();
+    }
+
     public void Settings()
     {
         GameManager.instance.ToggleSettings();
@@ -95,6 +111,11 @@ public class ButtonFunctions : MonoBehaviour
     public void Save()
     {
         SaveSystem.Save();
+    }
+
+    public void SaveSetting()
+    {
+        SaveSettingsSystem.Save();
     }
     public void Load()
     {

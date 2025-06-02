@@ -8,7 +8,8 @@ public class SaveSystem
     struct SaveData
     {
         public SceneSaveData SceneData;
-        //public FinalGradeData finalGradeData;
+        public FinalGradeData finalGradeData;
+        public DifficultySaveData difficultyData;
     }
 
     public static string SaveFileName()
@@ -27,7 +28,8 @@ public class SaveSystem
     private static void HandleSaveData()
     {
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
-        //GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
+        GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
+        DifficultyManager.Instance.Save(ref saveData.difficultyData);
     }
 
     public static void Load()
@@ -41,10 +43,27 @@ public class SaveSystem
         }
     }
 
+    public static void LoadGrades()
+    {
+        if (File.Exists(SaveFileName()))
+        {
+            string saveContent = File.ReadAllText(SaveFileName());
+
+            saveData = JsonUtility.FromJson<SaveData>(saveContent);
+            HandleLoadGradeData();
+        }
+    }
+
     private static void HandleLoadData()
     {
         GameManager.instance.sceneData.Load(saveData.SceneData);
-        //GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
+        GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
+        DifficultyManager.Instance.Load(saveData.difficultyData);
+    }
 
+    private static void HandleLoadGradeData()
+    {
+        DifficultyManager.Instance.Load(saveData.difficultyData);
+        GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
     }
 }
