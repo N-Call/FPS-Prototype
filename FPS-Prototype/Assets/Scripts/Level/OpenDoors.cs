@@ -7,12 +7,13 @@ using Unity.VisualScripting;
 public class OpenDoors : MonoBehaviour
 {
 
-    public bool isAlarmDoor;
+    public bool isLocked;
     public bool isOpen = false;
     public bool keepDoorOpen;
     [SerializeField] private float speed = 1.0f;
     [SerializeField] private Vector3 slideDirection = Vector3.forward;
     [SerializeField] private float slideAmount = 7.0f;
+    [SerializeField] string sfxName; 
 
     private Vector3 startPosition;
     private Coroutine DoorAnimation;
@@ -60,13 +61,15 @@ public class OpenDoors : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            SoundManager.instance.PlaySFX(sfxName, 0.4f);
             Debug.Log("entering Door Trigger");
             Open(other.transform.position);
         }
-        //if (isAlarmDoor && !isOpen)
-        //{
-        //    StartCoroutine(PlayAlarm());
-        //}
+        if(isLocked)
+        {
+            SoundManager.instance.PlaySFX("Door Lock", 0.3f);
+        }
+        
     }
 
     private void OnTriggerExit(Collider other)
