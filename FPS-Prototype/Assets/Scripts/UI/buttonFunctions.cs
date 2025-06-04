@@ -83,7 +83,7 @@ public class ButtonFunctions : MonoBehaviour
         SaveSystem.LoadGrades();
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(1); 
     }
 
 
