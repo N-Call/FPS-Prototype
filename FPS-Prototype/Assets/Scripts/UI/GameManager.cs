@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuSettings;
     [SerializeField] GameObject menuShowBoard;
     [SerializeField] GameObject nextLvlBtn;
+    [SerializeField] GameObject globalVol;
 
     [Header("Reticles")]
     [SerializeField] GameObject reticle;
@@ -139,13 +140,15 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        EnablePPVolume();
-
+        //EnablePPVolume();
+        
+        globalVol.SetActive(true);
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();
         SoundManager.instance.sfxSource.Stop();
         // stop the player from shooting
+        
         playerScript.enabled = false;
     }
 
@@ -155,8 +158,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = timeScaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        DisablePPVolume();
-
+        //DisablePPVolume();
+        globalVol.SetActive(false);
         // Disable menus
         menuSettings.SetActive(false);
         menuActive.SetActive(false);
@@ -311,6 +314,7 @@ public class GameManager : MonoBehaviour
         if (ppVolume != null)
         {
             ppVolume.enabled = true;
+            
         }
     }
 
