@@ -85,7 +85,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         // Step 2 - Checks if there are no bullets left in total.
         if (currTotalBullets <= 0)
         {
-            SoundManager.instance.PlaySFX("gunEmpty", 0.3f);
+            SoundManager.instance.PlaySFX("gunEmpty");
             return;
         }
         // Step 3 - Checks if there are no bullets left in both the mag and reserves.
@@ -93,7 +93,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         //  no ammo in both the mag and reserve.
         if (ammoCount == 0 && currTotalBullets - ammoCount <= 0)
         {
-            SoundManager.instance.PlaySFX("gunEmpty", 0.3f);
+            SoundManager.instance.PlaySFX("gunEmpty");
             return;
         }
 
@@ -115,7 +115,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
         // Reload animation plays and sound, after checking the above conditions.
         PlayReloadAnim();
-        SoundManager.instance.PlaySFX(soundFxName, 0.3f);
+        SoundManager.instance.PlaySFX(soundFxName);
 
         reloadInProgress = true;
     }

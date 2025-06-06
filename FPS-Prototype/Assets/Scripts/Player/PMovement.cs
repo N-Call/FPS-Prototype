@@ -152,7 +152,7 @@ public class PMovement : MonoBehaviour, IDamage
 
                 vertVel.y = jumpForce;
                 currJumpCount++;
-                SoundManager.instance.PlaySFX("playerJump", 1f);
+                SoundManager.instance.PlaySFX("playerJump");
             }
 
         }
@@ -164,7 +164,7 @@ public class PMovement : MonoBehaviour, IDamage
             {
                 vertVel.y = jumpForce;
                 currJumpCount++;
-                SoundManager.instance.PlaySFX("playerJump", 1f);
+                SoundManager.instance.PlaySFX("playerJump");
             }
 
             // This applies gravity, when not on the ground.
@@ -310,7 +310,7 @@ public class PMovement : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
-        SoundManager.instance.PlaySFX("playerHurt", 1f);
+        SoundManager.instance.PlaySFX("playerHurt");
 
         //Checks to make sure shield takes damage first
         if (isShielded > 0)

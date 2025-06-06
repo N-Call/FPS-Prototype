@@ -37,7 +37,7 @@ public class Melee : MonoBehaviour, IWeapon
     {
         if(attackTimer < attackRate) { return; }
 
-        SoundManager.instance.PlaySFX("swordSwing", 0.3f);
+        SoundManager.instance.PlaySFX("swordSwing");
         //start attack animation
         animator.CrossFade("Attack", 0.1f);
         animator.speed = attackSpeed;

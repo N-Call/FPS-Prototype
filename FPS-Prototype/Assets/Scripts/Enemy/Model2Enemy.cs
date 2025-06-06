@@ -38,7 +38,7 @@ public class Model2Enemy : EnemyController, IElemental
 
             leftShot = !leftShot;
             shootTimer = 0f;
-            SoundManager.instance.PlaySFX("enemyShot", 0.2f);
+            SoundManager.instance.PlaySFX("enemyShot");
         }
 
         //HandleElements();
