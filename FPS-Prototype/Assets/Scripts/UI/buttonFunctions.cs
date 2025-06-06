@@ -61,6 +61,7 @@ public class ButtonFunctions : MonoBehaviour
         // this is to load the next level but does a check first on making sure your in scene count 
         if (SceneManager.GetActiveScene().buildIndex + 1 <= 6)
         {
+            SaveSystem.Save();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             SoundManager.instance.sfxSource.Stop();
             GameManager.instance.StateUnpause();
