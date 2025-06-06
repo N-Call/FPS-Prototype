@@ -17,6 +17,8 @@ public class Laser : MonoBehaviour
 
     LineRenderer lineRenderer;
 
+    public GameObject hitEffect;
+
     Ray ray;
     RaycastHit hit;
 
@@ -59,12 +61,13 @@ public class Laser : MonoBehaviour
             {
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, ray.origin + ray.direction * remainingLength);
                 continue;
+                
             }
 
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
             ray = new Ray(hit.point, Vector3.Reflect(ray.direction, hit.normal));
             remainingLength -= Vector3.Distance(ray.origin, hit.point);
-
+            
             if (!hit.collider.CompareTag("Reflector"))
             {
                 if (!hit.collider.CompareTag("Player"))
@@ -102,5 +105,4 @@ public class Laser : MonoBehaviour
             yield return new WaitForSeconds(offTime);
         }
     }
-
 }

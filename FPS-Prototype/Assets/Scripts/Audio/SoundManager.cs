@@ -27,11 +27,11 @@ public class SoundManager : MonoBehaviour
     }
     private void Start()
     {
-        PlayMusic("Theme", .7f);
+        PlayMusic("Theme");
     }
 
 
-    public void PlayMusic(string name, float volume)
+    public void PlayMusic(string name)
     {
         foreach (Sound s in musicSounds)
         {
@@ -49,7 +49,7 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-    public void PlaySFX(string name, float volume)
+    public void PlaySFX(string name)
     {
         foreach(Sound s in sfxSounds)
         {
@@ -58,7 +58,7 @@ public class SoundManager : MonoBehaviour
                 AudioClip fxClip = s.GetClip();
                 if (fxClip != null)
                 {
-                    sfxSource.PlayOneShot(fxClip, volume);
+                    sfxSource.PlayOneShot(fxClip, s.volume);
                 }
                 return;
             }

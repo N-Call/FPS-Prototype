@@ -338,7 +338,7 @@ public class GameManager : MonoBehaviour
             textComponent.text = string.Empty;
             
             // show off win menu Time with enemy time added 
-            SoundManager.instance.PlaySFX("victory", 0.1f);
+            SoundManager.instance.PlaySFX("victory");
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
             gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 

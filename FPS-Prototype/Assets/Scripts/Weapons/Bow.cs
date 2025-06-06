@@ -22,9 +22,9 @@ public class Bow : Range
             chargeCoroutine = StartCoroutine(Charge());
         }
         else if (ammoCount <= 0 && currTotalBullets <= 0)
-            SoundManager.instance.PlaySFX("bowEmpty", 0.5f);
+            SoundManager.instance.PlaySFX("bowEmpty");
         else if (ammoCount <= 0 && currTotalBullets > 0)
-            SoundManager.instance.PlaySFX("bowEmpty", 0.5f);
+            SoundManager.instance.PlaySFX("bowEmpty");
     }
 
     public override void AttackEnd(LayerMask playerMask)
@@ -36,7 +36,7 @@ public class Bow : Range
             StopCoroutine(chargeCoroutine);
             chargeCoroutine = null;
 
-            SoundManager.instance.PlaySFX("bowRelease", 1f);
+            SoundManager.instance.PlaySFX("bowRelease");
             Shoot();
             ammoCount--;
             currTotalBullets--;
@@ -72,7 +72,7 @@ public class Bow : Range
     IEnumerator Charge()
     {
         PlayChargeAnim();
-        SoundManager.instance.PlaySFX("bowLoad", 1f);
+        SoundManager.instance.PlaySFX("bowLoad");
         while (currentCharge < chargeMaxRate)
         {
             currentCharge += chargeRate;
