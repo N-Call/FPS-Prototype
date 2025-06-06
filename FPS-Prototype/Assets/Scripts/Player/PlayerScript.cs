@@ -306,7 +306,7 @@ public class PlayerScript : MonoBehaviour, IDamage
                 if (!wallJumped && wallRunCooldownTimer <= 0f)
                 {
                     //Debug.Log("Wall jump triggered.");
-                    SoundManager.instance.PlaySFX("playerJump", 0.3f);
+                    SoundManager.instance.PlaySFX("playerJump");
                     verticalVelocity.y = wallJumpForce;
                     wallJumpVel = (wallNormal + transform.forward).normalized * wallJumpHoriForce;
                     wallJumped = true;
@@ -461,7 +461,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && !wallJumpOccurredThisFrame)
         {
 
-            SoundManager.instance.PlaySFX("playerJump", 0.3f);
+            SoundManager.instance.PlaySFX("playerJump");
             // Handle slide jump
             if (isSliding)
             {
@@ -624,7 +624,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         //    return;
         //}
 
-        SoundManager.instance.PlaySFX("playerHurt", 0.2f);
+        SoundManager.instance.PlaySFX("playerHurt");
 
         if (isShielded > 0 && !invulnerable)
         {
@@ -765,7 +765,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     {
         isPlayingStep = true;
 
-        SoundManager.instance.PlaySFX("footsteps", 0.075f);
+        SoundManager.instance.PlaySFX("footsteps");
 
         if (isSprinting)
         {

@@ -61,13 +61,13 @@ public class OpenDoors : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            SoundManager.instance.PlaySFX(sfxName, 0.4f);
+            SoundManager.instance.PlaySFX(sfxName);
             Debug.Log("entering Door Trigger");
             Open(other.transform.position);
         }
         if(isLocked)
         {
-            SoundManager.instance.PlaySFX("Door Lock", 0.3f);
+            SoundManager.instance.PlaySFX("Door Lock");
         }
         
     }

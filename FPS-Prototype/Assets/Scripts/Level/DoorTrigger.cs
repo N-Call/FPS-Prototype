@@ -11,7 +11,7 @@ public class DoorTrigger : MonoBehaviour
     {
         if (other.CompareTag(colliderObject))
         {
-            SoundManager.instance.PlaySFX(sfxName, 1.0f);
+            SoundManager.instance.PlaySFX(sfxName);
             foreach (OpenDoors door in doorScript)
             {
                 door.Open(other.transform.position);

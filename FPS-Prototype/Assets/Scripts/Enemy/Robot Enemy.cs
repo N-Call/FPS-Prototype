@@ -51,6 +51,6 @@ public class RobotEnemy : EnemyController
             shootTimer = 0;
             Instantiate(bullet, shootPos.position, shootPos.rotation);
         }
-        SoundManager.instance.PlaySFX("enemyShot", 0.2f);
+        SoundManager.instance.PlaySFX("enemyShot");
     }
 }

@@ -67,7 +67,7 @@ public class TurretEnemy : EnemyController
             if (shootTimer >= shootRate)
             {
                 Shoot();
-                SoundManager.instance.PlaySFX("turretShot", 0.3f);
+                SoundManager.instance.PlaySFX("turretShot");
             }
 
             return true;

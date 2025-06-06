@@ -24,7 +24,7 @@ public class AmmoCratePickup : MonoBehaviour
             {
                 weapon.AddAmmoToReserve(ammoAmount);
 
-                SoundManager.instance.PlaySFX(sfxName, 0.7f);
+                SoundManager.instance.PlaySFX(sfxName);
 
                 Destroy(gameObject);
             }
