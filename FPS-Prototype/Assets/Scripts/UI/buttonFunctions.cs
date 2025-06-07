@@ -76,7 +76,7 @@ public class ButtonFunctions : MonoBehaviour
     {
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(7);
     }
 
     public void LvlSelectStartScene()
@@ -84,7 +84,7 @@ public class ButtonFunctions : MonoBehaviour
         SaveSystem.LoadGrades();
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
-        SceneManager.LoadScene(1); 
+        SceneManager.LoadScene(7); 
     }
 
 
