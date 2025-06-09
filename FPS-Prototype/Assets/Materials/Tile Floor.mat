@@ -25,6 +25,7 @@ Material:
   m_Parent: {fileID: 2100000, guid: 94498f9848d1f794e869377e8a4a4d9d, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ENVIRONMENTREFLECTIONS_OFF
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
   - _PARALLAXMAP
@@ -68,10 +69,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BumpScale: 5
+    - _EnvironmentReflections: 0
     - _GlossMapScale: 0.5
-    - _Smoothness: 0.5
+    - _Parallax: 0.005
+    - _Smoothness: 0.064
     m_Colors:
-    - _BaseColor: {r: 0.40156642, g: 0.43583882, b: 0.6037736, a: 1}
-    - _Color: {r: 0.4015664, g: 0.4358388, b: 0.6037736, a: 1}
+    - _BaseColor: {r: 0, g: 0.081390925, b: 0.4716981, a: 1}
+    - _Color: {r: 0, g: 0.081390895, b: 0.4716981, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
