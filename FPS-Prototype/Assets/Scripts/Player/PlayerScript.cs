@@ -506,7 +506,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     // Handle sprint inputs
     void Sprint()
     {
-        if (Input.GetButton("Sprint") && controller.isGrounded && !isSliding)
+        if (Input.GetButton("Sprint") && controller.isGrounded && !isSliding && !isCrouching)
         {
             isSprinting = true;
             particleSpRun.gameObject.SetActive(true);
@@ -528,6 +528,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             {
                 isSliding = true;
                 currentSlideSpeed = slideSpeedBonus;
+                isSprinting = false;
             }
 
             else
@@ -744,14 +745,29 @@ public class PlayerScript : MonoBehaviour, IDamage
                 yield return new WaitForSeconds(crouchWaitTimer);
             }
         }
-        else
+        else // NEW Uncrouching conditions
         {
+            float targetHeight = originalHeight;
+            float heightDiff = targetHeight - originalHeight;
+
+            Vector3 rayOrigin = transform.position + controller.center + Vector3.up * (controller.height / 2f);
+            float rayLength = heightDiff;
+
+            RaycastHit hit;
+            if (Physics.Raycast(rayOrigin, Vector3.up, out hit, rayLength, playerMask))
+            {
+                isCrouching = true;
+                unCrouchCoroutine = null;
+                yield break;
+            }
+
             while (controller.height < originalHeight)
             {
                 controller.height += crouchRate;
                 yield return new WaitForSeconds(crouchWaitTimer);
             }
         }
+        unCrouchCoroutine = null; // Safety net to ensure the reference is cleared once completed.
     }
 
     IEnumerator FlashDamageScreen()
