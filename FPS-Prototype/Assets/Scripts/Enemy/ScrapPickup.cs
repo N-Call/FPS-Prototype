@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ScrapPickup : MonoBehaviour
 {
-    [SerializeField] int scrapAmount;
+    public int scrapAmount;
     private void OnTriggerEnter(Collider other)
     {
         IPickup pickup = other.GetComponent<IPickup>();
