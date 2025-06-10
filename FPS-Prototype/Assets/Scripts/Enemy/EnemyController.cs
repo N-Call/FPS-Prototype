@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamage
 {
+    public ScrapPickup scrapPickup;
 
     [SerializeField] protected Renderer model;
     [SerializeField] protected int currentHealth;
@@ -29,6 +30,9 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected Transform shootPos;
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
+
+    
+    [SerializeField] int scrapAmount;
 
     protected Color colorOrig;
     protected Vector3 playerDir;
@@ -55,6 +59,7 @@ public class EnemyController : MonoBehaviour, IDamage
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
+        scrapPickup.scrapAmount = scrapAmount;
 
         if (addToEnemyCount)
         {
@@ -144,6 +149,8 @@ public class EnemyController : MonoBehaviour, IDamage
         if (currentHealth <= 0)
         {
             Destroy(gameObject);
+
+            Instantiate(scrapPickup, transform.position, Quaternion.identity);
             GameManager.instance.UpdateEnemyCounter(-1);
             SoundManager.instance.PlaySFX("turretDestroy");
         }
@@ -190,6 +197,11 @@ public class EnemyController : MonoBehaviour, IDamage
     protected virtual void Shoot()
     {
         
+    }
+
+    public void SetScrapAmount(int amount)
+    {
+        scrapPickup.scrapAmount = amount;
     }
 
 }
