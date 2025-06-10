@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class BossSM : StateMachine, IDamage
 {
@@ -16,14 +17,6 @@ public class BossSM : StateMachine, IDamage
     [HideInInspector] public BeamAttack beam;
     [HideInInspector] public DeadState dead;
 
-    public enum Ability
-    {
-        None,
-        speedBoost = 1,
-        jumpBoost = 2,
-        invensBoost = 3,
-    }
-
     [Header ("Refereances")]
     public Rigidbody rigidBody;
     public Animator animator;
@@ -33,7 +26,9 @@ public class BossSM : StateMachine, IDamage
     public Transform lShoulder;
     public Transform rShoulder;
     public Transform targetPoint;
-    public Damage Bullet;
+    public Damage homingBullet;
+    public Damage regularBullet;
+    public Damage currentbullet;
     public GameObject lShootPos;
     public GameObject rShootPos;
     public LayerMask ignorelayer;
@@ -67,13 +62,16 @@ public class BossSM : StateMachine, IDamage
     public float rollDecideDis;
     public float rollSpeed;
 
-    public Ability currentAbility;
+    public EAbility currentAbility;
 
     public float orbSpawnCounter;
     private bool isInvensible;
 
+    public UnityEvent onSpawnOrb;
+
     public void Awake()
     {
+        BossOrb.OnSomethingHappened += ActivateAbility;
         this.idle = new IdleDecide(stm:this);
         this.jump = new JumpAttack(stm:this);
         this.roll = new RollAttack(stm:this);
@@ -85,7 +83,7 @@ public class BossSM : StateMachine, IDamage
 
         targetPoint = new GameObject("Jump Pos").transform;
         targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
-        currentHealth = health;
+        currentHealth = 99;
         orbSpawnCounter = orbSpawnTimer;
     }
 
@@ -111,7 +109,13 @@ public class BossSM : StateMachine, IDamage
         currentHealth -= amount;
         if (currentHealth > 0)
         {
-            GameManager.instance.bossHPbar.fillAmount = (float)currentHealth / (float)health;
+            if(currentHealth <= health / 2 && orbSpawnCounter >= orbSpawnTimer && currentAbility == 0) 
+            { 
+                onSpawnOrb?.Invoke();
+                orbSpawnCounter = 0;
+            }
+
+            //GameManager.instance.bossHPbar.fillAmount = (float)currentHealth / (float)health;
             StartCoroutine(FlashRed());
         }
         else
@@ -144,28 +148,29 @@ public class BossSM : StateMachine, IDamage
         }
     }
 
+    private void OnDestroy()
+    {
+        BossOrb.OnSomethingHappened -= ActivateAbility;
+    }
+
+    public void ShootOrbPos()
+    {
+        idle.shouldShoot = true;
+    }
+
     public void SpawnLeftProjectile()
     {
-        Instantiate(Bullet, lShootPos.transform.position, lShootPos.transform.rotation);
+        Instantiate(currentbullet, lShootPos.transform.position, lShootPos.transform.rotation);
     }
 
     public void SpawnRightProjectile()
     {
-        Instantiate(Bullet, rShootPos.transform.position, rShootPos.transform.rotation);
+        Instantiate(currentbullet, rShootPos.transform.position, rShootPos.transform.rotation);
     }
 
-    public void SpawnOrb()
+    public void ActivateAbility(EAbility ability)
     {
-        //int store = UnityEngine.Random.Range(0, orbs.Length - 1);
-        //BossOrb orb = Instantiate(orbs[store], orbLocation.transform.position, orbLocation.transform.rotation);
-        //orb.boss = this;
-
-        currentAbility = (Ability)UnityEngine.Random.Range(1, 3);
-    }
-
-    public void ActivateAbility()
-    {
-
+        currentAbility = ability;
     }
 
     private void Dead()
@@ -196,8 +201,12 @@ public class BossSM : StateMachine, IDamage
 
     public void ResetRigid()
     {
-        jump.ResetRigid();
-        speed.ChangeToIdle();
+        if(currentState == jump)
+            jump.ResetRigid();
+        if (currentState == speed)
+            speed.ChangeToIdle();
+        if (currentState == shoot)
+            shoot.StopShooting();
     }
 
     public void LookAtPlayer(int partIndex)

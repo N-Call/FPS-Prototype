@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 8747721625121135163}
   - component: {fileID: 4319266077041981369}
   - component: {fileID: 2046567894616999901}
-  - component: {fileID: 1497701996974658502}
+  - component: {fileID: -3829667754282304270}
   m_Layer: 7
-  m_Name: BossBullet
+  m_Name: BossBullet 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,10 +50,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 2046567894616999901}
-  damageType: 2
+  damageType: 1
   elem: 1
   damageAmount: 1
-  speed: 10
+  speed: 300
   destroyTime: 1
   FOV: 90
   chaseDist: 10
@@ -231,7 +231,7 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &1497701996974658502
+--- !u!114 &-3829667754282304270
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
