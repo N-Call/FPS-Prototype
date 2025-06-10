@@ -168,12 +168,12 @@ public class Enemy : MonoBehaviour, IDamage
         currentHealth -= amount;
         
 
-        SoundManager.instance.PlaySFX("turretHit", 0.1f);
+        SoundManager.instance.PlaySFX("turretHit");
 
         if (currentHealth <= 0)
         {
             GameManager.instance.UpdateEnemyCounter(-1);
-            SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
+            SoundManager.instance.PlaySFX("turretDestroy");
             gameObject.SetActive(false);
             isDead = true;
         }
@@ -199,7 +199,7 @@ public class Enemy : MonoBehaviour, IDamage
 
         if (!isTurret && !isShooting)
         {
-            SoundManager.instance.PlaySFX("mineExplosion", 0.3f);
+            SoundManager.instance.PlaySFX("mineExplosion");   
             IDamage damage = other.GetComponent<IDamage>();
             damage?.TakeDamage(damageAmount);
             GameManager.instance.ToggleReticle();
@@ -304,7 +304,7 @@ public class Enemy : MonoBehaviour, IDamage
             {
                 shootTimer = 0;
                 Instantiate(bullet, shootPos.position, robotMouth.rotation);
-                SoundManager.instance.PlaySFX("enemyShot", 0.2f);
+                SoundManager.instance.PlaySFX("enemyShot");
             }
         }
 
@@ -312,7 +312,7 @@ public class Enemy : MonoBehaviour, IDamage
         {
             shootTimer = 0.0f;
             Instantiate(bullet, shootPos.position, turretBarrel.rotation);
-            SoundManager.instance.PlaySFX("turretShot", 0.2f);
+            SoundManager.instance.PlaySFX("turretShot");
         }
     }
 

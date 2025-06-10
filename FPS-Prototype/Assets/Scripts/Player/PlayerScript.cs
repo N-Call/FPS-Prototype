@@ -306,7 +306,7 @@ public class PlayerScript : MonoBehaviour, IDamage
                 if (!wallJumped && wallRunCooldownTimer <= 0f)
                 {
                     //Debug.Log("Wall jump triggered.");
-                    SoundManager.instance.PlaySFX("playerJump", 0.3f);
+                    SoundManager.instance.PlaySFX("playerJump");
                     verticalVelocity.y = wallJumpForce;
                     wallJumpVel = (wallNormal + transform.forward).normalized * wallJumpHoriForce;
                     wallJumped = true;
@@ -461,7 +461,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && !wallJumpOccurredThisFrame)
         {
 
-            SoundManager.instance.PlaySFX("playerJump", 0.3f);
+            SoundManager.instance.PlaySFX("playerJump");
             // Handle slide jump
             if (isSliding)
             {
@@ -506,7 +506,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     // Handle sprint inputs
     void Sprint()
     {
-        if (Input.GetButton("Sprint") && controller.isGrounded && !isSliding)
+        if (Input.GetButton("Sprint") && controller.isGrounded && !isSliding && !isCrouching)
         {
             isSprinting = true;
             particleSpRun.gameObject.SetActive(true);
@@ -528,6 +528,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             {
                 isSliding = true;
                 currentSlideSpeed = slideSpeedBonus;
+                isSprinting = false;
             }
 
             else
@@ -624,7 +625,7 @@ public class PlayerScript : MonoBehaviour, IDamage
         //    return;
         //}
 
-        SoundManager.instance.PlaySFX("playerHurt", 0.2f);
+        SoundManager.instance.PlaySFX("playerHurt");
 
         if (isShielded > 0 && !invulnerable)
         {
@@ -744,14 +745,29 @@ public class PlayerScript : MonoBehaviour, IDamage
                 yield return new WaitForSeconds(crouchWaitTimer);
             }
         }
-        else
+        else // NEW Uncrouching conditions
         {
+            float targetHeight = originalHeight;
+            float heightDiff = targetHeight - originalHeight;
+
+            Vector3 rayOrigin = transform.position + controller.center + Vector3.up * (controller.height / 2f);
+            float rayLength = heightDiff;
+
+            RaycastHit hit;
+            if (Physics.Raycast(rayOrigin, Vector3.up, out hit, rayLength, playerMask))
+            {
+                isCrouching = true;
+                unCrouchCoroutine = null;
+                yield break;
+            }
+
             while (controller.height < originalHeight)
             {
                 controller.height += crouchRate;
                 yield return new WaitForSeconds(crouchWaitTimer);
             }
         }
+        unCrouchCoroutine = null; // Safety net to ensure the reference is cleared once completed.
     }
 
     IEnumerator FlashDamageScreen()
@@ -765,7 +781,7 @@ public class PlayerScript : MonoBehaviour, IDamage
     {
         isPlayingStep = true;
 
-        SoundManager.instance.PlaySFX("footsteps", 0.075f);
+        SoundManager.instance.PlaySFX("footsteps");
 
         if (isSprinting)
         {

@@ -139,13 +139,13 @@ public class EnemyController : MonoBehaviour, IDamage
     public virtual void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        SoundManager.instance.PlaySFX("turretHit", 0.2f);
+        SoundManager.instance.PlaySFX("turretHit");
 
         if (currentHealth <= 0)
         {
             Destroy(gameObject);
             GameManager.instance.UpdateEnemyCounter(-1);
-            SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
+            SoundManager.instance.PlaySFX("turretDestroy");
         }
         else
         {

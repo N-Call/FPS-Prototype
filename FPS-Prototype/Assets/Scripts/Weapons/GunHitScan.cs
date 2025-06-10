@@ -10,7 +10,7 @@ public class GunHitScan : Range
         if (ammoCount > 0 && currTotalBullets > 0 && shootRate <= shootTimer)
         {
             PlayShootAnim();
-            SoundManager.instance.PlaySFX("pistol", 0.2f);
+            SoundManager.instance.PlaySFX("pistol");  
 
             //see if you hit an object
             RaycastHit hit;
@@ -35,9 +35,9 @@ public class GunHitScan : Range
             GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
         }
         else if (ammoCount <= 0 && currTotalBullets <= 0)
-            SoundManager.instance.PlaySFX("gunEmpty", 0.5f);
+            SoundManager.instance.PlaySFX("gunEmpty");
         else if (ammoCount <= 0 && currTotalBullets > 0)
-            SoundManager.instance.PlaySFX("gunClick", 0.5f);
+            SoundManager.instance.PlaySFX("gunClick");
     }
 
 }

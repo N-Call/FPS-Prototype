@@ -25,6 +25,7 @@ Material:
   m_Parent: {fileID: 2100000, guid: 94498f9848d1f794e869377e8a4a4d9d, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ENVIRONMENTREFLECTIONS_OFF
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
   - _PARALLAXMAP
@@ -42,6 +43,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 6dabcc0ee40523f4abf35c5b8fd2e12d, type: 3}
+        m_Scale: {x: 0.1, y: 0.1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: cefa02204293a6840afff1b8cc4d8d7f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -52,7 +57,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 6dabcc0ee40523f4abf35c5b8fd2e12d, type: 3}
-        m_Scale: {x: 1, y: 3}
+        m_Scale: {x: 0.1, y: 0.1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 2800000, guid: 44c0a8db263cd28428ea9db0fadb667b, type: 3}
@@ -64,9 +69,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BumpScale: 5
+    - _EnvironmentReflections: 0
     - _GlossMapScale: 0.5
-    - _Smoothness: 0.5
+    - _Parallax: 0.005
+    - _Smoothness: 0.064
     m_Colors:
-    - _Color: {r: 0.538072, g: 0.5779632, b: 0.76729554, a: 1}
+    - _BaseColor: {r: 0, g: 0.081390925, b: 0.4716981, a: 1}
+    - _Color: {r: 0, g: 0.081390895, b: 0.4716981, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
