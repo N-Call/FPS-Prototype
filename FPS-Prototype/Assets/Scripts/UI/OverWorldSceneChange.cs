@@ -23,11 +23,12 @@ public class OverWorldSceneChange : MonoBehaviour
             if (Input.GetButtonDown("Interact") && button.CompareTag("ButtonLvl"))
             {
                 SceneManager.LoadScene(1);
+                GameManager.instance.StatePause();
 
             }
             else if(Input.GetButtonDown("Interact"))
             {
-                SceneManager.LoadScene(7);
+                SceneManager.LoadScene(2);
             }
         }
     }

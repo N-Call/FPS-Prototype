@@ -35,7 +35,7 @@ public class LvlSelectManager : MonoBehaviour
         bool nextlvl = false;
         for (int i = 0; i < lvlsBtn.Length; i++)
         {
-            if (!GameManager.instance.gradeSystem.LoadData(i + 2))
+            if (!GameManager.instance.gradeSystem.LoadData(i + 3))
             {
                 if (!nextlvl)
                 {
@@ -70,7 +70,7 @@ public class LvlSelectManager : MonoBehaviour
         ActiveImage.SetActive(true);
 
 
-        if (GameManager.instance.gradeSystem.LoadData(Index + 2))
+        if (GameManager.instance.gradeSystem.LoadData(Index + 3))
         {
             ActiveRecord.SetActive(true);
         }
@@ -79,7 +79,7 @@ public class LvlSelectManager : MonoBehaviour
             ActiveRecord.SetActive(false);
         }
 
-        SelectedScene = Index + 2;
+        SelectedScene = Index + 3;
     }
 
 

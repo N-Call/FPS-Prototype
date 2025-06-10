@@ -2167,6 +2167,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1569220377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &60418746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 60418748}
+  - component: {fileID: 60418747}
+  m_Layer: 0
+  m_Name: SceneData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &60418747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60418746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ef86c20c3112048949397ddb4bbcc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneData: {fileID: 11400000, guid: 6b6d2f9be82e97a49a51bc944c9495a9, type: 2}
+--- !u!4 &60418748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60418746}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &61002143 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1415708233893582247, guid: 3ccdedc57b46c8f4496c70bf64ce4cd0, type: 3}
@@ -100859,14 +100904,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7285347905729452018, guid: c50b2bfa0cb666742ba41e3efc13eeb8, type: 3}
-      propertyPath: m_Volume
-      value: 0.064
-      objectReference: {fileID: 0}
-    - target: {fileID: 8483998383368317723, guid: c50b2bfa0cb666742ba41e3efc13eeb8, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -13.2500305
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -115343,6 +115380,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1160234427}
+  - {fileID: 60418748}
   - {fileID: 604712594}
   - {fileID: 1961323052}
   - {fileID: 325829077}
