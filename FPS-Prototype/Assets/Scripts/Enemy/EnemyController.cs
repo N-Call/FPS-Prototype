@@ -30,6 +30,8 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
 
+    public GameObject scrapPickup;
+
     protected Color colorOrig;
     protected Vector3 playerDir;
     public Vector3 originalPosition;
@@ -144,6 +146,7 @@ public class EnemyController : MonoBehaviour, IDamage
         if (currentHealth <= 0)
         {
             Destroy(gameObject);
+            Instantiate(scrapPickup, transform.position, Quaternion.identity);
             GameManager.instance.UpdateEnemyCounter(-1);
             SoundManager.instance.PlaySFX("turretDestroy");
         }
