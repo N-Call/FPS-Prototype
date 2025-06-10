@@ -410,7 +410,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             speed += sprintSpeed;
         }
 
-        if (isCrouching)
+        if (isCrouching && controller.isGrounded)
         {
             speed *= crouchSpeedMultiplier;
         }
