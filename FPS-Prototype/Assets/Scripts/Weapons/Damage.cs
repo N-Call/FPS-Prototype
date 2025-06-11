@@ -6,6 +6,8 @@ public class Damage : MonoBehaviour
     enum DamageType {DOT, moving, homing, stationary}
     enum ElementType {speed = 1, jump = 2, shield = 3}
 
+    [HideInInspector] public Transform target;
+
     [Header("Resources")]
     [SerializeField] Rigidbody rb;
 
@@ -15,14 +17,19 @@ public class Damage : MonoBehaviour
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
     [SerializeField] float destroyTime;
+
+    [Header("Homing Settings")]
     [SerializeField] private float FOV;
     [SerializeField] float chaseDist;
+    [SerializeField] float smoothSpeed;
+    [SerializeField] bool isTriggerHoming;
+
 
     [Header("Damage Over Time Settings")]
     [SerializeField] private int dotDamage;
     [SerializeField] private int dotDamageRate;
 
-    private Vector3 playerDir;
+    private Vector3 targetDir;
     private float angleToPlayer;
     private bool isDamaging;
     private bool stopChasing;
@@ -35,11 +42,7 @@ public class Damage : MonoBehaviour
         if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
             Destroy(gameObject, destroyTime);
-
-            if (damageType == DamageType.moving)
-            {
-                rb.linearVelocity = transform.forward * speed;
-            }
+            rb.linearVelocity = transform.forward * speed;
         }
     }
 
@@ -47,35 +50,57 @@ public class Damage : MonoBehaviour
     {
         if (damageType == DamageType.homing)
         {
-            if(Vector3.Distance(GameManager.instance.player.transform.position, transform.position) > chaseDist && !stopChasing && CanSeePlayer())
+            if (target != null)
             {
-                rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position) * speed;
-                transform.LookAt(GameManager.instance.player.transform.position);
-                isLocked = true;
-            }else if (!CanSeePlayer() && !isLocked)
-            {
-                rb.linearVelocity = transform.forward * Vector3.Distance(GameManager.instance.player.transform.position, transform.position) * speed;
-                stopChasing = true;
+                if (Vector3.Distance(target.position, transform.position) > chaseDist && !stopChasing && CanSeeTarget())
+                {
+                    isLocked = true;
+
+                    Vector3 direction = target.position - transform.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed * Time.deltaTime);
+                    rb.linearVelocity = transform.forward * speed;
+
+                }
+                else if (!CanSeeTarget() && !isLocked)
+                {
+                    rb.linearVelocity = transform.forward * Vector3.Distance(target.position, transform.position) * speed;
+                    stopChasing = true;
+                }
+                else if (!stopChasing)
+                {
+                    stopChasing = true;
+                    rb.linearVelocity = (target.position - transform.position) * speed;
+                }
             }
-            else if(!stopChasing)
+
+            if (Physics.Raycast(transform.position, transform.forward, chaseDist) ||
+                Physics.Raycast(transform.position, transform.right, chaseDist) ||
+                Physics.Raycast(transform.position, -transform.right, chaseDist))
             {
-                stopChasing = true;
-                rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position) * speed;
+                    if(target != null)
+                    {
+                        target.GetComponent<IDamage>()?.TakeDamage(damageAmount);
+                        target.GetComponent<ITarget>()?.ActivateElem((int)elem);
+                    }
+                    GameObject.Destroy(gameObject);
+                    SoundManager.instance.PlaySFX("turretDestroy");
             }
         }
 
     }
 
-    bool CanSeePlayer()
+    bool CanSeeTarget()
     {
-        playerDir = (GameManager.instance.player.transform.position - transform.position);
-        angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
-        Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
+        targetDir = (target.position - transform.position);
+        angleToPlayer = Vector3.Angle(new Vector3(targetDir.x, 0, targetDir.z), transform.forward);
+        Debug.DrawRay(transform.position, new Vector3(targetDir.x, 0, targetDir.z));
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, playerDir, out hit))
+        if (Physics.Raycast(transform.position, targetDir, out hit))
         {
-            if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            if (angleToPlayer <= FOV && hit.collider.gameObject == target.gameObject)
             {
                 return true;
             }
@@ -99,13 +124,20 @@ public class Damage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger)
+        if (other.isTrigger){return;}
+
+        if (isTriggerHoming) 
         {
-            return;
+            if (other.GetComponent<IDamage>() != null && damageType == DamageType.homing)
+            {
+                target = other.transform;
+            }
+            return; 
         }
 
         IDamage dmg = other.GetComponent<IDamage>();
         ITarget targ = other.GetComponent<ITarget>();
+
         if (dmg != null || targ != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
             dmg?.TakeDamage(damageAmount);
@@ -117,10 +149,6 @@ public class Damage : MonoBehaviour
             GameObject.Destroy(gameObject);
         }
 
-        if (damageType == DamageType.homing)
-        {
-            SoundManager.instance.PlaySFX("turretDestroy");
-        }
     }
 
     private void OnTriggerStay(Collider other)

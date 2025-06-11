@@ -15528,7 +15528,7 @@ GameObject:
   - component: {fileID: 5163335047838512826}
   - component: {fileID: 5108522786919671182}
   - component: {fileID: 3498701983328994744}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Wooden Bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15601,7 +15601,9 @@ MonoBehaviour:
   chargeRate: 0.5
   shootPos: {fileID: 1524675519674903802}
   animArrow: {fileID: 1048420838645035023}
-  projectil: {fileID: 3532156422027039992, guid: fabd2acfa62fb41428f164465f88557a, type: 3}
+  projectils:
+  - {fileID: 3532156422027039992, guid: e3af4d450965b7d4682b6e6a9d4f31fa, type: 3}
+  - {fileID: 3532156422027039992, guid: fabd2acfa62fb41428f164465f88557a, type: 3}
 --- !u!1 &5166137345644197072
 GameObject:
   m_ObjectHideFlags: 0
@@ -16787,7 +16789,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27998aa5a8ed647479a67ed6339a9a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   rb: {fileID: 429191599636798514}
+  damageField: {fileID: 0}
   damageType: 3
   elem: 0
   damageAmount: 0
@@ -16795,6 +16799,8 @@ MonoBehaviour:
   destroyTime: 0
   FOV: 0
   chaseDist: 0
+  smoothSpeed: 0
+  isTriggerHoming: 0
   dotDamage: 0
   dotDamageRate: 0
 --- !u!4 &4019859602519784531 stripped
@@ -16848,6 +16854,9 @@ MonoBehaviour:
   damage: 3
   attackSpeed: 2
   attackRate: 0.4
+  damageMod: 0
+  attackSpeedMod: 0
+  attackRateMod: 0
 --- !u!4 &9162984152246811485 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7040825267709905419, guid: 6922f303a4178df4fbf95f4285b83d46, type: 3}
