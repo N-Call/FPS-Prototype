@@ -187,6 +187,7 @@ public class GameManager : MonoBehaviour
         if (menuActive == menuSettings || menuActive == menuRules || menuActive == menuCredits)
         {
             menuActive.SetActive(false);
+            SoundManager.instance.musicSource.Pause();
             menuActive = null;
         }
     }
@@ -202,15 +203,16 @@ public class GameManager : MonoBehaviour
             }
 
             if (menuActive == menuSettings)
-            {
+            { 
                 menuActive.SetActive(false);
                 menuActive = null;
                 return;
             }
-
+           
             DisableCurrentToggledMenu();
             menuActive = menuSettings;
             menuActive.SetActive(true);
+            
         }
     }
 
