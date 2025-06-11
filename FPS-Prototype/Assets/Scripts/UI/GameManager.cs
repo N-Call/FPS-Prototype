@@ -36,14 +36,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject timerWinCount;
     [SerializeField] GameObject elapsedTime;
     [SerializeField] TMP_Text enemyWinCount;
+    [SerializeField] TMP_Text scrapUI;
 
     [Header("Buff Icons")]
     [SerializeField] GameObject buffSprint;
     [SerializeField] GameObject debuffSprint;
     [SerializeField] GameObject buffJump;
     [SerializeField] GameObject debuffJump;
-
-     
 
 
 
@@ -87,8 +86,10 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
+    int scrapCounter;
 
-    
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -189,6 +190,13 @@ public class GameManager : MonoBehaviour
         {
             playerScript.enabled = true;
         }
+    }
+
+    public void AddScrap(int amount)
+    {
+        Debug.Log(amount + "added");
+        scrapCounter += amount;
+        scrapUI.text = scrapCounter.ToString("F0");
     }
 
     public void NextLvlBtnOff()

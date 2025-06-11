@@ -22,7 +22,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene(4);
     }
 
     public void LvlStartGame()

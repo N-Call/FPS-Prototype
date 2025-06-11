@@ -11418,20 +11418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {x: 0, y: -10, z: 0}
-  relative: 1
-  speed: 3
-  lerp: 0
-  startDelay: 3
-  startDelayInitial: 1
-  destinationDelay: 0
-  pingPong: 1
-  backToStart: 0
-  carryPlayer: 1
-  onlyMoveWhenPlayer: 0
-  destroyAfterTime: 0
-  destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0
 --- !u!4 &281126133 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9091306149473267801, guid: 770e1b795f1422a40a1f2b7483ad5e4b, type: 3}
@@ -29896,20 +29882,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {x: 0, y: 0, z: 10}
-  relative: 1
-  speed: 3
-  lerp: 0
-  startDelay: 3
-  startDelayInitial: 1
-  destinationDelay: 0
-  pingPong: 1
-  backToStart: 0
-  carryPlayer: 1
-  onlyMoveWhenPlayer: 0
-  destroyAfterTime: 0
-  destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0
 --- !u!43 &664146808
 Mesh:
   m_ObjectHideFlags: 0
@@ -41463,6 +41435,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &929028831 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 823738539320300723, guid: c50b2bfa0cb666742ba41e3efc13eeb8, type: 3}
+  m_PrefabInstance: {fileID: 1961323052}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &935347913
 GameObject:
   m_ObjectHideFlags: 0
@@ -91881,20 +91864,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {x: 0, y: 0, z: 10}
-  relative: 1
-  speed: 3
-  lerp: 0
-  startDelay: 0
-  startDelayInitial: 0
-  destinationDelay: 0
-  pingPong: 1
-  backToStart: 0
-  carryPlayer: 1
-  onlyMoveWhenPlayer: 0
-  destroyAfterTime: 0
-  destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0
 --- !u!43 &1721287907
 Mesh:
   m_ObjectHideFlags: 0
@@ -101147,6 +101116,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 823738539320300723, guid: c50b2bfa0cb666742ba41e3efc13eeb8, type: 3}
+      propertyPath: m_text
+      value: 99999
+      objectReference: {fileID: 0}
     - target: {fileID: 1765313883283199851, guid: c50b2bfa0cb666742ba41e3efc13eeb8, type: 3}
       propertyPath: m_Name
       value: UI
@@ -101231,6 +101204,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8643499427488979188, guid: c50b2bfa0cb666742ba41e3efc13eeb8, type: 3}
+      propertyPath: scrapUI
+      value: 
+      objectReference: {fileID: 929028831}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

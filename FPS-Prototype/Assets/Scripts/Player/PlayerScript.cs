@@ -126,7 +126,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     public bool jumpDebuffed;
     bool elemInversed;
     bool isPlayingStep;
-    private int scrapCounter = 0;
+    
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -895,7 +895,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     public void CollectScrap(int amount)
     {
-        Debug.Log(amount + "added");
-        amount += scrapCounter;
+        GameManager.instance.AddScrap(amount);
     }
 }
