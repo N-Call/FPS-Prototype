@@ -8,10 +8,11 @@ public class Bow : Range
     [Header("References")]
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject animArrow;
-    [SerializeField] Damage projectil;
+    [SerializeField] Damage[] projectils;
 
     Coroutine chargeCoroutine;
 
+    private int projectileIndex;
     float currentCharge;
 
     public override void AttackBegin(LayerMask playerMask)
@@ -54,7 +55,7 @@ public class Bow : Range
     {
         PlayShootAnim();
         shootTimer = 0;
-        Damage dmg = Instantiate(projectil, shootPos.position, transform.rotation);
+        Damage dmg = Instantiate(projectils[projectileIndex], shootPos.position, transform.rotation);
         dmg.AddDamageAmount((int)(damage * currentCharge));
         dmg.AddSpeedAmount((int)(distance / chargeMaxRate * currentCharge));
     }
@@ -67,6 +68,18 @@ public class Bow : Range
 
         GameManager.instance?.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
+    }
+
+    public void SwapArrows(bool isPositve)
+    {
+        if (isPositve)
+        {
+            projectileIndex = (projectileIndex + 1 > projectils.Length - 1) ? 0 : projectileIndex + 1;
+        }
+        else
+        {
+            projectileIndex = (projectileIndex - 1 < 0) ? projectils.Length - 1 : projectileIndex - 1;
+        }
     }
 
     IEnumerator Charge()
