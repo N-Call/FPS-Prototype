@@ -5,6 +5,7 @@ public class OverWorldSceneChange : MonoBehaviour
 {
     [SerializeField] GameObject button;
 
+
     bool playerInTrigger;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,12 +17,22 @@ public class OverWorldSceneChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // need to check which trigger zone the player is in to then send to correct scene
         if(playerInTrigger)
         {
-            if(Input.GetButtonDown("Interact"))
+            if (Input.GetButtonDown("Interact") && button.CompareTag("ButtonLvl"))
             {
                 SceneManager.LoadScene(1);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 
+
+            }
+            else if(Input.GetButtonDown("Interact"))
+            {
+                SceneManager.LoadScene(3);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
             }
         }
     }

@@ -14,6 +14,7 @@ public class JumpAttack : BaseState
     public override void Enter()
     {
         base.Enter();
+        bossSM.currentbullet = bossSM.homingBullet;
         bossSM.animator.CrossFade("Jumping", 0.02f);
         isStopped = false;
         bossSM.agent.enabled = false;
@@ -40,7 +41,7 @@ public class JumpAttack : BaseState
     public override void Exit()
     {
         base.Exit();
-        bossSM.currentAbility = BossSM.Ability.None;
+        bossSM.currentAbility = EAbility.None;
     }
 
     public void ResetRigid()

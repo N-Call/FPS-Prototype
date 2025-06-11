@@ -13,6 +13,7 @@ public class RollAttack : BaseState
     public override void Enter()
     {
         base.Enter();
+        bossSM.currentbullet = bossSM.homingBullet;
         currentSpeed = bossSM.agent.speed;
         bossSM.agent.speed = bossSM.rollSpeed;
         bossSM.currentDecideDis = 0;

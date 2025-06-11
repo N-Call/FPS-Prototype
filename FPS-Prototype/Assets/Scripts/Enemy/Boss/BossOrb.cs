@@ -1,35 +1,41 @@
+using System;
 using UnityEngine;
 
-public class BossOrb : MonoBehaviour
+public class BossOrb : MonoBehaviour, IBossDamagable
 {
-    public enum Ability
-    {
-        None,
-        speedBoost = 1,
-        jumpBoost = 2,
-        invensBoost = 3,
-    }
 
-    [SerializeField] Ability ability;
-    public BossSM boss;
-    [SerializeField] float activationTime;
 
-    private float timer;
+    [SerializeField] EAbility ability;
+    [SerializeField] int health;
+
+    public static event Action<EAbility> OnSomethingHappened;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        timer = activationTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
 
-        if(timer <= 0)
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+        if(health == 0)
         {
-            boss.currentAbility = (BossSM.Ability)ability;
-            Destroy(gameObject);
+            Death();
         }
+    }
+
+    private void Death()
+    {
+        if(gameObject == null)
+        {
+            return;
+        }
+        BossOrb.OnSomethingHappened?.Invoke(ability);
+        Destroy(gameObject);
     }
 }
