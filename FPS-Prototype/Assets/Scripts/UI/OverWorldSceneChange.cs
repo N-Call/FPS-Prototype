@@ -25,12 +25,14 @@ public class OverWorldSceneChange : MonoBehaviour
                 SceneManager.LoadScene(1);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
-                //GameManager.instance.StatePause();
+                
 
             }
             else if(Input.GetButtonDown("Interact"))
             {
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene(3);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
             }
         }
     }

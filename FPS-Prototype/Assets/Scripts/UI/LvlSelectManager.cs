@@ -35,27 +35,21 @@ public class LvlSelectManager : MonoBehaviour
     private void Start()
     {
         bool nextlvl = false;
-        if (Input.GetButtonDown("Fire1") && BackButton.CompareTag("buttonLvl"))
-        {
-            return;
-        }
-        else
-        {
-            for (int i = 0; i < lvlsBtn.Length; i++)
+       
+        for (int i = 0; i < lvlsBtn.Length; i++)
+        {// plus 4 if for all of the menu scenes in front of level 1 and on
+            if (!GameManager.instance.gradeSystem.LoadData(i + 4))
             {
-                if (!GameManager.instance.gradeSystem.LoadData(i + 3))
+                if (!nextlvl)
                 {
-                    if (!nextlvl)
-                    {
-                        nextlvl = true;
-                    }
-                    else
-                    {
-                        lvlsBtn[i].interactable = false;
-                    }
+                    nextlvl = true;
                 }
-
+                else
+                {
+                    lvlsBtn[i].interactable = false;
+                }
             }
+
         }
     }
 
@@ -79,7 +73,7 @@ public class LvlSelectManager : MonoBehaviour
         ActiveImage.SetActive(true);
 
 
-        if (GameManager.instance.gradeSystem.LoadData(Index + 3))
+        if (GameManager.instance.gradeSystem.LoadData(Index + 4))
         {
             ActiveRecord.SetActive(true);
         }
@@ -88,7 +82,7 @@ public class LvlSelectManager : MonoBehaviour
             ActiveRecord.SetActive(false);
         }
 
-        SelectedScene = Index + 3;
+        SelectedScene = Index + 4;
     }
 
 
