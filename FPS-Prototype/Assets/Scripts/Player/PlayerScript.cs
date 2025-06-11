@@ -50,8 +50,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float wallJumpForce;
     [SerializeField] float wallCheckDist;
     [SerializeField] float wallJumpHoriForce;
-    [SerializeField] float wallRunCooldown;
+    //[SerializeField] float wallRunCooldown;
     [SerializeField] float wallStickForce;
+    [SerializeField] float minWallRunHeight;
 
     [SerializeField]
     [Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
@@ -62,9 +63,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     bool isWallRunning;         // Is the player wall jumping?
     bool wallJumped;            // Did the player wall jump?
     float wallRunTimer;         // Timer for the active wall run.
-    float wallRunCooldownTimer; // Cooldown before another wall run can be made.
+    //float wallRunCooldownTimer; // Cooldown before another wall run can be made.
     Vector3 wallNormal;         // Normal of the wall being run on in question.
     Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
+    private GameObject wallRunLockedWall = null;
 
     CameraController camControl;// TThis is referencing the CameraController for the tilting capabilities during wall running.
 
@@ -145,14 +147,14 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     void Update()
     {
         wallJumpOccurredThisFrame = false;
-        if (wallRunCooldownTimer > 0f)
-            wallRunCooldownTimer -= Time.deltaTime;
-
+        if (controller.isGrounded)
+        {
+            wallRunLockedWall = null;
+        }
         //Debug.DrawRay(transform.position, -transform.right * wallCheckDist, Color.blue);
         //Debug.DrawRay(transform.position, transform.right * wallCheckDist, Color.red);
 
         WallRunCheck();
-        Movement();
         Jump();
         Sprint();
         Crouch();
@@ -168,6 +170,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 invulnerable = false;
             }
         }
+    }
+
+    void FixedUpdate()
+    {
+        Movement();
     }
 
     void HandleHeadBobbing()
@@ -231,103 +238,94 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void WallRunCheck()
     {
-        // Stop running if grounded
-        if (controller.isGrounded)
+        if (isWallRunning && controller.isGrounded)
         {
-            //Debug.Log("Grounded: stopping wall run.");
-            StopWallRun();
-            wallJumped = false;
-            camControl.SetWallRunTilt(0f);
+            StopWallRun(null);
             return;
         }
 
-        // Stop if they wall-jumped or the cooldown isn't over yet
-        if (wallJumped || wallRunCooldownTimer > 0f)
-        {
-            //Debug.Log("Wall jump cooldown or already wall jumped.");
-            StopWallRun();
-            return;
-        }
+        RaycastHit groundHit;
+        float distToGnd = Mathf.Infinity;
 
-        float forwardInput = Input.GetAxis("Vertical");
-        // Stop wall running if they stop moving forward
-        if (forwardInput <= 0.2f)
-        {
-            //Debug.Log("No forward input. Cancelling wall run.");
-            StopWallRun();
-            return;
-        }
+        if (Physics.Raycast(transform.position, Vector3.down, out groundHit, 100f, ~0))
+            distToGnd = groundHit.distance;
 
-        RaycastHit hit;
         bool wallDetectedThisFrame = false;
+        Vector3 currWallNormal = Vector3.zero;
+        GameObject hitWallObject = null;
+        RaycastHit wallHit;
 
         // Check if a runnable wall is on the left or right of the player
         // Start wall running if so
-        if (Physics.Raycast(transform.position, -transform.right, out hit, wallCheckDist, wallRunMask))
+        if (Physics.Raycast(transform.position, -transform.right, out wallHit, wallCheckDist, wallRunMask))
         {
             //Debug.Log("Wall detected on left");
-            StartWallRun(hit.normal);
+            currWallNormal = wallHit.normal;
+            hitWallObject = wallHit.collider.gameObject;
             wallDetectedThisFrame = true;
         }
-        else if (Physics.Raycast(transform.position, transform.right, out hit, wallCheckDist, wallRunMask))
+        else if (Physics.Raycast(transform.position, transform.right, out wallHit, wallCheckDist, wallRunMask))
         {
             //Debug.Log("Wall detected on right");
-            StartWallRun(hit.normal);
+            currWallNormal = wallHit.normal;
+            hitWallObject = wallHit.collider.gameObject;
             wallDetectedThisFrame = true;
         }
 
-        // Stop wall running if they reach the end of the wall
-        if (isWallRunning && !wallDetectedThisFrame)
-        {
-            //Debug.Log("No direct wall detected. Checking for edge.");
+        float forwardInput = Input.GetAxis("Vertical");
 
-            //Debug.Log("Wall run ended due to no continuous wall detected.");
-            StopWallRun();
-            return;
-        }
+        bool tryToRunonLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
+        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunonLockedWall && forwardInput > 0.2f && verticalVelocity.y < 0f;
+        bool canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
 
-        if (isWallRunning)
+        if (canInitiateWallRun)
+            StartWallRun(currWallNormal, hitWallObject);
+        else if (canContinueWallRun)
         {
-            //Debug.Log("Wall running...");
+            wallNormal = currWallNormal;
+
             wallRunTimer += Time.deltaTime;
 
-            // Stop wall running if they wall run passed the allowed duration
+            // apply gravity
+            verticalVelocity.y = -wallRunGravity;
+
             if (wallRunTimer > wallRunDur)
             {
-                //Debug.Log("Wall run duration exceeded.");
-                StopWallRun();
+                StopWallRun(hitWallObject);
                 return;
             }
 
-            // Apply gravity
-            verticalVelocity.y = -wallRunGravity;
-
-            // Handle wall jump
+            // Handle Wall Jump
             if (Input.GetButtonDown("Jump"))
             {
-                if (!wallJumped && wallRunCooldownTimer <= 0f)
+                if (!wallJumped)
                 {
-                    //Debug.Log("Wall jump triggered.");
                     SoundManager.instance.PlaySFX("playerJump");
                     verticalVelocity.y = wallJumpForce;
                     wallJumpVel = (wallNormal + transform.forward).normalized * wallJumpHoriForce;
                     wallJumped = true;
-                    wallRunCooldownTimer = wallRunCooldown;
-                    StopWallRun();
+                    StopWallRun(hitWallObject);
 
                     wallJumpOccurredThisFrame = true;
-                    //Debug.Log($"Wall Jump - Wall Normal: {wallNormal}");
-                    //Debug.Log($"Wall Jump - Calculated Wall Jump Velocity: {wallJumpVel}");
+                    //debug.log($"wall jump - wall normal: {wallnormal}");
+                    //debug.log($"wall jump - calculated wall jump velocity: {walljumpvel}");
                 }
             }
         }
+        else
+        {
+            if (!isWallRunning)
+                StopWallRun(null);
+            isWallRunning = false;
+        }
     }
 
-    void StartWallRun(Vector3 hitNormal)
+    void StartWallRun(Vector3 hitNormal, GameObject wallObject)
     {
         isWallRunning = true;
         wallNormal = hitNormal;
         wallRunTimer = 0f;
+        wallRunLockedWall = wallObject;
 
         if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
         {
@@ -338,14 +336,14 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         camControl.SetWallRunTilt(tilt * 15f);
     }
 
-    void StopWallRun()
+    void StopWallRun(GameObject wallToLock = null)
     {
         if (isWallRunning)
         {
             camControl.SetWallRunTilt(0f);
-            wallRunCooldownTimer = wallRunCooldown;
+            if (wallToLock != null)
+                wallRunLockedWall = wallToLock;
         }
-        wallJumped = false;
         isWallRunning = false;
         wallJumped = false;
         wallRunTimer = 0f;
