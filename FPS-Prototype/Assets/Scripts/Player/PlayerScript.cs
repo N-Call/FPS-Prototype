@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour, IDamage
+public class PlayerScript : MonoBehaviour, IDamage, IPickup
 {
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask playerMask;
@@ -124,6 +124,8 @@ public class PlayerScript : MonoBehaviour, IDamage
     public bool jumpDebuffed;
     bool elemInversed;
     bool isPlayingStep;
+    private int scrapCounter = 0;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -408,7 +410,7 @@ public class PlayerScript : MonoBehaviour, IDamage
             speed += sprintSpeed;
         }
 
-        if (isCrouching)
+        if (isCrouching && controller.isGrounded)
         {
             speed *= crouchSpeedMultiplier;
         }
@@ -891,5 +893,11 @@ public class PlayerScript : MonoBehaviour, IDamage
         jumpElemMod = 0.0f;
         particleSpMod.gameObject.SetActive(false);
         particleJpMod.gameObject.SetActive(false);
+    }
+
+    public void CollectScrap(int amount)
+    {
+        Debug.Log(amount + "added");
+        amount += scrapCounter;
     }
 }
