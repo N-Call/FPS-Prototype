@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
     public Image playerHPbar;
     public Image playerShieldbar;
     public PlayerScript playerScript;
+    public PlayerAbilities playerAbilities;
     public SceneData sceneData;
     public SceneLoader sceneLoader;
     public FinalGradeSystem gradeSystem;
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
         if (player != null)
         {
             playerScript = player.GetComponent<PlayerScript>();
+            playerAbilities = player.GetComponent<PlayerAbilities>();
             startPos = player.transform.position;
         }
 
