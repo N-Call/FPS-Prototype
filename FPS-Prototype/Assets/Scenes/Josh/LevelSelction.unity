@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 86343356}
   m_Layer: 5
   m_Name: BackToMenu
-  m_TagString: Untagged
+  m_TagString: ButtonLvl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7455786799493649830}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: BackToMenu
+        m_MethodName: BackToOverWorld
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2010,6 +2010,7 @@ MonoBehaviour:
   - {fileID: 413125296}
   ActiveImage: {fileID: 0}
   ActiveRecord: {fileID: 3664739029970566778}
+  BackButton: {fileID: 0}
   SelectedScene: 0
 --- !u!1 &1463871705
 GameObject:
@@ -3338,7 +3339,6 @@ GameObject:
   - component: {fileID: 6321326875939279555}
   - component: {fileID: 2940455507516315726}
   - component: {fileID: 6321326875939279556}
-  - component: {fileID: 6321326875939279557}
   m_Layer: 5
   m_Name: Gamemanager
   m_TagString: Untagged
@@ -4272,6 +4272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c3557e1b691d1a4e892fad7c172567e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOnStartScreen: 1
   menuActive: {fileID: 0}
   menuPause: {fileID: 0}
   menuWin: {fileID: 3664739029970566778}
@@ -5457,18 +5458,6 @@ MonoBehaviour:
   masterVolume: 0
   musicVolume: 0
   sfxVolume: 0
---- !u!114 &6321326875939279557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870870880933525322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9dccf3abea85434bb38bc6ed668a7fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &6335169906892125520
 CanvasRenderer:
   m_ObjectHideFlags: 0

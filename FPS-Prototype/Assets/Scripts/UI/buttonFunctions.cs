@@ -35,7 +35,7 @@ public class ButtonFunctions : MonoBehaviour
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
-        GameManager.instance.StateUnpause();
+        
     }
 
     public void MainMenu()
@@ -43,7 +43,6 @@ public class ButtonFunctions : MonoBehaviour
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(0);
-        GameManager.instance.StateUnpause();
     }
 
     public void SetLevelBtn(int level)

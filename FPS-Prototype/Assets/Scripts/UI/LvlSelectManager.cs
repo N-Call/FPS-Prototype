@@ -22,6 +22,8 @@ public class LvlSelectManager : MonoBehaviour
     [SerializeField] GameObject ActiveImage;
     [SerializeField] GameObject ActiveRecord;
 
+    [SerializeField] GameObject BackButton;
+
     public int SelectedScene;
 
     private void Awake()
@@ -33,20 +35,27 @@ public class LvlSelectManager : MonoBehaviour
     private void Start()
     {
         bool nextlvl = false;
-        for (int i = 0; i < lvlsBtn.Length; i++)
+        if (Input.GetButtonDown("Fire1") && BackButton.CompareTag("buttonLvl"))
         {
-            if (!GameManager.instance.gradeSystem.LoadData(i + 3))
+            return;
+        }
+        else
+        {
+            for (int i = 0; i < lvlsBtn.Length; i++)
             {
-                if (!nextlvl)
+                if (!GameManager.instance.gradeSystem.LoadData(i + 3))
                 {
-                    nextlvl = true;
+                    if (!nextlvl)
+                    {
+                        nextlvl = true;
+                    }
+                    else
+                    {
+                        lvlsBtn[i].interactable = false;
+                    }
                 }
-                else
-                {
-                    lvlsBtn[i].interactable = false;
-                }
-            }
 
+            }
         }
     }
 

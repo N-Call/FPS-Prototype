@@ -23,7 +23,9 @@ public class OverWorldSceneChange : MonoBehaviour
             if (Input.GetButtonDown("Interact") && button.CompareTag("ButtonLvl"))
             {
                 SceneManager.LoadScene(1);
-                GameManager.instance.StatePause();
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                //GameManager.instance.StatePause();
 
             }
             else if(Input.GetButtonDown("Interact"))
