@@ -337,9 +337,4 @@ public class InputActionManager : MonoBehaviour
         playerInputMethods[input].Remove(action);
     }
 
-    //void InputDeviceChanged(InputDevice device, InputDeviceChange change)
-    //{
-
-    //}
-
 }
