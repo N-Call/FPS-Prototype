@@ -42,6 +42,7 @@ public class InputActionManager : MonoBehaviour
         Sprint,
         Jump,
         Crouch,
+        Look,
         Interact,
         Shoot,
         Aim,
@@ -55,6 +56,7 @@ public class InputActionManager : MonoBehaviour
     public InputAction playerSprintAction { get; private set; }
     public InputAction playerJumpAction { get; private set; }
     public InputAction playerCrouchAction { get; private set; }
+    public InputAction playerLookAction { get; private set; }
     public InputAction playerInteractAction { get; private set; }
     public InputAction playerShootAction { get; private set; }
     public InputAction playerAimAction { get; private set; }
@@ -79,12 +81,40 @@ public class InputActionManager : MonoBehaviour
         playerInputActionsByEnum = new Dictionary<PlayerInputs, InputAction>();
         playerInputMethods = new Dictionary<PlayerInputs, HashSet<Action<InputAction.CallbackContext>>>();
         playerInputActions = new PlayerInputActions();
+
+        InputSystem.onActionChange += (obj, change) =>
+        {
+            if (change != InputActionChange.ActionStarted)
+            {
+                return;
+            }
+
+            InputAction action = (InputAction)obj;
+            InputControl control = action.activeControl;
+            InputDevice device = control.device;
+            int deviceId = device.deviceId;
+            //Debug.Log($"{Time.deltaTime}\t\tDevice: {device.displayName} ({deviceId})\t\tGamepad: {isUsingGamepad}");
+
+            if (deviceId < 1 || deviceId > 2)
+            {
+                isUsingGamepad = true;
+            }
+            else
+            {
+                isUsingGamepad = false;
+            }
+        };
     }
 
     private void OnDisable()
     {
         DisableMenuInput();
         DisablePlayerInput();
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void EnableMenuInput()
@@ -171,6 +201,10 @@ public class InputActionManager : MonoBehaviour
         playerCrouchAction.Enable();
         playerInputActionsByEnum[PlayerInputs.Crouch] = playerCrouchAction;
 
+        playerLookAction = playerInputActions.Look.Look;
+        playerLookAction.Enable();
+        playerInputActionsByEnum[PlayerInputs.Look] = playerLookAction;
+
         playerInteractAction = playerInputActions.Interact.Interact;
         playerInteractAction.Enable();
         playerInputActionsByEnum[PlayerInputs.Interact] = playerInteractAction;
@@ -235,6 +269,7 @@ public class InputActionManager : MonoBehaviour
         playerSprintAction.Disable();
         playerJumpAction.Disable();
         playerCrouchAction.Disable();
+        playerLookAction.Disable();
         playerInteractAction.Disable();
         playerShootAction.Disable();
         playerAimAction.Disable();
@@ -284,5 +319,10 @@ public class InputActionManager : MonoBehaviour
 
         playerInputMethods[input].Remove(action);
     }
+
+    //void InputDeviceChanged(InputDevice device, InputDeviceChange change)
+    //{
+
+    //}
 
 }
