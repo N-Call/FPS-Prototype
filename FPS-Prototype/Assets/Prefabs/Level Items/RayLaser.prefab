@@ -55,6 +55,7 @@ MonoBehaviour:
   startWidth: 0.05
   endWidth: 0.05
   maxReflections: 1
+  hitEffect: {fileID: 0}
   laserCanToggle: 0
   onTime: 0
   offTime: 0
@@ -67,23 +68,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 2723090535203413607}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
+  m_Script: {fileID: 11500000, guid: 829ce0a7e63bf4046976681b97a7ee97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {x: 0, y: 1.5, z: 0}
+  destination: {x: 0, y: 0, z: 0}
   relative: 1
-  speed: 1.5
+  stoppingDistance: 0.01
+  moveSpeed: 0
   lerp: 0
+  carryPassengers: 0
+  moveWithoutPlayer: 1
+  waitForPlayer: 0
+  triggerHeight: 0
   startDelay: 0
-  startDelayInitial: 0
-  destinationDelay: 0
-  pingPong: 1
-  backToStart: 0
-  carryPlayer: 0
-  onlyMoveWhenPlayer: 0
   destroyAfterTime: 0
-  destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0
+  initialStartDelay: 0
+  destinationDelay: 0
+  destroyAfterCycle: 0
 --- !u!33 &350511718455364706
 MeshFilter:
   m_ObjectHideFlags: 0

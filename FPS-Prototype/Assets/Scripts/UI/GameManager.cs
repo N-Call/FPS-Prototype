@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    [SerializeField] bool isOnStartScreen = false;
+
     [Header("Menus")]
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject timerWinCount;
     [SerializeField] GameObject elapsedTime;
     [SerializeField] TMP_Text enemyWinCount;
+    [SerializeField] TMP_Text scrapUI;
 
     [Header("Buff Icons")]
     [SerializeField] GameObject buffSprint;
@@ -81,8 +84,8 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
+    int scrapCounter;
 
-    bool isOnStartScreen = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -136,7 +139,7 @@ public class GameManager : MonoBehaviour
 
     public void StatePause()
     {
-        isPaused = !isPaused;
+        isPaused = true;
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -154,22 +157,42 @@ public class GameManager : MonoBehaviour
 
     public void StateUnpause()
     {
-        isPaused = !isPaused;
+        isPaused = false;
         Time.timeScale = timeScaleOrig;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
         //DisablePPVolume();
         globalVol.SetActive(false);
         // Disable menus
-        menuSettings.SetActive(false);
-        menuActive.SetActive(false);
-        menuActive = null;
+        if (menuSettings != null)
+        {
+            menuSettings.SetActive(false);
+        }
+        if(menuActive != null)
+        {
+            menuActive.SetActive(false);
+            menuActive = null;
+        }
 
         // to turn on the reticle
-        reticle.SetActive(true);
+        if (reticle != null)
+        {
+            reticle.SetActive(true);
+        }
         SoundManager.instance.musicSource.Play();
         volumeSystemData.SetVolumes();
-        playerScript.enabled = true;
+        if (playerScript != null)
+        {
+            playerScript.enabled = true;
+        }
+    }
+
+    public void AddScrap(int amount)
+    {
+        Debug.Log(amount + "added");
+        scrapCounter += amount;
+        scrapUI.text = scrapCounter.ToString("F0");
     }
 
     public void NextLvlBtnOff()
@@ -187,6 +210,7 @@ public class GameManager : MonoBehaviour
         if (menuActive == menuSettings || menuActive == menuRules || menuActive == menuCredits)
         {
             menuActive.SetActive(false);
+            SoundManager.instance.musicSource.Pause();
             menuActive = null;
         }
     }
@@ -202,12 +226,12 @@ public class GameManager : MonoBehaviour
             }
 
             if (menuActive == menuSettings)
-            {
+            { 
                 menuActive.SetActive(false);
                 menuActive = null;
                 return;
             }
-
+           
             DisableCurrentToggledMenu();
             menuActive = menuSettings;
             menuActive.SetActive(true);

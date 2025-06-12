@@ -1,7 +1,4 @@
-using JetBrains.Annotations;
-using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -25,6 +22,8 @@ public class LvlSelectManager : MonoBehaviour
     [SerializeField] GameObject ActiveImage;
     [SerializeField] GameObject ActiveRecord;
 
+    [SerializeField] GameObject BackButton;
+
     public int SelectedScene;
 
     private void Awake()
@@ -36,9 +35,10 @@ public class LvlSelectManager : MonoBehaviour
     private void Start()
     {
         bool nextlvl = false;
+       
         for (int i = 0; i < lvlsBtn.Length; i++)
-        {
-            if (!GameManager.instance.gradeSystem.LoadData(i + 2))
+        {// plus 4 if for all of the menu scenes in front of level 1 and on
+            if (!GameManager.instance.gradeSystem.LoadData(i + 4))
             {
                 if (!nextlvl)
                 {
@@ -73,7 +73,7 @@ public class LvlSelectManager : MonoBehaviour
         ActiveImage.SetActive(true);
 
 
-        if (GameManager.instance.gradeSystem.LoadData(Index + 2))
+        if (GameManager.instance.gradeSystem.LoadData(Index + 4))
         {
             ActiveRecord.SetActive(true);
         }
@@ -82,7 +82,7 @@ public class LvlSelectManager : MonoBehaviour
             ActiveRecord.SetActive(false);
         }
 
-        SelectedScene = Index + 2;
+        SelectedScene = Index + 4;
     }
 
 

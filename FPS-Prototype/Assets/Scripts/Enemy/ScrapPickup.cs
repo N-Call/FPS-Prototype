@@ -1,8 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class ScrapPickup : MonoBehaviour
 {
+   
     public int scrapAmount;
+
     private void OnTriggerEnter(Collider other)
     {
         IPickup pickup = other.GetComponent<IPickup>();

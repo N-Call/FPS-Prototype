@@ -14512,13 +14512,13 @@ GameObject:
   - component: {fileID: 2449231004184124538}
   - component: {fileID: 4455989524213090977}
   - component: {fileID: 4897225472181306326}
-  - component: {fileID: 4996648070641103547}
   - component: {fileID: 1600691444163460928}
   - component: {fileID: 4915274379493954518}
   - component: {fileID: 2568531781435809152}
-  m_Layer: 8
+  - component: {fileID: -8412172071421674230}
+  m_Layer: 0
   m_Name: Boss Shield Orb - Moving
-  m_TagString: Untagged
+  m_TagString: Boss_Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14555,9 +14555,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {x: 0, y: 0, z: 0}
-  relative: 0
-  speed: 1
+  destination: {x: 0, y: -25, z: 0}
+  relative: 1
+  speed: 5
   lerp: 0
   startDelay: 0
   startDelayInitial: 0
@@ -14622,27 +14622,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4996648070641103547
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6006124964689578905}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 0.2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &1600691444163460928
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -14688,8 +14667,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -14706,8 +14685,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ability: 1
-  boss: {fileID: 0}
-  activationTime: 5
+  health: 4
+--- !u!114 &-8412172071421674230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6006124964689578905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9898e28624f6af47abc0903cbd6a756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+  y: -1
+  z: 0
+  speed: 50
 --- !u!1 &7294493169191970052
 GameObject:
   m_ObjectHideFlags: 0
