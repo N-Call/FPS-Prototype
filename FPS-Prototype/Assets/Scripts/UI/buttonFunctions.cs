@@ -66,10 +66,13 @@ public class ButtonFunctions : MonoBehaviour
     public void NextLevel()
     {
         // this is to load the next level but does a check first on making sure your in scene count 
-        if (SceneManager.GetActiveScene().buildIndex + 1 <= 7)
+        if (SceneManager.GetActiveScene().buildIndex + 1 <= 8)
         {
+            Debug.Log("I have not made it to next scene");
             SaveSystem.Save();
+            Debug.Log("I have this is after save");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            Debug.Log("I have made it to next scene");
             SoundManager.instance.sfxSource.Stop();
             GameManager.instance.StateUnpause();
         }
