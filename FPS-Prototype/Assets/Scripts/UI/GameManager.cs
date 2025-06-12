@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] bool isOnStartScreen = false;
 
     [Header("Menus")]
+    [SerializeField] EventSystem eventSystem;
+    [SerializeField] GameObject firstSelectedButton;
+
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
@@ -120,20 +124,17 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        //if (Input.GetButtonDown("Cancel"))
-        //{
-        //    if (menuActive == null)
-        //    {
-        //        StatePause();
-        //        menuActive = menuPause;
-        //        menuPause.SetActive(isPaused);
-        //    }
-        //    else if (menuActive == menuPause)
-        //    {
-        //        StateUnpause();
-        //        menuSettings.SetActive(false);
-        //    }
-        //}
+        if (isPaused)
+        {
+            if (menuActive == menuPause)
+            {
+                Vector2 navigation = InputActionManager.instance.menuNavigateAction.ReadValue<Vector2>();
+                if (navigation.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
+                {  
+                    eventSystem.SetSelectedGameObject(firstSelectedButton);
+                }
+            }
+        }
 
         if (isPaused && playerScript != null)
         {

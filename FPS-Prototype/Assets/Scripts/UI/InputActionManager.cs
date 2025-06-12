@@ -21,7 +21,10 @@ public class InputActionManager : MonoBehaviour
         Unpause,
         Navigate,
         Confirm,
-        Cancel
+        Cancel,
+        Click,
+        Point,
+        Scroll
     }
 
     MenuInputActions menuInputActions;
@@ -29,6 +32,9 @@ public class InputActionManager : MonoBehaviour
     public InputAction menuNavigateAction { get; private set; }
     public InputAction menuConfirmAction { get; private set; }
     public InputAction menuCancelAction { get; private set; }
+    public InputAction menuClickAction { get; private set; }
+    public InputAction menuPointAction { get; private set; }
+    public InputAction menuScrollAction { get; private set; }
 
     //
     // Player Input Actions
@@ -132,6 +138,18 @@ public class InputActionManager : MonoBehaviour
         menuCancelAction.Enable();
         menuInputActionsByEnum[MenuInputs.Cancel] = menuCancelAction;
 
+        menuClickAction = menuInputActions.Navigate.Click;
+        menuClickAction.Enable();
+        menuInputActionsByEnum[MenuInputs.Click] = menuClickAction;
+
+        menuPointAction = menuInputActions.Navigate.Point;
+        menuPointAction.Enable();
+        menuInputActionsByEnum[MenuInputs.Point] = menuPointAction;
+
+        menuScrollAction = menuInputActions.Navigate.Scroll;
+        menuScrollAction.Enable();
+        menuInputActionsByEnum[MenuInputs.Scroll] = menuScrollAction;
+
         foreach (var entry in menuInputMethods)
         {
             HashSet<Action<InputAction.CallbackContext>> actions = entry.Value;
@@ -172,6 +190,10 @@ public class InputActionManager : MonoBehaviour
         menuNavigateAction.Disable();
         menuConfirmAction.Disable();
         menuCancelAction.Disable();
+        menuClickAction.Disable();
+        menuPointAction.Disable();
+        menuScrollAction.Disable();
+
         menuInputActions.Disable();
         menuInputActionsByEnum.Clear();
     }
@@ -314,10 +336,5 @@ public class InputActionManager : MonoBehaviour
 
         playerInputMethods[input].Remove(action);
     }
-
-    //void InputDeviceChanged(InputDevice device, InputDeviceChange change)
-    //{
-
-    //}
 
 }

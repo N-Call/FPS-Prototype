@@ -596,18 +596,16 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     void WeaponInput()
     {
         //check for primary weapon
-        if (InputActionManager.instance.playerShootAction.IsPressed() && weaponList != null)
+        if (InputActionManager.instance.playerShootAction.WasPressedThisFrame() && weaponList != null)
         {
             //launch attack method
             weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
-
         }
 
         if (!InputActionManager.instance.playerShootAction.IsPressed() && weaponList != null)
         {
             //launch attack method
             weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
-
         }
 
         //Change weapon if pressed
