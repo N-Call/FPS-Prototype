@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -283,13 +282,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             wallDetectedThisFrame = true;
         }
 
-        float forwardInput = Input.GetAxis("Vertical");
-
         bool tryToRunOnLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
-        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && forwardInput > 0.2f && verticalVelocity.y < 0.1f;
-
-        bool tryToRunonLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
-        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunonLockedWall && walkHorizontalDirection > 0.2f && verticalVelocity.y < 0f;
+        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && walkHorizontalDirection > 0.2f && verticalVelocity.y < 0f;
         bool canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
 
         if (canInitiateWallRun)
@@ -402,7 +396,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
         else
         {
-            controller.Move(inputDirection * speed * Time.deltaTime);
+            controller.Move(direction * speed * Time.deltaTime);
             if (direction != Vector3.zero && !isPlayingStep && controller.isGrounded)
             {
                 StartCoroutine(PlaySteps());
