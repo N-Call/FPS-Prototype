@@ -41,8 +41,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject buffJump;
     [SerializeField] GameObject debuffJump;
 
-    
-
     List<EnemyController> enemiesToRespawn;
 
     public Vector3 respawnPosition;

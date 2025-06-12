@@ -57,8 +57,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
     bool provideExtraJumpIfNeeded;
 
-
-
     bool isWallRunning;         // Is the player wall jumping?
     bool wallJumped;            // Did the player wall jump?
     float wallRunTimer;         // Timer for the active wall run.
@@ -86,7 +84,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     public ParticleSystem particleSpMod;
     public ParticleSystem particleSpRun;
     public ParticleSystem particleJpMod;
-
 
     Coroutine crouchCoroutine;
     Coroutine unCrouchCoroutine;
