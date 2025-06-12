@@ -136,7 +136,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
         origFOV = Camera.main.fieldOfView;
-        GameManager.instance.SetSpawnPosition(transform.position);
+        GameManager.instance.SetSpawnPosition(transform.position, transform.rotation);
         UpdatePlayerUI();
         cameraLocalPosOrig = Camera.main.transform.localPosition;
         Application.targetFrameRate = 60;
