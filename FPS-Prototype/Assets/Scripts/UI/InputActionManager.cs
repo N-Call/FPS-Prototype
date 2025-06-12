@@ -112,11 +112,6 @@ public class InputActionManager : MonoBehaviour
         DisablePlayerInput();
     }
 
-    private void Update()
-    {
-        
-    }
-
     public void EnableMenuInput()
     {
         menuInputActions.Enable();
