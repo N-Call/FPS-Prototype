@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour, IDamage, IPickup
 {
@@ -58,14 +59,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [Tooltip("Provides the player with an additional jump if they used all of them before running on the wall")]
     bool provideExtraJumpIfNeeded;
 
-
-
     bool isWallRunning;         // Is the player wall jumping?
     bool wallJumped;            // Did the player wall jump?
     float wallRunTimer;         // Timer for the active wall run.
     //float wallRunCooldownTimer; // Cooldown before another wall run can be made.
     Vector3 wallNormal;         // Normal of the wall being run on in question.
     Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
+    private bool wallDetectedThisFrame;
     private GameObject wallRunLockedWall = null;
 
     CameraController camControl;// TThis is referencing the CameraController for the tilting capabilities during wall running.
@@ -89,13 +89,14 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     public ParticleSystem particleSpRun;
     public ParticleSystem particleJpMod;
 
-
     Coroutine crouchCoroutine;
     Coroutine unCrouchCoroutine;
 
     Vector3 verticalVelocity;
 
     float originalHeight;
+    float walkHorizontalDirection;
+    float walkVerticalDirection;
     float horizontalSpeed;
     float verticalSpeed;
     float currentSlideSpeed;
@@ -126,8 +127,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     public bool jumpDebuffed;
     bool elemInversed;
     bool isPlayingStep;
-    
-    
+
+    private void OnEnable()
+    {
+        InputActionManager.instance.AddPlayerPerform(InputActionManager.PlayerInputs.Pause, PerformPause);
+        InputActionManager.instance.EnablePlayerInput();
+    }
+
+    private void OnDisable()
+    {
+        InputActionManager.instance.DisablePlayerInput();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -146,6 +156,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     // Update is called once per frame
     void Update()
     {
+        Vector2 walkInputDirection = InputActionManager.instance.playerWalkAction.ReadValue<Vector2>();
+        walkHorizontalDirection = walkInputDirection.x;
+        walkVerticalDirection = walkInputDirection.y;
+
         wallJumpOccurredThisFrame = false;
         if (controller.isGrounded)
         {
@@ -182,9 +196,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         float currAmp = 0f;
         float currFreq = 0f;
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        bool isMoveInput = (Mathf.Abs(horizontalInput) > 0.01f || Mathf.Abs(verticalInput) > 0.01f);
+        bool isMoveInput = (Mathf.Abs(walkHorizontalDirection) > 0.01f || Mathf.Abs(walkVerticalDirection) > 0.01f);
 
         //Debug.Log($"Frame: {Time.frameCount} | isMoveInput: {isMoveInput} | isGrounded: {controller.isGrounded}");
 
@@ -238,10 +250,16 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void WallRunCheck()
     {
+        // Immediately stop wall run if player is grounded while wall running
         if (isWallRunning && controller.isGrounded)
         {
-            StopWallRun(null);
+            StopWallRun(null, false);
             return;
+        }
+
+        if (wallJumped && !isWallRunning && !controller.isGrounded)
+        {
+            wallJumped = false;
         }
 
         RaycastHit groundHit;
@@ -250,53 +268,47 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         if (Physics.Raycast(transform.position, Vector3.down, out groundHit, 100f, ~0))
             distToGnd = groundHit.distance;
 
-        bool wallDetectedThisFrame = false;
+        wallDetectedThisFrame = false;
         Vector3 currWallNormal = Vector3.zero;
         GameObject hitWallObject = null;
         RaycastHit wallHit;
 
         // Check if a runnable wall is on the left or right of the player
-        // Start wall running if so
         if (Physics.Raycast(transform.position, -transform.right, out wallHit, wallCheckDist, wallRunMask))
         {
-            //Debug.Log("Wall detected on left");
             currWallNormal = wallHit.normal;
             hitWallObject = wallHit.collider.gameObject;
             wallDetectedThisFrame = true;
         }
         else if (Physics.Raycast(transform.position, transform.right, out wallHit, wallCheckDist, wallRunMask))
         {
-            //Debug.Log("Wall detected on right");
             currWallNormal = wallHit.normal;
             hitWallObject = wallHit.collider.gameObject;
             wallDetectedThisFrame = true;
         }
 
-        float forwardInput = Input.GetAxis("Vertical");
-
-        bool tryToRunonLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
-        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunonLockedWall && forwardInput > 0.2f && verticalVelocity.y < 0f;
+        bool tryToRunOnLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
+        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && walkHorizontalDirection > 0.2f && verticalVelocity.y < 0f;
         bool canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
 
         if (canInitiateWallRun)
+        {
             StartWallRun(currWallNormal, hitWallObject);
+        }
         else if (canContinueWallRun)
         {
             wallNormal = currWallNormal;
-
             wallRunTimer += Time.deltaTime;
-
-            // apply gravity
             verticalVelocity.y = -wallRunGravity;
 
             if (wallRunTimer > wallRunDur)
             {
-                StopWallRun(hitWallObject);
+                StopWallRun(hitWallObject, false);
                 return;
             }
 
             // Handle Wall Jump
-            if (Input.GetButtonDown("Jump"))
+            if (InputActionManager.instance.playerJumpAction.IsPressed())
             {
                 if (!wallJumped)
                 {
@@ -304,19 +316,15 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                     verticalVelocity.y = wallJumpForce;
                     wallJumpVel = (wallNormal + transform.forward).normalized * wallJumpHoriForce;
                     wallJumped = true;
-                    StopWallRun(hitWallObject);
+                    StopWallRun(hitWallObject, true);
 
                     wallJumpOccurredThisFrame = true;
-                    //debug.log($"wall jump - wall normal: {wallnormal}");
-                    //debug.log($"wall jump - calculated wall jump velocity: {walljumpvel}");
                 }
             }
         }
-        else
+        else if (isWallRunning)
         {
-            if (!isWallRunning)
-                StopWallRun(null);
-            isWallRunning = false;
+            StopWallRun(null, false);
         }
     }
 
@@ -326,6 +334,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         wallNormal = hitNormal;
         wallRunTimer = 0f;
         wallRunLockedWall = wallObject;
+        wallJumped = false;
 
         if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
         {
@@ -336,35 +345,41 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         camControl.SetWallRunTilt(tilt * 15f);
     }
 
-    void StopWallRun(GameObject wallToLock = null)
+    void StopWallRun(GameObject wallToLock = null, bool wasJump = false)
     {
-        if (isWallRunning)
+        bool wasWallRunning = isWallRunning;
+        isWallRunning = false;
+        wallRunTimer = 0f;
+
+        wallNormal = Vector3.zero;
+
+        if (!wasJump)
+        {
+            verticalVelocity.y = -1f;
+            wallJumpVel = Vector3.zero;
+        }
+
+        if (wasWallRunning)
         {
             camControl.SetWallRunTilt(0f);
-            if (wallToLock != null)
-                wallRunLockedWall = wallToLock;
         }
-        isWallRunning = false;
-        wallJumped = false;
-        wallRunTimer = 0f;
+
+        if (wallToLock != null)
+            wallRunLockedWall = wallToLock;
     }
 
     void Movement()
     {
-        // Horizontal direction
-        float horizontal = Input.GetAxis("Horizontal");
         // If moving sideways
-        bool sideways = horizontal != 0;
+        bool sideways = walkHorizontalDirection != 0;
 
-        // Vertical direction
-        float vertical = Input.GetAxis("Vertical");
         // If moving forward
-        bool forward = vertical > 0;
+        bool forward = walkVerticalDirection > 0;
         // If moving backwards
-        bool backwards = vertical < 0;
+        bool backwards = walkVerticalDirection < 0;
 
         // The direction the player is going
-        Vector3 inputDirection = transform.right * horizontal + transform.forward * vertical;
+        Vector3 direction = transform.right * walkHorizontalDirection + transform.forward * walkVerticalDirection;
 
         // Vertical & horizontal speed
         verticalSpeed = forward && backwards ? 0.0f : forward ? walkForwardSpeed : backwards ? walkBackwardsSpeed : 0.0f;
@@ -373,28 +388,31 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         // The current speed calculated
         float speed = CalculateSpeed();
 
+        // Debug added here to track state in FixedUpdate
+
         if (isWallRunning)
         {
-            Vector3 wallRunMoveDirection = Vector3.ProjectOnPlane(inputDirection, wallNormal).normalized;
-
-            Vector3 stickToWallForce = -wallNormal * wallStickForce;
+            Vector3 wallRunMoveDirection = Vector3.ProjectOnPlane(direction, wallNormal).normalized;
+            Vector3 stickToWallForce = Vector3.zero;
+            if (wallNormal != Vector3.zero)
+            {
+                stickToWallForce = -wallNormal * wallStickForce;
+            }
             controller.Move((wallRunMoveDirection * speed + stickToWallForce) * Time.deltaTime);
         }
         else
         {
-            // Move the player the direction and speed
-            controller.Move(inputDirection * speed * Time.deltaTime);
-            if (inputDirection != Vector3.zero &&!isPlayingStep && controller.isGrounded)
+            controller.Move(direction * speed * Time.deltaTime);
+            if (direction != Vector3.zero && !isPlayingStep && controller.isGrounded)
             {
                 StartCoroutine(PlaySteps());
             }
         }
 
-        // This applies the wall jump directional momentum
         if (wallJumpVel != Vector3.zero)
         {
             controller.Move(wallJumpVel * Time.deltaTime);
-            wallJumpVel = Vector3.Lerp(wallJumpVel, Vector3.zero, 5f * Time.deltaTime); // This creates a fade out force as a result.
+            wallJumpVel = Vector3.Lerp(wallJumpVel, Vector3.zero, 5f * Time.deltaTime);
         }
     }
 
@@ -458,16 +476,16 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && !wallJumpOccurredThisFrame)
+        if (InputActionManager.instance.playerJumpAction.WasPressedThisFrame() && jumpCount < maxJumps && !wallJumpOccurredThisFrame)
         {
-
             SoundManager.instance.PlaySFX("playerJump");
+
             // Handle slide jump
             if (isSliding)
             {
-                // Apply slide jump speed boost
                 jumpSpeedBonus = slideJumpSpeedBonus;
             }
+
             // Handle jump force (with external jump multiplier factored in)
             if (jumpModifier < 1 && jumpModifier != 0)
             {
@@ -481,15 +499,18 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             {
                 verticalVelocity.y = jumpForce;
             }
+
             jumpCount++;
         }
 
+        // Apply normal gravity when not wall running
         if (!isWallRunning)
         {
             verticalVelocity.y -= gravity * Time.deltaTime;
             verticalVelocity.y = Mathf.Max(verticalVelocity.y, -maxGravity);
         }
 
+        // Debug added here to track state before vertical move
         controller.Move(verticalVelocity * Time.deltaTime);
 
         // Reset jumps, slide jump speed bonus, and applied gravity
@@ -497,21 +518,25 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             if (verticalVelocity.y < 0f)
                 verticalVelocity.y = 0.0f;
+
             jumpCount = 0;
             jumpSpeedBonus = 0.0f;
             wallJumpVel = Vector3.zero;
+            wallJumped = false;
         }
+
+        wallJumpOccurredThisFrame = false;
     }
 
     // Handle sprint inputs
     void Sprint()
     {
-        if (Input.GetButton("Sprint") && controller.isGrounded && !isSliding && !isCrouching)
+        if (InputActionManager.instance.playerSprintAction.IsPressed() && controller.isGrounded && !isSliding && !isCrouching)
         {
             isSprinting = true;
             particleSpRun.gameObject.SetActive(true);
         }
-        else if (Input.GetButtonUp("Sprint"))
+        else if (!InputActionManager.instance.playerSprintAction.IsPressed())
         {
             isSprinting = false;
             particleSpRun.gameObject.SetActive(false);
@@ -522,7 +547,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     // Handle crouch and slide inputs
     void Crouch()
     {
-        if (Input.GetButtonDown("Crouch"))
+        // Crouched
+        if (InputActionManager.instance.playerCrouchAction.IsPressed())
         {
             if (isSprinting && controller.isGrounded)
             {
@@ -547,7 +573,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 crouchCoroutine = StartCoroutine(HandleCrouchHeight(true));
             }
         }
-        else if (Input.GetButtonUp("Crouch"))
+
+        // Uncrouched
+        else
         {
             if (crouchCoroutine != null)
             {
@@ -568,14 +596,14 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     void WeaponInput()
     {
         //check for primary weapon
-        if (Input.GetButtonDown("Fire1") && weaponList != null)
+        if (InputActionManager.instance.playerShootAction.IsPressed() && weaponList != null)
         {
             //launch attack method
             weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
 
         }
 
-        if (Input.GetButtonUp("Fire1") && weaponList != null)
+        if (!InputActionManager.instance.playerShootAction.IsPressed() && weaponList != null)
         {
             //launch attack method
             weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
@@ -583,12 +611,16 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
 
         //Change weapon if pressed
-        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        float scrollDirection = InputActionManager.instance.isUsingGamepad
+            ? InputActionManager.instance.playerSwapAction.WasPressedThisFrame() ? 1 : 0
+            : InputActionManager.instance.playerSwapAction.ReadValue<float>();
+
+        if (scrollDirection != 0)
         {
-            ChangeWeapon(Input.GetAxis("Mouse ScrollWheel"));
+            ChangeWeapon(scrollDirection);
         }
 
-        if (Input.GetButtonDown("Reload"))
+        if (InputActionManager.instance.playerReloadAction.IsPressed())
         {
             IReloadable reloadable = weaponList[0].GetComponent<IReloadable>();
             reloadable?.Reload();
@@ -798,7 +830,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     }
 
     // Element Work
-
     public void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod)
     {
         if (buffStatus)
@@ -832,11 +863,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         speedElemMod = speedMod;
         jumpElemMod = jumpMod;
     }
+
     public void ElementReverse()
     {
         if (speedBuffed && GameManager.instance.speedBuffTimer >= GameManager.instance.speedBuffLimit)
         {
-            Debug.Log("Reversing Speed");
             particleSpMod.gameObject.SetActive(false);
             GameManager.instance.BuffSprintIcon(false);
             AddModifier(-speedElemMod);
@@ -845,7 +876,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
         if (jumpBuffed && GameManager.instance.jumpBuffTimer >= GameManager.instance.jumpBuffLimit)
         {
-            Debug.Log("Reversing Jump");
             AddModifier(0.0f, -jumpElemMod);
             particleJpMod.gameObject.SetActive(false);
             GameManager.instance.BuffJumpIcon(false);
@@ -868,7 +898,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     public void ElementInverse()
     {
-        Debug.Log("Inversing");
         if (elemInversed)
         {
             elemInversed = false;
@@ -897,4 +926,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     {
         GameManager.instance.AddScrap(amount);
     }
+
+    void PerformPause(InputAction.CallbackContext context)
+    {
+        GameManager.instance.StatePause(true);
+    }
+
 }
