@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -250,9 +251,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void WallRunCheck()
     {
+        // Immediately stop wall run if player is grounded while wall running
         if (isWallRunning && controller.isGrounded)
         {
-            StopWallRun(null);
+            StopWallRun(null, false);
             return;
         }
 
@@ -268,38 +270,41 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         RaycastHit wallHit;
 
         // Check if a runnable wall is on the left or right of the player
-        // Start wall running if so
         if (Physics.Raycast(transform.position, -transform.right, out wallHit, wallCheckDist, wallRunMask))
         {
-            //Debug.Log("Wall detected on left");
             currWallNormal = wallHit.normal;
             hitWallObject = wallHit.collider.gameObject;
             wallDetectedThisFrame = true;
         }
         else if (Physics.Raycast(transform.position, transform.right, out wallHit, wallCheckDist, wallRunMask))
         {
-            //Debug.Log("Wall detected on right");
             currWallNormal = wallHit.normal;
             hitWallObject = wallHit.collider.gameObject;
             wallDetectedThisFrame = true;
         }
+
+        float forwardInput = Input.GetAxis("Vertical");
+
+        bool tryToRunOnLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
+        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && forwardInput > 0.2f && verticalVelocity.y < 0.1f;
 
         bool tryToRunonLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
         bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunonLockedWall && walkHorizontalDirection > 0.2f && verticalVelocity.y < 0f;
         bool canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
 
         if (canInitiateWallRun)
+        {
             StartWallRun(currWallNormal, hitWallObject);
+        }
         else if (canContinueWallRun)
         {
             wallNormal = currWallNormal;
             wallRunTimer += Time.deltaTime;
-            // apply gravity
             verticalVelocity.y = -wallRunGravity;
 
             if (wallRunTimer > wallRunDur)
             {
-                StopWallRun(hitWallObject);
+                StopWallRun(hitWallObject, false);
                 return;
             }
 
@@ -312,18 +317,15 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                     verticalVelocity.y = wallJumpForce;
                     wallJumpVel = (wallNormal + transform.forward).normalized * wallJumpHoriForce;
                     wallJumped = true;
-                    StopWallRun(hitWallObject);
+                    StopWallRun(hitWallObject, true);
 
                     wallJumpOccurredThisFrame = true;
-                    //debug.log($"wall jump - wall normal: {wallnormal}");
-                    //debug.log($"wall jump - calculated wall jump velocity: {walljumpvel}");
                 }
             }
         }
-        else
+        else if (isWallRunning)
         {
-            if (!isWallRunning)
-                StopWallRun(null);
+            StopWallRun(null, false);
         }
     }
 
@@ -343,13 +345,19 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         camControl.SetWallRunTilt(tilt * 15f);
     }
 
-    void StopWallRun(GameObject wallToLock = null)
+    void StopWallRun(GameObject wallToLock = null, bool wasJump = false)
     {
         bool wasWallRunning = isWallRunning;
         isWallRunning = false;
-        wallJumped = false;
         wallRunTimer = 0f;
-        wallNormal = Vector3.zero; // Resets it to prevent phantom boosting off of edges of runnable walls.
+
+        wallNormal = Vector3.zero;
+
+        if (!wasJump)
+        {
+            verticalVelocity.y = -1f;
+            wallJumpVel = Vector3.zero;
+        }
 
         if (wasWallRunning)
         {
@@ -357,9 +365,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
 
         if (wallToLock != null)
-        {
             wallRunLockedWall = wallToLock;
-        }
     }
 
     void Movement()
@@ -382,28 +388,31 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         // The current speed calculated
         float speed = CalculateSpeed();
 
-        if (isWallRunning)
-        {  
-            Vector3 wallRunMoveDirection = Vector3.ProjectOnPlane(direction, wallNormal).normalized;
+        // Debug added here to track state in FixedUpdate
 
-            Vector3 stickToWallForce = -wallNormal * wallStickForce;
+        if (isWallRunning)
+        {
+            Vector3 wallRunMoveDirection = Vector3.ProjectOnPlane(direction, wallNormal).normalized;
+            Vector3 stickToWallForce = Vector3.zero;
+            if (wallNormal != Vector3.zero)
+            {
+                stickToWallForce = -wallNormal * wallStickForce;
+            }
             controller.Move((wallRunMoveDirection * speed + stickToWallForce) * Time.deltaTime);
         }
         else
         {
-            // Move the player the direction and speed
-            controller.Move(direction * speed * Time.deltaTime);
-            if (direction != Vector3.zero &&!isPlayingStep && controller.isGrounded)
+            controller.Move(inputDirection * speed * Time.deltaTime);
+            if (direction != Vector3.zero && !isPlayingStep && controller.isGrounded)
             {
                 StartCoroutine(PlaySteps());
             }
         }
 
-        // This applies the wall jump directional momentum
         if (wallJumpVel != Vector3.zero)
         {
             controller.Move(wallJumpVel * Time.deltaTime);
-            wallJumpVel = Vector3.Lerp(wallJumpVel, Vector3.zero, 5f * Time.deltaTime); // This creates a fade out force as a result.
+            wallJumpVel = Vector3.Lerp(wallJumpVel, Vector3.zero, 5f * Time.deltaTime);
         }
     }
 
@@ -474,7 +483,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             // Handle slide jump
             if (isSliding)
             {
-                // Apply slide jump speed boost
                 jumpSpeedBonus = slideJumpSpeedBonus;
             }
 
@@ -495,12 +503,14 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             jumpCount++;
         }
 
+        // Apply normal gravity when not wall running
         if (!isWallRunning)
         {
             verticalVelocity.y -= gravity * Time.deltaTime;
             verticalVelocity.y = Mathf.Max(verticalVelocity.y, -maxGravity);
         }
 
+        // Debug added here to track state before vertical move
         controller.Move(verticalVelocity * Time.deltaTime);
 
         // Reset jumps, slide jump speed bonus, and applied gravity
@@ -512,7 +522,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             jumpCount = 0;
             jumpSpeedBonus = 0.0f;
             wallJumpVel = Vector3.zero;
+            wallJumped = false;
         }
+
+        wallJumpOccurredThisFrame = false;
     }
 
     // Handle sprint inputs
