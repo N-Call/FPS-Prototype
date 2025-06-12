@@ -95,7 +95,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Walk"",
                     ""type"": ""Value"",
                     ""id"": ""303ab70c-bc10-4cd3-ab6e-77e9f5fe9d20"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -187,9 +187,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Analog Stick [Gamepad]"",
                     ""id"": ""7d7ebf6e-462c-4505-8457-3e1dc0021cf3"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Walk"",
                     ""isComposite"": true,
@@ -315,7 +315,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Look"",
                     ""type"": ""Value"",
                     ""id"": ""9910563e-9d90-4381-b970-7eb11a389930"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -334,11 +334,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Gamepad"",
+                    ""name"": ""Analog Stick [Gamepad]"",
                     ""id"": ""3d5f271e-81ad-4986-ae0d-080c39f9a5cb"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": true,
