@@ -605,7 +605,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
 
         //Change weapon if pressed
-        float scrollDirection = InputActionManager.instance.playerSwapAction.ReadValue<float>();
+        float scrollDirection = InputActionManager.instance.isUsingGamepad
+            ? InputActionManager.instance.playerSwapAction.WasPressedThisFrame() ? 1 : 0
+            : InputActionManager.instance.playerSwapAction.ReadValue<float>();
+
         if (scrollDirection != 0)
         {
             ChangeWeapon(scrollDirection);
