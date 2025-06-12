@@ -66,6 +66,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     //float wallRunCooldownTimer; // Cooldown before another wall run can be made.
     Vector3 wallNormal;         // Normal of the wall being run on in question.
     Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
+    private bool wallDetectedThisFrame;
     private GameObject wallRunLockedWall = null;
 
     CameraController camControl;// TThis is referencing the CameraController for the tilting capabilities during wall running.
@@ -250,7 +251,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         if (Physics.Raycast(transform.position, Vector3.down, out groundHit, 100f, ~0))
             distToGnd = groundHit.distance;
 
-        bool wallDetectedThisFrame = false;
+        wallDetectedThisFrame = false;
         Vector3 currWallNormal = Vector3.zero;
         GameObject hitWallObject = null;
         RaycastHit wallHit;
@@ -271,7 +272,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             hitWallObject = wallHit.collider.gameObject;
             wallDetectedThisFrame = true;
         }
-
+        
         float forwardInput = Input.GetAxis("Vertical");
 
         bool tryToRunonLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
@@ -283,9 +284,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         else if (canContinueWallRun)
         {
             wallNormal = currWallNormal;
-
             wallRunTimer += Time.deltaTime;
-
             // apply gravity
             verticalVelocity.y = -wallRunGravity;
 
@@ -316,7 +315,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             if (!isWallRunning)
                 StopWallRun(null);
-            isWallRunning = false;
         }
     }
 
@@ -338,15 +336,21 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void StopWallRun(GameObject wallToLock = null)
     {
-        if (isWallRunning)
-        {
-            camControl.SetWallRunTilt(0f);
-            if (wallToLock != null)
-                wallRunLockedWall = wallToLock;
-        }
+        bool wasWallRunning = isWallRunning;
         isWallRunning = false;
         wallJumped = false;
         wallRunTimer = 0f;
+        wallNormal = Vector3.zero; // Resets it to prevent phantom boosting off of edges of runnable walls.
+
+        if (wasWallRunning)
+        {
+            camControl.SetWallRunTilt(0f);
+        }
+
+        if (wallToLock != null)
+        {
+            wallRunLockedWall = wallToLock;
+        }
     }
 
     void Movement()
@@ -374,7 +378,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         float speed = CalculateSpeed();
 
         if (isWallRunning)
-        {
+        {  
             Vector3 wallRunMoveDirection = Vector3.ProjectOnPlane(inputDirection, wallNormal).normalized;
 
             Vector3 stickToWallForce = -wallNormal * wallStickForce;
