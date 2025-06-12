@@ -257,6 +257,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             return;
         }
 
+        if (wallJumped && !isWallRunning && !controller.isGrounded)
+        {
+            wallJumped = false;
+        }
+
         RaycastHit groundHit;
         float distToGnd = Mathf.Infinity;
 
@@ -329,6 +334,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         wallNormal = hitNormal;
         wallRunTimer = 0f;
         wallRunLockedWall = wallObject;
+        wallJumped = false;
 
         if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
         {
