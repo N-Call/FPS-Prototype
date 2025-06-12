@@ -5,6 +5,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -91,7 +92,8 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        
+        DebugManager.instance.enableRuntimeUI = false;
+
         player = GameObject.FindWithTag("Player");
         if (player != null)
         {
