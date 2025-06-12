@@ -470,7 +470,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void Jump()
     {
-        if (InputActionManager.instance.playerJumpAction.IsPressed() && jumpCount < maxJumps && !wallJumpOccurredThisFrame)
+        if (InputActionManager.instance.playerJumpAction.WasPressedThisFrame() && jumpCount < maxJumps && !wallJumpOccurredThisFrame)
         {
             SoundManager.instance.PlaySFX("playerJump");
 
