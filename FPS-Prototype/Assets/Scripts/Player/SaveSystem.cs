@@ -26,8 +26,7 @@ public class SaveSystem
     }
 
     private static void HandleSaveData()
-    {
-        Debug.Log("is we in hr");
+    { 
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
         DifficultyManager.Instance.Save(ref saveData.difficultyData);
