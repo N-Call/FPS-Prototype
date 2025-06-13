@@ -160,12 +160,12 @@ public class BossSM : StateMachine, IDamage
 
     public void SpawnLeftProjectile()
     {
-        Instantiate(currentbullet, lShootPos.transform.position, lShootPos.transform.rotation);
+        Instantiate(currentbullet, lShootPos.transform.position, lShootPos.transform.rotation).target = GameManager.instance.player.transform;
     }
 
     public void SpawnRightProjectile()
     {
-        Instantiate(currentbullet, rShootPos.transform.position, rShootPos.transform.rotation);
+        Instantiate(currentbullet, rShootPos.transform.position, rShootPos.transform.rotation).target = GameManager.instance.player.transform;
     }
 
     public void ActivateAbility(EAbility ability)
