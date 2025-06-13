@@ -2,28 +2,28 @@ using UnityEngine;
 
 public class Break : MonoBehaviour
 {
-    public Transform brokenObject;
-    public float magnitudeCol, radius, power;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.relativeVelocity.magnitude > magnitudeCol)
-        {
-            Destroy(gameObject);
-            Instantiate(brokenObject, transform.position, transform.rotation);
-            brokenObject.localScale = transform.localScale;
-            Vector3 explosionPos = transform.position;
-            Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
+    public GameObject brokenObject;
+    public float explosionRadius, explosionForce;
+    Vector3 explosionOffset = Vector3.zero; 
+    bool _alreadyBroken;
 
-            foreach (Collider hit in colliders)
+    public void Shatter(Vector3 explosionOrigin)
+    {
+        if (brokenObject != null)
+        {
+            GameObject brokenObj = Instantiate(brokenObject);
+            brokenObj.transform.position = transform.position;
+            brokenObj.transform.rotation = transform.rotation;
+            //brokenObj.transform.localScale = transform.localScale;
+            Debug.Log("found components");
+            foreach (Rigidbody rb in brokenObj.GetComponentsInChildren<Rigidbody>())
             {
-                if (hit.attachedRigidbody)
-                {
-                    hit.attachedRigidbody.AddExplosionForce(power * collision.relativeVelocity.magnitude, explosionPos, radius);
-                }
+                Debug.Log("force added");
+                rb.AddExplosionForce(explosionForce, explosionOrigin, explosionRadius);
+                rb.angularVelocity = Random.insideUnitSphere * 5f;
             }
         }
-
+        SoundManager.instance.PlaySFX("Shatter");
+        Destroy(gameObject);    
     }
 }
