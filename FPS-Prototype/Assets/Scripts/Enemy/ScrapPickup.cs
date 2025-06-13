@@ -4,7 +4,7 @@ using UnityEngine;
 public class ScrapPickup : MonoBehaviour
 {
    
-    public int scrapAmount;
+    [HideInInspector]public int scrapAmount;
 
     private void OnTriggerEnter(Collider other)
     {

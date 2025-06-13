@@ -49,11 +49,11 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         if (respawn)
         {
-            Debug.Log("Respawning!");
+            //Debug.Log("Respawning!");
             respawnTimer += Time.deltaTime;
             if (respawnTimer >= respawnTime)
             {
-                Debug.Log("Toggled!");
+                //Debug.Log("Toggled!");
                 respawn = false;
                 respawnTimer = 0.0f;
                 ToggleVisuals();
@@ -77,7 +77,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         // Check area for applicable targets. Need IElemental interface
         //Toggle explosion radius on and off to achieve ^^
-        Debug.Log("Activating Element");
+        //Debug.Log("Activating Element");
 
         if ((int)elem == element)
         {
@@ -142,7 +142,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
         else
         {
-            Debug.Log("Set inactive!");
+            //Debug.Log("Set inactive!");
             gameObject.SetActive(false);
         }
     }
