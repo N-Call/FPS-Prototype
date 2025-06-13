@@ -26,15 +26,19 @@ public class Damage : MonoBehaviour
     [SerializeField] float smoothSpeed;
     [SerializeField] bool isTriggerHoming;
 
+    [Header("Wall Bounce Settings")]
+    [SerializeField] bool isWallBouncable;
+    [SerializeField] int maxReflections;
+
 
     [Header("Damage Over Time Settings")]
     [SerializeField] private int dotDamage;
     [SerializeField] private int dotDamageRate;
 
+    private int reflectionCount;
     private Vector3 startPos;
     private Vector3 targetDir;
     private float angleToPlayer;
-    private float waitTime;
     private bool isDamaging;
     private bool stopChasing;
     private bool isLocked;
@@ -57,7 +61,6 @@ public class Damage : MonoBehaviour
         {
             if (target != null)
             {
-                waitTime += Time.deltaTime;
                 if (!isTriggerHoming)
                 {
                     return;
@@ -82,6 +85,17 @@ public class Damage : MonoBehaviour
                 {
                     stopChasing = true;
                     rb.linearVelocity = (target.position - transform.position) * speed;
+                }
+            }
+            if (isWallBouncable)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, transform.forward, out hit, 1f) && reflectionCount <= maxReflections)
+                {
+                    reflectionCount++;
+                    Vector3 reflectDir = Vector3.Reflect(transform.forward, hit.normal);
+                    transform.forward = reflectDir;
+                    rb.linearVelocity = transform.forward * speed;
                 }
             }
         }
@@ -133,6 +147,7 @@ public class Damage : MonoBehaviour
                 target = other.transform;
                 homingCollider.radius = homingRadius;
                 isTriggerHoming = true;
+                isWallBouncable = false;
             }
             return; 
         }
@@ -162,9 +177,20 @@ public class Damage : MonoBehaviour
         if(damageType == DamageType.homing && (Physics.Raycast(transform.position, transform.forward, homingRadius) ||
             Physics.Raycast(transform.position, transform.right, homingRadius) || Physics.Raycast(transform.position, -transform.right, homingRadius)))
         {
-            other.GetComponent<IDamage>()?.TakeDamage(damageAmount);
-            other.GetComponent<ITarget>()?.ActivateElem((int)elem);
-            GameObject.Destroy(gameObject);
+            IDamage dmg = other.GetComponent<IDamage>();
+            ITarget targ = other.GetComponent<ITarget>();
+
+            if (isWallBouncable && (dmg != null || targ != null))
+            {
+                dmg?.TakeDamage(damageAmount);
+                targ?.ActivateElem((int)elem);
+                GameObject.Destroy(gameObject);
+            }else if (!isWallBouncable || reflectionCount > maxReflections)
+            {
+                dmg?.TakeDamage(damageAmount);
+                targ?.ActivateElem((int)elem);
+                GameObject.Destroy(gameObject);
+            }
         }
         IDamage damage = other.GetComponent<IDamage>();
         if (isDamaging || damage == null || damageType != DamageType.DOT)
