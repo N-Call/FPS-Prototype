@@ -25,6 +25,8 @@ public class GunHitScan : Range
     LineRenderer ricochetLineRenderer;
     Collider hitCollider;
 
+    [SerializeField] float bulletForce;
+
     protected override void Awake()
     {
         base.Awake();
@@ -124,6 +126,18 @@ public class GunHitScan : Range
 
     void ShootAt(Vector3 location)
     {
+        if (hitCollider != null)
+        {
+            Break breakable = hitCollider.GetComponent<Break>();
+
+            if (breakable != null)
+            {
+                Debug.Log("glass shattered");
+                breakable.Shatter(location);
+            }
+        }
+
+
         GameObject effectHit = Instantiate(hitEffect, location, Quaternion.identity);
         Destroy(effectHit, 2f);
 
@@ -187,6 +201,7 @@ public class GunHitScan : Range
             {
                 hitCollider = hit.collider;
                 ShootAt(hit.point);
+               
             }
         }
 

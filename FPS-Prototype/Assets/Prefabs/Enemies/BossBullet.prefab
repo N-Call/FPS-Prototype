@@ -49,14 +49,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27998aa5a8ed647479a67ed6339a9a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   rb: {fileID: 2046567894616999901}
+  homingCollider: {fileID: 8747721625121135163}
   damageType: 2
   elem: 1
   damageAmount: 1
-  speed: 10
-  destroyTime: 1
-  FOV: 90
-  chaseDist: 10
+  speed: 50
+  destroyTime: 3
+  FOV: 60
+  homingRadius: 1
+  chaseDist: 0.5
+  smoothSpeed: 20
+  isTriggerHoming: 1
   dotDamage: 0
   dotDamageRate: 0
 --- !u!33 &930415728050802771
