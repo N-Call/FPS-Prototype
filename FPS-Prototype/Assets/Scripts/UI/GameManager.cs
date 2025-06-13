@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
 
@@ -111,11 +110,6 @@ public class GameManager : MonoBehaviour
         SaveSettingsSystem.Load();
     }
 
-    private void Start()
-    {
-        InputActionManager.instance.AddMenuPerform(InputActionManager.MenuInputs.Unpause, PerformUnpause);
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -124,16 +118,14 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (isPaused)
+        if (InputActionManager.instance.playerPause)
         {
-            if (menuActive == menuPause)
-            {
-                Vector2 navigation = InputActionManager.instance.menuNavigateAction.ReadValue<Vector2>();
-                if (navigation.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
-                {  
-                    eventSystem.SetSelectedGameObject(firstSelectedButton);
-                }
-            }
+            StatePause(true);
+        }
+
+        if (isPaused && menuActive == menuPause && InputActionManager.instance.menuNavigate.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
+        {
+            eventSystem.SetSelectedGameObject(firstSelectedButton);
         }
 
         if (isPaused && playerScript != null)
@@ -564,11 +556,6 @@ public class GameManager : MonoBehaviour
         hitMakerReticle.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
-    }
-
-    void PerformUnpause(InputAction.CallbackContext context)
-    {
-        StateUnpause();
     }
 
 }

@@ -102,7 +102,7 @@ public class GunHitScan : Range
             return false;
         }
 
-        if (!InputActionManager.instance.playerAimAction.IsPressed())
+        if (!InputActionManager.instance.playerAim)
         {
             return false;
         }

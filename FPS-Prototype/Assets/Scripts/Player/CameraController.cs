@@ -26,13 +26,11 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         //get input
-        Vector2 inputDirection = InputActionManager.instance.playerLookAction.ReadValue<Vector2>();
-
         float sensitivityX = InputActionManager.instance.isUsingGamepad ? controllerSensitivityX : mouseSensitivityX;
         float sensitivityY = InputActionManager.instance.isUsingGamepad ? controllerSensitivityY : mouseSensitivityY;
 
-        float x = inputDirection.x * sensitivityX * Time.deltaTime;
-        float y = inputDirection.y * sensitivityY * Time.deltaTime;
+        float x = InputActionManager.instance.playerLook.x * sensitivityX * Time.deltaTime;
+        float y = InputActionManager.instance.playerLook.y * sensitivityY * Time.deltaTime;
 
         //give option to invert mouse look up and down
         if (invertY)

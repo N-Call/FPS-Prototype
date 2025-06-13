@@ -22,7 +22,7 @@ public class Interactable : MonoBehaviour
             return;
         }
 
-        if (InputActionManager.instance.playerInteractAction.IsPressed())
+        if (InputActionManager.instance.playerInteract)
         {
             canvas.SetActive(false);
             objectToActivate.SetActive(true);
