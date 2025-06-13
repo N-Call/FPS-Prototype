@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter;
+    int scrapCounter = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -114,6 +114,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         InputActionManager.instance.AddMenuPerform(InputActionManager.MenuInputs.Unpause, PerformUnpause);
+        scrapUI.text = scrapCounter.ToString("F0");
     }
 
     // Update is called once per frame
