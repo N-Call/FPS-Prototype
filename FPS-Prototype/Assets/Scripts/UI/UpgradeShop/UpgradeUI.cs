@@ -11,6 +11,7 @@ public class UpgradeUI : MonoBehaviour
     void Start()
     {
         ActiveTab(0);
+        GameManager.instance.ShowScrap();
     }
 
     public void ActiveTab(int tabNum)
