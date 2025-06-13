@@ -19456,7 +19456,7 @@ GameObject:
   - component: {fileID: 2897587571422282623}
   - component: {fileID: -8749572359378491886}
   - component: {fileID: -2393674090168679403}
-  - component: {fileID: 5798602424677485456}
+  - component: {fileID: 1756984606323455506}
   m_Layer: 0
   m_Name: Boss Speed Orb - Moving
   m_TagString: Boss_Item
@@ -19574,6 +19574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: 3
   health: 4
+  orbSpawner: {fileID: 0}
 --- !u!54 &-8749572359378491886
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19617,7 +19618,7 @@ MonoBehaviour:
   y: -1
   z: 0
   speed: 50
---- !u!114 &5798602424677485456
+--- !u!114 &1756984606323455506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19626,7 +19627,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8608699021701802593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 829ce0a7e63bf4046976681b97a7ee97, type: 3}
+  m_Script: {fileID: 11500000, guid: 7057e5981959cff4d8b9ef7554441b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {x: 0, y: -30, z: 0}
@@ -19640,6 +19641,4 @@ MonoBehaviour:
   triggerHeight: 0
   startDelay: 0
   destroyAfterTime: 0
-  initialStartDelay: 0
-  destinationDelay: 0
-  destroyAfterCycle: 0
+  destroyAtDestinationDelay: 0
