@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
     List<EnemyController> enemiesToRespawn;
 
     public Vector3 respawnPosition;
+    public Quaternion respawnRotation;
 
     public GameObject playerDamageScreen;
     public GameObject playerInInverseScreen;
@@ -571,9 +572,10 @@ public class GameManager : MonoBehaviour
         enemiesToRespawn.Add(enemy);
     }
 
-    public void SetSpawnPosition(Vector3 newSpawnPosition)
+    public void SetSpawnPosition(Vector3 newSpawnPosition, Quaternion newSpawnRotation)
     {
         respawnPosition = newSpawnPosition;
+        respawnRotation = newSpawnRotation;
     }
 
     public void Respawn()
@@ -586,6 +588,7 @@ public class GameManager : MonoBehaviour
         }
 
         player.transform.position = respawnPosition;
+       
         playerScript.ResetPlayerStats();
 
         ResetElemTimers();
