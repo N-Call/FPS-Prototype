@@ -184,8 +184,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 419601882154293964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -429,9 +429,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &9092617567179203836
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1364,7 +1361,7 @@ RectTransform:
   m_Father: {fileID: 287544591074806397}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1611,7 +1608,7 @@ RectTransform:
   m_Father: {fileID: 5774616548266092062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1791,7 +1788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2636,6 +2633,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7770760276930582065}
+  - {fileID: 6889838920478327477}
   - {fileID: 5606544057015406610}
   - {fileID: 6157612357030044264}
   - {fileID: 7412427681446267637}
@@ -3426,9 +3424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &6619802691146972529
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3480,10 +3475,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 6181728870983215770}
+    m_SelectOnDown: {fileID: 1836492137134645250}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -3491,7 +3486,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3575,9 +3570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &7757732265009257886
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3629,10 +3621,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 2577398650865009641}
+    m_SelectOnDown: {fileID: 6181728870983215770}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -3640,7 +3632,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3949,9 +3941,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &3394698461619334258
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4576,7 +4565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4739295202263382169}
   - component: {fileID: 5191836658751943274}
-  - component: {fileID: 7760814631705728470}
+  - component: {fileID: 5590581711159142367}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -4611,10 +4600,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 7114654982714084571}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!114 &7760814631705728470
+--- !u!114 &5590581711159142367
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4623,17 +4612,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 3355696814488432435}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_PointAction: {fileID: -5795961794886743845, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_MoveAction: {fileID: 6813335341679696079, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_SubmitAction: {fileID: -4044866361021519218, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_CancelAction: {fileID: 5263724364199209958, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_LeftClickAction: {fileID: -7487573302486202937, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_MiddleClickAction: {fileID: 0}
+  m_RightClickAction: {fileID: 0}
+  m_ScrollWheelAction: {fileID: -4532360662293181540, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 5778301065791439797, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: -4196696287152761681, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &3416049596389749982
 GameObject:
   m_ObjectHideFlags: 0
@@ -5603,7 +5603,7 @@ RectTransform:
   m_Father: {fileID: 8389069484074720305}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6076,6 +6076,7 @@ MonoBehaviour:
   musicSlider: {fileID: 2649788987194666824}
   SFXSlider: {fileID: 413519811457717073}
   masterSlider: {fileID: 8465766498408641027}
+  preview: {fileID: 0}
 --- !u!1 &4589450212994177250
 GameObject:
   m_ObjectHideFlags: 0
@@ -6662,9 +6663,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &1402457975955892201
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7603,6 +7601,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5847975798544558263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6889838920478327477}
+  - component: {fileID: 1586926556327454444}
+  m_Layer: 0
+  m_Name: InputActionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6889838920478327477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5847975798544558263}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -960, y: -540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6947700219950526660}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1586926556327454444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5847975798544558263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d471d59fac812774d8ea5d89949bb74e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5946190327441936536
 GameObject:
   m_ObjectHideFlags: 0
@@ -7802,9 +7844,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &7211916292659289667
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7931,8 +7970,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8237483807814891253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8182,9 +8221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &202175023374431005
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9094,6 +9130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOnStartScreen: 0
+  eventSystem: {fileID: 5191836658751943274}
+  firstSelectedButton: {fileID: 7114654982714084571}
+  firstSelectedSettingsButton: {fileID: 0}
   menuActive: {fileID: 0}
   menuPause: {fileID: 4679460781886317217}
   menuWin: {fileID: 7657805400822114950}
@@ -9680,9 +9719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &6200727196363862662
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9734,10 +9770,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 403130272175412120}
+    m_SelectOnDown: {fileID: 7034745099584901333}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -9745,7 +9781,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -10477,9 +10513,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &8367757737188310573
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10531,10 +10564,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1836492137134645250}
+    m_SelectOnDown: {fileID: 403130272175412120}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -10542,7 +10575,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -10984,9 +11017,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &1193517090216086531
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11884,9 +11914,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &2076409733812332805
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12396,9 +12423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &6325895277067196874
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13084,8 +13108,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3525604113268042630}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13179,9 +13203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad394c1fb980f0e43b200a5f4782cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverClip: {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
-  clickClip: {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
-  audioSource: {fileID: 7285347905729452018}
 --- !u!222 &8747815067442906781
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13233,10 +13254,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 7034745099584901333}
+    m_SelectOnDown: {fileID: 2577398650865009641}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -13244,7 +13265,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.34509805, g: 0.4627451, b: 0.8627451, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

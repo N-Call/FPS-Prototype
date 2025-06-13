@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +16,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] bool isOnStartScreen = false;
 
     [Header("Menus")]
+    [SerializeField] EventSystem eventSystem;
+    [SerializeField] GameObject firstSelectedButton;
+
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
@@ -43,8 +49,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject debuffSprint;
     [SerializeField] GameObject buffJump;
     [SerializeField] GameObject debuffJump;
-
-
 
     List<EnemyController> enemiesToRespawn;
 
@@ -88,14 +92,12 @@ public class GameManager : MonoBehaviour
     int enemyCount;
     int scrapCounter;
 
-
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         instance = this;
-        
+        DebugManager.instance.enableRuntimeUI = false;
+
         player = GameObject.FindWithTag("Player");
         if (player != null)
         {
@@ -109,6 +111,11 @@ public class GameManager : MonoBehaviour
         SaveSettingsSystem.Load();
     }
 
+    private void Start()
+    {
+        InputActionManager.instance.AddMenuPerform(InputActionManager.MenuInputs.Unpause, PerformUnpause);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -117,22 +124,19 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (Input.GetButtonDown("Cancel"))
+        if (isPaused)
         {
-            if (menuActive == null)
+            if (menuActive == menuPause)
             {
-                StatePause();
-                menuActive = menuPause;
-                menuPause.SetActive(isPaused);
-
-            }
-            else if (menuActive == menuPause)
-            {
-                StateUnpause();
-                menuSettings.SetActive(false);
+                Vector2 navigation = InputActionManager.instance.menuNavigateAction.ReadValue<Vector2>();
+                if (navigation.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
+                {  
+                    eventSystem.SetSelectedGameObject(firstSelectedButton);
+                }
             }
         }
-        if (playerScript != null)
+
+        if (isPaused && playerScript != null)
         {
             if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
             {
@@ -141,8 +145,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void StatePause()
+    public void StatePause(bool showPauseMenu)
     {
+        if (isOnStartScreen || menuActive != null)
+        {
+            return;
+        }
+
         isPaused = true;
         Time.timeScale = 0;
         Cursor.visible = true;
@@ -157,6 +166,18 @@ public class GameManager : MonoBehaviour
         // stop the player from shooting
         
         playerScript.enabled = false;
+        InputActionManager.instance.EnableMenuInput();
+
+        if (showPauseMenu)
+        {
+            menuActive = menuPause;
+            menuPause.SetActive(isPaused);
+        }
+    }
+
+    public void StatePause()
+    {
+        StatePause(false);
     }
 
     public void StateUnpause()
@@ -168,26 +189,32 @@ public class GameManager : MonoBehaviour
 
         //DisablePPVolume();
         globalVol.SetActive(false);
+
         // Disable menus
         if (menuSettings != null)
         {
             menuSettings.SetActive(false);
         }
-        if(menuActive != null)
+
+        if (menuActive != null)
         {
             menuActive.SetActive(false);
             menuActive = null;
         }
 
-        // to turn on the reticle
+        // Turn on the reticle
         if (reticle != null)
         {
             reticle.SetActive(true);
         }
+
         SoundManager.instance.musicSource.Play();
         volumeSystemData.SetVolumes();
+
+        // Handle controls
         if (playerScript != null)
         {
+            InputActionManager.instance.DisableMenuInput();
             playerScript.enabled = true;
         }
     }
@@ -239,7 +266,6 @@ public class GameManager : MonoBehaviour
             DisableCurrentToggledMenu();
             menuActive = menuSettings;
             menuActive.SetActive(true);
-            
         }
     }
 
@@ -438,12 +464,6 @@ public class GameManager : MonoBehaviour
         ResetElemTimers();
 
         playerScript.GetComponent<CharacterController>().enabled = true;
-
-        //foreach (EnemyController enemy in enemiesToRespawn)
-        //{
-        //    enemy.ResetEnemies();
-        //}
-
     }
 
     private void ResetElemTimers()
@@ -544,6 +564,11 @@ public class GameManager : MonoBehaviour
         hitMakerReticle.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
+    }
+
+    void PerformUnpause(InputAction.CallbackContext context)
+    {
+        StateUnpause();
     }
 
 }

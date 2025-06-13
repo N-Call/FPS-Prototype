@@ -34,7 +34,7 @@ public class Laser : MonoBehaviour
         lineRenderer.material = material;
         lineRenderer.startWidth = startWidth;
         lineRenderer.endWidth = endWidth;
-        if (laserCanToggle )
+        if (laserCanToggle)
         {
             StartCoroutine(ToggleLaser());
         }
@@ -43,7 +43,6 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
         if (!lineRenderer.enabled)
             return;
 
@@ -61,7 +60,6 @@ public class Laser : MonoBehaviour
             {
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, ray.origin + ray.direction * remainingLength);
                 continue;
-                
             }
 
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
