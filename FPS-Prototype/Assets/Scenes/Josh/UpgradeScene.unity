@@ -14912,6 +14912,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1926946819}
+  - component: {fileID: 1926946821}
   - component: {fileID: 1926946820}
   m_Layer: 5
   m_Name: UpgradeManager
@@ -14959,6 +14960,19 @@ MonoBehaviour:
   - {fileID: 87146396}
   - {fileID: 490936205}
   - {fileID: 183639188}
+--- !u!114 &1926946821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926946818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9efb48dabb3289842aa7a9f10cb45c96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allUpgrades: []
 --- !u!1 &1932127518
 GameObject:
   m_ObjectHideFlags: 0
@@ -18556,7 +18570,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5606544055677530535}
-  - component: {fileID: 8643499428029823298}
   - component: {fileID: 8643499428029823297}
   - component: {fileID: 2424378659788177816}
   - component: {fileID: 7416757422613158512}
@@ -19177,20 +19190,10 @@ MonoBehaviour:
   speedDebuffLimit: 0
   jumpDebuffLimit: 0
   allUpgrades:
-  - {fileID: 0}
---- !u!114 &8643499428029823298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6790256658096959912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9efb48dabb3289842aa7a9f10cb45c96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allUpgrades: []
+  - {fileID: 11400000, guid: d1d3b9a330471d04fb835668f9077dbe, type: 2}
+  - {fileID: 11400000, guid: 097d2d0ce4333de498a4ff99704abe17, type: 2}
+  - {fileID: 11400000, guid: fe87bd45f30f9e8478ed7286e807c368, type: 2}
+  - {fileID: 11400000, guid: 766d09f5403be0d41ab199a6597e1a7a, type: 2}
 --- !u!114 &8663224716193316746
 MonoBehaviour:
   m_ObjectHideFlags: 0
