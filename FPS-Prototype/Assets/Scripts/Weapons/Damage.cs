@@ -10,6 +10,7 @@ public class Damage : MonoBehaviour
 
     [Header("Resources")]
     [SerializeField] Rigidbody rb;
+    [SerializeField] SphereCollider homingCollider;
 
     [Header("Damage Settings")]
     [SerializeField] DamageType damageType;
@@ -20,6 +21,7 @@ public class Damage : MonoBehaviour
 
     [Header("Homing Settings")]
     [SerializeField] private float FOV;
+    [SerializeField] private float homingRadius;
     [SerializeField] float chaseDist;
     [SerializeField] float smoothSpeed;
     [SerializeField] bool isTriggerHoming;
@@ -29,8 +31,10 @@ public class Damage : MonoBehaviour
     [SerializeField] private int dotDamage;
     [SerializeField] private int dotDamageRate;
 
+    private Vector3 startPos;
     private Vector3 targetDir;
     private float angleToPlayer;
+    private float waitTime;
     private bool isDamaging;
     private bool stopChasing;
     private bool isLocked;
@@ -43,6 +47,7 @@ public class Damage : MonoBehaviour
         {
             Destroy(gameObject, destroyTime);
             rb.linearVelocity = transform.forward * speed;
+            startPos = transform.position;
         }
     }
 
@@ -52,6 +57,11 @@ public class Damage : MonoBehaviour
         {
             if (target != null)
             {
+                waitTime += Time.deltaTime;
+                if (!isTriggerHoming)
+                {
+                    return;
+                }
                 if (Vector3.Distance(target.position, transform.position) > chaseDist && !stopChasing && CanSeeTarget())
                 {
                     isLocked = true;
@@ -73,19 +83,6 @@ public class Damage : MonoBehaviour
                     stopChasing = true;
                     rb.linearVelocity = (target.position - transform.position) * speed;
                 }
-            }
-
-            if (Physics.Raycast(transform.position, transform.forward, chaseDist) ||
-                Physics.Raycast(transform.position, transform.right, chaseDist) ||
-                Physics.Raycast(transform.position, -transform.right, chaseDist))
-            {
-                    if(target != null)
-                    {
-                        target.GetComponent<IDamage>()?.TakeDamage(damageAmount);
-                        target.GetComponent<ITarget>()?.ActivateElem((int)elem);
-                    }
-                    GameObject.Destroy(gameObject);
-                    SoundManager.instance.PlaySFX("turretDestroy");
             }
         }
 
@@ -125,16 +122,20 @@ public class Damage : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.isTrigger){return;}
-
-        if (isTriggerHoming) 
+        if (target == null && damageType == DamageType.homing) 
         {
-            if (other.GetComponent<IDamage>() != null && damageType == DamageType.homing)
+            if (Vector3.Distance(startPos, transform.position) <= 1f)
+            {
+                return;
+            }
+            if (other.GetComponent<IDamage>() != null)
             {
                 target = other.transform;
+                homingCollider.radius = homingRadius;
+                isTriggerHoming = true;
             }
             return; 
         }
-
         IDamage dmg = other.GetComponent<IDamage>();
         ITarget targ = other.GetComponent<ITarget>();
 
@@ -158,6 +159,13 @@ public class Damage : MonoBehaviour
             return;
         }
 
+        if(damageType == DamageType.homing && (Physics.Raycast(transform.position, transform.forward, homingRadius) ||
+            Physics.Raycast(transform.position, transform.right, homingRadius) || Physics.Raycast(transform.position, -transform.right, homingRadius)))
+        {
+            other.GetComponent<IDamage>()?.TakeDamage(damageAmount);
+            other.GetComponent<ITarget>()?.ActivateElem((int)elem);
+            GameObject.Destroy(gameObject);
+        }
         IDamage damage = other.GetComponent<IDamage>();
         if (isDamaging || damage == null || damageType != DamageType.DOT)
         {

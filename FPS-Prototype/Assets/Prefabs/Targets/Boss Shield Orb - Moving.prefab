@@ -14509,13 +14509,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6100149653187248310}
-  - component: {fileID: 2449231004184124538}
   - component: {fileID: 4455989524213090977}
   - component: {fileID: 4897225472181306326}
   - component: {fileID: 1600691444163460928}
   - component: {fileID: 4915274379493954518}
   - component: {fileID: 2568531781435809152}
   - component: {fileID: -8412172071421674230}
+  - component: {fileID: 8286001264538977545}
   m_Layer: 0
   m_Name: Boss Shield Orb - Moving
   m_TagString: Boss_Item
@@ -14543,32 +14543,6 @@ Transform:
   - {fileID: 3778786653434631713}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2449231004184124538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6006124964689578905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destination: {x: 0, y: -25, z: 0}
-  relative: 1
-  speed: 5
-  lerp: 0
-  startDelay: 0
-  startDelayInitial: 0
-  destinationDelay: 0
-  pingPong: 0
-  backToStart: 0
-  carryPlayer: 0
-  onlyMoveWhenPlayer: 0
-  destroyAfterTime: 0
-  destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0
 --- !u!33 &4455989524213090977
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -14702,6 +14676,32 @@ MonoBehaviour:
   y: -1
   z: 0
   speed: 50
+--- !u!114 &8286001264538977545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6006124964689578905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829ce0a7e63bf4046976681b97a7ee97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destination: {x: 0, y: -30, z: 0}
+  relative: 1
+  stoppingDistance: 0.01
+  moveSpeed: 7
+  lerp: 0
+  carryPassengers: 0
+  moveWithoutPlayer: 1
+  waitForPlayer: 0
+  triggerHeight: 0
+  startDelay: 0
+  destroyAfterTime: 0
+  initialStartDelay: 0
+  destinationDelay: 0
+  destroyAfterCycle: 0
 --- !u!1 &7294493169191970052
 GameObject:
   m_ObjectHideFlags: 0

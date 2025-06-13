@@ -7,11 +7,13 @@ public class BossOrb : MonoBehaviour, IBossDamagable
 
     [SerializeField] EAbility ability;
     [SerializeField] int health;
+    public BossOrbSpawner orbSpawner;
 
     public static event Action<EAbility> OnSomethingHappened;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
     }
 
     // Update is called once per frame
