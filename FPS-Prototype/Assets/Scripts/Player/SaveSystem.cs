@@ -18,6 +18,11 @@ public class SaveSystem
         return saveFile;
     }
 
+    public static bool HasSave()
+    {
+        return File.Exists(SaveFileName());
+    }
+
     public static void Save()
     {
         Debug.Log("isSaving");
