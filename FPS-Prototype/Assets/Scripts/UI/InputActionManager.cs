@@ -11,6 +11,8 @@ public class InputActionManager : MonoBehaviour
     [SerializeField] InputActionAsset menuInputActionMap;
     [SerializeField] InputActionAsset playerInputActionMap;
 
+    [SerializeField] bool onStartScreen = false;
+
     public bool isUsingGamepad { get; private set; }
 
     //
@@ -92,6 +94,11 @@ public class InputActionManager : MonoBehaviour
         playerReloadAction = playerInputActionMap["Reload"];
         playerSwapAction = playerInputActionMap["Swap"];
         playerPauseAction = playerInputActionMap["Pause"];
+
+        if (onStartScreen)
+        {
+            EnableMenuInput();
+        }
     }
 
     private void Update()
@@ -245,7 +252,7 @@ public class InputActionManager : MonoBehaviour
     {
         lastInputDevice = device;
         isUsingGamepad = !(device is Mouse) && !(device is Keyboard);
-        Debug.Log($"[{Time.deltaTime}]\t\tSwitched to " + (isUsingGamepad ? "Gamepad" : "Keyboard & Mouse"));
+        //Debug.Log($"[{Time.deltaTime}]\t\tSwitched to " + (isUsingGamepad ? "Gamepad" : "Keyboard & Mouse"));
     }
 
     private void OnDestroy()
