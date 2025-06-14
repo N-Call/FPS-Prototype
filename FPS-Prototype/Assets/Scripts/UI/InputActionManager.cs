@@ -11,6 +11,8 @@ public class InputActionManager : MonoBehaviour
     [SerializeField] InputActionAsset menuInputActionMap;
     [SerializeField] InputActionAsset playerInputActionMap;
 
+    [SerializeField] bool onStartScreen = false;
+
     public bool isUsingGamepad { get; private set; }
 
     //
@@ -92,6 +94,11 @@ public class InputActionManager : MonoBehaviour
         playerReloadAction = playerInputActionMap["Reload"];
         playerSwapAction = playerInputActionMap["Swap"];
         playerPauseAction = playerInputActionMap["Pause"];
+
+        if (onStartScreen)
+        {
+            EnableMenuInput();
+        }
     }
 
     private void Update()
