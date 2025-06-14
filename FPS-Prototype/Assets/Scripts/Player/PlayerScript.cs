@@ -869,6 +869,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             AddModifier(-speedElemMod);
             ResetFOV();
             speedBuffed = false;
+            GameManager.instance.speedBuffTimer = 0;
         }
         if (jumpBuffed && GameManager.instance.jumpBuffTimer >= GameManager.instance.jumpBuffLimit)
         {
@@ -876,6 +877,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             particleJpMod.gameObject.SetActive(false);
             GameManager.instance.BuffJumpIcon(false);
             jumpBuffed = false;
+            GameManager.instance.jumpBuffTimer = 0;
         }
         if (speedDebuffed && GameManager.instance.speedDebuffTimer >= GameManager.instance.speedDebuffLimit)
         {
