@@ -92,10 +92,10 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter = 0;
+    int scrapCounter = 10000;
+    //int totalScrap = 10000;
     public List<UpgradeData> allUpgrades;
-    int completed = 0;
-    int total = 0;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -228,6 +228,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log(amount + "added");
         scrapCounter += amount;
+        scrapManager.totalScrap += amount;
         scrapUI.text = scrapCounter.ToString("F0");
     }
 
@@ -259,71 +260,14 @@ public class GameManager : MonoBehaviour
         if (upgrade.isMajor)
         {
             Debug.Log("Can I buy major");
-            return CanBuyMajor(upgrade);
+            return (upgrade);
         }
         else
         {
             Debug.Log("Maxed out lvl need to prompt player");
             return upgrade.currentLevel < upgrade.maxLevel &&
-            scrapManager.totalScrap >= upgrade.costPerLevel[upgrade.currentLevel];
+                   scrapManager.totalScrap >= upgrade.costPerLevel[upgrade.currentLevel];
         }
-    }
-    private bool CanBuyMajor(UpgradeData upgrade)
-    {
-
-        // Check if it's a weapon upgrade
-        bool isWeapon = upgrade.category.ToString().Contains("Weapon 1");
-        bool isWeapon2 = upgrade.category.ToString().Contains("Weapon 2");
-        bool isWeapon3 = upgrade.category.ToString().Contains("Weapon 3");
-
-        foreach (UpgradeData up in allUpgrades)
-        {
-            // For weapons, count all non-major weapon upgrades (across all weapon categories)
-            if (isWeapon && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-            else if (isWeapon2 && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-            else if (isWeapon3 && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-
-            // For movement or orbs, count only same-category minor upgrades
-            else if (!isWeapon && up.category == upgrade.category && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-        }
-        // weapons : unlock after 10 of 15
-        if (isWeapon)
-        {
-            Debug.Log("Checking for weapon");
-            Debug.Log(completed);
-            return completed >= 10 && scrapManager.totalScrap >= upgrade.majorCost;
-
-        }
-        // movement /orbs unlock after all upgrades
-        return completed == total && scrapManager.totalScrap > +upgrade.majorCost;
     }
 
     public void BuyUpgrade(UpgradeData upgrade)
