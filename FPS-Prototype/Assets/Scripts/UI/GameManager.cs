@@ -95,8 +95,7 @@ public class GameManager : MonoBehaviour
     int scrapCounter = 0;
     int totalScrap = 10000;//for testing only
     public List<UpgradeData> allUpgrades;
-    int completed = 0;
-    int total = 0;
+   
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -225,6 +224,7 @@ public class GameManager : MonoBehaviour
             playerScript.enabled = true;
         }
     }
+
     public void AddScrap(int amount)
     {
         Debug.Log(amount + "added");
@@ -232,6 +232,7 @@ public class GameManager : MonoBehaviour
         totalScrap += amount;
         scrapUI.text = scrapCounter.ToString("F0");
     }
+
     public bool SpendScrap(int amount)
     {
         if (totalScrap >= amount)
@@ -264,62 +265,67 @@ public class GameManager : MonoBehaviour
                    totalScrap >= upgrade.costPerLevel[upgrade.currentLevel];
         }
     }
+
     private bool CanBuyMajor(UpgradeData upgrade)
     {
+        string categoryName = upgrade.category.ToString();
 
-        // Check if it's a weapon upgrade
-        bool isWeapon = upgrade.category.ToString().Contains("Weapon 1");
-        bool isWeapon2 = upgrade.category.ToString().Contains("Weapon 2");
-        bool isWeapon3 = upgrade.category.ToString().Contains("Weapon 3");
+        int completed = 0;
+        int total = 0;
+        int completed2 = 0;
+        int total2 = 0;
+
+        bool isWeapon1 = categoryName.Contains("Weapon 1");
+        bool isWeapon2 = categoryName.Contains("Weapon 2");
+        bool isWeapon3 = categoryName.Contains("Weapon 3");
+        bool isOrb = categoryName.StartsWith("Orb");       
+        bool isMovement = categoryName == "Slide" || categoryName == "Wall Run";
 
         foreach (UpgradeData up in allUpgrades)
         {
-            // For weapons, count all non-major weapon upgrades (across all weapon categories)
-            if (isWeapon && !up.isMajor)
+            string upCategory = up.category.ToString();
+
+            // Count all minor weapon upgrades across all "Weapon X"
+            if (isWeapon1 && !up.isMajor)
             {
                 total++;
                 if (up.currentLevel == up.maxLevel)
-                {
                     completed++;
-                }
             }
             else if (isWeapon2 && !up.isMajor)
             {
-                total++;
+                total2++;
                 if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-            else if (isWeapon3 && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
+                    completed2++;
             }
 
-            // For movement or orbs, count only same-category minor upgrades
-            else if (!isWeapon && up.category == upgrade.category && !up.isMajor)
+            // Count only minor upgrades in same Orb type
+            else if (isOrb && upCategory == categoryName && !up.isMajor)
             {
                 total++;
                 if (up.currentLevel == up.maxLevel)
-                {
                     completed++;
-                }
+            }
+
+            // Count only minor upgrades in same Movement type
+            else if (isMovement && upCategory == categoryName && !up.isMajor)
+            {
+                total++;
+                if (up.currentLevel == up.maxLevel)
+                    completed++;
             }
         }
-        // weapons : unlock after 10 of 15
-        if (isWeapon)
+
+        if (isWeapon1)
         {
-            Debug.Log("Checking for weapon");
-            Debug.Log(completed);
             return completed >= 10 && totalScrap >= upgrade.majorCost;
-
         }
-        // movement /orbs unlock after all upgrades
-        return completed == total && totalScrap > +upgrade.majorCost;
+        else if (isWeapon2)
+        {
+            return completed2 >= 10 && totalScrap >= upgrade.majorCost;
+        }
+
+        return completed == total && totalScrap >= upgrade.majorCost;
     }
 
     public void BuyUpgrade(UpgradeData upgrade)

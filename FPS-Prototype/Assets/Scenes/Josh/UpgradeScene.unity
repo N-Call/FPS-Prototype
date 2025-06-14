@@ -2997,7 +2997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 2016222649}
   initialImage: {fileID: 452786413}
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: 8124d7b904af9d048a3e95ed728e9073, type: 2}
 --- !u!1 &462758730
 GameObject:
   m_ObjectHideFlags: 0
@@ -4402,7 +4402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 1297644060}
   initialImage: {fileID: 541062089}
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: 5445600a2e66092409dca6bb6a6a0990, type: 2}
 --- !u!1 &546007125
 GameObject:
   m_ObjectHideFlags: 0
@@ -6391,7 +6391,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 656011300}
-  - {fileID: 1427192593}
   - {fileID: 1297414534}
   - {fileID: 1846307668}
   - {fileID: 829560690}
@@ -7537,7 +7536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 798286922}
   initialImage: {fileID: 1029373869}
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: ad01db298899a4546b2514369ada4fbb, type: 2}
 --- !u!1 &1043332721
 GameObject:
   m_ObjectHideFlags: 0
@@ -7767,7 +7766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 546007127}
   initialImage: {fileID: 1083997429}
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: 41186bac19fcdc2469c697695a28d7e8, type: 2}
 --- !u!1 &1086591227
 GameObject:
   m_ObjectHideFlags: 0
@@ -7861,7 +7860,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 1950381512}
   initialImage: {fileID: 1086591229}
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: 1ba4d4cbcd7919d4b9a513ad8545ab2e, type: 2}
 --- !u!1 &1087681801
 GameObject:
   m_ObjectHideFlags: 0
@@ -9695,6 +9694,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1427192593}
   - {fileID: 1043332722}
   - {fileID: 840865249}
   m_Father: {fileID: 853326697}
@@ -10609,11 +10609,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 853326697}
+  m_Father: {fileID: 1297414534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130.57947, y: -170.16357}
+  m_AnchoredPosition: {x: -7.4435425, y: -28.875}
   m_SizeDelta: {x: 66, y: 37.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1427192594
@@ -12391,7 +12391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 2055210906}
   initialImage: {fileID: 1618844476}
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: 08ebc54bd2299774395abbf6f0768d9e, type: 2}
 --- !u!1 &1627603466
 GameObject:
   m_ObjectHideFlags: 0
@@ -12831,7 +12831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 488239747}
   initialImage: {fileID: 1667445527}
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: 519d57f18ebae1c4585dde1bb7261d28, type: 2}
 --- !u!1 &1686471706
 GameObject:
   m_ObjectHideFlags: 0
@@ -15490,7 +15490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 17297389}
   initialImage: {fileID: 1983301270}
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: 6c09aa622b303e0458d2d58f27aa2b6c, type: 2}
 --- !u!1 &1992260354
 GameObject:
   m_ObjectHideFlags: 0
@@ -19163,6 +19163,7 @@ MonoBehaviour:
   buffJump: {fileID: 0}
   debuffJump: {fileID: 0}
   respawnPosition: {x: 0, y: 0, z: 0}
+  respawnRotation: {x: 0, y: 0, z: 0, w: 0}
   playerDamageScreen: {fileID: 0}
   playerInInverseScreen: {fileID: 0}
   player: {fileID: 0}
@@ -19194,6 +19195,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 097d2d0ce4333de498a4ff99704abe17, type: 2}
   - {fileID: 11400000, guid: fe87bd45f30f9e8478ed7286e807c368, type: 2}
   - {fileID: 11400000, guid: 766d09f5403be0d41ab199a6597e1a7a, type: 2}
+  - {fileID: 11400000, guid: ad01db298899a4546b2514369ada4fbb, type: 2}
+  - {fileID: 11400000, guid: 41186bac19fcdc2469c697695a28d7e8, type: 2}
+  - {fileID: 11400000, guid: 5445600a2e66092409dca6bb6a6a0990, type: 2}
+  - {fileID: 11400000, guid: 08ebc54bd2299774395abbf6f0768d9e, type: 2}
+  - {fileID: 11400000, guid: 8124d7b904af9d048a3e95ed728e9073, type: 2}
+  - {fileID: 11400000, guid: 1ba4d4cbcd7919d4b9a513ad8545ab2e, type: 2}
+  - {fileID: 11400000, guid: 6c09aa622b303e0458d2d58f27aa2b6c, type: 2}
+  - {fileID: 11400000, guid: 519d57f18ebae1c4585dde1bb7261d28, type: 2}
 --- !u!114 &8663224716193316746
 MonoBehaviour:
   m_ObjectHideFlags: 0
