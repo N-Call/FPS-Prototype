@@ -118,7 +118,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        scrapUI.text = scrapCounter.ToString("F0");
+        if (scrapUI != null)
+        {
+            scrapUI.text = scrapCounter.ToString("F0");
+        }
     }
 
     // Update is called once per frame
