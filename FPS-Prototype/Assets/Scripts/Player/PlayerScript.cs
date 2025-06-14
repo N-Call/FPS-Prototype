@@ -288,7 +288,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
 
         bool tryToRunOnLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
-        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && walkHorizontalDirection > 0.2f && verticalVelocity.y < 0f;
+        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && walkVerticalDirection > 0.2f && verticalVelocity.y < 0f;
         bool canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
 
         if (canInitiateWallRun)
@@ -308,7 +308,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             }
 
             // Handle Wall Jump
-            if (InputActionManager.instance.playerJumpAction.IsPressed())
+            if (InputActionManager.instance.playerJumpAction.WasPressedThisFrame())
             {
                 if (!wallJumped)
                 {
