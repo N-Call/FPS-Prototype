@@ -113,7 +113,12 @@ public class GameManager : MonoBehaviour
                 menuSettings.SetActive(false);
             }
         }
+<<<<<<< Updated upstream
         if (playerScript != null)
+=======
+
+        if (isPaused == false && playerScript != null)
+>>>>>>> Stashed changes
         {
             if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
             {
