@@ -134,13 +134,17 @@ public class GameManager : MonoBehaviour
 
         if (InputActionManager.instance.playerPause)
         {
-            StatePause(true);
+            MenuManager.instance.ShowPauseMenu();
+        }
+        else if (InputActionManager.instance.menuUnpause)
+        {
+            MenuManager.instance.CloseMenu();
         }
 
-        if (isPaused && menuActive == menuPause && InputActionManager.instance.menuNavigate.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
-        {
-            eventSystem.SetSelectedGameObject(firstSelectedButton);
-        }
+        //if (isPaused && menuActive == menuPause && InputActionManager.instance.menuNavigate.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
+        //{
+        //    eventSystem.SetSelectedGameObject(firstSelectedButton);
+        //}
 
         if (!isPaused && playerScript != null)
         {
@@ -226,6 +230,7 @@ public class GameManager : MonoBehaviour
     }
     public void AddScrap(int amount)
     {
+        Debug.Log(amount + "added");
         scrapCounter += amount;
         scrapUI.text = scrapCounter.ToString("F0");
     }
@@ -701,4 +706,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
     }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
 }
