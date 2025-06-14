@@ -130,7 +130,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     private void OnEnable()
     {
-        InputActionManager.instance.AddPlayerPerform(InputActionManager.PlayerInputs.Pause, PerformPause);
         InputActionManager.instance.EnablePlayerInput();
     }
 
@@ -156,9 +155,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     // Update is called once per frame
     void Update()
     {
-        Vector2 walkInputDirection = InputActionManager.instance.playerWalkAction.ReadValue<Vector2>();
-        walkHorizontalDirection = walkInputDirection.x;
-        walkVerticalDirection = walkInputDirection.y;
+        walkHorizontalDirection = InputActionManager.instance.playerWalk.x;
+        walkVerticalDirection = InputActionManager.instance.playerWalk.y;
 
         wallJumpOccurredThisFrame = false;
         if (controller.isGrounded)
@@ -288,7 +286,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
 
         bool tryToRunOnLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
-        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && walkHorizontalDirection > 0.2f && verticalVelocity.y < 0f;
+        bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && walkVerticalDirection > 0.2f && verticalVelocity.y < 0f;
         bool canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
 
         if (canInitiateWallRun)
@@ -308,7 +306,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             }
 
             // Handle Wall Jump
-            if (InputActionManager.instance.playerJumpAction.IsPressed())
+            if (InputActionManager.instance.playerJump)
             {
                 if (!wallJumped)
                 {
@@ -476,7 +474,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void Jump()
     {
-        if (InputActionManager.instance.playerJumpAction.WasPressedThisFrame() && jumpCount < maxJumps && !wallJumpOccurredThisFrame)
+        if (InputActionManager.instance.playerJump && jumpCount < maxJumps && !wallJumpOccurredThisFrame)
         {
             SoundManager.instance.PlaySFX("playerJump");
 
@@ -531,12 +529,12 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     // Handle sprint inputs
     void Sprint()
     {
-        if (InputActionManager.instance.playerSprintAction.IsPressed() && controller.isGrounded && !isSliding && !isCrouching)
+        if (InputActionManager.instance.playerSprint && controller.isGrounded && !isSliding && !isCrouching)
         {
             isSprinting = true;
             particleSpRun.gameObject.SetActive(true);
         }
-        else if (!InputActionManager.instance.playerSprintAction.IsPressed())
+        else if (!InputActionManager.instance.playerSprint)
         {
             isSprinting = false;
             particleSpRun.gameObject.SetActive(false);
@@ -548,7 +546,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     void Crouch()
     {
         // Crouched
-        if (InputActionManager.instance.playerCrouchAction.IsPressed())
+        if (InputActionManager.instance.playerCrouch)
         {
             if (isSprinting && controller.isGrounded)
             {
@@ -596,29 +594,27 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     void WeaponInput()
     {
         //check for primary weapon
-        if (InputActionManager.instance.playerShootAction.WasPressedThisFrame() && weaponList != null)
+        if (InputActionManager.instance.playerShoot && weaponList != null)
         {
             //launch attack method
             weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
         }
 
-        if (!InputActionManager.instance.playerShootAction.IsPressed() && weaponList != null)
+        if (!InputActionManager.instance.playerShooting && weaponList != null)
         {
             //launch attack method
             weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
         }
 
         //Change weapon if pressed
-        float scrollDirection = InputActionManager.instance.isUsingGamepad
-            ? InputActionManager.instance.playerSwapAction.WasPressedThisFrame() ? 1 : 0
-            : InputActionManager.instance.playerSwapAction.ReadValue<float>();
+        float scrollDirection = InputActionManager.instance.playerSwap;
 
         if (scrollDirection != 0)
         {
             ChangeWeapon(scrollDirection);
         }
 
-        if (InputActionManager.instance.playerReloadAction.IsPressed())
+        if (InputActionManager.instance.playerReload)
         {
             IReloadable reloadable = weaponList[0].GetComponent<IReloadable>();
             reloadable?.Reload();
@@ -923,11 +919,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     public void CollectScrap(int amount)
     {
         GameManager.instance.AddScrap(amount);
-    }
-
-    void PerformPause(InputAction.CallbackContext context)
-    {
-        GameManager.instance.StatePause(true);
     }
 
 }
