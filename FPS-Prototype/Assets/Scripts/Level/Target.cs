@@ -49,11 +49,11 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         if (respawn)
         {
-            Debug.Log("Respawning!");
+            //Debug.Log("Respawning!");
             respawnTimer += Time.deltaTime;
             if (respawnTimer >= respawnTime)
             {
-                Debug.Log("Toggled!");
+                //Debug.Log("Toggled!");
                 respawn = false;
                 respawnTimer = 0.0f;
                 ToggleVisuals();
@@ -63,7 +63,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     public void TakeDamage(int amount)
     {
-        SoundManager.instance.PlaySFX("targetHit", 0.3f);
+        SoundManager.instance.PlaySFX("targetHit");
         GameManager.instance.ToggleReticle();
         HP -= amount;
 
@@ -77,7 +77,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         // Check area for applicable targets. Need IElemental interface
         //Toggle explosion radius on and off to achieve ^^
-        Debug.Log("Activating Element");
+        //Debug.Log("Activating Element");
 
         if ((int)elem == element)
         {
@@ -120,7 +120,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     void ToggleVisuals()
     {
         explosionRadius.enabled = !explosionRadius.enabled;
-        explosionVisual.SetActive(!explosionVisual.activeSelf);
+        //explosionVisual.SetActive(!explosionVisual.activeSelf);
 
         CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
         if (collider != null)
@@ -142,7 +142,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
         else
         {
-            Debug.Log("Set inactive!");
+            //Debug.Log("Set inactive!");
             gameObject.SetActive(false);
         }
     }
@@ -151,7 +151,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         if (buff)
         {
-            SoundManager.instance.PlaySFX("powerUp", 0.3f);
+            SoundManager.instance.PlaySFX("powerUp");
 
             if (GameManager.instance.speedBuffTimer > speedElemTime || GameManager.instance.speedBuffTimer == 0)
             {
@@ -164,7 +164,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
         else
         {
-            SoundManager.instance.PlaySFX("debuff", 0.4f);
+            SoundManager.instance.PlaySFX("debuff");
             GameManager.instance.playerScript.AddModifier(-1 / speedElemMod);
             GameManager.instance.DeBuffSprintIcon(true);
             GameManager.instance.playerScript.SetBaseFOV(baseFOV - speedElemFOVMod);
@@ -177,7 +177,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     {
         if (buff)
         {
-            SoundManager.instance.PlaySFX("powerUp", 0.3f);
+            SoundManager.instance.PlaySFX("powerUp");
 
             if (GameManager.instance.jumpBuffTimer > jumpElemTime || GameManager.instance.jumpBuffTimer == 0) {
                 GameManager.instance.playerScript.AddModifier(0.0f, jumpElemMod);
@@ -189,7 +189,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         else
         {
             //Debug.Log("Jump Debuff");
-            SoundManager.instance.PlaySFX("debuff", 0.4f);
+            SoundManager.instance.PlaySFX("debuff");
             GameManager.instance.playerScript.AddModifier(0.0f, -1 / jumpElemMod);
             GameManager.instance.DeBuffJumpIcon(true);
         }
@@ -202,13 +202,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
         if (buff)
         {
             //Debug.Log("Shield Given");
-            SoundManager.instance.PlaySFX("powerUp", 0.3f);
+            SoundManager.instance.PlaySFX("powerUp");
             GameManager.instance.playerScript.SetShield(shieldElemMod);
         }
         else if (!buff)
         {
             //Debug.Log("Shield Taken");
-            SoundManager.instance.PlaySFX("debuff", 0.4f);
+            SoundManager.instance.PlaySFX("debuff");
             GameManager.instance.playerScript.SetShield(-shieldElemMod);
         }
 

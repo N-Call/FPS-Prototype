@@ -47,7 +47,7 @@ public class MineEnemy : EnemyController
           
     public void Explode()
     {
-        SoundManager.instance.PlaySFX("mineExplosion", 0.3f);
+        SoundManager.instance.PlaySFX("mineExplosion");
         IDamage damage = GameManager.instance.player.GetComponent<IDamage>();
         damage?.TakeDamage(damageAmount);
         GameManager.instance.ToggleReticle();

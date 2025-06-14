@@ -6,8 +6,11 @@ public class Damage : MonoBehaviour
     enum DamageType {DOT, moving, homing, stationary}
     enum ElementType {speed = 1, jump = 2, shield = 3}
 
+    [HideInInspector] public Transform target;
+
     [Header("Resources")]
     [SerializeField] Rigidbody rb;
+    [SerializeField] SphereCollider homingCollider;
 
     [Header("Damage Settings")]
     [SerializeField] DamageType damageType;
@@ -15,14 +18,26 @@ public class Damage : MonoBehaviour
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
     [SerializeField] float destroyTime;
+
+    [Header("Homing Settings")]
     [SerializeField] private float FOV;
+    [SerializeField] private float homingRadius;
     [SerializeField] float chaseDist;
+    [SerializeField] float smoothSpeed;
+    [SerializeField] bool isTriggerHoming;
+
+    [Header("Wall Bounce Settings")]
+    [SerializeField] bool isWallBouncable;
+    [SerializeField] int maxReflections;
+
 
     [Header("Damage Over Time Settings")]
     [SerializeField] private int dotDamage;
     [SerializeField] private int dotDamageRate;
 
-    private Vector3 playerDir;
+    private int reflectionCount;
+    private Vector3 startPos;
+    private Vector3 targetDir;
     private float angleToPlayer;
     private bool isDamaging;
     private bool stopChasing;
@@ -35,11 +50,8 @@ public class Damage : MonoBehaviour
         if (damageType == DamageType.moving || damageType == DamageType.homing)
         {
             Destroy(gameObject, destroyTime);
-
-            if (damageType == DamageType.moving)
-            {
-                rb.linearVelocity = transform.forward * speed;
-            }
+            rb.linearVelocity = transform.forward * speed;
+            startPos = transform.position;
         }
     }
 
@@ -47,35 +59,59 @@ public class Damage : MonoBehaviour
     {
         if (damageType == DamageType.homing)
         {
-            if(Vector3.Distance(GameManager.instance.player.transform.position, transform.position) > chaseDist && !stopChasing && CanSeePlayer())
+            if (target != null)
             {
-                rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position) * speed;
-                transform.LookAt(GameManager.instance.player.transform.position);
-                isLocked = true;
-            }else if (!CanSeePlayer() && !isLocked)
-            {
-                rb.linearVelocity = transform.forward * Vector3.Distance(GameManager.instance.player.transform.position, transform.position) * speed;
-                stopChasing = true;
+                if (!isTriggerHoming)
+                {
+                    return;
+                }
+                if (Vector3.Distance(target.position, transform.position) > chaseDist && !stopChasing && CanSeeTarget())
+                {
+                    isLocked = true;
+
+                    Vector3 direction = target.position - transform.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed * Time.deltaTime);
+                    rb.linearVelocity = transform.forward * speed;
+
+                }
+                else if (!CanSeeTarget() && !isLocked)
+                {
+                    rb.linearVelocity = transform.forward * Vector3.Distance(target.position, transform.position) * speed;
+                    stopChasing = true;
+                }
+                else if (!stopChasing)
+                {
+                    stopChasing = true;
+                    rb.linearVelocity = (target.position - transform.position) * speed;
+                }
             }
-            else if(!stopChasing)
+            if (isWallBouncable)
             {
-                stopChasing = true;
-                rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position) * speed;
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, transform.forward, out hit, 1f) && reflectionCount <= maxReflections)
+                {
+                    reflectionCount++;
+                    Vector3 reflectDir = Vector3.Reflect(transform.forward, hit.normal);
+                    transform.forward = reflectDir;
+                    rb.linearVelocity = transform.forward * speed;
+                }
             }
         }
 
     }
 
-    bool CanSeePlayer()
+    bool CanSeeTarget()
     {
-        playerDir = (GameManager.instance.player.transform.position - transform.position);
-        angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
-        Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
+        targetDir = (target.position - transform.position);
+        angleToPlayer = Vector3.Angle(new Vector3(targetDir.x, 0, targetDir.z), transform.forward);
+        Debug.DrawRay(transform.position, new Vector3(targetDir.x, 0, targetDir.z));
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, playerDir, out hit))
+        if (Physics.Raycast(transform.position, targetDir, out hit))
         {
-            if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            if (angleToPlayer <= FOV && hit.collider.gameObject == target.gameObject)
             {
                 return true;
             }
@@ -99,28 +135,35 @@ public class Damage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger)
+        if (other.isTrigger){return;}
+        if (target == null && damageType == DamageType.homing) 
         {
-            return;
+            if (Vector3.Distance(startPos, transform.position) <= 1f)
+            {
+                return;
+            }
+            if (other.GetComponent<IDamage>() != null)
+            {
+                target = other.transform;
+                homingCollider.radius = homingRadius;
+                isTriggerHoming = true;
+            }
+            return; 
         }
-
         IDamage dmg = other.GetComponent<IDamage>();
         ITarget targ = other.GetComponent<ITarget>();
+
         if (dmg != null || targ != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
             dmg?.TakeDamage(damageAmount);
             targ?.ActivateElem((int)elem);
         }
 
-        if (damageType == DamageType.moving || damageType == DamageType.homing)
+        if (damageType == DamageType.moving || isWallBouncable && reflectionCount > maxReflections || isWallBouncable && (dmg != null || targ != null))
         {
             GameObject.Destroy(gameObject);
         }
 
-        if (damageType == DamageType.homing)
-        {
-            SoundManager.instance.PlaySFX("turretDestroy", 1f);
-        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -130,6 +173,24 @@ public class Damage : MonoBehaviour
             return;
         }
 
+        if(damageType == DamageType.homing && (Physics.Raycast(transform.position, transform.forward, homingRadius) ||
+            Physics.Raycast(transform.position, transform.right, homingRadius) || Physics.Raycast(transform.position, -transform.right, homingRadius)))
+        {
+            IDamage dmg = other.GetComponent<IDamage>();
+            ITarget targ = other.GetComponent<ITarget>();
+
+            if (isWallBouncable && (dmg != null || targ != null))
+            {
+                dmg?.TakeDamage(damageAmount);
+                targ?.ActivateElem((int)elem);
+                GameObject.Destroy(gameObject);
+            }else if (!isWallBouncable || reflectionCount > maxReflections)
+            {
+                dmg?.TakeDamage(damageAmount);
+                targ?.ActivateElem((int)elem);
+                GameObject.Destroy(gameObject);
+            }
+        }
         IDamage damage = other.GetComponent<IDamage>();
         if (isDamaging || damage == null || damageType != DamageType.DOT)
         {

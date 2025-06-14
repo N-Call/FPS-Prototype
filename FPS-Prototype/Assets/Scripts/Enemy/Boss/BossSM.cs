@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class BossSM : StateMachine, IDamage
 {
@@ -12,27 +15,24 @@ public class BossSM : StateMachine, IDamage
     [HideInInspector] public ShootAttack shoot;
     [HideInInspector] public SpeedAttack speed;
     [HideInInspector] public BeamAttack beam;
-
-    public enum Ability
-    {
-        None,
-        speedBoost = 1,
-        jumpBoost = 2,
-        invensBoost = 3,
-    }
+    [HideInInspector] public DeadState dead;
 
     [Header ("Refereances")]
     public Rigidbody rigidBody;
     public Animator animator;
     public NavMeshAgent agent;
     public Transform[] bodyParts;
+    public BossOrb[] orbs;
     public Transform lShoulder;
     public Transform rShoulder;
     public Transform targetPoint;
-    public Damage Bullet;
+    public Damage homingBullet;
+    public Damage regularBullet;
+    public Damage currentbullet;
     public GameObject lShootPos;
     public GameObject rShootPos;
     public LayerMask ignorelayer;
+    public GameObject orbLocation;
 
     [Header("Boss Settings")]
     public int health;
@@ -40,10 +40,12 @@ public class BossSM : StateMachine, IDamage
     public float currentDecideDis;
     public bool isAnimDone;
     public int currentDamage;
+    public float deathTimer;
+    public float orbSpawnTimer;
 
     [Header("Idle Settings")]
     public int decideDis;
-    public int decideTime;
+    public float decideTime;
 
     [Header("Jump Attack Settings")]
     public float jumpHeight;
@@ -60,11 +62,16 @@ public class BossSM : StateMachine, IDamage
     public float rollDecideDis;
     public float rollSpeed;
 
-    public Ability currentAbility;
+    public EAbility currentAbility;
+
+    public float orbSpawnCounter;
     private bool isInvensible;
+
+    public UnityEvent onSpawnOrb;
 
     public void Awake()
     {
+        BossOrb.OnDeath += ActivateAbility;
         this.idle = new IdleDecide(stm:this);
         this.jump = new JumpAttack(stm:this);
         this.roll = new RollAttack(stm:this);
@@ -72,10 +79,12 @@ public class BossSM : StateMachine, IDamage
         this.shoot = new ShootAttack(stm:this);
         this.speed = new SpeedAttack(stm:this);
         this.beam = new BeamAttack(stm:this);
+        this.dead = new DeadState(stm:this);
 
         targetPoint = new GameObject("Jump Pos").transform;
         targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
-        currentHealth = health;
+        currentHealth = 99;
+        orbSpawnCounter = orbSpawnTimer;
     }
 
     protected override BaseState GetFirstState()
@@ -98,22 +107,76 @@ public class BossSM : StateMachine, IDamage
         if(isInvensible) { return; }
 
         currentHealth -= amount;
-        Dead();
+        if (currentHealth > 0)
+        {
+            if(currentHealth <= health / 2 && orbSpawnCounter >= orbSpawnTimer && currentAbility == 0) 
+            { 
+                onSpawnOrb?.Invoke();
+                orbSpawnCounter = 0;
+            }
+
+            //GameManager.instance.bossHPbar.fillAmount = (float)currentHealth / (float)health;
+            StartCoroutine(FlashRed());
+        }
+        else
+        {
+            Dead();
+        }
+    }
+
+    IEnumerator FlashRed()
+    {
+        List<Color> colors = new List<Color>();
+
+        // Set children's colors to red
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            colors.Add(renderer.material.color);
+            renderer.material.color = Color.red;
+        }
+
+        yield return new WaitForSeconds(0.01f);
+
+        int index = 0;
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            if (index < colors.Count)
+            {
+                renderer.material.color = colors[index];
+            }
+            index++;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        BossOrb.OnDeath -= ActivateAbility;
+    }
+
+    public void ShootOrbPos()
+    {
+        idle.shouldShoot = true;
     }
 
     public void SpawnLeftProjectile()
     {
-        Instantiate(Bullet, lShootPos.transform.position, lShootPos.transform.rotation);
+        Instantiate(currentbullet, lShootPos.transform.position, lShootPos.transform.rotation).target = GameManager.instance.player.transform;
     }
 
     public void SpawnRightProjectile()
     {
-        Instantiate(Bullet, rShootPos.transform.position, rShootPos.transform.rotation);
+        Instantiate(currentbullet, rShootPos.transform.position, rShootPos.transform.rotation).target = GameManager.instance.player.transform;
+    }
+
+    public void ActivateAbility(EAbility ability)
+    {
+        currentAbility = ability;
     }
 
     private void Dead()
     {
         //Death animation
+        ChangeState(dead);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -138,8 +201,12 @@ public class BossSM : StateMachine, IDamage
 
     public void ResetRigid()
     {
-        jump.ResetRigid();
-        speed.ChangeToIdle();
+        if(currentState == jump)
+            jump.ResetRigid();
+        if (currentState == speed)
+            speed.ChangeToIdle();
+        if (currentState == shoot)
+            shoot.StopShooting();
     }
 
     public void LookAtPlayer(int partIndex)

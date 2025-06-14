@@ -1,6 +1,7 @@
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 public class ButtonFunctions : MonoBehaviour
 {
@@ -15,14 +16,13 @@ public class ButtonFunctions : MonoBehaviour
         {
             GameManager.instance.Respawn();
         }
+
         GameManager.instance.StateUnpause();
     }
 
     public void StartGame()
     {
-        // this is for the start game menu after button pushed then moves to first level
-        GameManager.instance.SetOnStartScreen(false);
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(4);
     }
 
     public void LvlStartGame()
@@ -30,7 +30,15 @@ public class ButtonFunctions : MonoBehaviour
         LvlSelectManager.instance.StartGameBtn();
     }
 
-    public void BackToMenu()
+    public void BackToOverWorld()
+    {
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SceneManager.LoadScene(2);
+        
+    }
+
+    public void MainMenu()
     {
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
@@ -40,6 +48,7 @@ public class ButtonFunctions : MonoBehaviour
     public void SetLevelBtn(int level)
     {
         LvlSelectManager.instance.Setlevel(level);
+        GameManager.instance.LoadScoreBoard();
     }
   
     public void Resume()
@@ -57,13 +66,17 @@ public class ButtonFunctions : MonoBehaviour
     public void NextLevel()
     {
         // this is to load the next level but does a check first on making sure your in scene count 
-        if (SceneManager.GetActiveScene().buildIndex + 1 < 6)
+        if (SceneManager.GetActiveScene().buildIndex + 1 <= 8)
         {
+            Debug.Log("I have not made it to next scene");
+            SaveSystem.Save();
+            Debug.Log("I have this is after save");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            Debug.Log("I have made it to next scene");
             SoundManager.instance.sfxSource.Stop();
             GameManager.instance.StateUnpause();
         }
-        else if (SceneManager.GetActiveScene().buildIndex == 6)
+        else if (SceneManager.GetActiveScene().buildIndex == 8)
         {
             // only works after the button is clicked if prefab is updated of UI then go to last lvl turn off next button and save scene
             GameManager.instance.NextLvlBtnOff();
@@ -73,7 +86,22 @@ public class ButtonFunctions : MonoBehaviour
     {
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
+    }
+
+    public void LvlSelectStartScene()
+    {
+        SaveSystem.LoadGrades();
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SceneManager.LoadScene(2); 
+    }
+
+
+    public void OnSelectDifficulty(int difficultyLevel)
+    {
+        DifficultyManager.Instance.SetDifficulty((EDifficultyLevel)difficultyLevel);
+        StartGame();
     }
 
     public void Settings()
@@ -95,10 +123,14 @@ public class ButtonFunctions : MonoBehaviour
     {
         SaveSystem.Save();
     }
+
+    public void SaveSetting()
+    {
+        SaveSettingsSystem.Save();
+    }
     public void Load()
     {
         SaveSystem.Load();
-        GameManager.instance.StateUnpause();
     }
 
     public void Quit()

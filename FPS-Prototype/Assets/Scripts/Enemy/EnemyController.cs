@@ -6,11 +6,13 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamage
 {
+    public GameObject scrap;
+    [SerializeField] int scrapAmount;
 
     [SerializeField] protected Renderer model;
     [SerializeField] protected int currentHealth;
 
-    [SerializeField] GameObject parent;
+    //[SerializeField] GameObject parent;
 
     [SerializeField] protected bool addToEnemyCount;
 
@@ -29,6 +31,9 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected Transform shootPos;
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
+
+    
+    
 
     protected Color colorOrig;
     protected Vector3 playerDir;
@@ -55,7 +60,8 @@ public class EnemyController : MonoBehaviour, IDamage
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
-
+        Debug.Log("scrap amount set");
+        
         if (addToEnemyCount)
         {
             GameManager.instance.UpdateEnemyCounter(1);
@@ -139,13 +145,21 @@ public class EnemyController : MonoBehaviour, IDamage
     public virtual void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        SoundManager.instance.PlaySFX("turretHit", 0.2f);
+        SoundManager.instance.PlaySFX("turretHit");
 
         if (currentHealth <= 0)
         {
             Destroy(gameObject);
+            
+            Instantiate(scrap, transform.position, Quaternion.identity);
+            ScrapPickup pickup =  scrap.GetComponent<ScrapPickup>();
+            if (pickup != null)
+            {
+                pickup.scrapAmount = scrapAmount;
+            }
+
             GameManager.instance.UpdateEnemyCounter(-1);
-            SoundManager.instance.PlaySFX("turretDestroy", 0.2f);
+            SoundManager.instance.PlaySFX("turretDestroy");
         }
         else
         {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class JumpAttack : BaseState
 {
@@ -14,6 +15,7 @@ public class JumpAttack : BaseState
     public override void Enter()
     {
         base.Enter();
+        bossSM.currentbullet = bossSM.homingBullet;
         bossSM.animator.CrossFade("Jumping", 0.02f);
         isStopped = false;
         bossSM.agent.enabled = false;
@@ -40,11 +42,24 @@ public class JumpAttack : BaseState
     public override void Exit()
     {
         base.Exit();
-
+        bossSM.currentAbility = EAbility.None;
     }
 
     public void ResetRigid()
     {
+        if (!bossSM.agent.isOnNavMesh)
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(bossSM.transform.position, out hit, 10f, NavMesh.AllAreas))
+            {
+                bossSM.agent.enabled = true;
+                bossSM.rigidBody.isKinematic = true;
+                bossSM.transform.parent = null;
+                Debug.Log(bossSM.agent.Warp(hit.position));
+            }
+        }
+
+
         bossSM.rigidBody.constraints = RigidbodyConstraints.FreezeAll;
         bossSM.rigidBody.excludeLayers = 0;
     }

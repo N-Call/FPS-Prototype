@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] int sens;
+    [SerializeField] int mouseSensitivityX, mouseSensitivityY;
+    [SerializeField] int controllerSensitivityX, controllerSensitivityY;
     [SerializeField] int lockVertMin, lockVertMax;
     [SerializeField] bool invertY;
 
@@ -25,14 +26,17 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         //get input
-        float mouseX = Input.GetAxis("Mouse X") * sens * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * sens * Time.deltaTime;
+        float sensitivityX = InputActionManager.instance.isUsingGamepad ? controllerSensitivityX : mouseSensitivityX;
+        float sensitivityY = InputActionManager.instance.isUsingGamepad ? controllerSensitivityY : mouseSensitivityY;
+
+        float x = InputActionManager.instance.playerLook.x * sensitivityX * Time.deltaTime;
+        float y = InputActionManager.instance.playerLook.y * sensitivityY * Time.deltaTime;
 
         //give option to invert mouse look up and down
         if (invertY)
-            rotX += mouseY;
+            rotX += y;
         else
-            rotX -= mouseY;
+            rotX -= y;
 
         //clamp the camera on the x-axis
         rotX = Mathf.Clamp(rotX, lockVertMin, lockVertMax);
@@ -43,7 +47,7 @@ public class CameraController : MonoBehaviour
         transform.localRotation = Quaternion.Euler(rotX, 0, currTiltZ);
 
         // rotate the player on the y-axis to look left and right
-        transform.parent.Rotate(Vector3.up * mouseX);
+        transform.parent.Rotate(Vector3.up * x);
     }
 
     public void SetWallRunTilt(float tilt)

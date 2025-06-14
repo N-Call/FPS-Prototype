@@ -17,6 +17,8 @@ public class Laser : MonoBehaviour
 
     LineRenderer lineRenderer;
 
+    public GameObject hitEffect;
+
     Ray ray;
     RaycastHit hit;
 
@@ -32,7 +34,7 @@ public class Laser : MonoBehaviour
         lineRenderer.material = material;
         lineRenderer.startWidth = startWidth;
         lineRenderer.endWidth = endWidth;
-        if (laserCanToggle )
+        if (laserCanToggle)
         {
             StartCoroutine(ToggleLaser());
         }
@@ -41,7 +43,6 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
         if (!lineRenderer.enabled)
             return;
 
@@ -64,7 +65,7 @@ public class Laser : MonoBehaviour
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
             ray = new Ray(hit.point, Vector3.Reflect(ray.direction, hit.normal));
             remainingLength -= Vector3.Distance(ray.origin, hit.point);
-
+            
             if (!hit.collider.CompareTag("Reflector"))
             {
                 if (!hit.collider.CompareTag("Player"))
@@ -102,5 +103,4 @@ public class Laser : MonoBehaviour
             yield return new WaitForSeconds(offTime);
         }
     }
-
 }

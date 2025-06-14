@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,9 +29,9 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     protected float shootTimer;
 
     private Animator animator;
-    private bool reloadInProgress = false;
+    protected bool reloadInProgress = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         //Grab the animator from object
         animator = GetComponent<Animator>();
@@ -46,8 +47,15 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
     }
 
+    void OnEnable()
+    {
+        PlayIdle();
+        GameManager.instance?.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        GameManager.instance?.SetWeaponIcon(ammoIcon);
+    }
+
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         shootTimer += Time.deltaTime;
 
@@ -66,6 +74,11 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         }
     }
 
+    protected virtual void LateUpdate()
+    {
+
+    }
+
     public virtual void AttackBegin(LayerMask playerMask)
     {
 
@@ -76,7 +89,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     }
 
-    public void Reload()
+    public virtual void Reload()
     {
         if (ammoCount == reloadCap)
         {
@@ -85,7 +98,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         // Step 2 - Checks if there are no bullets left in total.
         if (currTotalBullets <= 0)
         {
-            SoundManager.instance.PlaySFX("gunEmpty", 0.3f);
+            SoundManager.instance.PlaySFX("gunEmpty");
             return;
         }
         // Step 3 - Checks if there are no bullets left in both the mag and reserves.
@@ -93,7 +106,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         //  no ammo in both the mag and reserve.
         if (ammoCount == 0 && currTotalBullets - ammoCount <= 0)
         {
-            SoundManager.instance.PlaySFX("gunEmpty", 0.3f);
+            SoundManager.instance.PlaySFX("gunEmpty");
             return;
         }
 
@@ -115,7 +128,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
         // Reload animation plays and sound, after checking the above conditions.
         PlayReloadAnim();
-        SoundManager.instance.PlaySFX(soundFxName, 0.3f);
+        SoundManager.instance.PlaySFX(soundFxName);
 
         reloadInProgress = true;
     }
@@ -148,15 +161,6 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     protected void PlaySeconedIdle(bool answer)
     {
         animator?.SetBool("isIdle2", answer);
-    }
-
-    private void OnEnable()
-    {
-        PlayIdle();
-
-
-        GameManager.instance?.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
-        GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
 
     public void SetAmmo(float percent)

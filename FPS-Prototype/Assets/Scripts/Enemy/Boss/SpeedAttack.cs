@@ -6,7 +6,7 @@ public class SpeedAttack : BaseState
     private float attackTimer;
     private float speedTimer;
     private bool isTransforming;
-    private int origSpeed;
+    private float origSpeed;
     public SpeedAttack(StateMachine stm) : base(name: "Speeding", stm)
     {
         bossSM = (BossSM)this.stateMachine;
@@ -16,7 +16,7 @@ public class SpeedAttack : BaseState
     {
         base.Enter();
         bossSM.animator.CrossFade("SpeedTransform", 0.2f);
-        origSpeed = bossSM.speedAmount;
+        origSpeed = bossSM.agent.acceleration;
         bossSM.agent.acceleration = bossSM.speedAmount;
         bossSM.agent.isStopped = false;
     }
@@ -57,8 +57,11 @@ public class SpeedAttack : BaseState
     public override void Exit()
     {
         base.Exit();
+        speedTimer = 0;
+        isTransforming = false;
         bossSM.agent.isStopped = true;
         bossSM.agent.acceleration = origSpeed;
+        bossSM.currentAbility = EAbility.None;
 
     }
 }

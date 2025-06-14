@@ -171,10 +171,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1077324817128690042, guid: dc31931df67a57a4fba184abe4e40386, type: 2}
-  m_audioClip: {fileID: 8300000, guid: c6a01920aaafe9f42a7f3965d9d5b56d, type: 3}
-  m_Resource: {fileID: 8300000, guid: c6a01920aaafe9f42a7f3965d9d5b56d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 00b3e8aeaef781442a595b42516d8ff4, type: 3}
+  m_Resource: {fileID: 8300000, guid: 00b3e8aeaef781442a595b42516d8ff4, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.347
+  m_Volume: 0.302
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -218,7 +218,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.087
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -308,18 +308,18 @@ MonoBehaviour:
   - name: Theme
     clips:
     - {fileID: 8300000, guid: ad01756ab632aeb4999ccab046150340, type: 3}
-    volume: 0.204
+    volume: 0.3
     isMusic: 1
   sfxSounds:
   - name: pistol
     clips:
-    - {fileID: 8300000, guid: c6a01920aaafe9f42a7f3965d9d5b56d, type: 3}
-    volume: 0.311
+    - {fileID: 8300000, guid: c3294a54f6c149347bc20b6308a8c266, type: 3}
+    volume: 0.148
     isMusic: 0
   - name: reload
     clips:
     - {fileID: 8300000, guid: 00b3e8aeaef781442a595b42516d8ff4, type: 3}
-    volume: 0.351
+    volume: 0.3
     isMusic: 0
   - name: playerHurt
     clips:
@@ -329,12 +329,12 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 7c80e995a0157e849a3df544048f6e6c, type: 3}
     - {fileID: 8300000, guid: 355bbd58e0ca9044a8bbb15a06d5c3dd, type: 3}
     - {fileID: 8300000, guid: 5817d68f231372549adfc0f1b7de6a52, type: 3}
-    volume: 0.243
+    volume: 0.3
     isMusic: 0
   - name: targetHit
     clips:
     - {fileID: 8300000, guid: 286f53b8de3d27c4495e473da02912a6, type: 3}
-    volume: 0.356
+    volume: 0.3
     isMusic: 0
   - name: turretHit
     clips:
@@ -344,83 +344,123 @@ MonoBehaviour:
   - name: turretDestroy
     clips:
     - {fileID: 8300000, guid: c5266806d8bd3bf4c904e6501e50c90a, type: 3}
-    volume: 0.064
+    volume: 0.3
     isMusic: 0
   - name: playerJump
     clips:
     - {fileID: 8300000, guid: 152d702fd2ac74b4abb04c25ba21148a, type: 3}
     - {fileID: 8300000, guid: fbabc1c1baff99f4b8ea5065483fd76d, type: 3}
     - {fileID: 8300000, guid: 3ac9ab6784539594c9dc352e6754065a, type: 3}
-    volume: 0.302
+    volume: 0.3
     isMusic: 0
   - name: bowRelease
     clips:
     - {fileID: 8300000, guid: 4107ec65a3b56ea428dade281b659db8, type: 3}
-    volume: 0.679
+    volume: 0.3
     isMusic: 0
   - name: turretShot
     clips:
     - {fileID: 8300000, guid: 893dd9d5b8b0e5a47a83acaae882f0f5, type: 3}
-    volume: 0.333
+    volume: 0.3
     isMusic: 0
   - name: powerUp
     clips:
     - {fileID: 8300000, guid: fe0ae8a1091989c4b81695bc02780964, type: 3}
-    volume: 0.375
+    volume: 0.3
     isMusic: 0
   - name: checkPoint
     clips:
     - {fileID: 8300000, guid: cd2de6b10efbeac4e96b71fae008401c, type: 3}
-    volume: 0.351
+    volume: 0.5
     isMusic: 0
   - name: mineExplosion
     clips:
     - {fileID: 8300000, guid: c5266806d8bd3bf4c904e6501e50c90a, type: 3}
-    volume: 0.328
-    isMusic: 0
+    volume: 0.3
+    isMusic: 1
   - name: bowLoad
     clips:
     - {fileID: 8300000, guid: b0cd03458fdfd354baaa4c9b6165e63e, type: 3}
-    volume: 0.335
+    volume: 0.3
     isMusic: 0
   - name: swordSwing
     clips:
     - {fileID: 8300000, guid: 24ce6649b35ea1e40a5c7326a449c371, type: 3}
-    volume: 0.304
+    volume: 0.3
     isMusic: 0
   - name: bowReload
     clips:
     - {fileID: 8300000, guid: 72fd49729ab95cd41b8098cf36afaaf7, type: 3}
-    volume: 0.366
+    volume: 0.3
     isMusic: 0
   - name: debuff
     clips:
     - {fileID: 8300000, guid: cddc8335d919db64782713c0f2d140df, type: 3}
-    volume: 0.46
+    volume: 0.3
     isMusic: 0
   - name: victory
     clips:
     - {fileID: 8300000, guid: 652dba8a4e900f44aa5262dd7d58df18, type: 3}
-    volume: 0.337
+    volume: 0.3
     isMusic: 0
   - name: danger
     clips:
     - {fileID: 8300000, guid: d9b26801c8b774b41944d08fa5338cfa, type: 3}
-    volume: 0.399
+    volume: 0.3
     isMusic: 0
   - name: gunEmpty
     clips:
     - {fileID: 8300000, guid: c6011bfddc6da634a88676c79a44d737, type: 3}
-    volume: 0.257
+    volume: 0.3
     isMusic: 0
   - name: Health
     clips:
     - {fileID: 8300000, guid: 614d258c7f252384291a572c9569f5ca, type: 3}
-    volume: 0.259
+    volume: 0.3
     isMusic: 0
   - name: footsteps
     clips: []
     volume: 0.054
+    isMusic: 0
+  - name: enemyShot
+    clips:
+    - {fileID: 8300000, guid: fc54d7fd585ff84448c05a1ee0284cf6, type: 3}
+    volume: 0.05
+    isMusic: 1
+  - name: Door Lock
+    clips:
+    - {fileID: 8300000, guid: 296de55dffe4b8343bd3ad901f4a3daf, type: 3}
+    volume: 1
+    isMusic: 0
+  - name: 'Door '
+    clips:
+    - {fileID: 8300000, guid: 065567a9b3f3cfc4abe073cf8f00cbeb, type: 3}
+    volume: 1
+    isMusic: 0
+  - name: Sliding Door
+    clips:
+    - {fileID: 8300000, guid: f5c44c08f90aead41ba1f84ff81cd696, type: 3}
+    volume: 0.303
+    isMusic: 0
+  - name: hoverClip
+    clips:
+    - {fileID: 8300000, guid: 7acc410fe2ba906469d525b7284fb37e, type: 3}
+    volume: 0.303
+    isMusic: 0
+  - name: clickClip
+    clips:
+    - {fileID: 8300000, guid: 60884a5fc4fbc7947b45ec28107f1d8a, type: 3}
+    volume: 0.303
+    isMusic: 0
+  - name: Scrap
+    clips:
+    - {fileID: 8300000, guid: 2c2a4258e2a3fbd479151b145ef1b320, type: 3}
+    volume: 1
+    isMusic: 0
+  - name: Shatter
+    clips:
+    - {fileID: 8300000, guid: cb1f0fc574dda6847bf48f1a6db9ef31, type: 3}
+    volume: 1
     isMusic: 0
   musicSource: {fileID: 1344707143303592047}
   sfxSource: {fileID: 8650406183274668991}

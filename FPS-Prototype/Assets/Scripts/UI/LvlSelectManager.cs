@@ -1,9 +1,7 @@
-using JetBrains.Annotations;
-using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class LvlSelectManager : MonoBehaviour
@@ -13,20 +11,46 @@ public class LvlSelectManager : MonoBehaviour
     [Header("Images")]
     // put is sprite array
     public GameObject[] lvlIamges;
-    
+
     [Header("Buttons")]
     // look at lists/array
     //public GameObject[] lvlRecords;
 
     [SerializeField] GameObject StartGame;
-    
+
+    [SerializeField] Button[] lvlsBtn;
     [SerializeField] GameObject ActiveImage;
+    [SerializeField] GameObject ActiveRecord;
+
+    [SerializeField] GameObject BackButton;
 
     public int SelectedScene;
 
     private void Awake()
     {
         instance = this;
+
+    }
+
+    private void Start()
+    {
+        bool nextlvl = false;
+       
+        for (int i = 0; i < lvlsBtn.Length; i++)
+        {// plus 4 if for all of the menu scenes in front of level 1 and on
+            if (!GameManager.instance.gradeSystem.LoadData(i + 4))
+            {
+                if (!nextlvl)
+                {
+                    nextlvl = true;
+                }
+                else
+                {
+                    lvlsBtn[i].interactable = false;
+                }
+            }
+
+        }
     }
 
     public void StartGameBtn()
@@ -49,15 +73,16 @@ public class LvlSelectManager : MonoBehaviour
         ActiveImage.SetActive(true);
 
 
-        //if (ActiveRecord != null)
-        //{
-        //    ActiveRecord.SetActive(false);
-        //}
+        if (GameManager.instance.gradeSystem.LoadData(Index + 4))
+        {
+            ActiveRecord.SetActive(true);
+        }
+        else
+        {
+            ActiveRecord.SetActive(false);
+        }
 
-        //ActiveRecord = lvlRecords[Index];
-        //ActiveRecord.SetActive(true);
-
-        SelectedScene = Index + 2;
+        SelectedScene = Index + 4;
     }
 
 

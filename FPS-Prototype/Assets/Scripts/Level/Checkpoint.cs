@@ -14,11 +14,11 @@ public class Checkpoint : MonoBehaviour
         {
             EnemyController enemy = GetComponent<EnemyController>();
             
-            SoundManager.instance.PlaySFX("checkPoint", 1f);
+            SoundManager.instance.PlaySFX("checkPoint");
             Debug.Log("checkpoint reached");
-            GameManager.instance.SetSpawnPosition(GameManager.instance.player.transform.position);
-            GameManager.instance.playerScript.UpdateCheckpointHealth();
-            Destroy(gameObject);
+            Vector3 forwardDir = transform.forward;
+            Quaternion lookDirection = Quaternion.LookRotation(forwardDir);
+            GameManager.instance.SetSpawnPosition(GameManager.instance.player.transform.position, lookDirection);
 
             foreach (Spawner spawner in spawnersToDisable)
             {
@@ -29,7 +29,7 @@ public class Checkpoint : MonoBehaviour
             {
                 GameManager.instance.WinCondition(-1);
                 SoundManager.instance.sfxSource.Stop();
-                SoundManager.instance.PlaySFX("victory", 0.5f);
+                SoundManager.instance.PlaySFX("victory");
             }
 
             

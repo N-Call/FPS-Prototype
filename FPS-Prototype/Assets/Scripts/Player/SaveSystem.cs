@@ -8,7 +8,9 @@ public class SaveSystem
     struct SaveData
     {
         public SceneSaveData SceneData;
+        public ScrapSaveData ScrapData;
         public FinalGradeData finalGradeData;
+        public DifficultySaveData difficultyData;
     }
 
     public static string SaveFileName()
@@ -26,21 +28,63 @@ public class SaveSystem
 
     private static void HandleSaveData()
     {
+        GameManager.instance.scrapManager.Save(ref saveData.ScrapData);
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
+        DifficultyManager.Instance.Save(ref saveData.difficultyData);
     }
 
     public static void Load()
     {
-        string saveContent = File.ReadAllText(SaveFileName());
+        if (File.Exists(SaveFileName()))
+        {
+            string saveContent = File.ReadAllText(SaveFileName());
 
-        saveData = JsonUtility.FromJson<SaveData>(saveContent);
-        HandleLoadData();
+            saveData = JsonUtility.FromJson<SaveData>(saveContent);
+            HandleLoadData();
+        }
+    }
+
+    public static void LoadGrades()
+    {
+        if (File.Exists(SaveFileName()))
+        {
+            string saveContent = File.ReadAllText(SaveFileName());
+
+            saveData = JsonUtility.FromJson<SaveData>(saveContent);
+            HandleLoadGradeData();
+        }
+    }
+
+    public static void LoadScraps()
+    {
+        if (File.Exists(SaveFileName()))
+        {
+            string saveContent = File.ReadAllText(SaveFileName());
+
+            saveData = JsonUtility.FromJson<SaveData>(saveContent);
+            HandleLoadScrapData();
+        }
     }
 
     private static void HandleLoadData()
     {
         GameManager.instance.sceneData.Load(saveData.SceneData);
-        GameManager.instance.gradeSystem.Load(saveData.finalGradeData);
+        GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
+        DifficultyManager.Instance.Load(saveData.difficultyData);
+        GameManager.instance.scrapManager.Load(saveData.ScrapData);
+    }
+
+    private static void HandleLoadGradeData()
+    {
+        DifficultyManager.Instance.Load(saveData.difficultyData);
+        GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
+        GameManager.instance.scrapManager.Load(saveData.ScrapData);
+    }
+
+    private static void HandleLoadScrapData()
+    {
+        Debug.Log(saveData.ScrapData.scraps);
+        GameManager.instance.scrapManager.Load(saveData.ScrapData);
     }
 }
