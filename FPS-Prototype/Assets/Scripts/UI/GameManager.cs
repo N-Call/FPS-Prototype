@@ -134,15 +134,19 @@ public class GameManager : MonoBehaviour
 
         if (InputActionManager.instance.playerPause)
         {
-            StatePause(true);
+            MenuManager.instance.ShowPauseMenu();
         }
-
-        if (isPaused && menuActive == menuPause && InputActionManager.instance.menuNavigate.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
+        else if (InputActionManager.instance.menuUnpause)
         {
-            eventSystem.SetSelectedGameObject(firstSelectedButton);
+            MenuManager.instance.CloseMenu();
         }
 
-        if (isPaused && playerScript != null)
+        //if (isPaused && menuActive == menuPause && InputActionManager.instance.menuNavigate.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
+        //{
+        //    eventSystem.SetSelectedGameObject(firstSelectedButton);
+        //}
+
+        if (!isPaused && playerScript != null)
         {
             if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
             {
@@ -693,6 +697,15 @@ public class GameManager : MonoBehaviour
         hitMakerReticle.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 
 }

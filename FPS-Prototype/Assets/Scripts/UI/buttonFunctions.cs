@@ -104,19 +104,54 @@ public class ButtonFunctions : MonoBehaviour
         StartGame();
     }
 
+    public void StartMenu()
+    {
+        MenuManager.instance.ShowStartMenu();
+    }
+
     public void Settings()
     {
-        GameManager.instance.ToggleSettings();
+        MenuManager.instance.ShowSettingsMenu();
     }
- 
+
+    public void SettingsAudio()
+    {
+        MenuManager.instance.ShowSettingsAudioMenu();
+    }
+
+    public void SettingsAudioBack()
+    {
+        MenuManager.instance.SettingsAudioBack();
+    }
+
+    public void SettingsPC()
+    {
+        MenuManager.instance.ShowSettingsPCMenu();
+    }
+
+    public void SettingsPCBack()
+    {
+        MenuManager.instance.SettingsPCBack();
+    }
+
+    public void SettingsController()
+    {
+        MenuManager.instance.ShowSettingsControllerMenu();
+    }
+
+    public void SettingsControllerBack()
+    {
+        MenuManager.instance.SettingsControllerBack();
+    }
+
     public void Rules()
     {
-        GameManager.instance.ToggleRules();
+        MenuManager.instance.ShowRulesMenu();
     }
 
     public void Credits()
     {
-        GameManager.instance.ToggleCredits();
+        MenuManager.instance.ShowCreditsMenu();
     }
 
     public void Save()
