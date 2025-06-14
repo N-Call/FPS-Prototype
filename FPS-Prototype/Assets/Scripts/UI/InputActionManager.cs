@@ -1,74 +1,67 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 
 public class InputActionManager : MonoBehaviour
 {
 
     public static InputActionManager instance { get; private set; }
 
+    [SerializeField] InputActionAsset menuInputActionMap;
+    [SerializeField] InputActionAsset playerInputActionMap;
+
+    [SerializeField] bool onStartScreen = false;
+
     public bool isUsingGamepad { get; private set; }
 
     //
-    // Menu Input Actions
+    // Menu Inputs
     //
-    Dictionary<MenuInputs, InputAction> menuInputActionsByEnum;
-    Dictionary<MenuInputs, HashSet<Action<InputAction.CallbackContext>>> menuInputMethods;
-
-    public enum MenuInputs
-    {
-        Unpause,
-        Navigate,
-        Confirm,
-        Cancel,
-        Click,
-        Point,
-        Scroll
-    }
-
-    MenuInputActions menuInputActions;
-    public InputAction menuUnpauseAction { get; private set; }
-    public InputAction menuNavigateAction { get; private set; }
-    public InputAction menuConfirmAction { get; private set; }
-    public InputAction menuCancelAction { get; private set; }
-    public InputAction menuClickAction { get; private set; }
-    public InputAction menuPointAction { get; private set; }
-    public InputAction menuScrollAction { get; private set; }
+    InputAction menuUnpauseAction;
+    InputAction menuNavigateAction;
+    InputAction menuConfirmAction;
+    InputAction menuCancelAction;
+    InputAction menuClickAction;
+    InputAction menuPointAction;
+    InputAction menuScrollAction;
+    
+    public bool menuUnpause { get; private set; }
+    public Vector2 menuNavigate { get; private set; }
+    public bool menuConfirm { get; private set; }
+    public bool menuCancel { get; private set; }
+    public Vector2 menuPoint { get; private set; }
+    public Vector2 menuScroll { get; private set; }
 
     //
-    // Player Input Actions
+    // Player Inputs
     //
-    Dictionary<PlayerInputs, InputAction> playerInputActionsByEnum;
-    Dictionary<PlayerInputs, HashSet<Action<InputAction.CallbackContext>>> playerInputMethods;
+    InputAction playerWalkAction;
+    InputAction playerSprintAction;
+    InputAction playerJumpAction;
+    InputAction playerCrouchAction;
+    InputAction playerLookAction;
+    InputAction playerInteractAction;
+    InputAction playerShootAction;
+    InputAction playerAimAction;
+    InputAction playerReloadAction;
+    InputAction playerSwapAction;
+    InputAction playerPauseAction;
 
-    public enum PlayerInputs
-    {
-        Walk,
-        Sprint,
-        Jump,
-        Crouch,
-        Look,
-        Interact,
-        Shoot,
-        Aim,
-        Reload,
-        Swap,
-        Pause
-    }
+    public Vector2 playerWalk { get; private set; }
+    public bool playerSprint { get; private set; }
+    public bool playerJump { get; private set; }
+    public bool playerCrouch { get; private set; }
+    public Vector2 playerLook { get; private set; }
+    public bool playerInteract { get; private set; }
+    public bool playerShoot { get; private set; }
+    public bool playerShooting { get; private set; }
+    public bool playerAim { get; private set; }
+    public bool playerReload { get; private set; }
+    public float playerSwap { get; private set; }
+    public bool playerPause { get; private set; }
 
-    PlayerInputActions playerInputActions;
-    public InputAction playerWalkAction { get; private set; }
-    public InputAction playerSprintAction { get; private set; }
-    public InputAction playerJumpAction { get; private set; }
-    public InputAction playerCrouchAction { get; private set; }
-    public InputAction playerLookAction { get; private set; }
-    public InputAction playerInteractAction { get; private set; }
-    public InputAction playerShootAction { get; private set; }
-    public InputAction playerAimAction { get; private set; }
-    public InputAction playerReloadAction { get; private set; }
-    public InputAction playerSwapAction { get; private set; }
-    public InputAction playerPauseAction { get; private set; }
+    InputDevice lastInputDevice;
 
     private void Awake()
     {
@@ -80,36 +73,68 @@ public class InputActionManager : MonoBehaviour
 
         instance = this;
 
-        menuInputActionsByEnum = new Dictionary<MenuInputs, InputAction>();
-        menuInputMethods = new Dictionary<MenuInputs, HashSet<Action<InputAction.CallbackContext>>>();
-        menuInputActions = new MenuInputActions();
+        InputSystem.onEvent += OnInputEvent;
 
-        playerInputActionsByEnum = new Dictionary<PlayerInputs, InputAction>();
-        playerInputMethods = new Dictionary<PlayerInputs, HashSet<Action<InputAction.CallbackContext>>>();
-        playerInputActions = new PlayerInputActions();
+        menuUnpauseAction = menuInputActionMap["Unpause"];
+        menuNavigateAction = menuInputActionMap["Navigate"];
+        menuConfirmAction = menuInputActionMap["Confirm"];
+        menuCancelAction = menuInputActionMap["Cancel"];
+        menuClickAction = menuInputActionMap["Click"];
+        menuPointAction = menuInputActionMap["Point"];
+        menuScrollAction = menuInputActionMap["Scroll"];
 
-        InputSystem.onActionChange += (obj, change) =>
+        playerWalkAction = playerInputActionMap["Walk"];
+        playerSprintAction = playerInputActionMap["Sprint"];
+        playerJumpAction = playerInputActionMap["Jump"];
+        playerCrouchAction = playerInputActionMap["Crouch"];
+        playerLookAction = playerInputActionMap["Look"];
+        playerInteractAction = playerInputActionMap["Interact"];
+        playerShootAction = playerInputActionMap["Shoot"];
+        playerAimAction = playerInputActionMap["Aim"];
+        playerReloadAction = playerInputActionMap["Reload"];
+        playerSwapAction = playerInputActionMap["Swap"];
+        playerPauseAction = playerInputActionMap["Pause"];
+
+        if (onStartScreen)
         {
-            if (change != InputActionChange.ActionStarted)
-            {
-                return;
-            }
+            EnableMenuInput();
+        }
+    }
 
-            InputAction action = (InputAction)obj;
-            InputControl control = action.activeControl;
-            InputDevice device = control.device;
-            int deviceId = device.deviceId;
-            //Debug.Log($"{Time.deltaTime}\t\tDevice: {device.displayName} ({deviceId})\t\tGamepad: {isUsingGamepad}");
+    private void Update()
+    {
+        bool menu = menuInputActionMap.enabled;
+        menuUnpause = menu ? menuUnpauseAction.WasPressedThisFrame() : false;
+        menuNavigate = menu ? menuNavigateAction.ReadValue<Vector2>() : Vector2.zero;
+        menuConfirm = menu ? menuConfirmAction.WasPressedThisFrame() : false;
+        menuCancel = menu ? menuCancelAction.WasPressedThisFrame() : false;
+        menuPoint = menu ? menuPointAction.ReadValue<Vector2>() : Vector2.zero;
+        menuScroll = menu ? menuScrollAction.ReadValue<Vector2>() : Vector2.zero;
 
-            if (deviceId < 1 || deviceId > 2)
-            {
-                isUsingGamepad = true;
-            }
-            else
-            {
-                isUsingGamepad = false;
-            }
-        };
+        bool player = playerInputActionMap.enabled;
+        playerWalk = player ? playerWalkAction.ReadValue<Vector2>() : Vector2.zero;
+        playerSprint = player ? playerSprintAction.IsPressed() : false;
+        playerJump = player ? playerJumpAction.WasPressedThisFrame() : false;
+        playerCrouch = player ? playerCrouchAction.IsPressed() : false;
+        playerLook = player ? playerLookAction.ReadValue<Vector2>() : Vector2.zero;
+        playerInteract = player ? playerInteractAction.WasPressedThisFrame() : false;
+        playerShoot = player ? playerShootAction.WasPressedThisFrame() : false;
+        playerShooting = player ? playerShootAction.IsPressed() : false;
+        playerAim = player ? playerAimAction.IsPressed() : false;
+        playerReload = player ? playerReloadAction.WasPressedThisFrame() : false;
+
+        // If is player -> is using gamepad? Otherwise return 0
+        // If is using gamepad -> check if it was pressed this frame -> return 1. Otherwise return 0
+        // If not using gamepad -> return the read float value
+        playerSwap = player
+            ? isUsingGamepad
+                ? playerSwapAction.WasPressedThisFrame()
+                    ? 1
+                    : 0
+                : playerSwapAction.ReadValue<float>()
+            : 0;
+
+        playerPause = player ? playerPauseAction.WasPressedThisFrame() : false;
     }
 
     private void OnDisable()
@@ -120,72 +145,18 @@ public class InputActionManager : MonoBehaviour
 
     public void EnableMenuInput()
     {
-        menuInputActions.Enable();
-
-        menuUnpauseAction = menuInputActions.Unpause.Unpause;
+        menuInputActionMap.Enable();
         menuUnpauseAction.Enable();
-        menuInputActionsByEnum[MenuInputs.Unpause] = menuUnpauseAction;
-
-        menuNavigateAction = menuInputActions.Navigate.Navigate;
         menuNavigateAction.Enable();
-        menuInputActionsByEnum[MenuInputs.Navigate] = menuNavigateAction;
-
-        menuConfirmAction = menuInputActions.Navigate.Confirm;
         menuConfirmAction.Enable();
-        menuInputActionsByEnum[MenuInputs.Confirm] = menuConfirmAction;
-
-        menuCancelAction = menuInputActions.Navigate.Cancel;
         menuCancelAction.Enable();
-        menuInputActionsByEnum[MenuInputs.Cancel] = menuCancelAction;
-
-        menuClickAction = menuInputActions.Navigate.Click;
         menuClickAction.Enable();
-        menuInputActionsByEnum[MenuInputs.Click] = menuClickAction;
-
-        menuPointAction = menuInputActions.Navigate.Point;
         menuPointAction.Enable();
-        menuInputActionsByEnum[MenuInputs.Point] = menuPointAction;
-
-        menuScrollAction = menuInputActions.Navigate.Scroll;
         menuScrollAction.Enable();
-        menuInputActionsByEnum[MenuInputs.Scroll] = menuScrollAction;
-
-        foreach (var entry in menuInputMethods)
-        {
-            HashSet<Action<InputAction.CallbackContext>> actions = entry.Value;
-            if (actions.Count == 0)
-            {
-                continue;
-            }
-
-            MenuInputs input = entry.Key;
-            foreach (Action<InputAction.CallbackContext> action in actions)
-            {
-                menuInputActionsByEnum[input].performed += action;
-            }
-        }
     }
 
     public void DisableMenuInput()
     {
-        foreach (var entry in menuInputMethods)
-        {
-            HashSet<Action<InputAction.CallbackContext>> actions = entry.Value;
-            if (actions.Count == 0)
-            {
-                continue;
-            }
-
-            MenuInputs input = entry.Key;
-            foreach (Action<InputAction.CallbackContext> action in actions)
-            {
-                if (menuInputActionsByEnum.ContainsKey(input))
-                {
-                    menuInputActionsByEnum[input].performed -= action;
-                }
-            }
-        }
-
         menuUnpauseAction.Disable();
         menuNavigateAction.Disable();
         menuConfirmAction.Disable();
@@ -193,95 +164,27 @@ public class InputActionManager : MonoBehaviour
         menuClickAction.Disable();
         menuPointAction.Disable();
         menuScrollAction.Disable();
-
-        menuInputActions.Disable();
-        menuInputActionsByEnum.Clear();
+        menuInputActionMap.Disable();
     }
 
     public void EnablePlayerInput()
     {
-        playerInputActions.Enable();
-
-        playerWalkAction = playerInputActions.Movement.Walk;
+        playerInputActionMap.Enable();
         playerWalkAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Walk] = playerWalkAction;
-
-        playerSprintAction = playerInputActions.Movement.Sprint;
         playerSprintAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Sprint] = playerSprintAction;
-
-        playerJumpAction = playerInputActions.Movement.Jump;
         playerJumpAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Jump] = playerJumpAction;
-
-        playerCrouchAction = playerInputActions.Movement.Crouch;
         playerCrouchAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Crouch] = playerCrouchAction;
-
-        playerLookAction = playerInputActions.Look.Look;
         playerLookAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Look] = playerLookAction;
-
-        playerInteractAction = playerInputActions.Interact.Interact;
         playerInteractAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Interact] = playerInteractAction;
-
-        playerShootAction = playerInputActions.Weapons.Shoot;
         playerShootAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Shoot] = playerShootAction;
-
-        playerAimAction = playerInputActions.Weapons.Aim;
         playerAimAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Aim] = playerAimAction;
-
-        playerReloadAction = playerInputActions.Weapons.Reload;
         playerReloadAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Reload] = playerReloadAction;
-
-        playerSwapAction = playerInputActions.Weapons.Swap;
         playerSwapAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Swap] = playerSwapAction;
-
-        playerPauseAction = playerInputActions.Pause.Pause;
         playerPauseAction.Enable();
-        playerInputActionsByEnum[PlayerInputs.Pause] = playerPauseAction;
-
-        foreach (var entry in playerInputMethods)
-        {
-            HashSet<Action<InputAction.CallbackContext>> actions = entry.Value;
-            if (actions.Count == 0)
-            {
-                continue;
-            }
-
-            PlayerInputs input = entry.Key;
-            foreach (Action<InputAction.CallbackContext> action in actions)
-            {
-                playerInputActionsByEnum[input].performed += action;
-            }
-        }
     }
 
     public void DisablePlayerInput()
     {
-        foreach (var entry in playerInputMethods)
-        {
-            HashSet<Action<InputAction.CallbackContext>> actions = entry.Value;
-            if (actions.Count == 0)
-            {
-                continue;
-            }
-
-            PlayerInputs input = entry.Key;
-            foreach (Action<InputAction.CallbackContext> action in actions)
-            {
-                if (playerInputActionsByEnum.ContainsKey(input))
-                {
-                    playerInputActionsByEnum[input].performed -= action;
-                }
-            }
-        }
-
         playerWalkAction.Disable();
         playerSprintAction.Disable();
         playerJumpAction.Disable();
@@ -293,48 +196,68 @@ public class InputActionManager : MonoBehaviour
         playerReloadAction.Disable();
         playerSwapAction.Disable();
         playerPauseAction.Disable();
-        playerInputActions.Disable();
-        playerInputActionsByEnum.Clear();
+        playerInputActionMap.Disable();
     }
 
-    public void AddMenuPerform(MenuInputs input, Action<InputAction.CallbackContext> action)
+    void OnInputEvent(InputEventPtr eventPtr, InputDevice device)
     {
-        if (!menuInputMethods.ContainsKey(input))
-        {
-            menuInputMethods[input] = new HashSet<Action<InputAction.CallbackContext>>();
-        }
-
-        menuInputMethods[input].Add(action);
-    }
-
-    public void RemoveMenuPerform(MenuInputs input, Action<InputAction.CallbackContext> action)
-    {
-        if (!menuInputMethods.ContainsKey(input))
+        if (device == lastInputDevice || (!isUsingGamepad && (device is Mouse || device is Keyboard)))
         {
             return;
         }
 
-        menuInputMethods[input].Remove(action);
-    }
-
-    public void AddPlayerPerform(PlayerInputs input, Action<InputAction.CallbackContext> action)
-    {
-        if (!playerInputMethods.ContainsKey(input))
-        {
-            playerInputMethods[input] = new HashSet<Action<InputAction.CallbackContext>>();
-        }
-
-        playerInputMethods[input].Add(action);
-    }
-
-    public void RemovePlayerPerform(PlayerInputs input, Action<InputAction.CallbackContext> action)
-    {
-        if (!playerInputMethods.ContainsKey(input))
+        if (!device.added || !device.enabled)
         {
             return;
         }
 
-        playerInputMethods[input].Remove(action);
+        if (!eventPtr.IsA<StateEvent>() && !eventPtr.IsA<DeltaStateEvent>())
+        {
+            return;
+        }
+
+        foreach (InputControl control in device.allControls)
+        {
+            if (control is ButtonControl button)
+            {
+                if (button.ReadValueFromEvent(eventPtr, out float value) && value > 0.1f)
+                {
+                    RegisterDevice(device);
+                    return;
+                }
+            }
+
+            else if (control is AxisControl axis)
+            {
+                if (axis.ReadValueFromEvent(eventPtr, out float value) && Mathf.Abs(value) > 0.1f)
+                {
+                    RegisterDevice(device);
+                    return;
+                }
+            }
+
+            else if (control is Vector2Control vector)
+            {
+                if (vector.ReadValueFromEvent(eventPtr, out Vector2 value) && value.magnitude > 0.1f)
+                {
+                    RegisterDevice(device);
+                    return;
+                }
+            }
+        }
+
+    }
+
+    void RegisterDevice(InputDevice device)
+    {
+        lastInputDevice = device;
+        isUsingGamepad = !(device is Mouse) && !(device is Keyboard);
+        //Debug.Log($"[{Time.deltaTime}]\t\tSwitched to " + (isUsingGamepad ? "Gamepad" : "Keyboard & Mouse"));
+    }
+
+    private void OnDestroy()
+    {
+        InputSystem.onEvent -= OnInputEvent;
     }
 
 }

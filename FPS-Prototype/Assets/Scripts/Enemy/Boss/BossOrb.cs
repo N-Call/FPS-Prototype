@@ -1,19 +1,21 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossOrb : MonoBehaviour, IBossDamagable
 {
-
+    [HideInInspector] public List<Transform> spawnLocations = new();
 
     [SerializeField] EAbility ability;
     [SerializeField] int health;
     public BossOrbSpawner orbSpawner;
+    [SerializeField] StandardMovement regularOrb;
 
-    public static event Action<EAbility> OnSomethingHappened;
+    public static event Action<EAbility> OnDeath;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -37,7 +39,14 @@ public class BossOrb : MonoBehaviour, IBossDamagable
         {
             return;
         }
-        BossOrb.OnSomethingHappened?.Invoke(ability);
+        BossOrb.OnDeath?.Invoke(ability);
+
+        int counter = UnityEngine.Random.Range(0, spawnLocations.Count);
+        for (int i = 0; i < counter; i++)
+        {
+            Instantiate(regularOrb, transform.position, transform.rotation);
+        }
+        
         Destroy(gameObject);
     }
 }

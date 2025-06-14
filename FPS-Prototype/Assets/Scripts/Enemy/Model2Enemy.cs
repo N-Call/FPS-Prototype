@@ -5,7 +5,7 @@ public class Model2Enemy : EnemyController, IElemental
 
     [Header("Element Effects")]
     [SerializeField] protected float elementEffectTime;
-    float elementSpeedMod;
+    float elementJumpMod;
     bool elemBuffed;
     bool elemDebuffed;
     float effectTimer;
@@ -49,7 +49,7 @@ public class Model2Enemy : EnemyController, IElemental
             {
                 EndElement();
             }
-        }  
+        }
     }
 
     protected override bool CanSeePlayer()
@@ -106,11 +106,11 @@ public class Model2Enemy : EnemyController, IElemental
     //{
     //    if (elemBuffed)
     //    {
-    //        agent.speed += elementSpeedMod;
+    //        agent.speed += elementJumpMod;
     //    }
     //    if (elemDebuffed)
     //    {
-    //        agent.speed -= elementSpeedMod;
+    //        agent.speed -= elementJumpMod;
     //    }
     //}
 
@@ -118,28 +118,28 @@ public class Model2Enemy : EnemyController, IElemental
     {
         if (elemBuffed)
         {
-            agent.speed -= elementSpeedMod;
+            agent.baseOffset -= elementJumpMod;
             elemBuffed = false;
         }
         else if (elemDebuffed)
         {
-            agent.speed += elementSpeedMod;
+            agent.baseOffset += elementJumpMod;
             elemDebuffed = false;
         }
     }
 
     public void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod)
     {
-        elementSpeedMod = speedMod;
+        elementJumpMod = jumpMod;
         if (buffStatus)
         {
             elemBuffed = true;
-            agent.speed *= elementSpeedMod;
+            agent.baseOffset *= elementJumpMod;
         }
         else if (!buffStatus)
         {
             elemDebuffed = true;
-            agent.speed /= elementSpeedMod;
+            agent.baseOffset /= elementJumpMod;
         }
         effectTimer = 0f;
     }
