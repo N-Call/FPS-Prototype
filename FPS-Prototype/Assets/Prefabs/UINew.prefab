@@ -7645,6 +7645,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d471d59fac812774d8ea5d89949bb74e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuInputActionMap: {fileID: -944628639613478452, guid: 590950bc0420e2749925e3042204a315, type: 3}
+  playerInputActionMap: {fileID: -944628639613478452, guid: e9f96786a32cbd84fb645f7a6e5e0bce, type: 3}
 --- !u!1 &5946190327441936536
 GameObject:
   m_ObjectHideFlags: 0
@@ -9132,7 +9134,6 @@ MonoBehaviour:
   isOnStartScreen: 0
   eventSystem: {fileID: 5191836658751943274}
   firstSelectedButton: {fileID: 7114654982714084571}
-  firstSelectedSettingsButton: {fileID: 0}
   menuActive: {fileID: 0}
   menuPause: {fileID: 4679460781886317217}
   menuWin: {fileID: 7657805400822114950}
@@ -9153,11 +9154,13 @@ MonoBehaviour:
   elapsedTime: {fileID: 1312990235749784}
   enemyWinCount: {fileID: 2171400496107959489}
   scrapUI: {fileID: 823738539320300723}
+  totalScrapUI: {fileID: 0}
   buffSprint: {fileID: 4131574256681697402}
   debuffSprint: {fileID: 7500064155376373369}
   buffJump: {fileID: 288832229720153720}
   debuffJump: {fileID: 4300758699036269257}
   respawnPosition: {x: 0, y: 0, z: 0}
+  respawnRotation: {x: 0, y: 0, z: 0, w: 0}
   playerDamageScreen: {fileID: 6488555757100811228}
   playerInInverseScreen: {fileID: 528190201670713084}
   player: {fileID: 0}
@@ -9184,6 +9187,7 @@ MonoBehaviour:
   jumpBuffLimit: 0
   speedDebuffLimit: 0
   jumpDebuffLimit: 0
+  allUpgrades: []
 --- !u!114 &2424378658659622957
 MonoBehaviour:
   m_ObjectHideFlags: 0

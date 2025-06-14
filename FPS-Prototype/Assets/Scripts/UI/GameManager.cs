@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
     public SceneData sceneData;
     public SceneLoader sceneLoader;
     public FinalGradeSystem gradeSystem;
+    public ScrapManager scrapManager;
     public VolumeSystemData volumeSystemData;
 
     public bool isPaused;
@@ -92,7 +93,6 @@ public class GameManager : MonoBehaviour
     int gameGoalCount;
     int enemyCount;
     int scrapCounter = 0;
-    int totalScrap = 10000;//for testing only
     public List<UpgradeData> allUpgrades;
     int completed = 0;
     int total = 0;
@@ -118,7 +118,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        scrapUI.text = scrapCounter.ToString("F0");
+        if (scrapUI != null)
+        {
+            scrapUI.text = scrapCounter.ToString("F0");
+        }
     }
 
     // Update is called once per frame
@@ -160,14 +163,14 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         //EnablePPVolume();
-        
+
         globalVol.SetActive(true);
         // to turn off the reticle
         reticle.SetActive(false);
         SoundManager.instance.musicSource.Pause();
         SoundManager.instance.sfxSource.Stop();
         // stop the player from shooting
-        
+
         playerScript.enabled = false;
         InputActionManager.instance.EnableMenuInput();
 
@@ -225,16 +228,21 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log(amount + "added");
         scrapCounter += amount;
-        totalScrap += amount;
         scrapUI.text = scrapCounter.ToString("F0");
     }
+
+    public void AddToTotalScrap()
+    {
+        scrapManager.totalScrap += scrapCounter;
+    }
+
     public bool SpendScrap(int amount)
     {
-        if (totalScrap >= amount)
+        if (scrapManager.totalScrap >= amount)
         {
-            totalScrap -= amount;
-            Debug.Log(totalScrap + "My Money");
-            totalScrapUI.text = totalScrap.ToString("F0");
+            scrapManager.totalScrap -= amount;
+            Debug.Log(scrapManager.totalScrap + "My Money");
+            totalScrapUI.text = scrapManager.totalScrap.ToString("F0");
 
             return true;
         }
@@ -243,7 +251,7 @@ public class GameManager : MonoBehaviour
 
     public void ShowScrap()
     {
-        totalScrapUI.text = totalScrap.ToString("F0");
+        totalScrapUI.text = scrapManager.totalScrap.ToString("F0");
     }
 
     public bool CanBuy(UpgradeData upgrade)
@@ -257,7 +265,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Maxed out lvl need to prompt player");
             return upgrade.currentLevel < upgrade.maxLevel &&
-                   totalScrap >= upgrade.costPerLevel[upgrade.currentLevel];
+            scrapManager.totalScrap >= upgrade.costPerLevel[upgrade.currentLevel];
         }
     }
     private bool CanBuyMajor(UpgradeData upgrade)
@@ -311,11 +319,11 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Checking for weapon");
             Debug.Log(completed);
-            return completed >= 10 && totalScrap >= upgrade.majorCost;
+            return completed >= 10 && scrapManager.totalScrap >= upgrade.majorCost;
 
         }
         // movement /orbs unlock after all upgrades
-        return completed == total && totalScrap > +upgrade.majorCost;
+        return completed == total && scrapManager.totalScrap > +upgrade.majorCost;
     }
 
     public void BuyUpgrade(UpgradeData upgrade)
@@ -383,12 +391,12 @@ public class GameManager : MonoBehaviour
             }
 
             if (menuActive == menuSettings)
-            { 
+            {
                 menuActive.SetActive(false);
                 menuActive = null;
                 return;
             }
-           
+
             DisableCurrentToggledMenu();
             menuActive = menuSettings;
             menuActive.SetActive(true);
@@ -495,7 +503,7 @@ public class GameManager : MonoBehaviour
         if (ppVolume != null)
         {
             ppVolume.enabled = true;
-            
+
         }
     }
 
@@ -509,13 +517,16 @@ public class GameManager : MonoBehaviour
     public void WinCondition(int amount)
     {
         gameGoalCount += amount;
-        
+
         if (gameGoalCount <= 0)
         {
             StatePause();
             speakerUI.text = string.Empty;
             textComponent.text = string.Empty;
-            
+
+            //Add scraps to total scraps
+            AddToTotalScrap();
+
             // show off win menu Time with enemy time added 
             SoundManager.instance.PlaySFX("victory");
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
@@ -524,7 +535,7 @@ public class GameManager : MonoBehaviour
             menuActive = menuWin;
             menuActive.SetActive(true);
             textPopUp.SetActive(true);
-            
+
             float elapsedTempTime = EnemyTimePenalty(elapsedTime.GetComponent<Timer>().elapsedTime);
             int minutes = Mathf.FloorToInt(elapsedTempTime / 60);
             int seconds = Mathf.FloorToInt(elapsedTempTime % 60);
@@ -577,14 +588,14 @@ public class GameManager : MonoBehaviour
     public void Respawn()
     {
         playerScript.GetComponent<CharacterController>().enabled = false;
-        
+
         if (player.transform.parent != null)
         {
             player.transform.parent = null;
         }
 
         player.transform.position = respawnPosition;
-       
+
         playerScript.ResetPlayerStats();
 
         ResetElemTimers();
@@ -604,10 +615,10 @@ public class GameManager : MonoBehaviour
         speedDebuffLimit = 0.0f;
         jumpDebuffLimit = 0.0f;
 
-        buffSprint.SetActive( false );
-        buffJump.SetActive( false );
-        debuffSprint.SetActive( false );
-        debuffJump.SetActive( false );
+        buffSprint.SetActive(false);
+        buffJump.SetActive(false);
+        debuffSprint.SetActive(false);
+        debuffJump.SetActive(false);
     }
 
     public void SetElemParam(int elem, bool buffStatus, float totalTime)
@@ -642,7 +653,7 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
-        
+
     }
     void HandleElemTimers()
     {
@@ -691,5 +702,4 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
     }
-
 }
