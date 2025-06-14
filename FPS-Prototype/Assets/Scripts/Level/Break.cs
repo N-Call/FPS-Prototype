@@ -14,13 +14,11 @@ public class Break : MonoBehaviour
             GameObject brokenObj = Instantiate(brokenObject);
             brokenObj.transform.position = transform.position;
             brokenObj.transform.rotation = transform.rotation;
-            //brokenObj.transform.localScale = transform.localScale;
-            Debug.Log("found components");
+           
             foreach (Rigidbody rb in brokenObj.GetComponentsInChildren<Rigidbody>())
             {
-                Debug.Log("force added");
                 rb.AddExplosionForce(explosionForce, explosionOrigin, explosionRadius);
-                rb.angularVelocity = Random.insideUnitSphere * 5f;
+               // rb.angularVelocity = Random.insideUnitSphere * 5f;
             }
         }
         SoundManager.instance.PlaySFX("Shatter");
