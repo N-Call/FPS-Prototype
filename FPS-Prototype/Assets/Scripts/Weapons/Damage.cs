@@ -147,7 +147,6 @@ public class Damage : MonoBehaviour
                 target = other.transform;
                 homingCollider.radius = homingRadius;
                 isTriggerHoming = true;
-                isWallBouncable = false;
             }
             return; 
         }
@@ -160,7 +159,7 @@ public class Damage : MonoBehaviour
             targ?.ActivateElem((int)elem);
         }
 
-        if (damageType == DamageType.moving || damageType == DamageType.homing)
+        if (damageType == DamageType.moving || isWallBouncable && reflectionCount > maxReflections || isWallBouncable && (dmg != null || targ != null))
         {
             GameObject.Destroy(gameObject);
         }

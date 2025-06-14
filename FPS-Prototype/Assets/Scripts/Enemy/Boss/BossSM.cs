@@ -71,7 +71,7 @@ public class BossSM : StateMachine, IDamage
 
     public void Awake()
     {
-        BossOrb.OnSomethingHappened += ActivateAbility;
+        BossOrb.OnDeath += ActivateAbility;
         this.idle = new IdleDecide(stm:this);
         this.jump = new JumpAttack(stm:this);
         this.roll = new RollAttack(stm:this);
@@ -150,7 +150,7 @@ public class BossSM : StateMachine, IDamage
 
     private void OnDestroy()
     {
-        BossOrb.OnSomethingHappened -= ActivateAbility;
+        BossOrb.OnDeath -= ActivateAbility;
     }
 
     public void ShootOrbPos()
