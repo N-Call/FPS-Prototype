@@ -16532,7 +16532,7 @@ MonoBehaviour:
   sprintSpeed: 4
   crouchSpeedMultiplier: 0.5
   crouchHeightMultiplier: 0.5
-  crouchRate: 0.05
+  crouchRate: 0.08
   crouchWaitTimer: 0.001
   slideSpeedBonus: 16
   slideRate: 0.3
@@ -16551,8 +16551,8 @@ MonoBehaviour:
   wallJumpForce: 8
   wallCheckDist: 0.65
   wallJumpHoriForce: 24
-  wallRunCooldown: 0.01
   wallStickForce: 24
+  minWallRunHeight: 0
   provideExtraJumpIfNeeded: 1
   walkBobAmp: 0.1
   walkBobFreq: 10
@@ -16808,16 +16808,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   rb: {fileID: 429191599636798514}
-  damageField: {fileID: 0}
+  homingCollider: {fileID: 0}
   damageType: 3
   elem: 0
   damageAmount: 0
   speed: 0
   destroyTime: 0
   FOV: 0
+  homingRadius: 0
   chaseDist: 0
   smoothSpeed: 0
   isTriggerHoming: 0
+  isWallBouncable: 0
+  maxReflections: 0
   dotDamage: 0
   dotDamageRate: 0
 --- !u!4 &4019859602519784531 stripped
@@ -17026,7 +17029,7 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  lineRange: 50
+  lineRange: 10
   rendererStartWidth: 0.01
   rendererEndWidth: 0.01
   rendererGradient:
@@ -17060,4 +17063,5 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   rendererMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-  maxReflections: 2
+  maxReflections: 1
+  bulletForce: 0
