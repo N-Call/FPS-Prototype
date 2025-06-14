@@ -653,9 +653,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
         SoundManager.instance.PlaySFX("playerHurt");
 
-        if (isShielded > 0 && !invulnerable)
+        if (isShielded > 0) //&& !invulnerable)
         {
             isShielded -= 1;
+
+            invincHitTime = 0.15f;
         }
         else if (!invulnerable)
         {

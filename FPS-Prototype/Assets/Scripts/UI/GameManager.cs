@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
             eventSystem.SetSelectedGameObject(firstSelectedButton);
         }
 
-        if (isPaused && playerScript != null)
+        if (!isPaused && playerScript != null)
         {
             if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
             {
@@ -226,7 +226,6 @@ public class GameManager : MonoBehaviour
     }
     public void AddScrap(int amount)
     {
-        Debug.Log(amount + "added");
         scrapCounter += amount;
         scrapUI.text = scrapCounter.ToString("F0");
     }
