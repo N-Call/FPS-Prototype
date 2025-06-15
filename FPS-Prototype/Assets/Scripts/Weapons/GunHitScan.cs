@@ -207,6 +207,14 @@ public class GunHitScan : Range
     public override void AttackBegin(LayerMask playerMask)
     {
         float shootRateMod = shootRate + GameManager.instance.playerAbilities.w1RateMod;
+        //if (GameManager.instance.playerAbilities == null)
+        //{
+        //    shootRateMod = shootRate;
+        //}
+        //else
+        //{
+        //    shootRateMod = shootRate + GameManager.instance.playerAbilities.w1RateMod;
+        //}
 
         if (shootRateMod > shootTimer)
         {
@@ -217,13 +225,14 @@ public class GunHitScan : Range
 
         if (ammoCount <= 0 && currTotalBullets <= 0)
         {
-            SoundManager.instance.PlaySFX("gunEmpty");
+            
             return;
         }
 
         if (ammoCount <= 0 && currTotalBullets > 0)
         {
-            SoundManager.instance.PlaySFX("gunClick");
+            SoundManager.instance.PlaySFX("gunEmpty");
+            //SoundManager.instance.PlaySFX("gunClick");
             return;
         }
 

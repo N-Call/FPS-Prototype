@@ -117,6 +117,11 @@ public class GameManager : MonoBehaviour
         timeScaleOrig = Time.timeScale;
         enemiesToRespawn = new List<EnemyController>();
         SaveSettingsSystem.Load();
+
+        //if (playerAbilities == null)
+        //{
+        //    playerAbilities = new PlayerAbilities();
+        //}
     }
 
     private void Start()
