@@ -166,6 +166,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         //Debug.DrawRay(transform.position, -transform.right * wallCheckDist, Color.blue);
         //Debug.DrawRay(transform.position, transform.right * wallCheckDist, Color.red);
 
+        Movement();
         WallRunCheck();
         Jump();
         Sprint();
@@ -182,11 +183,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 invulnerable = false;
             }
         }
-    }
-
-    void FixedUpdate()
-    {
-        Movement();
     }
 
     void HandleHeadBobbing()
