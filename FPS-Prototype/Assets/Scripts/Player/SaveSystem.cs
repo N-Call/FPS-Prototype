@@ -39,6 +39,21 @@ public class SaveSystem
         DifficultyManager.Instance.Save(ref saveData.difficultyData);
     }
 
+    public static void SaveStats()
+    {
+        Debug.Log("isSavingStats");
+        HandleSaveStatsData();
+        File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
+    }
+
+    private static void HandleSaveStatsData()
+    {
+        GameManager.instance.scrapManager.Save(ref saveData.ScrapData);
+        GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
+        DifficultyManager.Instance.Save(ref saveData.difficultyData);
+    }
+
+
     public static void Load()
     {
         if (File.Exists(SaveFileName()))
