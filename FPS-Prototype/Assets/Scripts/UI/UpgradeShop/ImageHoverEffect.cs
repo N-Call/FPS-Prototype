@@ -10,10 +10,13 @@ public class ImageHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public UpgradeData upgradeData;
 
+    public TMP_Text upText;
+
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("point is down");
         GameManager.instance.BuyUpgrade(upgradeData);
+        upText.text = upgradeData.currentLevel.ToString();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

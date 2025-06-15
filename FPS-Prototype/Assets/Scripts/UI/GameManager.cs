@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     public FinalGradeSystem gradeSystem;
     public ScrapManager scrapManager;
     public VolumeSystemData volumeSystemData;
-    public TMP_Text updateUpgradeText;
+    
 
     public bool isPaused;
     public float timeScaleOrig;
@@ -285,11 +285,14 @@ public class GameManager : MonoBehaviour
     {
         if (!CanBuy(upgrade)) return;
 
+        
+
         if (upgrade.isMajor && upgrade.currentLevel < upgrade.maxLevel)
         {
             Debug.Log("I bought a major");
             SpendScrap(upgrade.majorCost);
             upgrade.currentLevel++;
+            
             
             ApplyUpgrade(upgrade);
         }
@@ -299,11 +302,11 @@ public class GameManager : MonoBehaviour
             int cost = upgrade.costPerLevel[upgrade.currentLevel];
             SpendScrap(cost);
             upgrade.currentLevel++;
-            updateUpgradeText.text = upgrade.currentLevel.ToString();
+           
             ApplyUpgrade(upgrade);
         }
     }
-   
+
 
     private void ApplyUpgrade(UpgradeData upgrade)
     {
