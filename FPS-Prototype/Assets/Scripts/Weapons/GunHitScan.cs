@@ -125,6 +125,10 @@ public class GunHitScan : Range
 
     bool ShouldRicochet()
     {
+        if (GameManager.instance.playerAbilities == null)
+        {
+            return false;
+        }
         if (!GameManager.instance.playerAbilities.RicochetUnlocked())
         {
             return false;

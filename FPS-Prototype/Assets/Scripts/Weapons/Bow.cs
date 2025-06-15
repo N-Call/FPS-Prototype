@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
-
 public class Bow : Range
 {
     [SerializeField] float chargeMaxRate;
@@ -78,6 +76,10 @@ public class Bow : Range
 
     public void SwapArrows()
     {
+        if(GameManager.instance.playerAbilities == null)
+        {
+            return;
+        }
         if (GameManager.instance.playerAbilities.w2Major == true && InputActionManager.instance.playerAim)
         {
             projectileIndex = (projectileIndex + 1 > projectils.Length - 1) ? 0 : projectileIndex + 1;
