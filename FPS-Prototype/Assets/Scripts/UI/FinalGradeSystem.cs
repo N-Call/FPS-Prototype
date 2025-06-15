@@ -14,11 +14,7 @@ public class FinalGradeSystem : MonoBehaviour
     Dictionary<int, List<string>> scoreDataList = new Dictionary<int, List<string>>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
+    
     void Start()
     {
         

@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
     public FinalGradeSystem gradeSystem;
     public ScrapManager scrapManager;
     public VolumeSystemData volumeSystemData;
+    
 
     public bool isPaused;
     public float timeScaleOrig;
@@ -284,11 +285,15 @@ public class GameManager : MonoBehaviour
     {
         if (!CanBuy(upgrade)) return;
 
+        
+
         if (upgrade.isMajor && upgrade.currentLevel < upgrade.maxLevel)
         {
             Debug.Log("I bought a major");
             SpendScrap(upgrade.majorCost);
             upgrade.currentLevel++;
+            
+            
             ApplyUpgrade(upgrade);
         }
         else
@@ -297,9 +302,11 @@ public class GameManager : MonoBehaviour
             int cost = upgrade.costPerLevel[upgrade.currentLevel];
             SpendScrap(cost);
             upgrade.currentLevel++;
+           
             ApplyUpgrade(upgrade);
         }
     }
+
 
     private void ApplyUpgrade(UpgradeData upgrade)
     {
@@ -320,15 +327,19 @@ public class GameManager : MonoBehaviour
                 }
                 else if ((upgradeType == UpgradeType.Speed))
                 {
-                    playerAbilities.w1SpeedMod++;
+                    //change to ammo mag size
+                    playerAbilities.w1AmmoMag += 2;
                 }
                 else if ((upgradeType == UpgradeType.Rate))
                 {
-                    playerAbilities.w1RateMod++;
+                    playerAbilities.w1RateMod -= 0.20f;
                 }
                 else if ((upgradeType == UpgradeType.Major))
                 {
                     playerAbilities.w1Major = true;
+                    playerAbilities.ricochet = true;
+                    // need full auto for the pistol
+                    
                 }
                 break;
             case UpgradeCategory.Weapon2:
@@ -339,10 +350,12 @@ public class GameManager : MonoBehaviour
                 }
                 else if ((upgradeType == UpgradeType.Speed))
                 {
+                    //spped of the arrow
                     playerAbilities.w2SpeedMod++;
                 }
                 else if ((upgradeType == UpgradeType.Rate))
                 {
+                    //can shoot faster
                     playerAbilities.w2RateMod++;
                 }
                 else if ((upgradeType == UpgradeType.Major))
@@ -358,10 +371,12 @@ public class GameManager : MonoBehaviour
                 }
                 else if ((upgradeType == UpgradeType.Speed))
                 {
+                    //speed of the swing 
                     playerAbilities.w3SpeedMod++;
                 }
                 else if ((upgradeType == UpgradeType.Rate))
                 {
+                    //speed of how many time you can swing
                     playerAbilities.w3RateMod++;
                 }
                 else if ((upgradeType == UpgradeType.Major))
@@ -385,14 +400,71 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case UpgradeCategory.OrbJump:
+                if ((upgradeType == UpgradeType.OrbStrength))
+                {
+                    playerAbilities.o2Srt++;
+                }
+                else if ((upgradeType == UpgradeType.OrbDuration))
+                {
+                    playerAbilities.o2Dur++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.o2Major = true;
+                }
                 break;
             case UpgradeCategory.OrbShield:
+                if ((upgradeType == UpgradeType.OrbStrength))
+                {
+                    playerAbilities.o3Srt++;
+                }
+                else if ((upgradeType == UpgradeType.OrbDuration))
+                {
+                    playerAbilities.o3Dur++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.o3Major = true;
+                }
                 break;
             case UpgradeCategory.OrbTime:
+                if ((upgradeType == UpgradeType.OrbStrength))
+                {
+                    playerAbilities.o4Srt++;
+                }
+                else if ((upgradeType == UpgradeType.OrbDuration))
+                {
+                    playerAbilities.o4Dur++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.o4Major = true;
+                }
                 break;
             case UpgradeCategory.Slide:
+                if ((upgradeType == UpgradeType.SlideSpeed))
+                {
+                    playerAbilities.moveSlideSpeed++;
+                }
+            
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.slideMajor = true;
+                }
                 break;
             case UpgradeCategory.WallRun:
+                if ((upgradeType == UpgradeType.WallRunSpeed))
+                {
+                    playerAbilities.moveWallRunSpeed++;
+                }
+                else if ((upgradeType == UpgradeType.WallRunJump))
+                {
+                    playerAbilities.moveWallRunJump++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.wallRunMajor = true;
+                }
                 break;
                 
            

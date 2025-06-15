@@ -69,6 +69,7 @@ public class BossSM : StateMachine, IDamage
     private bool isInvensible;
 
     public UnityEvent onSpawnOrb;
+    public UnityEvent onDeath;
 
     public void Awake()
     {
@@ -178,6 +179,7 @@ public class BossSM : StateMachine, IDamage
     {
         //Death animation
         ChangeState(dead);
+        onDeath?.Invoke();
     }
 
     private void OnTriggerEnter(Collider other)
