@@ -8,6 +8,8 @@ public class GunHitScan : Range
     public GameObject hitEffect;
     [SerializeField] Transform shootPosition;
     [SerializeField] LayerMask playerLayerMask;
+   
+    
 
     [Header("Ricochet Upgrade Settings")]
     [SerializeField] float lineRange = 50.0f;
@@ -28,6 +30,8 @@ public class GunHitScan : Range
     Collider hitCollider;
 
     [SerializeField] float bulletForce;
+
+
 
     protected override void Awake()
     {
@@ -150,7 +154,7 @@ public class GunHitScan : Range
 
         return Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out cameraHit, distance, ~playerLayerMask);
     }
-
+   
     bool ShootAt(Vector3 location)
     {
 
@@ -168,7 +172,8 @@ public class GunHitScan : Range
 
         if (dmg != null || targ != null || breakable != null)
         {
-            dmg?.TakeDamage(damage);
+            
+            dmg?.TakeDamage(damage + GameManager.instance.playerAbilities.w1DmgMod);
             targ?.ActivateElem((int)elem);
             breakable?.Shatter(location);
             return true;
