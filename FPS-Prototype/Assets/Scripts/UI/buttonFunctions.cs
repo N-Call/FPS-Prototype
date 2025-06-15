@@ -32,6 +32,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void BackToOverWorld()
     {
+        SaveSystem.SaveStats();
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
@@ -69,7 +70,7 @@ public class ButtonFunctions : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex + 1 <= 8)
         {
             Debug.Log("I have not made it to next scene");
-            SaveSystem.Save();
+            SaveSystem.SaveStats();
             Debug.Log("I have this is after save");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             Debug.Log("I have made it to next scene");
@@ -84,6 +85,7 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void LvlSelectScene()
     {
+        SaveSystem.SaveStats();
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);

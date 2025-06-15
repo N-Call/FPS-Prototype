@@ -22,6 +22,7 @@ public class OverWorldSceneChange : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact") && button.CompareTag("ButtonLvl"))
             {
+                
                 SceneManager.LoadScene(1);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
