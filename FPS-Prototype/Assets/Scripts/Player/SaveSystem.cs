@@ -19,6 +19,11 @@ public class SaveSystem
         return saveFile;
     }
 
+    public static bool HasSave()
+    {
+        return File.Exists(SaveFileName());
+    }
+
     public static void Save()
     {
         Debug.Log("isSaving");
@@ -33,6 +38,21 @@ public class SaveSystem
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
         DifficultyManager.Instance.Save(ref saveData.difficultyData);
     }
+
+    public static void SaveStats()
+    {
+        Debug.Log("isSavingStats");
+        HandleSaveStatsData();
+        File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
+    }
+
+    private static void HandleSaveStatsData()
+    {
+        GameManager.instance.scrapManager.Save(ref saveData.ScrapData);
+        GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
+        DifficultyManager.Instance.Save(ref saveData.difficultyData);
+    }
+
 
     public static void Load()
     {

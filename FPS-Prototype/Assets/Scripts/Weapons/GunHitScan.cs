@@ -8,6 +8,8 @@ public class GunHitScan : Range
     public GameObject hitEffect;
     [SerializeField] Transform shootPosition;
     [SerializeField] LayerMask playerLayerMask;
+   
+    
 
     [Header("Ricochet Upgrade Settings")]
     [SerializeField] float lineRange = 50.0f;
@@ -28,6 +30,8 @@ public class GunHitScan : Range
     Collider hitCollider;
 
     [SerializeField] float bulletForce;
+
+
 
     protected override void Awake()
     {
@@ -150,19 +154,9 @@ public class GunHitScan : Range
 
         return Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out cameraHit, distance, ~playerLayerMask);
     }
-
+   
     bool ShootAt(Vector3 location)
     {
-        if (hitCollider != null)
-        {
-            Break breakable = hitCollider.GetComponent<Break>();
-
-            if (breakable != null)
-            {
-                Debug.Log("glass shattered");
-                breakable.Shatter(location);
-            }
-        }
 
         GameObject effectHit = Instantiate(hitEffect, location, Quaternion.identity);
         Destroy(effectHit, 2f);
@@ -172,28 +166,49 @@ public class GunHitScan : Range
             return false;
         }
 
-        // Check if they damaged an enemy or target..
-
         IDamage dmg = hitCollider.GetComponent<IDamage>();
-        if (dmg != null)
-        {
-            dmg.TakeDamage(damage);
-            return true;
-        }
-
         ITarget targ = hitCollider.GetComponent<ITarget>();
-        if (targ != null)
+        Break breakable = hitCollider.GetComponent<Break>();
+
+        if (dmg != null || targ != null || breakable != null)
         {
-            targ.ActivateElem((int) elem);
+            
+            dmg?.TakeDamage(damage + GameManager.instance.playerAbilities.w1DmgMod);
+            targ?.ActivateElem((int)elem);
+            breakable?.Shatter(location);
             return true;
         }
-
         return false;
+        // Check if they damaged an enemy or target..
+        //IDamage dmg = hitCollider.GetComponent<IDamage>();
+        //if (dmg != null)
+        //{
+        //    dmg.TakeDamage(damage);
+        //    return true;
+        //}
+
+        //ITarget targ = hitCollider.GetComponent<ITarget>();
+        //if (targ != null)
+        //{
+
+        //    targ.ActivateElem((int)elem);
+        //    return true;
+        //}
+        //Break breakable = hitCollider.GetComponent<Break>();
+
+        //if (breakable != null)
+        //{
+        //    breakable.Shatter(location);
+        //    return true;
+        //}
+
     }
 
     public override void AttackBegin(LayerMask playerMask)
     {
-        if (shootRate > shootTimer)
+        float shootRateMod = shootRate + GameManager.instance.playerAbilities.w1RateMod;
+
+        if (shootRateMod > shootTimer)
         {
             return;
         }

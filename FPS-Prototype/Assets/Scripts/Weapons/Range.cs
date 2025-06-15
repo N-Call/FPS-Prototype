@@ -40,6 +40,8 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        reloadCap += GameManager.instance.playerAbilities.w1AmmoMag;
+        
         shootTimer = shootRate;
         ammoCount = reloadCap;
         currTotalBullets = ammoOrigCap + reloadCap;

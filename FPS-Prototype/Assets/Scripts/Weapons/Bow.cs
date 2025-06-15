@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class Bow : Range
 {
@@ -69,16 +70,17 @@ public class Bow : Range
         GameManager.instance?.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
-
-    public void SwapArrows(bool isPositve)
+    protected override void Update()
     {
-        if (isPositve)
+        base.Update();
+        SwapArrows();
+    }
+
+    public void SwapArrows()
+    {
+        if (GameManager.instance.playerAbilities.w2Major == true && InputActionManager.instance.playerAim)
         {
             projectileIndex = (projectileIndex + 1 > projectils.Length - 1) ? 0 : projectileIndex + 1;
-        }
-        else
-        {
-            projectileIndex = (projectileIndex - 1 < 0) ? projectils.Length - 1 : projectileIndex - 1;
         }
     }
 

@@ -32,6 +32,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void BackToOverWorld()
     {
+        SaveSystem.SaveStats();
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
@@ -69,7 +70,7 @@ public class ButtonFunctions : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex + 1 <= 8)
         {
             Debug.Log("I have not made it to next scene");
-            SaveSystem.Save();
+            SaveSystem.SaveStats();
             Debug.Log("I have this is after save");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             Debug.Log("I have made it to next scene");
@@ -82,8 +83,16 @@ public class ButtonFunctions : MonoBehaviour
             GameManager.instance.NextLvlBtnOff();
         }
     }
-    public void LvlSelectScene()
+    public void LvlOverWorldSave()
     {
+        SaveSystem.SaveStats();
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SceneManager.LoadScene(2);
+    }
+    public void LvlOverWorldLoad()
+    {
+        SaveSystem.LoadGrades();
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
@@ -104,19 +113,54 @@ public class ButtonFunctions : MonoBehaviour
         StartGame();
     }
 
+    public void StartMenu()
+    {
+        MenuManager.instance.ShowStartMenu();
+    }
+
     public void Settings()
     {
-        GameManager.instance.ToggleSettings();
+        MenuManager.instance.ShowSettingsMenu();
     }
- 
+
+    public void SettingsAudio()
+    {
+        MenuManager.instance.ShowSettingsAudioMenu();
+    }
+
+    public void SettingsAudioBack()
+    {
+        MenuManager.instance.SettingsAudioBack();
+    }
+
+    public void SettingsPC()
+    {
+        MenuManager.instance.ShowSettingsPCMenu();
+    }
+
+    public void SettingsPCBack()
+    {
+        MenuManager.instance.SettingsPCBack();
+    }
+
+    public void SettingsController()
+    {
+        MenuManager.instance.ShowSettingsControllerMenu();
+    }
+
+    public void SettingsControllerBack()
+    {
+        MenuManager.instance.SettingsControllerBack();
+    }
+
     public void Rules()
     {
-        GameManager.instance.ToggleRules();
+        MenuManager.instance.ShowRulesMenu();
     }
 
     public void Credits()
     {
-        GameManager.instance.ToggleCredits();
+        MenuManager.instance.ShowCreditsMenu();
     }
 
     public void Save()

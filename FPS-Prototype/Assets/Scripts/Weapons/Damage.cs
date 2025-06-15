@@ -153,10 +153,17 @@ public class Damage : MonoBehaviour
         IDamage dmg = other.GetComponent<IDamage>();
         ITarget targ = other.GetComponent<ITarget>();
 
-        if (dmg != null || targ != null && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
+        if ((dmg != null || targ != null) && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
             dmg?.TakeDamage(damageAmount);
             targ?.ActivateElem((int)elem);
+        }
+
+        Break breakable = other.GetComponent<Break>();
+        if (breakable != null)
+        {
+            Vector3 explosionOrigin = other.ClosestPoint(transform.position);
+            breakable.Shatter(explosionOrigin);
         }
 
         if (damageType == DamageType.moving || isWallBouncable && reflectionCount > maxReflections || isWallBouncable && (dmg != null || targ != null))
@@ -173,7 +180,14 @@ public class Damage : MonoBehaviour
             return;
         }
 
-        if(damageType == DamageType.homing && (Physics.Raycast(transform.position, transform.forward, homingRadius) ||
+        Break breakable = other.GetComponent<Break>();
+        if (breakable != null)
+        {
+            Vector3 explosionOrigin = other.ClosestPoint(transform.position);
+            breakable.Shatter(explosionOrigin);
+        }
+
+        if (damageType == DamageType.homing && (Physics.Raycast(transform.position, transform.forward, homingRadius) ||
             Physics.Raycast(transform.position, transform.right, homingRadius) || Physics.Raycast(transform.position, -transform.right, homingRadius)))
         {
             IDamage dmg = other.GetComponent<IDamage>();

@@ -7,6 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
 
+
 public class GameManager : MonoBehaviour
 {
 
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject buffJump;
     [SerializeField] GameObject debuffJump;
 
+
     List<EnemyController> enemiesToRespawn;
 
     public Vector3 respawnPosition;
@@ -75,6 +77,7 @@ public class GameManager : MonoBehaviour
     public FinalGradeSystem gradeSystem;
     public ScrapManager scrapManager;
     public VolumeSystemData volumeSystemData;
+    
 
     public bool isPaused;
     public float timeScaleOrig;
@@ -93,9 +96,9 @@ public class GameManager : MonoBehaviour
     int gameGoalCount;
     int enemyCount;
     int scrapCounter = 0;
+    
     public List<UpgradeData> allUpgrades;
-    int completed = 0;
-    int total = 0;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -121,6 +124,11 @@ public class GameManager : MonoBehaviour
         if (scrapUI != null)
         {
             scrapUI.text = scrapCounter.ToString("F0");
+            
+        }
+        if (totalScrapUI != null)
+        {
+            totalScrapUI.text = scrapManager.totalScrap.ToString("F0");
         }
     }
 
@@ -134,15 +142,19 @@ public class GameManager : MonoBehaviour
 
         if (InputActionManager.instance.playerPause)
         {
-            StatePause(true);
+            MenuManager.instance.ShowPauseMenu();
         }
-
-        if (isPaused && menuActive == menuPause && InputActionManager.instance.menuNavigate.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
+        else if (InputActionManager.instance.menuUnpause)
         {
-            eventSystem.SetSelectedGameObject(firstSelectedButton);
+            MenuManager.instance.CloseMenu();
         }
 
-        if (isPaused && playerScript != null)
+        //if (isPaused && menuActive == menuPause && InputActionManager.instance.menuNavigate.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
+        //{
+        //    eventSystem.SetSelectedGameObject(firstSelectedButton);
+        //}
+
+        if (!isPaused && playerScript != null)
         {
             if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
             {
@@ -163,7 +175,6 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         //EnablePPVolume();
-
         globalVol.SetActive(true);
         // to turn off the reticle
         reticle.SetActive(false);
@@ -228,6 +239,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log(amount + "added");
         scrapCounter += amount;
+
         scrapUI.text = scrapCounter.ToString("F0");
     }
 
@@ -259,83 +271,30 @@ public class GameManager : MonoBehaviour
         if (upgrade.isMajor)
         {
             Debug.Log("Can I buy major");
-            return CanBuyMajor(upgrade);
+            return (upgrade);
         }
         else
         {
             Debug.Log("Maxed out lvl need to prompt player");
             return upgrade.currentLevel < upgrade.maxLevel &&
-            scrapManager.totalScrap >= upgrade.costPerLevel[upgrade.currentLevel];
+                   scrapManager.totalScrap >= upgrade.costPerLevel[upgrade.currentLevel];
         }
-    }
-    private bool CanBuyMajor(UpgradeData upgrade)
-    {
-
-        // Check if it's a weapon upgrade
-        bool isWeapon = upgrade.category.ToString().Contains("Weapon 1");
-        bool isWeapon2 = upgrade.category.ToString().Contains("Weapon 2");
-        bool isWeapon3 = upgrade.category.ToString().Contains("Weapon 3");
-
-        foreach (UpgradeData up in allUpgrades)
-        {
-            // For weapons, count all non-major weapon upgrades (across all weapon categories)
-            if (isWeapon && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-            else if (isWeapon2 && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-            else if (isWeapon3 && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-
-            // For movement or orbs, count only same-category minor upgrades
-            else if (!isWeapon && up.category == upgrade.category && !up.isMajor)
-            {
-                total++;
-                if (up.currentLevel == up.maxLevel)
-                {
-                    completed++;
-                }
-            }
-        }
-        // weapons : unlock after 10 of 15
-        if (isWeapon)
-        {
-            Debug.Log("Checking for weapon");
-            Debug.Log(completed);
-            return completed >= 10 && scrapManager.totalScrap >= upgrade.majorCost;
-
-        }
-        // movement /orbs unlock after all upgrades
-        return completed == total && scrapManager.totalScrap > +upgrade.majorCost;
     }
 
     public void BuyUpgrade(UpgradeData upgrade)
     {
         if (!CanBuy(upgrade)) return;
 
+        
+
         if (upgrade.isMajor && upgrade.currentLevel < upgrade.maxLevel)
         {
             Debug.Log("I bought a major");
             SpendScrap(upgrade.majorCost);
             upgrade.currentLevel++;
-            ApplyMajorUpgrade(upgrade);
+            
+            
+            ApplyUpgrade(upgrade);
         }
         else
         {
@@ -343,22 +302,177 @@ public class GameManager : MonoBehaviour
             int cost = upgrade.costPerLevel[upgrade.currentLevel];
             SpendScrap(cost);
             upgrade.currentLevel++;
-            ApplyMinorUpgrade(upgrade);
+           
+            ApplyUpgrade(upgrade);
         }
     }
 
-    private void ApplyMinorUpgrade(UpgradeData upgrade)
+
+    private void ApplyUpgrade(UpgradeData upgrade)
     {
         Debug.Log("Minor upgrade applied: " + upgrade.name + " to level " + upgrade.currentLevel);
         // Apply minor upgrade effect here
 
+        UpgradeCategory name = upgrade.category;
+           
+        UpgradeType upgradeType = upgrade.type;
+
+        switch (name)
+        {
+            case UpgradeCategory.Weapon1:
+                Debug.Log("we upgraded the pistol");
+                if((upgradeType == UpgradeType.Damage))
+                {
+                    playerAbilities.w1DmgMod++;
+                }
+                else if ((upgradeType == UpgradeType.Speed))
+                {
+                    //change to ammo mag size
+                    playerAbilities.w1AmmoMag += 2;
+                }
+                else if ((upgradeType == UpgradeType.Rate))
+                {
+                    playerAbilities.w1RateMod -= 0.20f;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.w1Major = true;
+                    playerAbilities.ricochet = true;
+                    // need full auto for the pistol
+                    
+                }
+                break;
+            case UpgradeCategory.Weapon2:
+                Debug.Log("we upgraded the bow");
+                if ((upgradeType == UpgradeType.Damage))
+                {
+                    playerAbilities.w2DmgMod++;
+                }
+                else if ((upgradeType == UpgradeType.Speed))
+                {
+                    //spped of the arrow
+                    playerAbilities.w2SpeedMod++;
+                }
+                else if ((upgradeType == UpgradeType.Rate))
+                {
+                    //can shoot faster
+                    playerAbilities.w2RateMod++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.w2Major = true;
+                }
+                break;
+            case UpgradeCategory.Weapon3:
+                Debug.Log("we upgraded the sword");
+                if ((upgradeType == UpgradeType.Damage))
+                {
+                    playerAbilities.w3DmgMod++;
+                }
+                else if ((upgradeType == UpgradeType.Speed))
+                {
+                    //speed of the swing 
+                    playerAbilities.w3SpeedMod++;
+                }
+                else if ((upgradeType == UpgradeType.Rate))
+                {
+                    //speed of how many time you can swing
+                    playerAbilities.w3RateMod++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.w3Major = true;
+                }
+                break;
+            case UpgradeCategory.OrbSpeed:
+                Debug.Log("we upgraded the orbSpeed");
+                if ((upgradeType == UpgradeType.OrbStrength))
+                {
+                    playerAbilities.o1Srt++;
+                }
+                else if ((upgradeType == UpgradeType.OrbDuration))
+                {
+                    playerAbilities.o1Dur++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.o1Major = true;
+                }
+                break;
+            case UpgradeCategory.OrbJump:
+                if ((upgradeType == UpgradeType.OrbStrength))
+                {
+                    playerAbilities.o2Srt++;
+                }
+                else if ((upgradeType == UpgradeType.OrbDuration))
+                {
+                    playerAbilities.o2Dur++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.o2Major = true;
+                }
+                break;
+            case UpgradeCategory.OrbShield:
+                if ((upgradeType == UpgradeType.OrbStrength))
+                {
+                    playerAbilities.o3Srt++;
+                }
+                else if ((upgradeType == UpgradeType.OrbDuration))
+                {
+                    playerAbilities.o3Dur++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.o3Major = true;
+                }
+                break;
+            case UpgradeCategory.OrbTime:
+                if ((upgradeType == UpgradeType.OrbStrength))
+                {
+                    playerAbilities.o4Srt++;
+                }
+                else if ((upgradeType == UpgradeType.OrbDuration))
+                {
+                    playerAbilities.o4Dur++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.o4Major = true;
+                }
+                break;
+            case UpgradeCategory.Slide:
+                if ((upgradeType == UpgradeType.SlideSpeed))
+                {
+                    playerAbilities.moveSlideSpeed++;
+                }
+            
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.slideMajor = true;
+                }
+                break;
+            case UpgradeCategory.WallRun:
+                if ((upgradeType == UpgradeType.WallRunSpeed))
+                {
+                    playerAbilities.moveWallRunSpeed++;
+                }
+                else if ((upgradeType == UpgradeType.WallRunJump))
+                {
+                    playerAbilities.moveWallRunJump++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.wallRunMajor = true;
+                }
+                break;
+                
+           
+        }
+
+
     }
 
-    private void ApplyMajorUpgrade(UpgradeData upgrade)
-    {
-        Debug.Log("Major upgrade unlocked: " + upgrade.name);
-        // Apply major upgrade effect here
-    }
 
     public void NextLvlBtnOff()
     {
@@ -702,4 +816,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         hitMakerReticle.SetActive(false);
     }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
 }

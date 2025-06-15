@@ -3,7 +3,8 @@ using UnityEngine.Splines;
 
 public class SplineMovement : MonoBehaviour
 {
-    public SplineContainer spline;
+    public SplineContainer splineContainer;
+    public int splinIndex;
     [SerializeField] private bool takeStartPos;
     [SerializeField] private bool isWrapable;
     [SerializeField] private bool isCustome;
@@ -14,6 +15,7 @@ public class SplineMovement : MonoBehaviour
 
     private void OnValidate()
     {
+        splinIndex = (splineContainer.Splines.Count == 1) ? 0 : splinIndex;
         if (!isCustome)
         {
             path = (isAscending)? 0 : 1;
@@ -25,21 +27,21 @@ public class SplineMovement : MonoBehaviour
     {
         if (takeStartPos)
         {
-            int index = (isAscending) ? 0 : spline.Spline.Count - 1;
-            BezierKnot knot = spline.Spline[index];
-            knot.Position = transform.position - spline.transform.position;
+            int index = (isAscending) ? 0 : splineContainer[splinIndex].Count - 1;
+            BezierKnot knot = splineContainer[splinIndex][index];
+            knot.Position = transform.position - splineContainer.transform.position;
 
             knot.TangentIn = Vector3.zero;
             knot.TangentOut = Vector3.zero;
 
-            spline.Spline[index] = knot;
+            splineContainer[splinIndex][index] = knot;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(spline == null) { return; }
+        if(splineContainer == null) { return; }
 
         if (isAscending)
         {
@@ -52,10 +54,10 @@ public class SplineMovement : MonoBehaviour
             path = (isWrapable && path < 0f) ? 1 : path;
         }
 
-        var curv = spline.Spline;
+        var curv = splineContainer[splinIndex];
         Vector3 point = curv.EvaluatePosition(path);
 
 
-        transform.position = point + spline.transform.position;
+        transform.position = point + splineContainer.transform.position;
     }
 }
