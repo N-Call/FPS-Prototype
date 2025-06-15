@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PlayerAbilities : MonoBehaviour
 {
-    
-
     [Header("Pistol Upgrades")]
     [SerializeField][Tooltip("If the ricochet upgrade is unlocked")]
     bool ricochet;
