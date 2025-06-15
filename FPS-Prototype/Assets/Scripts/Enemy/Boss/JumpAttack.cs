@@ -55,7 +55,6 @@ public class JumpAttack : BaseState
                 bossSM.agent.enabled = true;
                 bossSM.rigidBody.isKinematic = true;
                 bossSM.transform.parent = null;
-                Debug.Log(bossSM.agent.Warp(hit.position));
             }
         }
 
