@@ -7,6 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
 
+
 public class GameManager : MonoBehaviour
 {
 
@@ -92,8 +93,8 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter = 10000;
-    //int totalScrap = 10000;
+    int scrapCounter = 0;
+    
     public List<UpgradeData> allUpgrades;
     
 
@@ -121,6 +122,11 @@ public class GameManager : MonoBehaviour
         if (scrapUI != null)
         {
             scrapUI.text = scrapCounter.ToString("F0");
+            
+        }
+        if (totalScrapUI != null)
+        {
+            totalScrapUI.text = scrapManager.totalScrap.ToString("F0");
         }
     }
 
@@ -167,7 +173,6 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         //EnablePPVolume();
-
         globalVol.SetActive(true);
         // to turn off the reticle
         reticle.SetActive(false);
@@ -300,12 +305,39 @@ public class GameManager : MonoBehaviour
         Debug.Log("Minor upgrade applied: " + upgrade.name + " to level " + upgrade.currentLevel);
         // Apply minor upgrade effect here
 
+
+        UpgradeCategory name = upgrade.category;
+            // Check if it's a upgrade
+            bool isWeapon1 = name == UpgradeCategory.Weapon1;
+            bool isWeapon2 = name == UpgradeCategory.Weapon2;
+            bool isWeapon3 = name == UpgradeCategory.Weapon3;
+            bool isOrb1 = name == UpgradeCategory.OrbSpeed;
+            bool isOrb2 = name == UpgradeCategory.OrbJump;
+            bool isOrb3 = name == UpgradeCategory.OrbShield;
+            bool isOrb4 = name == UpgradeCategory.OrbTime;
+            bool isMovement1 = name == UpgradeCategory.Slide;
+            bool isMovement2 = name == UpgradeCategory.WallRun;
+        
+        UpgradeType upgradeType = upgrade.type;
+            bool Damage = upgradeType == UpgradeType.Damage;
+
+        if(isWeapon1)
+        {
+            if ((Damage))
+            {
+                Debug.Log("we upgraded the pistol");
+                GetComponent<GunHitScan>().dmgMod += 1;
+            }
+        }
+
+
     }
 
     private void ApplyMajorUpgrade(UpgradeData upgrade)
     {
         Debug.Log("Major upgrade unlocked: " + upgrade.name);
         // Apply major upgrade effect here
+
     }
 
     public void NextLvlBtnOff()

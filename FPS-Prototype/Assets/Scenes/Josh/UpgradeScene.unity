@@ -14933,79 +14933,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1909978587}
   m_CullTransparentMesh: 1
---- !u!1 &1926946818
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1926946819}
-  - component: {fileID: 1926946821}
-  - component: {fileID: 1926946820}
-  m_Layer: 5
-  m_Name: UpgradeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1926946819
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926946818}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6947700221556707697}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1926946820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926946818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d3b4c4e0493811468c6d3c9681f280c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tabImages:
-  - {fileID: 8602941171242247333}
-  - {fileID: 5721169970101721387}
-  - {fileID: 4187709458036316837}
-  pages:
-  - {fileID: 87146396}
-  - {fileID: 490936205}
-  - {fileID: 183639188}
---- !u!114 &1926946821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926946818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9efb48dabb3289842aa7a9f10cb45c96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalScrap: 10000
-  allUpgrades: []
-  completed: 0
-  total: 0
 --- !u!1 &1932127518
 GameObject:
   m_ObjectHideFlags: 0
@@ -16137,6 +16064,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2016222647}
   m_CullTransparentMesh: 1
+--- !u!1001 &2032538585
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6947700221556707697}
+    m_Modifications:
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.085
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230982164112844161, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230982164112844161, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+--- !u!4 &2032538586 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4447460840228111181, guid: 752efe72886c1be4e8398cdf2237a57f, type: 3}
+  m_PrefabInstance: {fileID: 2032538585}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2055210904
 GameObject:
   m_ObjectHideFlags: 0
@@ -17308,7 +17301,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1926946820}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UpgradeUI, Assembly-CSharp
         m_MethodName: ActiveTab
         m_Mode: 3
@@ -18475,7 +18468,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1926946820}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UpgradeUI, Assembly-CSharp
         m_MethodName: ActiveTab
         m_Mode: 3
@@ -18645,11 +18638,11 @@ RectTransform:
   - {fileID: 8547604230498765944}
   - {fileID: 5606544055677530535}
   - {fileID: 6157612355775841245}
-  - {fileID: 1926946819}
   - {fileID: 7412427682121984832}
   - {fileID: 4739295201436670252}
   - {fileID: 3627700308936678297}
   - {fileID: 2443438173202490064}
+  - {fileID: 2032538586}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -18792,7 +18785,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1926946820}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UpgradeUI, Assembly-CSharp
         m_MethodName: ActiveTab
         m_Mode: 3
@@ -19237,6 +19230,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1ba4d4cbcd7919d4b9a513ad8545ab2e, type: 2}
   - {fileID: 11400000, guid: 6c09aa622b303e0458d2d58f27aa2b6c, type: 2}
   - {fileID: 11400000, guid: 519d57f18ebae1c4585dde1bb7261d28, type: 2}
+  - {fileID: 11400000, guid: 146478e82e6202f4389af3997ad3de57, type: 2}
+  - {fileID: 11400000, guid: 33b73de60b8f7134482196c6c524aac5, type: 2}
+  - {fileID: 11400000, guid: 59173f45869e79d418a62c1e77d3e1c3, type: 2}
+  - {fileID: 11400000, guid: 1da927b376d79f14c9afdd4a94f7342a, type: 2}
+  - {fileID: 11400000, guid: 06a54aa52d1fbdb4d836e910e122deb4, type: 2}
+  - {fileID: 11400000, guid: 5fc9659e025efd84f87fd66351572bcc, type: 2}
+  - {fileID: 11400000, guid: d70b78a0d5ccd7b49a576f82d3b25a8c, type: 2}
+  - {fileID: 11400000, guid: 3b86ee08fef6d0f47ae06879b8ddcde0, type: 2}
+  - {fileID: 11400000, guid: ecedc920a70ec77469431c64c0d5a6f4, type: 2}
+  - {fileID: 11400000, guid: 223b4e335021f69488cdfa919bcbf16b, type: 2}
+  - {fileID: 11400000, guid: 4eb5331d59165dc4fbd4132e52b822cc, type: 2}
+  - {fileID: 11400000, guid: b77c696495e2f66459a4e803d0771565, type: 2}
+  - {fileID: 11400000, guid: 875f7b384b28c724c81d46fc50553820, type: 2}
+  - {fileID: 11400000, guid: 66cec3e91f227e348ad811cdd3421916, type: 2}
+  - {fileID: 11400000, guid: 9962d5a9099550c44ab57282bcceb225, type: 2}
+  - {fileID: 11400000, guid: dffd4319f3a64ac4391b548e3a6cd2b2, type: 2}
+  - {fileID: 11400000, guid: 2c915731ae2d16949a00775e08661e63, type: 2}
 --- !u!114 &8663224716193316746
 MonoBehaviour:
   m_ObjectHideFlags: 0
