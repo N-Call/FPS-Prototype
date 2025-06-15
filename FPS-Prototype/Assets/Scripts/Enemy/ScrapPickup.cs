@@ -12,11 +12,9 @@ public class ScrapPickup : MonoBehaviour
 
         if (pickup != null )
         {
-            Debug.Log("scrap picked up");
             pickup.CollectScrap(scrapAmount);
             SoundManager.instance.PlaySFX("Scrap");
             Destroy(gameObject);
-
         }
     }
 }

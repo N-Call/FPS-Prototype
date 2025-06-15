@@ -60,7 +60,7 @@ public class EnemyController : MonoBehaviour, IDamage
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
-        Debug.Log("scrap amount set");
+        
         
         if (addToEnemyCount)
         {

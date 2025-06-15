@@ -153,16 +153,6 @@ public class GunHitScan : Range
 
     bool ShootAt(Vector3 location)
     {
-        if (hitCollider != null)
-        {
-            Break breakable = hitCollider.GetComponent<Break>();
-
-            if (breakable != null)
-            {
-                Debug.Log("glass shattered");
-                breakable.Shatter(location);
-            }
-        }
 
         GameObject effectHit = Instantiate(hitEffect, location, Quaternion.identity);
         Destroy(effectHit, 2f);
@@ -172,23 +162,41 @@ public class GunHitScan : Range
             return false;
         }
 
-        // Check if they damaged an enemy or target..
-
         IDamage dmg = hitCollider.GetComponent<IDamage>();
-        if (dmg != null)
-        {
-            dmg.TakeDamage(damage);
-            return true;
-        }
-
         ITarget targ = hitCollider.GetComponent<ITarget>();
-        if (targ != null)
+        Break breakable = hitCollider.GetComponent<Break>();
+
+        if (dmg != null || targ != null || breakable != null)
         {
-            targ.ActivateElem((int) elem);
+            dmg?.TakeDamage(damage);
+            targ?.ActivateElem((int)elem);
+            breakable?.Shatter(location);
             return true;
         }
-
         return false;
+        // Check if they damaged an enemy or target..
+        //IDamage dmg = hitCollider.GetComponent<IDamage>();
+        //if (dmg != null)
+        //{
+        //    dmg.TakeDamage(damage);
+        //    return true;
+        //}
+
+        //ITarget targ = hitCollider.GetComponent<ITarget>();
+        //if (targ != null)
+        //{
+
+        //    targ.ActivateElem((int)elem);
+        //    return true;
+        //}
+        //Break breakable = hitCollider.GetComponent<Break>();
+
+        //if (breakable != null)
+        //{
+        //    breakable.Shatter(location);
+        //    return true;
+        //}
+
     }
 
     public override void AttackBegin(LayerMask playerMask)
