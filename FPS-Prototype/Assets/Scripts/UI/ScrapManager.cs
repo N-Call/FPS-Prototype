@@ -6,7 +6,7 @@ public class ScrapManager : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+       
     }
 
     private void OnLevelWasLoaded(int level)

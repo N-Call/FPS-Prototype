@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 
 public class OpenDoors : MonoBehaviour
@@ -10,6 +11,7 @@ public class OpenDoors : MonoBehaviour
     public bool isLocked;
     public bool isOpen = false;
     public bool keepDoorOpen;
+    [SerializeField] private bool activateEvent;
     [SerializeField] private float speed = 1.0f;
     [SerializeField] private Vector3 slideDirection = Vector3.forward;
     [SerializeField] private float slideAmount = 7.0f;
@@ -17,7 +19,8 @@ public class OpenDoors : MonoBehaviour
 
     private Vector3 startPosition;
     private Coroutine DoorAnimation;
-  
+
+    public UnityEvent onClosing;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -113,6 +116,11 @@ public class OpenDoors : MonoBehaviour
         }
         transform.position = endPosition;
         isOpen = false;
+
+        if (activateEvent)
+        {
+            onClosing?.Invoke();
+        }
 
     }
 

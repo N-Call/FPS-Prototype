@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StandardMovement : ObjectMovement
 {
@@ -8,13 +9,21 @@ public class StandardMovement : ObjectMovement
     float destroyAtDestinationDelay;
 
     float destinationDestroyTimer;
+    [SerializeField] bool isEventTrigerrable;
+
 
     bool finishedMoving;
+
+    public UnityEvent onActivateEvent;
 
     override protected void Move()
     {
         if (finishedMoving)
         {
+            if (isEventTrigerrable)
+            {
+                onActivateEvent?.Invoke();
+            }
             return;
         }
 
