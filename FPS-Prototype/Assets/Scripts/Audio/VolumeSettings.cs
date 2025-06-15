@@ -18,7 +18,6 @@ public class VolumeSettings : MonoBehaviour
 
     public void SetMasterVolume()
     {
-        SoundManager.instance.PlayMusic("Theme");
         GameManager.instance.volumeSystemData.masterVolume = masterSlider.value;
         float volume = Mathf.Clamp(masterSlider.value, 0.0001f, 1f);
         GameManager.instance.volumeSystemData.masterVolume = volume;
