@@ -324,7 +324,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if ((upgradeType == UpgradeType.Rate))
                 {
-                    playerAbilities.w1RateMod++;
+                    playerAbilities.w1RateMod -= 0.20f;
                 }
                 else if ((upgradeType == UpgradeType.Major))
                 {

@@ -11,7 +11,7 @@ public class PlayerAbilities : MonoBehaviour
     //pistol
     public int w1DmgMod;
     public int w1SpeedMod;
-    public int w1RateMod;
+    public float w1RateMod;
     public bool w1Major;
     //bow
     public int w2DmgMod;
