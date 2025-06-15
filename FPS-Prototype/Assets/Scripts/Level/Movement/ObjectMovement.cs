@@ -139,8 +139,10 @@ public class ObjectMovement : MonoBehaviour
             {
                 emptyParent.transform.position = Vector3.Lerp(from, to, moveSpeed * Time.deltaTime);
             }
-
-            transform.position = Vector3.Lerp(from, to, moveSpeed * Time.deltaTime);
+            else
+            {
+                transform.position = Vector3.Lerp(from, to, moveSpeed * Time.deltaTime);
+            }
         }
         else
         {
@@ -148,8 +150,10 @@ public class ObjectMovement : MonoBehaviour
             {
                 emptyParent.transform.position += (to - from).normalized * moveSpeed * Time.deltaTime;
             }
-
-            transform.position += (to - from).normalized * moveSpeed * Time.deltaTime;
+            else
+            {
+                transform.position += (to - from).normalized * moveSpeed * Time.deltaTime;
+            }
         }
 
         return false;

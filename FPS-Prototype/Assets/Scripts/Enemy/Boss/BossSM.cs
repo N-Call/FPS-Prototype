@@ -33,6 +33,7 @@ public class BossSM : StateMachine, IDamage
     public GameObject rShootPos;
     public LayerMask ignorelayer;
     public GameObject orbLocation;
+    public ShockWave shockWave;
 
     [Header("Boss Settings")]
     public int health;
@@ -194,6 +195,10 @@ public class BossSM : StateMachine, IDamage
         return isInvensible;
     }
 
+    public void ActivateShockWave()
+    {
+        shockWave.gameObject.SetActive(true);
+    }
     public void SetInvincible(bool answer)
     {
         isInvensible = answer;
