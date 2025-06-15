@@ -40,6 +40,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float slideJumpSpeedBonus;
     [SerializeField] float slideJumpRate;
     [SerializeField] float slideJumpMinimumSpeed;
+    [SerializeField] float slideCooldown = 0.67f;
 
     [Header("Weapon Settings")]
     [SerializeField] public List<GameObject> weaponList;
@@ -107,6 +108,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     float baseFOV;
     float currSpeed;
     float iFrameTimer;
+    float slideCooldownTImer;
 
     // Element
     float speedElemMod;
@@ -150,6 +152,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         cameraLocalPosOrig = Camera.main.transform.localPosition;
         Application.targetFrameRate = 60;
         baseFOV = origFOV;
+        slideCooldownTImer = 0f;
     }
 
     // Update is called once per frame
@@ -182,6 +185,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             {
                 invulnerable = false;
             }
+        }
+
+        if (!isSliding)
+        {
+            slideCooldownTImer += Time.deltaTime;
         }
     }
 
@@ -549,18 +557,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         // Crouched
         if (InputActionManager.instance.playerCrouch)
         {
-            if (isSprinting && controller.isGrounded)
+            if (!isSliding)
             {
-                isSliding = true;
-                currentSlideSpeed = slideSpeedBonus;
-                isSprinting = false;
-            }
-
-            else
-            {
+                if (isSprinting && controller.isGrounded && slideCooldownTImer >= slideCooldown)
+                {
+                    isSliding = true;
+                    currentSlideSpeed = slideSpeedBonus;
+                    isSprinting = false;
+                    slideCooldownTImer = 0f;
+                }
                 isCrouching = true;
             }
-
             if (unCrouchCoroutine != null)
             {
                 StopCoroutine(unCrouchCoroutine);
@@ -582,13 +589,26 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 crouchCoroutine = null;
             }
 
-            isCrouching = false;
-            isSliding = false;
-
-            if (unCrouchCoroutine == null)
+            if (!isSliding)
             {
-                unCrouchCoroutine = StartCoroutine(HandleCrouchHeight(false));
+                isCrouching = false;
+                if (unCrouchCoroutine == null)
+                {
+                    unCrouchCoroutine = StartCoroutine(HandleCrouchHeight(false));
+                }
             }
+        }
+
+        if (isCrouching && crouchCoroutine == null && unCrouchCoroutine != null)
+        {
+            StopCoroutine(unCrouchCoroutine);
+            unCrouchCoroutine = null;
+        }
+
+        if (!isCrouching && unCrouchCoroutine == null && crouchCoroutine != null)
+        {
+            StopCoroutine(crouchCoroutine);
+            crouchCoroutine = null;
         }
     }
 
