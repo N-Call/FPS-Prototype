@@ -162,14 +162,14 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 GameManager.instance.playerScript.particleSpMod.gameObject.SetActive(true);
                 GameManager.instance.playerScript.speedBuffed = true;
             }
-            Debug.Log(speedElemTime);
+            
             GameManager.instance.speedBuffTimer = 0f;
         }
 
         else
         {
             SoundManager.instance.PlaySFX("debuff");
-            GameManager.instance.playerScript.AddModifier(-1 / speedElemMod);
+            GameManager.instance.playerScript.AddModifier(-speedElemMod);
             GameManager.instance.DeBuffSprintIcon(true);
             GameManager.instance.playerScript.SetBaseFOV(baseFOV - speedElemFOVMod);
             GameManager.instance.playerScript.speedBuffed = false;
@@ -183,7 +183,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         if (buff)
         {
             SoundManager.instance.PlaySFX("powerUp");
-            Debug.Log("Player buffed");
+
             if (GameManager.instance.jumpBuffTimer <= 0 || !GameManager.instance.playerScript.jumpBuffed)
             {
                 GameManager.instance.playerScript.AddModifier(0.0f, jumpElemMod);
@@ -191,19 +191,19 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 GameManager.instance.playerScript.particleJpMod.gameObject.SetActive(true);
                 GameManager.instance.playerScript.jumpBuffed = true;
             }
-            Debug.Log(jumpElemTime);
+
             GameManager.instance.jumpBuffTimer = 0f;
         }
 
         else
         {
-            //Debug.Log("Jump Debuff");
             SoundManager.instance.PlaySFX("debuff");
             GameManager.instance.playerScript.AddModifier(0.0f, -jumpElemMod);
             GameManager.instance.DeBuffJumpIcon(true);
+            GameManager.instance.playerScript.particleJpMod.gameObject.SetActive(false);
             GameManager.instance.playerScript.jumpBuffed = false;
         }
-        
+
         GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime);
     }
 

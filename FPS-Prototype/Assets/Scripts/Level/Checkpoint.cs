@@ -34,6 +34,7 @@ public class Checkpoint : MonoBehaviour
 
             
         }
+        Destroy(gameObject);
     }
 
 }

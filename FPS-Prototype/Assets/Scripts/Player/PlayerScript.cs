@@ -485,18 +485,23 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             }
 
             // Handle jump force (with external jump multiplier factored in)
-            if (jumpModifier < 1 && jumpModifier != 0)
-            {
-                verticalVelocity.y = jumpForce + (jumpForce * -(1.0f + jumpModifier));
-            }
-            else if (jumpModifier > 0)
-            {
-                verticalVelocity.y = jumpForce * jumpModifier;
-            }
-            else
-            {
-                verticalVelocity.y = jumpForce;
-            }
+            float finalJumpForce = jumpForce + jumpModifier;
+
+            finalJumpForce = Mathf.Max(0f, finalJumpForce);
+
+            verticalVelocity.y = finalJumpForce;
+            //if (jumpModifier < 1 && jumpModifier != 0)
+            //{
+            //    verticalVelocity.y = jumpForce + (jumpForce * -(1.0f + jumpModifier));
+            //}
+            //else if (jumpModifier > 0)
+            //{
+            //    verticalVelocity.y = jumpForce * jumpModifier;
+            //}
+            //else
+            //{
+            //    verticalVelocity.y = jumpForce;
+            //}
 
             jumpCount++;
         }
@@ -711,6 +716,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     {
         speedModifier += speed;
         jumpModifier += jump;
+
+        Debug.Log("[AddModifier] Speed += " + speed + ", Jump += " + jump +
+          " | Total SpeedModifier = " + speedModifier +
+          ", JumpModifier = " + jumpModifier);
     }
 
     public void SetShield(int shieldAmount)
@@ -873,6 +882,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
         if (jumpBuffed && GameManager.instance.jumpBuffTimer >= GameManager.instance.jumpBuffLimit)
         {
+            Debug.Log("Applying jump mod: " + jumpElemMod);
             AddModifier(0.0f, -jumpElemMod);
             particleJpMod.gameObject.SetActive(false);
             GameManager.instance.BuffJumpIcon(false);
@@ -882,15 +892,18 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         if (speedDebuffed && GameManager.instance.speedDebuffTimer >= GameManager.instance.speedDebuffLimit)
         {
             GameManager.instance.DeBuffSprintIcon(false);
-            AddModifier(1 / speedElemMod);
+            AddModifier(speedElemMod);
             ResetFOV();
             speedDebuffed = false;
+            GameManager.instance.speedDebuffTimer = 0;
         }
         if (jumpDebuffed && GameManager.instance.jumpDebuffTimer >= GameManager.instance.jumpDebuffLimit)
         {
             GameManager.instance.DeBuffJumpIcon(false);
-            AddModifier(0.0f, 1 / jumpElemMod);
+            AddModifier(0.0f, jumpElemMod);
             jumpDebuffed = false;
+            GameManager.instance.jumpDebuffTimer = 0;
+
         }
     }
 
