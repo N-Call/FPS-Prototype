@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7057e5981959cff4d8b9ef7554441b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {x: 0, y: -30, z: 0}
+  destination: {x: 0, y: -40, z: 0}
   relative: 1
   stoppingDistance: 0.01
   moveSpeed: 7
@@ -204,6 +204,10 @@ MonoBehaviour:
   startDelay: 0
   destroyAfterTime: 0
   destroyAtDestinationDelay: 0
+  isEventTrigerrable: 0
+  onActivateEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3565800585956038158
 GameObject:
   m_ObjectHideFlags: 0
