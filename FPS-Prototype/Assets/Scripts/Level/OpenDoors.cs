@@ -116,12 +116,12 @@ public class OpenDoors : MonoBehaviour
         }
         transform.position = endPosition;
         isOpen = false;
-
         if (activateEvent)
         {
             onClosing?.Invoke();
+            yield return new WaitForFixedUpdate();
+            onClosing?.RemoveAllListeners();
         }
-
     }
 
 

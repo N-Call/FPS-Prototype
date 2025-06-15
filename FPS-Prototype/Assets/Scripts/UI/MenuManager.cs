@@ -26,10 +26,11 @@ public class MenuManager : MonoBehaviour
     [Header("Start Menu Buttons")]
     [SerializeField] GameObject startMenuFirstSelected;
     [SerializeField] GameObject startMenuFirstSelectedNoSave;
-    [SerializeField] GameObject startMenuQuitButton;
+    [SerializeField] GameObject startMenuOverworldButton;
     [SerializeField] GameObject startMenuSettingsButton;
     [SerializeField] GameObject startMenuRulesButton;
     [SerializeField] GameObject startMenuCreditsButton;
+    [SerializeField] GameObject startMenuQuitButton;
 
     [Header("Settings Menu Buttons")]
     [SerializeField] GameObject settingsMenuFirstSelected;
@@ -139,27 +140,53 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            Button button = startMenuFirstSelected.GetComponent<Button>();
-            if (button != null)
+            Button continueButton = startMenuFirstSelected.GetComponent<Button>();
+            Button newGameButton = startMenuFirstSelectedNoSave.GetComponent<Button>();
+            Button overworldButton = startMenuOverworldButton.GetComponent<Button>();
+            Button settingsButton = startMenuSettingsButton.GetComponent<Button>();
+            Button quitButton = startMenuQuitButton.GetComponent<Button>();
+
+            if (continueButton != null)
             {
-                button.interactable = false;
+                continueButton.interactable = false;
             }
 
-            button = startMenuFirstSelectedNoSave.GetComponent<Button>();
-            Button quitButton = startMenuQuitButton.GetComponent<Button>();
-            if (button != null && quitButton != null)
+            if (overworldButton != null)
             {
-                // Change the new game button navigation
-                // Navigating up now moves to quit
-                Navigation nav = button.navigation;
-                nav.selectOnUp = quitButton;
-                button.navigation = nav;
+                overworldButton.interactable = false;
+            }
 
-                // Change the quit button navigation
-                // Navigating down now moves to start
-                nav = quitButton.navigation;
-                nav.selectOnDown = button;
-                quitButton.navigation = nav;
+            if (newGameButton != null)
+            {
+                if (settingsButton != null)
+                {
+                    // Change the new game button navigation
+                    // Navigating down now moves to settings
+                    Navigation nav = newGameButton.navigation;
+                    nav.selectOnDown = settingsButton;
+                    newGameButton.navigation = nav;
+
+                    // Change the settings button navigation
+                    // Navigating up now moves to new game
+                    nav = settingsButton.navigation;
+                    nav.selectOnUp = newGameButton;
+                    settingsButton.navigation = nav;
+                }
+
+                if (quitButton != null)
+                {
+                    // Change the new game button navigation
+                    // Navigating up now moves to quit
+                    Navigation nav = newGameButton.navigation;
+                    nav.selectOnUp = quitButton;
+                    newGameButton.navigation = nav;
+
+                    // Change the quit button navigation
+                    // Navigating down now moves to new game
+                    nav = quitButton.navigation;
+                    nav.selectOnDown = newGameButton;
+                    quitButton.navigation = nav;
+                }
             }
 
             eventSystem.firstSelectedGameObject = startMenuFirstSelectedNoSave;
