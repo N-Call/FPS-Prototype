@@ -52,6 +52,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
       objectReference: {fileID: 0}
+    - target: {fileID: 6834454559251434919, guid: 70f00ec225abafc4e8fcac8f643fd41b, type: 3}
+      propertyPath: enemyBuff
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6834454559251434919, guid: 70f00ec225abafc4e8fcac8f643fd41b, type: 3}
+      propertyPath: respawnTime
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -77,19 +85,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931fa39fd3822414ab2d126dcbac5396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spline:
-    m_EditModeType: 1
-    m_Knots: []
-    m_MetaData: []
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
+  splineContainer: {fileID: 0}
+  splinIndex: 0
   takeStartPos: 0
   isWrapable: 0
   isCustome: 0
