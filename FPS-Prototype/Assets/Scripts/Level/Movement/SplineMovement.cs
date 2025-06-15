@@ -15,7 +15,10 @@ public class SplineMovement : MonoBehaviour
 
     private void OnValidate()
     {
-        splinIndex = (splineContainer.Splines.Count == 1) ? 0 : splinIndex;
+        if (splineContainer != null)
+        {
+            splinIndex = (splineContainer.Splines.Count == 1) ? 0 : splinIndex;
+        }
         if (!isCustome)
         {
             path = (isAscending)? 0 : 1;
