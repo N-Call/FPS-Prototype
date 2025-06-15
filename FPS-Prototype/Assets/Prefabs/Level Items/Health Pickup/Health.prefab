@@ -269,7 +269,6 @@ GameObject:
   - component: {fileID: 2542349243028639221}
   - component: {fileID: 8177681671287291654}
   - component: {fileID: 9011404513001869785}
-  - component: {fileID: 7678370913960377074}
   - component: {fileID: 1607084007148426154}
   - component: {fileID: 5000033905884503756}
   m_Layer: 0
@@ -326,32 +325,6 @@ MonoBehaviour:
   y: 1
   z: 0
   speed: 90
---- !u!114 &7678370913960377074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233929321456806038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destination: {x: 0, y: 0.75, z: 0}
-  relative: 1
-  speed: 0.75
-  lerp: 0
-  startDelay: 0
-  startDelayInitial: 0
-  destinationDelay: 0
-  pingPong: 1
-  backToStart: 0
-  carryPlayer: 0
-  onlyMoveWhenPlayer: 0
-  destroyAfterTime: 0
-  destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0
 --- !u!135 &1607084007148426154
 SphereCollider:
   m_ObjectHideFlags: 0
