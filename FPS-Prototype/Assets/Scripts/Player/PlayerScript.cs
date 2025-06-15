@@ -49,7 +49,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float wallRunDur;
     [SerializeField] float wallRunGravity;
     [SerializeField] float wallJumpForce;
-    [SerializeField] float wallCheckDist;
+    [SerializeField] float wallCheckDist = 0.7f;
     [SerializeField] float wallJumpHoriForce;
     //[SerializeField] float wallRunCooldown;
     [SerializeField] float wallStickForce;
