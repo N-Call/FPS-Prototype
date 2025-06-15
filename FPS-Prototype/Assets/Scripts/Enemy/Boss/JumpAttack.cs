@@ -49,6 +49,7 @@ public class JumpAttack : BaseState
     {
         if (!bossSM.agent.isOnNavMesh)
         {
+            Debug.Log("isReseting Rigid");
             NavMeshHit hit;
             if (NavMesh.SamplePosition(bossSM.transform.position, out hit, 10f, NavMesh.AllAreas))
             {

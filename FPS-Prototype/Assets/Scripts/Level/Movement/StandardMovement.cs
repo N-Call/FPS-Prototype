@@ -10,6 +10,8 @@ public class StandardMovement : ObjectMovement
 
     float destinationDestroyTimer;
     [SerializeField] bool isEventTrigerrable;
+    [SerializeField] float stopEventDelay;
+    [SerializeField] bool keepObject;
 
 
     bool finishedMoving;
@@ -44,7 +46,15 @@ public class StandardMovement : ObjectMovement
         destinationDestroyTimer += Time.deltaTime;
         if (destinationDestroyTimer >= destroyAtDestinationDelay)
         {
-            DestroySelf();
+            onActivateEvent?.RemoveAllListeners();
+            if (keepObject)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                DestroySelf();
+            }
         }
     }
 
