@@ -9361,8 +9361,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7477210828720027968, guid: f4d560da7cc22624a9167bf6fd3ea31a, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 1967675310}
   m_SourcePrefab: {fileID: 100100000, guid: f4d560da7cc22624a9167bf6fd3ea31a, type: 3}
+--- !u!1 &1927382136 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7477210828720027968, guid: f4d560da7cc22624a9167bf6fd3ea31a, type: 3}
+  m_PrefabInstance: {fileID: 1927382135}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1928571198 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8801604465907382057, guid: 3b4ce97c99aebd14da0adde260691eaf, type: 3}
@@ -9388,10 +9396,46 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8149952648680734746, guid: f4d560da7cc22624a9167bf6fd3ea31a, type: 3}
   m_PrefabInstance: {fileID: 1927382135}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1927382136}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6227ad90226c88a48b7084b7db896d4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1967675310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927382136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12d3e4107f8e6614ea6dd91f9bf6f18b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ricochet: 0
+  w1DmgMod: 0
+  w1SpeedMod: 0
+  w1RateMod: 0
+  w1Major: 0
+  w2DmgMod: 0
+  w2SpeedMod: 0
+  w2RateMod: 0
+  w2Major: 0
+  w3DmgMod: 0
+  w3SpeedMod: 0
+  w3RateMod: 0
+  w3Major: 0
+--- !u!114 &1967675311 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5938951582403185935, guid: f4d560da7cc22624a9167bf6fd3ea31a, type: 3}
+  m_PrefabInstance: {fileID: 1927382135}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927382136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bada2ad7aa29574d968bb71471ba7cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1975086784 stripped
@@ -11403,10 +11447,11 @@ MonoBehaviour:
   playerHPbar: {fileID: 0}
   playerShieldbar: {fileID: 0}
   playerScript: {fileID: 0}
-  playerAbilities: {fileID: 0}
+  playerAbilities: {fileID: 1967675310}
   sceneData: {fileID: 1818439498}
   sceneLoader: {fileID: 0}
   gradeSystem: {fileID: 1967675309}
+  scrapManager: {fileID: 1967675311}
   volumeSystemData: {fileID: 6237157522606975913}
   isPaused: 0
   timeScaleOrig: 0
@@ -17053,8 +17098,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5533675830770262089}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: StartGame
-        m_Mode: 1
+        m_MethodName: OnSelectDifficulty
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -24451,7 +24496,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5533675830770262089}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: LvlSelectScene
+        m_MethodName: LvlOverWorldLoad
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

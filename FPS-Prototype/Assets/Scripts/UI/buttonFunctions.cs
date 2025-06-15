@@ -83,9 +83,16 @@ public class ButtonFunctions : MonoBehaviour
             GameManager.instance.NextLvlBtnOff();
         }
     }
-    public void LvlSelectScene()
+    public void LvlOverWorldSave()
     {
         SaveSystem.SaveStats();
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SceneManager.LoadScene(2);
+    }
+    public void LvlOverWorldLoad()
+    {
+        SaveSystem.LoadGrades();
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);

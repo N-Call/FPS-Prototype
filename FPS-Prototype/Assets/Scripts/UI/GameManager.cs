@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject buffJump;
     [SerializeField] GameObject debuffJump;
 
+
     List<EnemyController> enemiesToRespawn;
 
     public Vector3 respawnPosition;
@@ -237,7 +238,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log(amount + "added");
         scrapCounter += amount;
-        scrapManager.totalScrap += amount;
+
         scrapUI.text = scrapCounter.ToString("F0");
     }
 
@@ -288,7 +289,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("I bought a major");
             SpendScrap(upgrade.majorCost);
             upgrade.currentLevel++;
-            ApplyMajorUpgrade(upgrade);
+            ApplyUpgrade(upgrade);
         }
         else
         {
@@ -296,49 +297,110 @@ public class GameManager : MonoBehaviour
             int cost = upgrade.costPerLevel[upgrade.currentLevel];
             SpendScrap(cost);
             upgrade.currentLevel++;
-            ApplyMinorUpgrade(upgrade);
+            ApplyUpgrade(upgrade);
         }
     }
 
-    private void ApplyMinorUpgrade(UpgradeData upgrade)
+    private void ApplyUpgrade(UpgradeData upgrade)
     {
         Debug.Log("Minor upgrade applied: " + upgrade.name + " to level " + upgrade.currentLevel);
         // Apply minor upgrade effect here
 
-
         UpgradeCategory name = upgrade.category;
-            // Check if it's a upgrade
-            bool isWeapon1 = name == UpgradeCategory.Weapon1;
-            bool isWeapon2 = name == UpgradeCategory.Weapon2;
-            bool isWeapon3 = name == UpgradeCategory.Weapon3;
-            bool isOrb1 = name == UpgradeCategory.OrbSpeed;
-            bool isOrb2 = name == UpgradeCategory.OrbJump;
-            bool isOrb3 = name == UpgradeCategory.OrbShield;
-            bool isOrb4 = name == UpgradeCategory.OrbTime;
-            bool isMovement1 = name == UpgradeCategory.Slide;
-            bool isMovement2 = name == UpgradeCategory.WallRun;
-        
+           
         UpgradeType upgradeType = upgrade.type;
-            bool Damage = upgradeType == UpgradeType.Damage;
 
-        if(isWeapon1)
+        switch (name)
         {
-            if ((Damage))
-            {
+            case UpgradeCategory.Weapon1:
                 Debug.Log("we upgraded the pistol");
-                GetComponent<GunHitScan>().dmgMod += 1;
-            }
+                if((upgradeType == UpgradeType.Damage))
+                {
+                    playerAbilities.w1DmgMod++;
+                }
+                else if ((upgradeType == UpgradeType.Speed))
+                {
+                    playerAbilities.w1SpeedMod++;
+                }
+                else if ((upgradeType == UpgradeType.Rate))
+                {
+                    playerAbilities.w1RateMod++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.w1Major = true;
+                }
+                break;
+            case UpgradeCategory.Weapon2:
+                Debug.Log("we upgraded the bow");
+                if ((upgradeType == UpgradeType.Damage))
+                {
+                    playerAbilities.w2DmgMod++;
+                }
+                else if ((upgradeType == UpgradeType.Speed))
+                {
+                    playerAbilities.w2SpeedMod++;
+                }
+                else if ((upgradeType == UpgradeType.Rate))
+                {
+                    playerAbilities.w2RateMod++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.w2Major = true;
+                }
+                break;
+            case UpgradeCategory.Weapon3:
+                Debug.Log("we upgraded the sword");
+                if ((upgradeType == UpgradeType.Damage))
+                {
+                    playerAbilities.w3DmgMod++;
+                }
+                else if ((upgradeType == UpgradeType.Speed))
+                {
+                    playerAbilities.w3SpeedMod++;
+                }
+                else if ((upgradeType == UpgradeType.Rate))
+                {
+                    playerAbilities.w3RateMod++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.w3Major = true;
+                }
+                break;
+            case UpgradeCategory.OrbSpeed:
+                Debug.Log("we upgraded the orbSpeed");
+                if ((upgradeType == UpgradeType.OrbStrength))
+                {
+                    playerAbilities.o1Srt++;
+                }
+                else if ((upgradeType == UpgradeType.OrbDuration))
+                {
+                    playerAbilities.o1Dur++;
+                }
+                else if ((upgradeType == UpgradeType.Major))
+                {
+                    playerAbilities.o1Major = true;
+                }
+                break;
+            case UpgradeCategory.OrbJump:
+                break;
+            case UpgradeCategory.OrbShield:
+                break;
+            case UpgradeCategory.OrbTime:
+                break;
+            case UpgradeCategory.Slide:
+                break;
+            case UpgradeCategory.WallRun:
+                break;
+                
+           
         }
 
 
     }
 
-    private void ApplyMajorUpgrade(UpgradeData upgrade)
-    {
-        Debug.Log("Major upgrade unlocked: " + upgrade.name);
-        // Apply major upgrade effect here
-
-    }
 
     public void NextLvlBtnOff()
     {

@@ -31,7 +31,7 @@ public class GunHitScan : Range
 
     [SerializeField] float bulletForce;
 
-    public int dmgMod;
+
 
     protected override void Awake()
     {
@@ -173,7 +173,7 @@ public class GunHitScan : Range
         if (dmg != null || targ != null || breakable != null)
         {
             
-            dmg?.TakeDamage(damage + dmgMod);
+            dmg?.TakeDamage(damage + GameManager.instance.playerAbilities.w1DmgMod);
             targ?.ActivateElem((int)elem);
             breakable?.Shatter(location);
             return true;
