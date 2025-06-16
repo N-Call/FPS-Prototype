@@ -32,9 +32,9 @@ public class Checkpoint : MonoBehaviour
                 SoundManager.instance.PlaySFX("victory");
             }
 
-            
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+
     }
 
 }
