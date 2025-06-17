@@ -163,6 +163,24 @@ public class InputActionManager : MonoBehaviour
         DisablePlayerInput();
     }
 
+    public void EnablePauseInput()
+    {
+        if (menuInputActionMap.enabled)
+        {
+            menuUnpauseAction.Enable();
+        }
+        else
+        {
+            playerPauseAction.Enable();
+        }
+    }
+
+    public void DisablePauseInput()
+    {
+        menuUnpauseAction.Disable();
+        playerPauseAction.Disable();
+    }
+
     public void EnableMenuInput()
     {
         menuInputActionMap.Enable();

@@ -326,6 +326,8 @@ public class MenuManager : MonoBehaviour
 
     public void ShowWinMenu()
     {
+        GameManager.instance.StatePause();
+        InputActionManager.instance.DisablePauseInput();
         ShowMenu(winMenu);
         eventSystem.firstSelectedGameObject = winMenuFirstSelected;
         defaultSelectedButton = winMenuFirstSelected;
@@ -334,6 +336,8 @@ public class MenuManager : MonoBehaviour
 
     public void ShowLoseMenu()
     {
+        GameManager.instance.StatePause();
+        InputActionManager.instance.DisablePauseInput();
         ShowMenu(loseMenu);
         eventSystem.firstSelectedGameObject = loseMenuFirstSelected;
         defaultSelectedButton = loseMenuFirstSelected;

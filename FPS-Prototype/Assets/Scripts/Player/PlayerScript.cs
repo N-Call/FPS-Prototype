@@ -672,7 +672,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
         if (HP <= 0)
         {
-            GameManager.instance.YouLose();
+            MenuManager.instance.ShowLoseMenu();
         }
     }
 
