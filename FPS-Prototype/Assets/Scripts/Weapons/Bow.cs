@@ -63,7 +63,7 @@ public class Bow : Range
     {
         PlaySeconedIdle(currTotalBullets == 0);
         PlayIdle();
-
+        if(ammoCount == 0 && ammoCap != 0) { Reload(); }
 
         GameManager.instance?.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
         GameManager.instance?.SetWeaponIcon(ammoIcon);
