@@ -6,7 +6,6 @@ public class Checkpoint : MonoBehaviour
     public List<Spawner> spawnersToDisable;
     public bool isFinalCheckPoint;
     
-
     private void OnTriggerEnter(Collider other)
     {
 
@@ -32,9 +31,9 @@ public class Checkpoint : MonoBehaviour
                 SoundManager.instance.PlaySFX("victory");
             }
 
-            
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+
     }
 
 }

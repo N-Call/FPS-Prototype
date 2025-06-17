@@ -17,11 +17,6 @@ public class Melee : MonoBehaviour, IWeapon
     [SerializeField] private float attackSpeed;
     [SerializeField] private float attackRate;
 
-    [Header("Modifiers")]
-    public int damageMod;
-    public float attackSpeedMod;
-    public float attackRateMod;
-
     private float attackTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -40,12 +35,13 @@ public class Melee : MonoBehaviour, IWeapon
 
     public void AttackBegin(LayerMask playerMask)
     {
-        if(attackTimer < attackRate - attackRateMod) { return; }
+        float tRate = (GameManager.instance.playerAbilities != null) ? attackRate - GameManager.instance.playerAbilities.w3RateMod : attackRate;
+        if (attackTimer < tRate) { return; }
 
         SoundManager.instance.PlaySFX("swordSwing");
         //start attack animation
         animator.CrossFade("Attack", 0.1f);
-        animator.speed = attackSpeed + attackSpeedMod;
+        animator.speed = (GameManager.instance.playerAbilities != null) ? attackSpeed + GameManager.instance.playerAbilities.w3SpeedMod : attackSpeed;
         attackTimer = 0;
     }
 
@@ -54,7 +50,7 @@ public class Melee : MonoBehaviour, IWeapon
         if (other.isTrigger) { return; }
 
         //check to see if the trigger hit an enemy
-        other.GetComponent<IDamage>()?.TakeDamage(damage + damageMod);
+        other.GetComponent<IDamage>()?.TakeDamage((GameManager.instance.playerAbilities != null)? damage + GameManager.instance.playerAbilities.w3DmgMod: damage);
         other.GetComponent<ITarget>()?.ActivateElem((int)elem);
     }
     public void AttackEnd(LayerMask playerMask)
