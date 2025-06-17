@@ -190,8 +190,9 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     {
         //Debug.Log($"<color=purple>--- AMMO CRATE PICKUP START ---</color>");
         //Debug.Log($"<color=purple>Before Add: currTotalBullets={currTotalBullets}, ammoCount={ammoCount}, ammoCap={ammoCap}, AmountToAdd={amount}</color>");
-
+        float tempTotal = currTotalBullets;
         currTotalBullets = Mathf.Min(ammoCap, currTotalBullets + amount);
+        if (ammoCount <= 0 && tempTotal <= 0) { Reload(); }
 
         //Debug.Log($"<color=purple>After Add: currTotalBullets={currTotalBullets}, ammoCount={ammoCount}</color>");
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
