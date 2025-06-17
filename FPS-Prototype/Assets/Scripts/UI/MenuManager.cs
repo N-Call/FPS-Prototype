@@ -52,7 +52,7 @@ public class MenuManager : MonoBehaviour
 
     #region Private Fields
     GameObject activeMenu;
-    GameObject defaultSelectedButton;
+    GameObject lastSelectedButton;
     #endregion
 
     #region Startup
@@ -126,10 +126,17 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-        if (activeMenu != null && eventSystem.currentSelectedGameObject == null && InputActionManager.instance.menuNavigate.magnitude != 0.0f)
+        if (eventSystem == null)
         {
-            eventSystem.SetSelectedGameObject(defaultSelectedButton);
+            return;
         }
+
+        if (eventSystem.currentSelectedGameObject != null)
+        {
+            ButtonHoverTracker.lastHighlighted = eventSystem.currentSelectedGameObject;
+        }
+
+        eventSystem.SetSelectedGameObject(ButtonHoverTracker.lastHighlighted);
     }
 
     void InitializeStartMenu()
@@ -244,6 +251,16 @@ public class MenuManager : MonoBehaviour
     }
     #endregion
 
+    public GameObject GetCurrentlySelectedButton()
+    {
+        return eventSystem.currentSelectedGameObject;
+    }
+
+    public void RemoveCurrentlySelectedButton()
+    {
+        eventSystem.SetSelectedGameObject(null);
+    }
+
     public void CloseMenu()
     {
         HideMenu(activeMenu);
@@ -263,7 +280,6 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu(startMenu);
         InitializeStartMenu();
-        defaultSelectedButton = startMenuFirstSelected;
         UpdateSelectedButton();
     }
 
@@ -271,7 +287,6 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu(pauseMenu);
         eventSystem.firstSelectedGameObject = pauseMenuFirstSelected;
-        defaultSelectedButton = pauseMenuFirstSelected;
         UpdateSelectedButton();
         GameManager.instance.StatePause();
     }
@@ -280,7 +295,6 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu(settingsMenu);
         eventSystem.firstSelectedGameObject = settingsMenuFirstSelected;
-        defaultSelectedButton = settingsMenuFirstSelected;
         UpdateSelectedButton();
     }
 
@@ -288,7 +302,6 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu(settingsAudioMenu);
         eventSystem.firstSelectedGameObject = settingsAudioMenuFirstSelected;
-        defaultSelectedButton = settingsAudioMenuFirstSelected;
         UpdateSelectedButton();
     }
 
@@ -296,7 +309,6 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu(settingsPCMenu);
         eventSystem.firstSelectedGameObject = settingsPCMenuFirstSelected;
-        defaultSelectedButton = settingsPCMenuFirstSelected;
         UpdateSelectedButton();
     }
 
@@ -304,7 +316,6 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu(settingsControllerMenu);
         eventSystem.firstSelectedGameObject = settingsControllerMenuFirstSelected;
-        defaultSelectedButton = settingsControllerMenuFirstSelected;
         UpdateSelectedButton();
     }
 
@@ -312,7 +323,6 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu(rulesMenu);
         eventSystem.firstSelectedGameObject = rulesMenuFirstSelected;
-        defaultSelectedButton = rulesMenuFirstSelected;
         UpdateSelectedButton();
     }
 
@@ -320,7 +330,6 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu(creditsMenu);
         eventSystem.firstSelectedGameObject = creditsMenuFirstSelected;
-        defaultSelectedButton = creditsMenuFirstSelected;
         UpdateSelectedButton();
     }
 
@@ -330,7 +339,6 @@ public class MenuManager : MonoBehaviour
         InputActionManager.instance.DisablePauseInput();
         ShowMenu(winMenu);
         eventSystem.firstSelectedGameObject = winMenuFirstSelected;
-        defaultSelectedButton = winMenuFirstSelected;
         UpdateSelectedButton();
     }
 
@@ -340,7 +348,6 @@ public class MenuManager : MonoBehaviour
         InputActionManager.instance.DisablePauseInput();
         ShowMenu(loseMenu);
         eventSystem.firstSelectedGameObject = loseMenuFirstSelected;
-        defaultSelectedButton = loseMenuFirstSelected;
         UpdateSelectedButton();
     }
 
