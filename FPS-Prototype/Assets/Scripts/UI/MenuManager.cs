@@ -420,14 +420,14 @@ public class MenuManager : MonoBehaviour
     public void SettingsAudioBack()
     {
         ShowSettingsMenu();
-        eventSystem.SetSelectedGameObject(settingsMenuAudioButton);
+        UpdateSelectedButton(settingsMenuAudioButton);
     }
 
     // Back to Settings from Keyboard & Mouse Settings
     public void SettingsPCBack()
     {
         ShowSettingsMenu();
-        eventSystem.SetSelectedGameObject(settingsMenuPCButton);
+        UpdateSelectedButton(settingsMenuPCButton);
     }
 
     // Back to PC Settings from Reset All PC Confirm Menu
