@@ -23,7 +23,9 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             if (InputActionManager.instance.rebindCancel)
             {
-                m_RebindOperation.Cancel();
+                if (m_RebindOperation != null) {
+                    m_RebindOperation.Cancel();
+                }
             }
             else if (InputActionManager.instance.rebindReset)
             {
