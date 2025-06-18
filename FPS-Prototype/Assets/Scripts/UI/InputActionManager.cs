@@ -48,6 +48,9 @@ public class InputActionManager : MonoBehaviour
     InputAction playerAimAction;
     InputAction playerReloadAction;
     InputAction playerSwapAction;
+    InputAction playerPistolAction;
+    InputAction playerBowAction;
+    InputAction playerSwordAction;
     InputAction playerPauseAction;
 
     public Vector2 playerWalk { get; private set; }
@@ -61,6 +64,9 @@ public class InputActionManager : MonoBehaviour
     public bool playerAim { get; private set; }
     public bool playerReload { get; private set; }
     public float playerSwap { get; private set; }
+    public bool playerPistol { get; private set; }
+    public bool playerBow { get; private set; }
+    public bool playerSword { get; private set; }
     public bool playerPause { get; private set; }
 
     InputAction debugInputAction;
@@ -97,6 +103,9 @@ public class InputActionManager : MonoBehaviour
         playerAimAction = playerInputActionMap["Aim"];
         playerReloadAction = playerInputActionMap["Reload"];
         playerSwapAction = playerInputActionMap["Swap"];
+        playerPistolAction = playerInputActionMap["Pistol"];
+        playerSwordAction = playerInputActionMap["Sword"];
+        playerBowAction = playerInputActionMap["Bow"];
         playerPauseAction = playerInputActionMap["Pause"];
 
         if (debugInputActionMap != null)
@@ -153,6 +162,10 @@ public class InputActionManager : MonoBehaviour
                     : 0
                 : playerSwapAction.ReadValue<float>()
             : 0;
+
+        playerPistol = player ? playerPistolAction.WasPressedThisFrame() : false;
+        playerBow = player ? playerBowAction.WasPressedThisFrame() : false;
+        playerSword = player ? playerSwordAction.WasPressedThisFrame() : false;
 
         playerPause = player ? playerPauseAction.WasPressedThisFrame() : false;
     }

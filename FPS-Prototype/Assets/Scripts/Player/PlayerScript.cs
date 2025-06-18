@@ -114,6 +114,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     int originalHP;
     int jumpCount;
+    int currentWeapon = 0;
 
     bool isSprinting;
     bool isCrouching;
@@ -598,13 +599,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         if (InputActionManager.instance.playerShoot && weaponList != null)
         {
             //launch attack method
-            weaponList[0].GetComponent<IWeapon>()?.AttackBegin(playerMask);
+            weaponList[currentWeapon].GetComponent<IWeapon>()?.AttackBegin(playerMask);
         }
 
         if (!InputActionManager.instance.playerShooting && weaponList != null)
         {
             //launch attack method
-            weaponList[0].GetComponent<IWeapon>()?.AttackEnd(playerMask);
+            weaponList[currentWeapon].GetComponent<IWeapon>()?.AttackEnd(playerMask);
         }
 
         //Change weapon if pressed
@@ -613,6 +614,18 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         if (scrollDirection != 0)
         {
             ChangeWeapon(scrollDirection);
+        }
+        else if (InputActionManager.instance.playerPistol)
+        {
+            SetWeapon(0);
+        }
+        else if (InputActionManager.instance.playerBow)
+        {
+            SetWeapon(1);
+        }
+        else if (InputActionManager.instance.playerSword)
+        {
+            SetWeapon(2);
         }
 
         if (InputActionManager.instance.playerReload)
@@ -624,24 +637,39 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void ChangeWeapon(float scroll)
     {
-        weaponList[0].SetActive(false);
+        // Set the current weapon to inactive
+        weaponList[currentWeapon].SetActive(false);
+
+        // Scroll up or down
         if (scroll > 0)
         {
-            //move the primary down the list
-            GameObject temp = weaponList[0];
-            weaponList.RemoveAt(0);
-            weaponList.Add(temp);
+            currentWeapon++;
         }
-        else
+        else if (scroll < 0)
         {
-            //up the primary up the list
-            GameObject temp = weaponList[weaponList.Count - 1];
-            weaponList.RemoveAt(weaponList.Count - 1);
-            weaponList.Insert(0, temp);
+            currentWeapon--;
         }
 
-        //set the seconday to inactive
-        weaponList[0].SetActive(true);
+        // Clamp the current weapon to an actual index in the list
+        if (currentWeapon >= weaponList.Count)
+        {
+            currentWeapon = 0;
+        }
+        else if (currentWeapon < 0)
+        {
+            currentWeapon = weaponList.Count - 1;
+        }
+
+        // Set the current weapon to active
+        weaponList[currentWeapon].SetActive(true);
+    }
+
+    void SetWeapon(int weapon)
+    {
+        weapon = Mathf.Clamp(weapon, 0, weaponList.Count - 1);
+        weaponList[currentWeapon].SetActive(false);
+        currentWeapon = weapon;
+        weaponList[currentWeapon].SetActive(true);
     }
 
     public void TakeDamage(int amount)
