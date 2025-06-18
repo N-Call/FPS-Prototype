@@ -58,7 +58,7 @@ public class OpenDoors : MonoBehaviour
         }    
     }
 
-    
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -68,11 +68,11 @@ public class OpenDoors : MonoBehaviour
             Debug.Log("entering Door Trigger");
             Open(other.transform.position);
         }
-        if(isLocked)
+        if (isLocked)
         {
             SoundManager.instance.PlaySFX("Door Lock");
         }
-        
+
     }
 
     private void OnTriggerExit(Collider other)

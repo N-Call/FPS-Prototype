@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Target : MonoBehaviour, IDamage, ITarget
+public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
 {
     public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
@@ -30,6 +30,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     bool buff;
     bool respawn;
+    bool isActive;
 
     Vector3 explosionScale;
     public bool enemyBuff; 
@@ -142,6 +143,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
         else
         {
+            isActive = false;
             //Debug.Log("Set inactive!");
             gameObject.SetActive(false);
         }
@@ -225,4 +227,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
         GameManager.instance.playerScript.UpdatePlayerUI();
     }
 
+    public void ResetState()
+    {
+        isActive = true;
+        gameObject.SetActive(true);
+    }
 }

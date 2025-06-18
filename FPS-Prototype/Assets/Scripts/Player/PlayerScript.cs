@@ -646,24 +646,24 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     public void TakeDamage(int amount)
     {
-        //if (invulnerable)
-        //{
-        //    Debug.Log("Invulnerable Hit");
-        //    return;
-        //}
+        if (invulnerable)
+        {
+            Debug.Log("Invulnerable Hit");
+            return;
+        }
 
-        SoundManager.instance.PlaySFX("playerHurt");
-
-        if (isShielded > 0) //&& !invulnerable)
+        if (isShielded > 0 && !invulnerable)
         {
             isShielded -= 1;
 
             invincHitTime = 0.15f;
         }
+        
         else if (!invulnerable)
         {
             HP -= amount;
             StartCoroutine(FlashDamageScreen());
+            SoundManager.instance.PlaySFX("playerHurt");
         }
 
         UpdatePlayerUI();

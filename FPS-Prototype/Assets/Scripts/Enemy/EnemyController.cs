@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class EnemyController : MonoBehaviour, IDamage
+public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
 {
     public GameObject scrap;
     [SerializeField] int scrapAmount;
@@ -32,9 +32,6 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
 
-    
-    
-
     protected Color colorOrig;
     protected Vector3 playerDir;
     public Vector3 originalPosition;
@@ -51,17 +48,18 @@ public class EnemyController : MonoBehaviour, IDamage
     protected bool playerInRange;
     protected bool shootRateBuffed = false;
     protected bool canSeePlayer;
+    protected bool isDead;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
-        GameManager.instance.AddEnemyToRespawn(this);
+        //GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
-        
-        
+        isDead = false;
+
         if (addToEnemyCount)
         {
             GameManager.instance.UpdateEnemyCounter(1);
@@ -149,8 +147,9 @@ public class EnemyController : MonoBehaviour, IDamage
 
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
-            
+            isDead = true;
+            GameManager.instance.UpdateEnemyCounter(-1);
+             
             Instantiate(scrap, transform.position, Quaternion.identity);
             ScrapPickup pickup =  scrap.GetComponent<ScrapPickup>();
             if (pickup != null)
@@ -158,8 +157,9 @@ public class EnemyController : MonoBehaviour, IDamage
                 pickup.scrapAmount = scrapAmount;
             }
 
-            GameManager.instance.UpdateEnemyCounter(-1);
             SoundManager.instance.PlaySFX("turretDestroy");
+
+            Destroy(gameObject);
         }
         else
         {
@@ -206,4 +206,11 @@ public class EnemyController : MonoBehaviour, IDamage
         
     }
 
+    public void ResetHealth()
+    {
+        if (!isDead)
+        {
+            currentHealth = maxHealth;
+        }
+    }
 }

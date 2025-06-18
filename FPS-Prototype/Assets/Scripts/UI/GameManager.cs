@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject debuffJump;
 
 
-    List<EnemyController> enemiesToRespawn;
+    
 
     public Vector3 respawnPosition;
     public Quaternion respawnRotation;
@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
     public FinalGradeSystem gradeSystem;
     public ScrapManager scrapManager;
     public VolumeSystemData volumeSystemData;
+   
     
 
     public bool isPaused;
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
     int scrapCounter = 0;
     
     public List<UpgradeData> allUpgrades;
+    private Spawner[] allSpawners;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -114,8 +116,9 @@ public class GameManager : MonoBehaviour
             startPos = player.transform.position;
         }
 
+        allSpawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
+
         timeScaleOrig = Time.timeScale;
-        enemiesToRespawn = new List<EnemyController>();
         SaveSettingsSystem.Load();
 
         //if (playerAbilities == null)
@@ -693,10 +696,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddEnemyToRespawn(EnemyController enemy)
-    {
-        enemiesToRespawn.Add(enemy);
-    }
+    //public void AddEnemyToRespawn(EnemyController enemy)
+    //{
+    //    enemiesToRespawn.Add(enemy);
+    //}
 
     public void SetSpawnPosition(Vector3 newSpawnPosition, Quaternion newSpawnRotation)
     {
@@ -713,13 +716,36 @@ public class GameManager : MonoBehaviour
             player.transform.parent = null;
         }
 
-        player.transform.position = respawnPosition;
+        player.transform.SetPositionAndRotation(respawnPosition, respawnRotation);
 
         playerScript.ResetPlayerStats();
-
         ResetElemTimers();
 
+        foreach (var spawner in allSpawners)
+        {
+            if (spawner != null)
+            {
+                Debug.Log("Enemy Health Restored");
+                spawner.ResetAllEnemyHealth();
+            }
+        }
+
+        List<ILevelReset> resettableObjects = new List<ILevelReset>();
+
+        foreach (MonoBehaviour mb in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))
+        {
+            if (mb is ILevelReset resettable)
+            {
+                resettableObjects.Add(resettable);
+            }
+        }
+        foreach (var obj in resettableObjects)
+        {
+            obj.ResetState();
+        }
+
         playerScript.GetComponent<CharacterController>().enabled = true;
+        playerScript.GetComponent<CharacterController>().Move(Vector3.zero);
     }
 
     private void ResetElemTimers()

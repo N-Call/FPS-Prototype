@@ -19,7 +19,7 @@ public class TurretEnemy : EnemyController
 
     protected override void Start()
     {
-        GameManager.instance.AddEnemyToRespawn(this);
+        //GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
         colorOrig = model.material.color;
         turretHead = transform.Find("Head");
