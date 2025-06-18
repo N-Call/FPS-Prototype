@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 ////TODO: localization support
 
@@ -354,11 +355,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 .OnComplete(
                     operation =>
                     {
-                        if (m_RebindOverlay != null)
-                        {
-                            InputActionManager.instance.DisableRebindInput();
-                            m_RebindOverlay.SetActive(false);
-                        }
                         m_RebindStopEvent?.Invoke(this, operation);
 
                         if (CheckForDuplicateBinding(action, bindingIndex, allCompositeParts))
@@ -367,6 +363,13 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                             CleanUp();
                             PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
                             return;
+                        }
+
+
+                        InputActionManager.instance.DisableRebindInput();
+                        if (m_RebindOverlay != null)
+                        {
+                            m_RebindOverlay.SetActive(false);
                         }
 
                         UpdateBindingDisplay();
@@ -442,10 +445,12 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 if (action.bindings[i].effectivePath == newBinding.overridePath)
                 {
+                    Debug.Log("[2] Duplicate Found! Old: " + action.bindings[i].effectivePath + " | New: " + newBinding.overridePath);
                     return true;
                 }
             }
 
+            Debug.Log("[2] No duplicates found!");
             return false;
         }
 
