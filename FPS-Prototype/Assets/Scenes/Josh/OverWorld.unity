@@ -5431,6 +5431,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 239958189}
+  - {fileID: 1481401993}
   - {fileID: 1186613449}
   - {fileID: 1494950341}
   m_Father: {fileID: 0}
@@ -8722,11 +8723,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 875052574}
     m_Modifications:
     - target: {fileID: 4875576783482083083, guid: 34674d013ece6204d8d5db9f30b6c53a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.117647
+      value: 3.3676472
       objectReference: {fileID: 0}
     - target: {fileID: 4875576783482083083, guid: 34674d013ece6204d8d5db9f30b6c53a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8734,7 +8735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4875576783482083083, guid: 34674d013ece6204d8d5db9f30b6c53a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 29.15984
+      value: -20.84016
       objectReference: {fileID: 0}
     - target: {fileID: 4875576783482083083, guid: 34674d013ece6204d8d5db9f30b6c53a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8773,6 +8774,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34674d013ece6204d8d5db9f30b6c53a, type: 3}
+--- !u!4 &1481401993 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4875576783482083083, guid: 34674d013ece6204d8d5db9f30b6c53a, type: 3}
+  m_PrefabInstance: {fileID: 1481401992}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1494950340
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8783,7 +8789,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 887103100124649004, guid: e1ea7d61da20e654caa3758858125983, type: 3}
       propertyPath: addToCountWhenSpawned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2861319645171220133, guid: e1ea7d61da20e654caa3758858125983, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12685,7 +12691,6 @@ MonoBehaviour:
   gradeSystem: {fileID: 0}
   scrapManager: {fileID: 0}
   volumeSystemData: {fileID: 666828644318643374}
-  updateUpgradeText: {fileID: 0}
   isPaused: 0
   timeScaleOrig: 0
   startPos: {x: 0, y: 0, z: 0}
@@ -16624,10 +16629,11 @@ MonoBehaviour:
   loseMenu: {fileID: 3313109283520532953}
   startMenuFirstSelected: {fileID: 0}
   startMenuFirstSelectedNoSave: {fileID: 0}
-  startMenuQuitButton: {fileID: 0}
+  startMenuOverworldButton: {fileID: 0}
   startMenuSettingsButton: {fileID: 0}
   startMenuRulesButton: {fileID: 0}
   startMenuCreditsButton: {fileID: 0}
+  startMenuQuitButton: {fileID: 0}
   settingsMenuFirstSelected: {fileID: 2401291269356055801}
   settingsMenuAudioButton: {fileID: 6484509112416282725}
   settingsMenuPCButton: {fileID: 122411905202219507}
@@ -36015,4 +36021,3 @@ SceneRoots:
   - {fileID: 875052574}
   - {fileID: 1961875033}
   - {fileID: 895753352}
-  - {fileID: 1481401992}
