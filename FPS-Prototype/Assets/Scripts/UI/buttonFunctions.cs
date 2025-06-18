@@ -14,6 +14,7 @@ public class ButtonFunctions : MonoBehaviour
         }
         else
         {
+            MenuManager.instance.CloseMenu();
             GameManager.instance.Respawn();
         }
 
