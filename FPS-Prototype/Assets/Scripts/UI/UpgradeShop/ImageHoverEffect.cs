@@ -16,7 +16,10 @@ public class ImageHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         Debug.Log("point is down");
         GameManager.instance.BuyUpgrade(upgradeData);
-        upText.text = upgradeData.currentLevel.ToString();
+        if (upText != null)
+        {// need to add UI count to major Upgrades
+            upText.text = upgradeData.currentLevel.ToString();
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
