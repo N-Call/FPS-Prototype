@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 ////TODO: localization support
 
@@ -14,6 +13,28 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
     /// </summary>
     public class RebindActionUI : MonoBehaviour
     {
+
+        private void Update()
+        {
+            if (m_RebindOverlay == null || !m_RebindOverlay.activeSelf)
+            {
+                return;
+            }
+
+            if (InputActionManager.instance.rebindCancel)
+            {
+                m_RebindOperation.Cancel();
+            }
+            else if (InputActionManager.instance.rebindReset)
+            {
+                if (m_RebindOperation != null)
+                {
+                    m_RebindOperation.Cancel();
+                    ResetToDefault();
+                }
+            }
+        }
+
         /// <summary>
         /// Reference to the action that is to be rebound.
         /// </summary>
@@ -217,17 +238,48 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;
 
-            if (action.bindings[bindingIndex].isComposite)
-            {
-                // It's a composite. Remove overrides from part bindings.
-                for (var i = bindingIndex + 1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; ++i)
-                    action.RemoveBindingOverride(i);
-            }
-            else
-            {
-                action.RemoveBindingOverride(bindingIndex);
-            }
+            ResetBinding(action, bindingIndex);
+
+            //if (action.bindings[bindingIndex].isComposite)
+            //{
+            //    // It's a composite. Remove overrides from part bindings.
+            //    for (var i = bindingIndex + 1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; ++i)
+            //        action.RemoveBindingOverride(i);
+            //}
+            //else
+            //{
+            //    action.RemoveBindingOverride(bindingIndex);
+            //}
+
             UpdateBindingDisplay();
+        }
+
+        private void ResetBinding(InputAction action, int bindingIndex)
+        {
+            InputBinding newBinding = action.bindings[bindingIndex];
+            string oldOverridePath = newBinding.overridePath;
+
+            action.RemoveBindingOverride(bindingIndex);
+
+            foreach (InputActionMap map in action.actionMap.asset.actionMaps)
+            {
+                foreach (InputAction otherAction in map.actions)
+                {
+                    if (otherAction == action)
+                    {
+                        continue;
+                    }
+
+                    for (int i = 0; i < otherAction.bindings.Count; i++)
+                    {
+                        InputBinding binding = otherAction.bindings[i];
+                        if (binding.overridePath == newBinding.path)
+                        {
+                            otherAction.ApplyBindingOverride(i, oldOverridePath);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -280,12 +332,20 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
+                .WithControlsExcluding("<Keyboard>/anyKey")
+                .WithControlsExcluding("<Keyboard>/escape")
+                .WithControlsExcluding("<Keyboard>/backspace")
+                .WithControlsExcluding("<Gamepad>/start")
+                .WithControlsExcluding("<Gamepad>/select")
                 .OnCancel(
                     operation =>
                     {
                         m_RebindStopEvent?.Invoke(this, operation);
                         if (m_RebindOverlay != null)
+                        {
+                            InputActionManager.instance.DisableRebindInput();
                             m_RebindOverlay.SetActive(false);
+                        }
                         UpdateBindingDisplay();
                         CleanUp();
                     })
@@ -293,8 +353,20 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                     operation =>
                     {
                         if (m_RebindOverlay != null)
+                        {
+                            InputActionManager.instance.DisableRebindInput();
                             m_RebindOverlay.SetActive(false);
+                        }
                         m_RebindStopEvent?.Invoke(this, operation);
+
+                        if (CheckForDuplicateBinding(action, bindingIndex, allCompositeParts))
+                        {
+                            action.RemoveBindingOverride(bindingIndex);
+                            CleanUp();
+                            PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
+                            return;
+                        }
+
                         UpdateBindingDisplay();
                         CleanUp();
 
@@ -314,14 +386,19 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 partName = $"Binding '{action.bindings[bindingIndex].name}'. ";
 
             // Bring up rebind overlay, if we have one.
-            m_RebindOverlay?.SetActive(true);
-            if (m_RebindText != null)
+            if (m_RebindOverlay != null)
             {
-                var text = !string.IsNullOrEmpty(m_RebindOperation.expectedControlType)
-                    ? $"{partName}Waiting for {m_RebindOperation.expectedControlType} input..."
-                    : $"{partName}Waiting for input...";
-                m_RebindText.text = text;
+                m_RebindOverlay.SetActive(true);
+                InputActionManager.instance.EnableRebindInput();
             }
+
+            //if (m_RebindText != null)
+            //{
+            //    var text = !string.IsNullOrEmpty(m_RebindOperation.expectedControlType)
+            //        ? $"{partName}Waiting for {m_RebindOperation.expectedControlType} input..."
+            //        : $"{partName}Waiting for input...";
+            //    m_RebindText.text = text;
+            //}
 
             // If we have no rebind overlay and no callback but we have a binding text label,
             // temporarily set the binding text label to "<Waiting>".
@@ -332,6 +409,42 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             m_RebindStartEvent?.Invoke(this, m_RebindOperation);
 
             m_RebindOperation.Start();
+        }
+
+        private bool CheckForDuplicateBinding(InputAction action, int bindingIndex, bool allCompositeParts = false)
+        {
+            InputBinding newBinding = action.bindings[bindingIndex];
+
+            foreach (InputActionMap map in action.actionMap.asset.actionMaps)
+            {
+                foreach (InputBinding binding in map.bindings)
+                {
+                    if (binding.action == newBinding.action)
+                    {
+                        continue;
+                    }
+
+                    if (binding.effectivePath == newBinding.effectivePath)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (!allCompositeParts)
+            {
+                return false;
+            }
+
+            for (int i = 1; i < bindingIndex; i++)
+            {
+                if (action.bindings[i].effectivePath == newBinding.overridePath)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         protected void OnEnable()

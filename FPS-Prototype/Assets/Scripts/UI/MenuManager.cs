@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,6 +19,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject settingsAudioMenu;
     [SerializeField] GameObject settingsPCMenu;
     [SerializeField] GameObject settingsControllerMenu;
+    [SerializeField] GameObject resetAllPCConfirmMenu;
+    [SerializeField] GameObject resetAllControllerConfirmMenu;
     [SerializeField] GameObject rulesMenu;
     [SerializeField] GameObject creditsMenu;
     [SerializeField] GameObject winMenu;
@@ -39,7 +42,13 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject settingsMenuControllerButton;
     [SerializeField] GameObject settingsAudioMenuFirstSelected;
     [SerializeField] GameObject settingsPCMenuFirstSelected;
+    [SerializeField] GameObject settingsPCMenuResetAllButton;
     [SerializeField] GameObject settingsControllerMenuFirstSelected;
+    [SerializeField] GameObject settingsControllerMenuResetAllButton;
+
+    [Header("Reset All Confirm Menu Buttons")]
+    [SerializeField] GameObject resetAllPCConfirmFirstSelected;
+    [SerializeField] GameObject resetAllControllerConfirmFirstSelected;
 
     [Header("Misc. Menu Buttons")]
     [SerializeField] GameObject pauseMenuFirstSelected;
@@ -99,6 +108,16 @@ public class MenuManager : MonoBehaviour
         if (settingsControllerMenu != null)
         {
             settingsControllerMenu.SetActive(false);
+        }
+
+        if (resetAllPCConfirmMenu != null)
+        {
+            resetAllPCConfirmMenu.SetActive(false);
+        }
+
+        if (resetAllControllerConfirmMenu != null)
+        {
+            resetAllControllerConfirmMenu.SetActive(false);
         }
 
         if (rulesMenu != null)
@@ -211,10 +230,22 @@ public class MenuManager : MonoBehaviour
         eventSystem.SetSelectedGameObject(button);
     }
 
+    IEnumerator UpdateSelectedButtonCoroutine(GameObject button)
+    {
+        yield return null;
+        eventSystem.SetSelectedGameObject(button);
+    }
+
     void UpdateSelectedButton()
     {
-        eventSystem.SetSelectedGameObject(eventSystem.firstSelectedGameObject);
+        StartCoroutine(UpdateSelectedButtonCoroutine(eventSystem.firstSelectedGameObject));
     }
+
+    void UpdateSelectedButton(GameObject button)
+    {
+        StartCoroutine(UpdateSelectedButtonCoroutine(button));
+    }
+
     #endregion
 
     #region Menu Common Code
@@ -319,6 +350,20 @@ public class MenuManager : MonoBehaviour
         UpdateSelectedButton();
     }
 
+    public void ShowResetAllPCConfirmMenu()
+    {
+        ShowMenu(resetAllPCConfirmMenu);
+        eventSystem.firstSelectedGameObject = resetAllPCConfirmFirstSelected;
+        UpdateSelectedButton();
+    }
+
+    public void ShowResetAllControllerConfirmMenu()
+    {
+        ShowMenu(resetAllControllerConfirmMenu);
+        eventSystem.firstSelectedGameObject = resetAllControllerConfirmFirstSelected;
+        UpdateSelectedButton();
+    }
+
     public void ShowRulesMenu()
     {
         ShowMenu(rulesMenu);
@@ -385,27 +430,39 @@ public class MenuManager : MonoBehaviour
         eventSystem.SetSelectedGameObject(settingsMenuPCButton);
     }
 
+    // Back to PC Settings from Reset All PC Confirm Menu
+    public void SettingsResetAllPCBack()
+    {
+        ShowSettingsPCMenu();
+        UpdateSelectedButton(settingsPCMenuResetAllButton);
+    }
+
     // Back to Settings from Controller Settings
     public void SettingsControllerBack()
     {
         ShowSettingsMenu();
-        eventSystem.SetSelectedGameObject(settingsMenuControllerButton);
+        UpdateSelectedButton(settingsMenuControllerButton);
+    }
+
+    // Back to Controller Settings from Reset All Controller Confirm Menu
+    public void SettingsResetAllControllerBack()
+    {
+        ShowSettingsControllerMenu();
+        UpdateSelectedButton(settingsControllerMenuResetAllButton);
     }
 
     // Back to Start from Rules
     public void RulesBack()
     {
         ShowStartMenu();
-        eventSystem.firstSelectedGameObject = startMenuRulesButton;
-        UpdateSelectedButton();
+        UpdateSelectedButton(startMenuRulesButton);
     }
 
     // Back to Start from Credits
     public void CreditsBack()
     {
         ShowStartMenu();
-        eventSystem.firstSelectedGameObject = startMenuCreditsButton;
-        UpdateSelectedButton();
+        UpdateSelectedButton(startMenuCreditsButton);
     }
 
     #endregion
