@@ -76597,6 +76597,40 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1418112082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6697700728690668811, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+  m_PrefabInstance: {fileID: 1025105097191295017}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1418112084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418112082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc11d99b1a6682f4cbc4aba1fcd9ac5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Action: {fileID: -6941020745647015786, guid: e9f96786a32cbd84fb645f7a6e5e0bce, type: 3}
+  m_BindingId: 406ccdf1-976b-4436-beae-ee3d9376d4fc
+  m_DisplayStringOptions: 0
+  m_ActionLabel: {fileID: 0}
+  m_BindingText: {fileID: 0}
+  m_RebindOverlay: {fileID: 0}
+  m_RebindText: {fileID: 0}
+  m_DefaultInputActions: {fileID: 0}
+  m_UpdateBindingUIEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_RebindStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_RebindStopEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!43 &1422836253
 Mesh:
   m_ObjectHideFlags: 0
@@ -120056,10 +120090,39 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7136357338355213807, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_Name
+      value: Rebind Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 7792940342151356971, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_Text
+      value: Test
+      objectReference: {fileID: 0}
+    - target: {fileID: 7792940342151356971, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7792940342151356971, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7792940342151356971, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7792940342863799726, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_ActionLabel
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7792940342151356969, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+    - {fileID: 7792940342863799714, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6697700728690668811, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1418112084}
   m_SourcePrefab: {fileID: 100100000, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
 --- !u!1001 &1070113027109714522
 PrefabInstance:
