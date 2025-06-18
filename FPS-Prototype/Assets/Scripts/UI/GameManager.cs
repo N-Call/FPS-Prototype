@@ -639,7 +639,7 @@ public class GameManager : MonoBehaviour
 
         if (gameGoalCount <= 0)
         {
-            StatePause();
+            MenuManager.instance.ShowWinMenu();
             speakerUI.text = string.Empty;
             textComponent.text = string.Empty;
 
@@ -651,8 +651,6 @@ public class GameManager : MonoBehaviour
             timerWinCount.GetComponent<Timer>().DisplayTimeAdded(elapsedTime.GetComponent<Timer>().elapsedTime);
             gradeLetter.GetComponent<GradeSystem>().GradeSystemWin(timerWinCount.GetComponent<Timer>().elapsedTime);
 
-            menuActive = menuWin;
-            menuActive.SetActive(true);
             textPopUp.SetActive(true);
 
             float elapsedTempTime = EnemyTimePenalty(elapsedTime.GetComponent<Timer>().elapsedTime);
