@@ -85,7 +85,7 @@ public class BossSM : StateMachine, IDamage
 
         targetPoint = new GameObject("Jump Pos").transform;
         targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
-        currentHealth = 99;
+        currentHealth = health;
         orbSpawnCounter = orbSpawnTimer;
     }
 

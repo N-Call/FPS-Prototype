@@ -172,8 +172,7 @@ public class GunHitScan : Range
 
         if (dmg != null || targ != null || breakable != null)
         {
-            
-            dmg?.TakeDamage(damage + GameManager.instance.playerAbilities.w1DmgMod);
+            dmg?.TakeDamage( (GameManager.instance.playerAbilities != null)?  damage + GameManager.instance.playerAbilities.w1DmgMod : damage);
             targ?.ActivateElem((int)elem);
             breakable?.Shatter(location);
             return true;
@@ -206,9 +205,9 @@ public class GunHitScan : Range
 
     public override void AttackBegin(LayerMask playerMask)
     {
-        float shootRateMod = shootRate + GameManager.instance.playerAbilities.w1RateMod;
+        float shootRateMod = (GameManager.instance.playerAbilities == null)? shootRate : shootRate + GameManager.instance.playerAbilities.w1RateMod;
 
-        if (shootRateMod > shootTimer)
+        if (shootRate > shootTimer)
         {
             return;
         }
@@ -223,7 +222,8 @@ public class GunHitScan : Range
 
         if (ammoCount <= 0 && currTotalBullets > 0)
         {
-            SoundManager.instance.PlaySFX("gunClick");
+            Reload();
+            //SoundManager.instance.PlaySFX("gunClick");
             return;
         }
 

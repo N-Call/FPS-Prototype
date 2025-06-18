@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Model2Enemy : EnemyController, IElemental
+public class Model2Enemy : EnemyController
 {
 
     [Header("Element Effects")]
@@ -42,14 +42,14 @@ public class Model2Enemy : EnemyController, IElemental
         }
 
         //HandleElements();
-        if (elemBuffed || elemDebuffed)
-        {
-            effectTimer += Time.deltaTime;
-            if (effectTimer >= elementEffectTime)
-            {
-                EndElement();
-            }
-        }
+        //if (elemBuffed || elemDebuffed)
+        //{
+        //    effectTimer += Time.deltaTime;
+        //    if (effectTimer >= elementEffectTime)
+        //    {
+        //        EndElement();
+        //    }
+        //}
     }
 
     protected override bool CanSeePlayer()
@@ -114,38 +114,38 @@ public class Model2Enemy : EnemyController, IElemental
     //    }
     //}
 
-    void EndElement()
-    {
-        if (elemBuffed)
-        {
-            agent.baseOffset -= elementJumpMod;
-            elemBuffed = false;
-        }
-        else if (elemDebuffed)
-        {
-            agent.baseOffset += elementJumpMod;
-            elemDebuffed = false;
-        }
-    }
+    //void EndElement()
+    //{
+    //    if (elemBuffed)
+    //    {
+    //        agent.baseOffset -= elementJumpMod;
+    //        elemBuffed = false;
+    //    }
+    //    else if (elemDebuffed)
+    //    {
+    //        agent.baseOffset += elementJumpMod;
+    //        elemDebuffed = false;
+    //    }
+    //}
 
-    public void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod)
-    {
-        elementJumpMod = jumpMod;
-        if (buffStatus)
-        {
-            elemBuffed = true;
-            agent.baseOffset *= elementJumpMod;
-        }
-        else if (!buffStatus)
-        {
-            elemDebuffed = true;
-            agent.baseOffset /= elementJumpMod;
-        }
-        effectTimer = 0f;
-    }
+    //public void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod)
+    //{
+    //    elementJumpMod = jumpMod;
+    //    if (buffStatus)
+    //    {
+    //        elemBuffed = true;
+    //        agent.baseOffset *= elementJumpMod;
+    //    }
+    //    else if (!buffStatus)
+    //    {
+    //        elemDebuffed = true;
+    //        agent.baseOffset /= elementJumpMod;
+    //    }
+    //    effectTimer = 0f;
+    //}
 
-    public void ElementInverse()
-    {
-        // Not yet implemented
-    }
+    //public void ElementInverse()
+    //{
+    //    // Not yet implemented
+    //}
 }
