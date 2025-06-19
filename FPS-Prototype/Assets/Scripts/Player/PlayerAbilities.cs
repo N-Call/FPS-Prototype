@@ -38,7 +38,7 @@ public class PlayerAbilities : MonoBehaviour
     public float o4Dur;
     public bool o4Major;
     //slide
-    public int moveSlideSpeed;
+    public float moveSlideSpeed;
     public bool slideMajor;
     //wall run 
     public int moveWallRunSpeed;
@@ -182,7 +182,7 @@ public struct AbilitiesSaveData
     public float o4Dur;
     public bool o4Major;
     //slide
-    public int moveSlideSpeed;
+    public float moveSlideSpeed;
     public bool slideMajor;
     //wall run 
     public int moveWallRunSpeed;

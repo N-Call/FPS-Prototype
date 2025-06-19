@@ -73,6 +73,7 @@ public class ButtonFunctions : MonoBehaviour
         // this is to load the next level but does a check first on making sure your in scene count 
         if (SceneManager.GetActiveScene().buildIndex + 1 <= 8)
         {
+            
             Debug.Log("I have not made it to next scene");
             SaveSystem.LoadGrades();
             
@@ -89,7 +90,7 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void LvlOverWorldSave()
     {
-        SaveSystem.SaveStats();
+        
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);

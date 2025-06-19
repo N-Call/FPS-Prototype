@@ -180,7 +180,8 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
         }
         if (GameManager.instance.playerAbilities != null)
         {
-            GameManager.instance.SetElemParam((int)elem, buff, speedElemTime += GameManager.instance.playerAbilities.o1Dur);
+            GameManager.instance.SetElemParam((int)elem, buff, speedElemTime);
+            Debug.Log(speedElemTime);
         }
     }
 
@@ -198,7 +199,7 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
                 GameManager.instance.playerScript.jumpBuffed = true;
             }
 
-            GameManager.instance.jumpBuffTimer = 0f;
+                GameManager.instance.jumpBuffTimer = 0f;
         }
 
         else
@@ -210,7 +211,9 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
             GameManager.instance.playerScript.jumpBuffed = false;
         }
 
-        GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime += GameManager.instance.playerAbilities.o2Dur);
+
+        GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime);
+
     }
 
     private void ApplyShieldElem()
