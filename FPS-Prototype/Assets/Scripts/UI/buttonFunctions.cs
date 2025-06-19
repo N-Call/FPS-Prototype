@@ -28,7 +28,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void LvlStartGame()
     {
-        SaveSystem.LoadGrades();
+        
         LvlSelectManager.instance.StartGameBtn();
     }
 
@@ -50,7 +50,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void SetLevelBtn(int level)
     {
-        SaveSystem.LoadGrades();
+        
         LvlSelectManager.instance.Setlevel(level);
         GameManager.instance.LoadScoreBoard();
     }
@@ -63,7 +63,7 @@ public class ButtonFunctions : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        SaveSystem.LoadGrades();
+        
         SoundManager.instance.sfxSource.Stop();
         GameManager.instance.StateUnpause();
     }

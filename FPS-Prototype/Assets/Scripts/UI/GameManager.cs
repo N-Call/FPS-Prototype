@@ -298,7 +298,6 @@ public class GameManager : MonoBehaviour
             SpendScrap(upgrade.majorCost);
             upgrade.currentLevel++;
             
-            
             ApplyUpgrade(upgrade);
         }
         else
