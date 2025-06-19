@@ -205,6 +205,7 @@ public class InputActionManager : MonoBehaviour
         // If is player -> is using gamepad? Otherwise return 0
         // If is using gamepad -> check if it was pressed this frame -> return 1. Otherwise return 0
         // If not using gamepad -> return the read float value
+
         playerSwap = player
             ? isUsingGamepad
                 ? playerSwapAction.WasPressedThisFrame()
