@@ -11,8 +11,8 @@ public class SaveSystem
         public ScrapSaveData ScrapData;
         public FinalGradeData finalGradeData;
         public DifficultySaveData difficultyData;
+        public AbilitiesSaveData abilitiesData;
     }
-
     public static string SaveFileName()
     {
         string saveFile = Application.persistentDataPath + "/save" + ".save";
@@ -36,6 +36,7 @@ public class SaveSystem
         GameManager.instance.scrapManager.Save(ref saveData.ScrapData);
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
+        GameManager.instance.playerAbilities.Save(ref saveData.abilitiesData);
         DifficultyManager.Instance.Save(ref saveData.difficultyData);
     }
 
@@ -93,6 +94,7 @@ public class SaveSystem
         GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
         DifficultyManager.Instance.Load(saveData.difficultyData);
         GameManager.instance.scrapManager.Load(saveData.ScrapData);
+        GameManager.instance.playerAbilities.Load(saveData.abilitiesData);
     }
 
     private static void HandleLoadGradeData()
@@ -100,11 +102,13 @@ public class SaveSystem
         DifficultyManager.Instance.Load(saveData.difficultyData);
         GameManager.instance.gradeSystem.Load(ref saveData.finalGradeData);
         GameManager.instance.scrapManager.Load(saveData.ScrapData);
+        GameManager.instance.playerAbilities.Load(saveData.abilitiesData);
     }
 
     private static void HandleLoadScrapData()
     {
         Debug.Log(saveData.ScrapData.scraps);
         GameManager.instance.scrapManager.Load(saveData.ScrapData);
+        GameManager.instance.playerAbilities.Load(saveData.abilitiesData);
     }
 }

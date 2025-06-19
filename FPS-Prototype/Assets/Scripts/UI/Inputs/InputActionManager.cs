@@ -11,9 +11,16 @@ public class InputActionManager : MonoBehaviour
 
     [SerializeField] InputActionAsset menuInputActionMap;
     [SerializeField] InputActionAsset playerInputActionMap;
+    [SerializeField] InputActionAsset rebindInputActionMap;
     [SerializeField] InputActionAsset debugInputActionMap;
 
     [SerializeField] bool onStartScreen = false;
+
+    [SerializeField] bool toggleSprint;
+    [SerializeField] bool toggleCrouch;
+
+    bool isSprinting;
+    bool isCrouching;
 
     public bool isUsingGamepad { get; private set; }
 
@@ -69,6 +76,15 @@ public class InputActionManager : MonoBehaviour
     public bool playerSword { get; private set; }
     public bool playerPause { get; private set; }
 
+    //
+    // Rebind Inputs
+    //
+    InputAction rebindCancelAction;
+    InputAction rebindResetAction;
+
+    public bool rebindCancel { get; private set; }
+    public bool rebindReset { get; private set; }
+
     InputAction debugInputAction;
 
     InputDevice lastInputDevice;
@@ -92,6 +108,9 @@ public class InputActionManager : MonoBehaviour
         menuClickAction = menuInputActionMap["Click"];
         menuPointAction = menuInputActionMap["Point"];
         menuScrollAction = menuInputActionMap["Scroll"];
+
+        rebindCancelAction = rebindInputActionMap["Cancel"];
+        rebindResetAction = rebindInputActionMap["Reset"];
 
         playerWalkAction = playerInputActionMap["Walk"];
         playerSprintAction = playerInputActionMap["Sprint"];
@@ -140,11 +159,42 @@ public class InputActionManager : MonoBehaviour
         menuPoint = menu ? menuPointAction.ReadValue<Vector2>() : Vector2.zero;
         menuScroll = menu ? menuScrollAction.ReadValue<Vector2>() : Vector2.zero;
 
+        bool rebind = rebindInputActionMap.enabled;
+        rebindCancel = rebind ? rebindCancelAction.WasPressedThisFrame() : false;
+        rebindReset = rebind ? rebindResetAction.WasPressedThisFrame() : false;
+
         bool player = playerInputActionMap.enabled;
         playerWalk = player ? playerWalkAction.ReadValue<Vector2>() : Vector2.zero;
-        playerSprint = player ? playerSprintAction.IsPressed() : false;
+
+        if (player)
+        {
+            if (toggleSprint && playerSprintAction.WasPressedThisFrame())
+            {
+                isSprinting = !isSprinting;
+                playerSprint = isSprinting;
+            }
+            else if (!toggleSprint)
+            {
+                playerSprint = playerSprintAction.IsPressed();
+            }
+
+            if (toggleCrouch && playerCrouchAction.WasPressedThisFrame())
+            {
+                isCrouching = !isCrouching;
+                playerCrouch = isCrouching;
+            }
+            else if (!toggleCrouch)
+            {
+                playerCrouch = playerCrouchAction.IsPressed();
+            }
+        }
+        else
+        {
+            playerSprint = false;
+            playerCrouch = false;
+        }
+
         playerJump = player ? playerJumpAction.WasPressedThisFrame() : false;
-        playerCrouch = player ? playerCrouchAction.IsPressed() : false;
         playerLook = player ? playerLookAction.ReadValue<Vector2>() : Vector2.zero;
         playerInteract = player ? playerInteractAction.WasPressedThisFrame() : false;
         playerShoot = player ? playerShootAction.WasPressedThisFrame() : false;
@@ -155,6 +205,7 @@ public class InputActionManager : MonoBehaviour
         // If is player -> is using gamepad? Otherwise return 0
         // If is using gamepad -> check if it was pressed this frame -> return 1. Otherwise return 0
         // If not using gamepad -> return the read float value
+
         playerSwap = player
             ? isUsingGamepad
                 ? playerSwapAction.WasPressedThisFrame()
@@ -172,6 +223,7 @@ public class InputActionManager : MonoBehaviour
 
     private void OnDisable()
     {
+        DisableRebindInput();
         DisableMenuInput();
         DisablePlayerInput();
     }
@@ -216,6 +268,22 @@ public class InputActionManager : MonoBehaviour
         menuPointAction.Disable();
         menuScrollAction.Disable();
         menuInputActionMap.Disable();
+    }
+
+    public void EnableRebindInput()
+    {
+        DisableMenuInput();
+        rebindInputActionMap.Enable();
+        rebindCancelAction.Enable();
+        rebindResetAction.Enable();
+    }
+
+    public void DisableRebindInput()
+    {
+        rebindCancelAction.Disable();
+        rebindResetAction.Disable();
+        rebindInputActionMap.Disable();
+        EnableMenuInput();
     }
 
     public void EnablePlayerInput()

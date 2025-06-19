@@ -14,6 +14,7 @@ public class ButtonFunctions : MonoBehaviour
         }
         else
         {
+            MenuManager.instance.CloseMenu();
             GameManager.instance.Respawn();
         }
 
@@ -27,6 +28,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void LvlStartGame()
     {
+        
         LvlSelectManager.instance.StartGameBtn();
     }
 
@@ -48,6 +50,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void SetLevelBtn(int level)
     {
+        
         LvlSelectManager.instance.Setlevel(level);
         GameManager.instance.LoadScoreBoard();
     }
@@ -60,6 +63,7 @@ public class ButtonFunctions : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        
         SoundManager.instance.sfxSource.Stop();
         GameManager.instance.StateUnpause();
     }
@@ -70,10 +74,10 @@ public class ButtonFunctions : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex + 1 <= 8)
         {
             Debug.Log("I have not made it to next scene");
-            SaveSystem.SaveStats();
-            Debug.Log("I have this is after save");
+            SaveSystem.LoadGrades();
+            
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            Debug.Log("I have made it to next scene");
+            
             SoundManager.instance.sfxSource.Stop();
             GameManager.instance.StateUnpause();
         }
@@ -166,6 +170,7 @@ public class ButtonFunctions : MonoBehaviour
     public void Save()
     {
         SaveSystem.Save();
+        SaveSystem.SaveStats();
     }
 
     public void SaveSetting()

@@ -177,7 +177,7 @@ public class ObjectMovement : MonoBehaviour
         for (int i = 0; i < gameObject.transform.childCount; i++)
         {
             Transform child = gameObject.transform.GetChild(i);
-            if (child.tag == "Player")
+            if (child.CompareTag("Player"))
             {
                 child.SetParent(null, true);
                 break;

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Target : MonoBehaviour, IDamage, ITarget
+public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
 {
     public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
@@ -30,6 +30,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
 
     bool buff;
     bool respawn;
+    bool isActive;
 
     Vector3 explosionScale;
     public bool enemyBuff; 
@@ -142,6 +143,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
         else
         {
+            isActive = false;
             //Debug.Log("Set inactive!");
             gameObject.SetActive(false);
         }
@@ -156,7 +158,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
             //if (GameManager.instance.speedBuffTimer > speedElemTime || GameManager.instance.speedBuffTimer == 0)
             if (GameManager.instance.speedBuffTimer <= 0 || !GameManager.instance.playerScript.speedBuffed)
             {
+               
                 GameManager.instance.playerScript.AddModifier(speedElemMod);
+                
                 GameManager.instance.playerScript.SetBaseFOV(baseFOV + speedElemFOVMod);
                 GameManager.instance.BuffSprintIcon(true);
                 GameManager.instance.playerScript.particleSpMod.gameObject.SetActive(true);
@@ -174,8 +178,10 @@ public class Target : MonoBehaviour, IDamage, ITarget
             GameManager.instance.playerScript.SetBaseFOV(baseFOV - speedElemFOVMod);
             GameManager.instance.playerScript.speedBuffed = false;
         }
-
-        GameManager.instance.SetElemParam((int)elem, buff, speedElemTime);
+        if (GameManager.instance.playerAbilities != null)
+        {
+            GameManager.instance.SetElemParam((int)elem, buff, speedElemTime += GameManager.instance.playerAbilities.o1Dur);
+        }
     }
 
     private void ApplyJumpElem()
@@ -204,7 +210,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
             GameManager.instance.playerScript.jumpBuffed = false;
         }
 
-        GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime);
+        GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime += GameManager.instance.playerAbilities.o2Dur);
     }
 
     private void ApplyShieldElem()
@@ -225,4 +231,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
         GameManager.instance.playerScript.UpdatePlayerUI();
     }
 
+    public void ResetState()
+    {
+        isActive = true;
+        gameObject.SetActive(true);
+    }
 }
