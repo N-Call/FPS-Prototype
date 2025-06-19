@@ -35519,6 +35519,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5121868054507929573, guid: 2f0197e73f849d14384a2a7985e35ecd, type: 3}
   m_PrefabInstance: {fileID: 191337106}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &503450249 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1131977219086359581, guid: ac1ff6e461cc7cf49a9a325144c0b846, type: 3}
+  m_PrefabInstance: {fileID: 858216623}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e704e459ee9667b4f8698e15da855a0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &505412017
 Mesh:
   m_ObjectHideFlags: 0
@@ -68514,6 +68525,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1144086555}
     m_Modifications:
+    - target: {fileID: 2601285557463791095, guid: 50df8e4eb6acb6248b322584678ed173, type: 3}
+      propertyPath: 'doorScript.Array.data[0]'
+      value: 
+      objectReference: {fileID: 503450249}
     - target: {fileID: 6588569451710876505, guid: 50df8e4eb6acb6248b322584678ed173, type: 3}
       propertyPath: m_Name
       value: DoorTrigger

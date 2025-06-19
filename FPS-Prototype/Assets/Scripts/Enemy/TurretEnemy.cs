@@ -19,6 +19,15 @@ public class TurretEnemy : EnemyController
 
     protected override void Start()
     {
+        meshRenderers = GetComponentsInChildren<MeshRenderer>();
+
+        originalColors = new Color[meshRenderers.Length];
+        Debug.Log("Found" + meshRenderers.Length + " renderers on" + gameObject.name);
+        for (int i = 0; i < meshRenderers.Length; i++)
+        {
+
+            originalColors[i] = meshRenderers[i].material.color;
+        }
         //GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
         colorOrig = model.material.color;
@@ -39,9 +48,31 @@ public class TurretEnemy : EnemyController
     protected override void Update()
     {
         shootTimer += Time.deltaTime;
+        blinkTimer -= Time.deltaTime;
+        EnemyFlash();
         canSeePlayer = CanSeePlayer();
     }
+    void EnemyFlash()
+    {
 
+        float lerp = Mathf.Clamp01(blinkTimer / blinkDuration) * 1.0f;
+        float intensity = lerp * blinkIntensity;
+        Color flashColor = Color.red * intensity;
+
+        for (int i = 0; i < meshRenderers.Length; i++)
+        {
+            if (blinkTimer > 0)
+            {
+                meshRenderers[i].material.color = flashColor;
+            }
+            else
+            {
+                meshRenderers[i].material.color = originalColors[i];
+            }
+
+        }
+
+    }
     protected override bool CanSeePlayer()
     {
         playerDir = (GameManager.instance.player.transform.position + (Vector3.up * 0.5f)) - aimPos.position;

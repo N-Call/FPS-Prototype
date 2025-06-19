@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     public FinalGradeSystem gradeSystem;
     public ScrapManager scrapManager;
     public VolumeSystemData volumeSystemData;
-   
+    public BossSM boss; 
     
 
     public bool isPaused;
@@ -715,10 +715,10 @@ public class GameManager : MonoBehaviour
         }
 
         player.transform.SetPositionAndRotation(respawnPosition, respawnRotation);
-
         playerScript.ResetPlayerStats();
         ResetElemTimers();
-
+        ResetBossHealth();
+        
         foreach (var spawner in allSpawners)
         {
             if (spawner != null)
@@ -726,6 +726,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Enemy Health Restored");
                 spawner.ResetAllEnemyHealth();
             }
+           
         }
 
         List<ILevelReset> resettableObjects = new List<ILevelReset>();
@@ -743,7 +744,7 @@ public class GameManager : MonoBehaviour
         }
 
         playerScript.GetComponent<CharacterController>().enabled = true;
-        playerScript.GetComponent<CharacterController>().Move(Vector3.zero);
+        
     }
 
     private void ResetElemTimers()
@@ -854,5 +855,22 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         #endif
     }
+    public void ResetBossHealth()
+    {
+        if (boss == null)
+        {
+            GameObject bossObj = GameObject.Find("BossLift/Phase3_Animated");
 
+            if (bossObj != null)
+            {
+                boss = bossObj.GetComponent<BossSM>();
+            }
+        }
+        
+        IEnemyReset bossReset = boss.GetComponent<IEnemyReset>();
+        if (bossReset != null)
+        {
+            bossReset.ResetHealth();
+        }        
+    }
 }

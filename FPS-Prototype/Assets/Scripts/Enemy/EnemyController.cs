@@ -32,6 +32,14 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
 
+    [Header("Flash Settings")]
+    [SerializeField] protected float blinkIntensity;
+    [SerializeField] protected float blinkDuration;
+    protected float blinkTimer;
+
+    protected MeshRenderer[] meshRenderers;
+    protected Color[] originalColors;
+
     protected Color colorOrig;
     protected Vector3 playerDir;
     public Vector3 originalPosition;
@@ -53,8 +61,11 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
+        
         //GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
+       
+        
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
@@ -70,7 +81,10 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     protected virtual void Update()
     {
         //SetAnimParameters();
+        
         shootTimer += Time.deltaTime;
+        
+
 
         if (agent.remainingDistance < 0.01f)
         {
@@ -87,6 +101,7 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
         }
     }
 
+   
     //void SetAnimParameters()
     //{
     //    float agentSpeedCurr = agent.velocity.normalized.magnitude;
@@ -144,6 +159,7 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     {
         currentHealth -= amount;
         SoundManager.instance.PlaySFX("turretHit");
+        blinkTimer = blinkDuration;
 
         if (currentHealth <= 0)
         {
@@ -161,38 +177,34 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
 
             Destroy(gameObject);
         }
-        else
-        {
-            StartCoroutine(flashRed());
-        }        
     }
 
-    protected IEnumerator flashRed()
-    {
-        // Set this object's color to red
-        model.material.color = Color.red;
+    //protected IEnumerator flashRed()
+    //{
+    //    // Set this object's color to red
+    //    model.material.color = Color.red;
 
-        List<Color> colors = new List<Color>();
+    //    List<Color> colors = new List<Color>();
 
-        // Set children's colors to red
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
-        {
-            colors.Add(renderer.material.color);
-            renderer.material.color = Color.red;
-        }
+    //    // Set children's colors to red
+    //    foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
+    //    {
+    //        colors.Add(renderer.material.color);
+    //        renderer.material.color = Color.red;
+    //    }
 
-        yield return new WaitForSeconds(0.05f);
+    //    yield return new WaitForSeconds(0.05f);
 
-        // Set this object's color back to its original
-        model.material.color = colorOrig;
+    //    // Set this object's color back to its original
+    //    model.material.color = colorOrig;
 
-        int index = 0;
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
-        {
-            renderer.material.color = colors[index];
-            index++;
-        }
-    }
+    //    int index = 0;
+    //    foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
+    //    {
+    //        renderer.material.color = colors[index];
+    //        index++;
+    //    }
+    //}
 
     protected void FaceTarget()
     {
