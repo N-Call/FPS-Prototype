@@ -158,7 +158,9 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
             //if (GameManager.instance.speedBuffTimer > speedElemTime || GameManager.instance.speedBuffTimer == 0)
             if (GameManager.instance.speedBuffTimer <= 0 || !GameManager.instance.playerScript.speedBuffed)
             {
+               
                 GameManager.instance.playerScript.AddModifier(speedElemMod);
+                
                 GameManager.instance.playerScript.SetBaseFOV(baseFOV + speedElemFOVMod);
                 GameManager.instance.BuffSprintIcon(true);
                 GameManager.instance.playerScript.particleSpMod.gameObject.SetActive(true);
@@ -176,8 +178,10 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
             GameManager.instance.playerScript.SetBaseFOV(baseFOV - speedElemFOVMod);
             GameManager.instance.playerScript.speedBuffed = false;
         }
-
-        GameManager.instance.SetElemParam((int)elem, buff, speedElemTime);
+        if (GameManager.instance.playerAbilities != null)
+        {
+            GameManager.instance.SetElemParam((int)elem, buff, speedElemTime += GameManager.instance.playerAbilities.o1Dur);
+        }
     }
 
     private void ApplyJumpElem()
@@ -206,7 +210,7 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
             GameManager.instance.playerScript.jumpBuffed = false;
         }
 
-        GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime);
+        GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime += GameManager.instance.playerAbilities.o2Dur);
     }
 
     private void ApplyShieldElem()

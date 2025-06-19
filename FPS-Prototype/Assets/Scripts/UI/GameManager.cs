@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter = 0;
+    int scrapCounter = 1000;
     
     public List<UpgradeData> allUpgrades;
     private Spawner[] allSpawners;
@@ -300,7 +300,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("I bought a major");
             SpendScrap(upgrade.majorCost);
             upgrade.currentLevel++;
-            
             
             ApplyUpgrade(upgrade);
         }
