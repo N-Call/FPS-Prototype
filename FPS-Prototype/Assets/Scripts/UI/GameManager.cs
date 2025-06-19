@@ -716,8 +716,10 @@ public class GameManager : MonoBehaviour
         player.transform.SetPositionAndRotation(respawnPosition, respawnRotation);
         playerScript.ResetPlayerStats();
         ResetElemTimers();
-        ResetBossHealth();
-        
+        if (boss != null)
+        {
+            ResetBossHealth();
+        }
         foreach (var spawner in allSpawners)
         {
             if (spawner != null)
@@ -727,21 +729,6 @@ public class GameManager : MonoBehaviour
             }
            
         }
-
-        List<ILevelReset> resettableObjects = new List<ILevelReset>();
-
-        foreach (MonoBehaviour mb in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))
-        {
-            if (mb is ILevelReset resettable)
-            {
-                resettableObjects.Add(resettable);
-            }
-        }
-        foreach (var obj in resettableObjects)
-        {
-            obj.ResetState();
-        }
-
         playerScript.GetComponent<CharacterController>().enabled = true;
         
     }
