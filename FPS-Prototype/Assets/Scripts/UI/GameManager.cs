@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter = 0;
+    int scrapCounter = 1000;
     
     public List<UpgradeData> allUpgrades;
     
