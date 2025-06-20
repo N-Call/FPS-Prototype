@@ -57,6 +57,7 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     protected bool shootRateBuffed = false;
     protected bool canSeePlayer;
     protected bool isDead;
+    bool canDropScrap = true;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
@@ -155,6 +156,10 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
         }
     }
 
+    public void SetCanDropScrap(bool value)
+    {
+        canDropScrap = value;
+    }
     public virtual void TakeDamage(int amount)
     {
         currentHealth -= amount;
@@ -165,8 +170,10 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
         {
             isDead = true;
             GameManager.instance.UpdateEnemyCounter(-1);
-             
-            Instantiate(scrap, transform.position, Quaternion.identity);
+            if (canDropScrap)
+            {
+                Instantiate(scrap, transform.position, Quaternion.identity);
+            }
             ScrapPickup pickup =  scrap.GetComponent<ScrapPickup>();
             if (pickup != null)
             {
