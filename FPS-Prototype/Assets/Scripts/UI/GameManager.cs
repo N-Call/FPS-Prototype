@@ -119,7 +119,9 @@ public class GameManager : MonoBehaviour
         allSpawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
 
         timeScaleOrig = Time.timeScale;
+       
         SaveSettingsSystem.Load();
+        
 
         //if (playerAbilities == null)
         //{
@@ -760,8 +762,16 @@ public class GameManager : MonoBehaviour
             {
                 case 1:
                     Debug.Log("Timer Started");
-                      speedBuffLimit = totalTime += playerAbilities.o1Dur;
-                      speedBuffTimer = 0f;
+                    if (playerAbilities != null)
+                    {
+                        speedBuffLimit = totalTime += playerAbilities.o1Dur;
+                    }
+                    else
+                    {
+                        speedBuffLimit = totalTime;
+                    }
+       
+                        speedBuffTimer = 0;
                     
                     break;
                 case 2:
