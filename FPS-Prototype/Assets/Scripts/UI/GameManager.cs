@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter = 1000;
+    int scrapCounter = 100000;
     
     public List<UpgradeData> allUpgrades;
     private Spawner[] allSpawners;
@@ -119,7 +119,9 @@ public class GameManager : MonoBehaviour
         allSpawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
 
         timeScaleOrig = Time.timeScale;
+       
         SaveSettingsSystem.Load();
+        
 
         //if (playerAbilities == null)
         //{
@@ -451,7 +453,7 @@ public class GameManager : MonoBehaviour
             case UpgradeCategory.Slide:
                 if ((upgradeType == UpgradeType.SlideSpeed))
                 {
-                    playerAbilities.moveSlideSpeed++;
+                    playerAbilities.moveSlideSpeed += 2f;
                 }
             
                 else if ((upgradeType == UpgradeType.Major))
@@ -760,11 +762,20 @@ public class GameManager : MonoBehaviour
             {
                 case 1:
                     Debug.Log("Timer Started");
-                    speedBuffLimit = totalTime;
-                    speedBuffTimer = 0;
+                    if (playerAbilities != null)
+                    {
+                        speedBuffLimit = totalTime += playerAbilities.o1Dur;
+                    }
+                    else
+                    {
+                        speedBuffLimit = totalTime;
+                    }
+       
+                        speedBuffTimer = 0;
+                    
                     break;
                 case 2:
-                    jumpBuffLimit = totalTime;
+                    jumpBuffLimit = totalTime += playerAbilities.o2Dur;
                     jumpBuffTimer = 0;
                     break;
             }
