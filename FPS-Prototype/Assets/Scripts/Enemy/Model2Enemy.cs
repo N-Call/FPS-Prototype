@@ -77,6 +77,7 @@ public class Model2Enemy : EnemyController
         {
             if (blinkTimer > 0)
             {
+                Debug.Log("Enemy flashed");
                 meshRenderers[i].material.color = flashColor;
             }
             else
