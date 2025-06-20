@@ -764,7 +764,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Timer Started");
                     if (playerAbilities != null)
                     {
-                        speedBuffLimit = totalTime += playerAbilities.o1Dur;
+                        speedBuffLimit = totalTime + playerAbilities.o1Dur;
                     }
                     else
                     {
@@ -775,8 +775,15 @@ public class GameManager : MonoBehaviour
                     
                     break;
                 case 2:
-                    jumpBuffLimit = totalTime += playerAbilities.o2Dur;
-                    jumpBuffTimer = 0;
+                    if (playerAbilities != null)
+                    {
+                        jumpBuffLimit = totalTime + playerAbilities.o2Dur;
+                    }
+                    else
+                    {
+                        jumpBuffLimit = totalTime;
+                    }
+                        jumpBuffTimer = 0;
                     break;
             }
         }
