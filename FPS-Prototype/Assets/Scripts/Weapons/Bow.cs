@@ -37,10 +37,9 @@ public class Bow : Range
             chargeCoroutine = null;
 
             SoundManager.instance.PlaySFX("bowRelease");
-            Shoot();
+            PlayShootAnim();
             ammoCount--;
             currTotalBullets--;
-            currentCharge = 0;
 
             //see if out of ammo, if so change idle animation
             PlaySeconedIdle(ammoCount == 0 && ammoCap == 0);
@@ -52,11 +51,13 @@ public class Bow : Range
 
     void Shoot()
     {
-        PlayShootAnim();
         shootTimer = 0;
         Damage dmg = Instantiate(projectils[projectileIndex], shootPos.position, transform.rotation);
         dmg.AddDamageAmount((int)(damage * currentCharge));
+        Debug.Log("Added Distance: " + (int)(distance / chargeMaxRate * currentCharge));
         dmg.AddSpeedAmount((int)(distance / chargeMaxRate * currentCharge));
+
+        currentCharge = 0;
     }
 
     private void OnEnable()
