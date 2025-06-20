@@ -149,7 +149,7 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
             //if (GameManager.instance.speedBuffTimer > speedElemTime || GameManager.instance.speedBuffTimer == 0)
             if (GameManager.instance.speedBuffTimer <= 0 || !GameManager.instance.playerScript.speedBuffed)
             {
-               
+                Debug.Log("is working");
                 GameManager.instance.playerScript.AddModifier(speedElemMod);
                 
                 GameManager.instance.playerScript.SetBaseFOV(baseFOV + speedElemFOVMod);
@@ -169,11 +169,8 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
             GameManager.instance.playerScript.SetBaseFOV(baseFOV - speedElemFOVMod);
             GameManager.instance.playerScript.speedBuffed = false;
         }
-        if (GameManager.instance.playerAbilities != null)
-        {
-            GameManager.instance.SetElemParam((int)elem, buff, speedElemTime);
-            Debug.Log(speedElemTime);
-        }
+        float tempElem = (GameManager.instance.playerAbilities != null)? speedElemTime + GameManager.instance.playerAbilities.o1Dur : speedElemTime;
+        GameManager.instance.SetElemParam((int)elem, buff, tempElem);
     }
 
     private void ApplyJumpElem()
