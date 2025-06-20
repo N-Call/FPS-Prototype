@@ -6,18 +6,17 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
     public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
     [SerializeField] GameObject model;
-    [SerializeField] Collider explosionRadius;
-    [SerializeField] GameObject explosionVisual;
+    [SerializeField] GameObject explosionRadius;
     [SerializeField] float explosionSize;
 
     [Header("Element Type")]
     [SerializeField] public ElementType elem;
 
     [Header("Elements")]
-    [SerializeField] float speedElemMod;
+    [SerializeField] public float speedElemMod;
     [SerializeField] float speedElemFOVMod;
     [SerializeField] float speedElemTime;
-    [SerializeField] float jumpElemMod;
+    [SerializeField] public float jumpElemMod;
     [SerializeField] float jumpElemTime;
     [SerializeField] int shieldElemMod;
 
@@ -28,7 +27,7 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
     float baseFOV;
     float respawnTimer;
 
-    bool buff;
+    public bool buff;
     bool respawn;
     bool isActive;
 
@@ -39,7 +38,7 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
     void Start()
     {
         explosionScale = new Vector3(explosionSize, explosionSize, explosionSize);
-        explosionVisual.transform.localScale = explosionScale;
+        explosionRadius.transform.localScale = explosionScale;
         SphereCollider explode = explosionRadius.GetComponent<SphereCollider>();
         explode.radius = explosionSize/2;
         baseFOV = Camera.main.fieldOfView;
@@ -71,6 +70,7 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
         if(HP <= 0)
         {
             StartCoroutine(InitiateExplosion());
+            StartCoroutine(ToggleExplosionVisual());
         }   
     }
 
@@ -105,24 +105,8 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        IElemental affected = other.GetComponent<IElemental>();
-        if (buff)
-        {
-            affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-        }
-        else
-        {
-            affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-        }
-    }
-
     void ToggleVisuals()
     {
-        explosionRadius.enabled = !explosionRadius.enabled;
-        //explosionVisual.SetActive(!explosionVisual.activeSelf);
-
         CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
         if (collider != null)
         {
@@ -147,6 +131,13 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
             //Debug.Log("Set inactive!");
             gameObject.SetActive(false);
         }
+    }
+
+    IEnumerator ToggleExplosionVisual()
+    {
+        explosionRadius.SetActive(!explosionRadius.activeSelf);
+        yield return new WaitForSeconds(0.1f);
+        explosionRadius.SetActive(!explosionRadius.activeSelf);
     }
 
     public void ApplySpeedElem()
