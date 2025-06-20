@@ -91,7 +91,7 @@ public class Melee : MonoBehaviour, IWeapon
 
     IEnumerator MoveOverTime(Vector3 target, float duration)
     {
-        GameManager.instance.playerScript.enabled = false;
+        GameManager.instance.playerScript.stopActions = true;
         GameObject player = GameManager.instance.player;
         Vector3 start = player.transform.position;
         float elapsed = 0;
@@ -103,6 +103,6 @@ public class Melee : MonoBehaviour, IWeapon
 
             yield return null;
         }
-        GameManager.instance.playerScript.enabled = true;
+        GameManager.instance.playerScript.stopActions = false;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour, IDamage, IPickup
 {
+    [HideInInspector] public bool stopActions;
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask playerMask;
 
@@ -166,15 +167,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
         //Debug.DrawRay(transform.position, -transform.right * wallCheckDist, Color.blue);
         //Debug.DrawRay(transform.position, transform.right * wallCheckDist, Color.red);
-
-        Movement();
-        WallRunCheck();
-        Jump();
-        Sprint();
-        Crouch();
-        WeaponInput();
-        SetCurrentFOV();
-        HandleHeadBobbing();
+        if (!stopActions)
+        {
+            Movement();
+            WallRunCheck();
+            Jump();
+            Sprint();
+            Crouch();
+            WeaponInput();
+            SetCurrentFOV();
+            HandleHeadBobbing();
+        }
 
         if (invulnerable)
         {
