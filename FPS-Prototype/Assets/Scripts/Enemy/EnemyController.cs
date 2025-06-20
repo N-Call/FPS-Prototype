@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class EnemyController : MonoBehaviour, IDamage
+public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
 {
     public GameObject scrap;
     [SerializeField] int scrapAmount;
@@ -32,8 +32,13 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] protected GameObject bullet;
     [SerializeField] protected float shootRate;
 
-    
-    
+    [Header("Flash Settings")]
+    [SerializeField] protected float blinkIntensity;
+    [SerializeField] protected float blinkDuration;
+    protected float blinkTimer;
+
+    protected MeshRenderer[] meshRenderers;
+    protected Color[] originalColors;
 
     protected Color colorOrig;
     protected Vector3 playerDir;
@@ -51,17 +56,21 @@ public class EnemyController : MonoBehaviour, IDamage
     protected bool playerInRange;
     protected bool shootRateBuffed = false;
     protected bool canSeePlayer;
+    protected bool isDead;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
-        GameManager.instance.AddEnemyToRespawn(this);
+        
+        //GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
+       
+        
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
-        
-        
+        isDead = false;
+
         if (addToEnemyCount)
         {
             GameManager.instance.UpdateEnemyCounter(1);
@@ -72,7 +81,10 @@ public class EnemyController : MonoBehaviour, IDamage
     protected virtual void Update()
     {
         //SetAnimParameters();
+        
         shootTimer += Time.deltaTime;
+        
+
 
         if (agent.remainingDistance < 0.01f)
         {
@@ -89,6 +101,7 @@ public class EnemyController : MonoBehaviour, IDamage
         }
     }
 
+   
     //void SetAnimParameters()
     //{
     //    float agentSpeedCurr = agent.velocity.normalized.magnitude;
@@ -146,11 +159,13 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         currentHealth -= amount;
         SoundManager.instance.PlaySFX("turretHit");
+        blinkTimer = blinkDuration;
 
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
-            
+            isDead = true;
+            GameManager.instance.UpdateEnemyCounter(-1);
+             
             Instantiate(scrap, transform.position, Quaternion.identity);
             ScrapPickup pickup =  scrap.GetComponent<ScrapPickup>();
             if (pickup != null)
@@ -158,41 +173,38 @@ public class EnemyController : MonoBehaviour, IDamage
                 pickup.scrapAmount = scrapAmount;
             }
 
-            GameManager.instance.UpdateEnemyCounter(-1);
             SoundManager.instance.PlaySFX("turretDestroy");
-        }
-        else
-        {
-            StartCoroutine(flashRed());
-        }        
-    }
 
-    protected IEnumerator flashRed()
-    {
-        // Set this object's color to red
-        model.material.color = Color.red;
-
-        List<Color> colors = new List<Color>();
-
-        // Set children's colors to red
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
-        {
-            colors.Add(renderer.material.color);
-            renderer.material.color = Color.red;
-        }
-
-        yield return new WaitForSeconds(0.05f);
-
-        // Set this object's color back to its original
-        model.material.color = colorOrig;
-
-        int index = 0;
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
-        {
-            renderer.material.color = colors[index];
-            index++;
+            Destroy(gameObject);
         }
     }
+
+    //protected IEnumerator flashRed()
+    //{
+    //    // Set this object's color to red
+    //    model.material.color = Color.red;
+
+    //    List<Color> colors = new List<Color>();
+
+    //    // Set children's colors to red
+    //    foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
+    //    {
+    //        colors.Add(renderer.material.color);
+    //        renderer.material.color = Color.red;
+    //    }
+
+    //    yield return new WaitForSeconds(0.05f);
+
+    //    // Set this object's color back to its original
+    //    model.material.color = colorOrig;
+
+    //    int index = 0;
+    //    foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
+    //    {
+    //        renderer.material.color = colors[index];
+    //        index++;
+    //    }
+    //}
 
     protected void FaceTarget()
     {
@@ -206,4 +218,11 @@ public class EnemyController : MonoBehaviour, IDamage
         
     }
 
+    public void ResetHealth()
+    {
+        if (!isDead)
+        {
+            currentHealth = maxHealth;
+        }
+    }
 }

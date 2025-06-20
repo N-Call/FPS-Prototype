@@ -445,12 +445,18 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             float calculatedCrouchSpeed = speed * crouchSpeedMultiplier;
             speed += currentSlideSpeed;
+            // This is to apply the upgrade numbers from the slide speed
+            if (GameManager.instance.playerAbilities != null)
+            {
+                speed += GameManager.instance.playerAbilities.moveSlideSpeed;
+            }
 
             if (speed <= calculatedCrouchSpeed)
             {
                 isSliding = false;
                 isCrouching = true;
                 speed = calculatedCrouchSpeed;
+                
             }
 
             currentSlideSpeed -= slideRate;
@@ -464,9 +470,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             currSpeed = speed *= speedModifier;
         }
-
         // Return the calculated speed, and factor in external speed modifiers
         return currSpeed;
+        
     }
 
     void Jump()
@@ -674,24 +680,24 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     public void TakeDamage(int amount)
     {
-        //if (invulnerable)
-        //{
-        //    Debug.Log("Invulnerable Hit");
-        //    return;
-        //}
+        if (invulnerable)
+        {
+            Debug.Log("Invulnerable Hit");
+            return;
+        }
 
-        SoundManager.instance.PlaySFX("playerHurt");
-
-        if (isShielded > 0) //&& !invulnerable)
+        if (isShielded > 0 && !invulnerable)
         {
             isShielded -= 1;
 
             invincHitTime = 0.15f;
         }
+        
         else if (!invulnerable)
         {
             HP -= amount;
             StartCoroutine(FlashDamageScreen());
+            SoundManager.instance.PlaySFX("playerHurt");
         }
 
         UpdatePlayerUI();

@@ -1,23 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class Target : MonoBehaviour, IDamage, ITarget
+public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
 {
     public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
     [SerializeField] GameObject model;
-    [SerializeField] Collider explosionRadius;
-    [SerializeField] GameObject explosionVisual;
+    [SerializeField] GameObject explosionRadius;
     [SerializeField] float explosionSize;
 
     [Header("Element Type")]
     [SerializeField] public ElementType elem;
 
     [Header("Elements")]
-    [SerializeField] float speedElemMod;
+    [SerializeField] public float speedElemMod;
     [SerializeField] float speedElemFOVMod;
     [SerializeField] float speedElemTime;
-    [SerializeField] float jumpElemMod;
+    [SerializeField] public float jumpElemMod;
     [SerializeField] float jumpElemTime;
     [SerializeField] int shieldElemMod;
 
@@ -28,8 +27,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
     float baseFOV;
     float respawnTimer;
 
-    bool buff;
+    public bool buff;
     bool respawn;
+    bool isActive;
 
     Vector3 explosionScale;
     public bool enemyBuff; 
@@ -38,7 +38,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
     void Start()
     {
         explosionScale = new Vector3(explosionSize, explosionSize, explosionSize);
-        explosionVisual.transform.localScale = explosionScale;
+        explosionRadius.transform.localScale = explosionScale;
         SphereCollider explode = explosionRadius.GetComponent<SphereCollider>();
         explode.radius = explosionSize/2;
         baseFOV = Camera.main.fieldOfView;
@@ -70,6 +70,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
         if(HP <= 0)
         {
             StartCoroutine(InitiateExplosion());
+            StartCoroutine(ToggleExplosionVisual());
         }   
     }
 
@@ -104,24 +105,8 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        IElemental affected = other.GetComponent<IElemental>();
-        if (buff)
-        {
-            affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-        }
-        else
-        {
-            affected?.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-        }
-    }
-
     void ToggleVisuals()
     {
-        explosionRadius.enabled = !explosionRadius.enabled;
-        //explosionVisual.SetActive(!explosionVisual.activeSelf);
-
         CapsuleCollider collider = gameObject.GetComponent<CapsuleCollider>();
         if (collider != null)
         {
@@ -142,9 +127,17 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
         else
         {
+            isActive = false;
             //Debug.Log("Set inactive!");
             gameObject.SetActive(false);
         }
+    }
+
+    IEnumerator ToggleExplosionVisual()
+    {
+        explosionRadius.SetActive(!explosionRadius.activeSelf);
+        yield return new WaitForSeconds(0.1f);
+        explosionRadius.SetActive(!explosionRadius.activeSelf);
     }
 
     public void ApplySpeedElem()
@@ -178,7 +171,8 @@ public class Target : MonoBehaviour, IDamage, ITarget
         }
         if (GameManager.instance.playerAbilities != null)
         {
-            GameManager.instance.SetElemParam((int)elem, buff, speedElemTime += GameManager.instance.playerAbilities.o1Dur);
+            GameManager.instance.SetElemParam((int)elem, buff, speedElemTime);
+            Debug.Log(speedElemTime);
         }
     }
 
@@ -196,7 +190,7 @@ public class Target : MonoBehaviour, IDamage, ITarget
                 GameManager.instance.playerScript.jumpBuffed = true;
             }
 
-            GameManager.instance.jumpBuffTimer = 0f;
+                GameManager.instance.jumpBuffTimer = 0f;
         }
 
         else
@@ -208,7 +202,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
             GameManager.instance.playerScript.jumpBuffed = false;
         }
 
-        GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime += GameManager.instance.playerAbilities.o2Dur);
+
+        GameManager.instance.SetElemParam((int)elem, buff, jumpElemTime);
+
     }
 
     private void ApplyShieldElem()
@@ -229,4 +225,9 @@ public class Target : MonoBehaviour, IDamage, ITarget
         GameManager.instance.playerScript.UpdatePlayerUI();
     }
 
+    public void ResetState()
+    {
+        isActive = true;
+        gameObject.SetActive(true);
+    }
 }

@@ -18,7 +18,16 @@ public class Model2Turret : EnemyController
 
     protected override void Start()
     {
-        GameManager.instance.AddEnemyToRespawn(this);
+        meshRenderers = GetComponentsInChildren<MeshRenderer>();
+
+        originalColors = new Color[meshRenderers.Length];
+        Debug.Log("Found" + meshRenderers.Length + " renderers on" + gameObject.name);
+        for (int i = 0; i < meshRenderers.Length; i++)
+        {
+
+            originalColors[i] = meshRenderers[i].material.color;
+        }
+        //GameManager.instance.AddEnemyToRespawn(this);
         maxHealth = currentHealth;
         colorOrig = model.material.color;
         turretHead = transform.Find("Head");
@@ -37,10 +46,36 @@ public class Model2Turret : EnemyController
 
     protected override void Update()
     {
+       
         shootTimer += Time.deltaTime;
+        blinkTimer -= Time.deltaTime;
+        EnemyFlash();
+        
         canSeePlayer = CanSeePlayer();
     }
 
+    void EnemyFlash()
+    {
+
+        float lerp = Mathf.Clamp01(blinkTimer / blinkDuration) * 1.0f;
+        float intensity = lerp * blinkIntensity;
+        Color flashColor = Color.red * intensity;
+
+        for (int i = 0; i < meshRenderers.Length; i++)
+        {
+            if (blinkTimer > 0)
+            {
+                Debug.Log("Enemy flashed");
+                meshRenderers[i].material.color = flashColor;
+            }
+            else
+            {
+                meshRenderers[i].material.color = originalColors[i];
+            }
+
+        }
+
+    }
     protected override bool CanSeePlayer()
     {
         playerDir = (GameManager.instance.player.transform.position + (Vector3.up * 0.5f)) - aimPos.position;
@@ -50,7 +85,7 @@ public class Model2Turret : EnemyController
         RaycastHit hit;
         if (Physics.Raycast(aimPos.position, playerDir, out hit, shootDistance, ~layerToIgnore) && angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
         {
-            Vector3 middlePlayerDir = (GameManager.instance.player.transform.position - (Vector3.up * 0.5f)) - turretHead.position;
+            Vector3 middlePlayerDir = (GameManager.instance.player.transform.position - (Vector3.up * 0.8f)) - turretHead.position;
 
             // Calculate the vertical angle from the direction
             float pitch = Vector3.SignedAngle(middlePlayerDir, new Vector3(middlePlayerDir.x, 0, middlePlayerDir.z), turretHead.right);

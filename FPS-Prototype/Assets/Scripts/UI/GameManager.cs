@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject debuffJump;
 
 
-    List<EnemyController> enemiesToRespawn;
+    
 
     public Vector3 respawnPosition;
     public Quaternion respawnRotation;
@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
     public FinalGradeSystem gradeSystem;
     public ScrapManager scrapManager;
     public VolumeSystemData volumeSystemData;
+    public BossSM boss; 
     
 
     public bool isPaused;
@@ -95,9 +96,10 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter = 1000;
+    int scrapCounter = 100000;
     
     public List<UpgradeData> allUpgrades;
+    private Spawner[] allSpawners;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -114,9 +116,12 @@ public class GameManager : MonoBehaviour
             startPos = player.transform.position;
         }
 
+        allSpawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
+
         timeScaleOrig = Time.timeScale;
-        enemiesToRespawn = new List<EnemyController>();
+       
         SaveSettingsSystem.Load();
+        
 
         //if (playerAbilities == null)
         //{
@@ -448,7 +453,7 @@ public class GameManager : MonoBehaviour
             case UpgradeCategory.Slide:
                 if ((upgradeType == UpgradeType.SlideSpeed))
                 {
-                    playerAbilities.moveSlideSpeed++;
+                    playerAbilities.moveSlideSpeed += 2f;
                 }
             
                 else if ((upgradeType == UpgradeType.Major))
@@ -690,10 +695,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddEnemyToRespawn(EnemyController enemy)
-    {
-        enemiesToRespawn.Add(enemy);
-    }
+    //public void AddEnemyToRespawn(EnemyController enemy)
+    //{
+    //    enemiesToRespawn.Add(enemy);
+    //}
 
     public void SetSpawnPosition(Vector3 newSpawnPosition, Quaternion newSpawnRotation)
     {
@@ -710,13 +715,24 @@ public class GameManager : MonoBehaviour
             player.transform.parent = null;
         }
 
-        player.transform.position = respawnPosition;
-
+        player.transform.SetPositionAndRotation(respawnPosition, respawnRotation);
         playerScript.ResetPlayerStats();
-
         ResetElemTimers();
-
+        if (boss != null)
+        {
+            ResetBossHealth();
+        }
+        foreach (var spawner in allSpawners)
+        {
+            if (spawner != null)
+            {
+                Debug.Log("Enemy Health Restored");
+                spawner.ResetAllEnemyHealth();
+            }
+           
+        }
         playerScript.GetComponent<CharacterController>().enabled = true;
+        
     }
 
     private void ResetElemTimers()
@@ -746,12 +762,28 @@ public class GameManager : MonoBehaviour
             {
                 case 1:
                     Debug.Log("Timer Started");
-                    speedBuffLimit = totalTime;
-                    speedBuffTimer = 0;
+                    if (playerAbilities != null)
+                    {
+                        speedBuffLimit = totalTime + playerAbilities.o1Dur;
+                    }
+                    else
+                    {
+                        speedBuffLimit = totalTime;
+                    }
+       
+                        speedBuffTimer = 0;
+                    
                     break;
                 case 2:
-                    jumpBuffLimit = totalTime;
-                    jumpBuffTimer = 0;
+                    if (playerAbilities != null)
+                    {
+                        jumpBuffLimit = totalTime + playerAbilities.o2Dur;
+                    }
+                    else
+                    {
+                        jumpBuffLimit = totalTime;
+                    }
+                        jumpBuffTimer = 0;
                     break;
             }
         }
@@ -827,5 +859,22 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         #endif
     }
+    public void ResetBossHealth()
+    {
+        if (boss == null)
+        {
+            GameObject bossObj = GameObject.Find("BossLift/Phase3_Animated");
 
+            if (bossObj != null)
+            {
+                boss = bossObj.GetComponent<BossSM>();
+            }
+        }
+        
+        IEnemyReset bossReset = boss.GetComponent<IEnemyReset>();
+        if (bossReset != null)
+        {
+            bossReset.ResetHealth();
+        }        
+    }
 }

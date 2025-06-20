@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5666299036535727793}
   - component: {fileID: 5996994682364687589}
   - component: {fileID: 4169921463063694558}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 912469985844052175}
   - component: {fileID: 2274533964470992043}
   - component: {fileID: 3802922374293645615}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Num 2 Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 6648832730198411571}
   - component: {fileID: 6834985808518849433}
   - component: {fileID: 6780473565298106409}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Eyebrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 872515679305348994}
   - component: {fileID: 1740255373593410094}
   - component: {fileID: 1393106203458483065}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 3279483979889110399}
   - component: {fileID: 2183097943572083761}
   - component: {fileID: 7621092821426713560}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,9 +443,9 @@ GameObject:
   - component: {fileID: 4009586528366748666}
   - component: {fileID: 6660802201224356083}
   - component: {fileID: 4040350720913482722}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model2Mine
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -502,6 +502,8 @@ MonoBehaviour:
   shootPos: {fileID: 0}
   bullet: {fileID: 0}
   shootRate: 0
+  blinkIntensity: 0
+  blinkDuration: 0
   originalPosition: {x: 0, y: 0, z: 0}
   explosionDistance: 1.5
   damageAmount: 5
@@ -583,7 +585,7 @@ GameObject:
   - component: {fileID: 6424694851077296641}
   - component: {fileID: 5405197672568935411}
   - component: {fileID: 4596699300093932042}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right Wheel Inside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -669,7 +671,7 @@ GameObject:
   - component: {fileID: 7076884500460813976}
   - component: {fileID: 8449104972317601516}
   - component: {fileID: 6032769107828726939}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -755,7 +757,7 @@ GameObject:
   - component: {fileID: 1500695338038458577}
   - component: {fileID: 7143408361310203540}
   - component: {fileID: 3277380750880863843}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Num 2 Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -841,7 +843,7 @@ GameObject:
   - component: {fileID: 2277298168914725565}
   - component: {fileID: 1230028299493907494}
   - component: {fileID: 7270570384782751165}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Wheel Inside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,7 +929,7 @@ GameObject:
   - component: {fileID: 339152468790038596}
   - component: {fileID: 7073229295047931374}
   - component: {fileID: 6479015094355558895}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1016,7 +1018,7 @@ GameObject:
   - component: {fileID: 2222064160056166213}
   - component: {fileID: 1376505903842946687}
   - component: {fileID: 4138682342443162030}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Back Design2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1102,7 +1104,7 @@ GameObject:
   - component: {fileID: 5316310759449103103}
   - component: {fileID: 2976635925255049166}
   - component: {fileID: 1542988211803382074}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Back Design
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1188,7 +1190,7 @@ GameObject:
   - component: {fileID: 1866937170305693495}
   - component: {fileID: 5124209190766390369}
   - component: {fileID: 5103499023801540656}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1274,7 +1276,7 @@ GameObject:
   - component: {fileID: 5156430431923558961}
   - component: {fileID: 4245469703207907714}
   - component: {fileID: 2432205709109180655}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wheel Cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1360,7 +1362,7 @@ GameObject:
   - component: {fileID: 8205290825793714164}
   - component: {fileID: 6603212771031146081}
   - component: {fileID: 2310553941196682352}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1446,7 +1448,7 @@ GameObject:
   - component: {fileID: 2403175246492095589}
   - component: {fileID: 5601141218999887160}
   - component: {fileID: 6351922676923066392}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1537,7 +1539,7 @@ GameObject:
   - component: {fileID: 1482069883406458630}
   - component: {fileID: 9160242799314351151}
   - component: {fileID: 7173303794075686291}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1623,7 +1625,7 @@ GameObject:
   - component: {fileID: 1835252645844606944}
   - component: {fileID: 5100154898620671857}
   - component: {fileID: 2298194080971114900}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Eyebrow.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1709,7 +1711,7 @@ GameObject:
   - component: {fileID: 4005835431817881141}
   - component: {fileID: 5503813863545509946}
   - component: {fileID: 7866783240897126963}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
