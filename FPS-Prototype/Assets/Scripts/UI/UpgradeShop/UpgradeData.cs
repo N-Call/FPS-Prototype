@@ -5,6 +5,7 @@ public class UpgradeData : ScriptableObject
 {
     public string upgradeID;
     public string majorUpgradeID;
+
     public UpgradeCategory category;
     public UpgradeType type;
     public int maxLevel = 5;
