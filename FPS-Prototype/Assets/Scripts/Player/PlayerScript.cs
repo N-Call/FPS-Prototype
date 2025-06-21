@@ -48,9 +48,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [Header("Wall Running/Jumping")]
     [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallRunDur;
+    [SerializeField] float wallRunDurMajor = 3.15f;
     [SerializeField] float wallRunGravity;
     [SerializeField] float wallJumpForce;
     [SerializeField] float wallCheckDist = 0.7f;
+    [SerializeField] float wallCheckFBDist = 0.9f;
     [SerializeField] float wallJumpHoriForce;
     //[SerializeField] float wallRunCooldown;
     [SerializeField] float wallStickForce;
@@ -248,6 +250,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void WallRunCheck()
     {
+        bool wallRunMajorUpgrade = GameManager.instance.playerAbilities != null && GameManager.instance.playerAbilities.wallRunMajor;
+        float currWallRunDur = wallRunMajorUpgrade ? wallRunDurMajor : wallRunDur;
         // Immediately stop wall run if player is grounded while wall running
         if (isWallRunning && controller.isGrounded)
         {
@@ -285,9 +289,24 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             wallDetectedThisFrame = true;
         }
 
+        if (isWallRunning && wallRunMajorUpgrade)
+        {
+            if (Physics.Raycast(transform.position, -transform.forward, out wallHit, wallCheckFBDist, wallRunMask))
+            {
+                currWallNormal = wallHit.normal;
+                hitWallObject = wallHit.collider.gameObject;
+                wallDetectedThisFrame = true;
+            }
+        }
+
         bool tryToRunOnLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
         bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && walkVerticalDirection > 0.2f && verticalVelocity.y < 0f;
-        bool canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
+
+        bool canContinueWallRun;
+        if (wallRunMajorUpgrade)
+            canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
+        else
+            canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded && walkVerticalDirection > 0.2f;
 
         if (canInitiateWallRun)
         {
@@ -297,9 +316,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             wallNormal = currWallNormal;
             wallRunTimer += Time.deltaTime;
-            verticalVelocity.y = -wallRunGravity;
 
-            if (wallRunTimer > wallRunDur)
+            if (wallRunMajorUpgrade)
+                verticalVelocity.y = 0f;
+            else
+                verticalVelocity.y = -wallRunGravity;
+
+            if (wallRunTimer > currWallRunDur)
             {
                 StopWallRun(hitWallObject, false);
                 return;
