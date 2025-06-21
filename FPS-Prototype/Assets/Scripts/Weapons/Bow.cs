@@ -54,7 +54,6 @@ public class Bow : Range
         shootTimer = 0;
         Damage dmg = Instantiate(projectils[projectileIndex], shootPos.position, transform.rotation);
         dmg.AddDamageAmount((int)(damage * currentCharge));
-        Debug.Log("Added Distance: " + (int)(distance / chargeMaxRate * currentCharge));
         dmg.AddSpeedAmount((int)(distance / chargeMaxRate * currentCharge));
 
         currentCharge = 0;
