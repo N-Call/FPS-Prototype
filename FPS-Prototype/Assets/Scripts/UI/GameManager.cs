@@ -718,10 +718,8 @@ public class GameManager : MonoBehaviour
         player.transform.SetPositionAndRotation(respawnPosition, respawnRotation);
         playerScript.ResetPlayerStats();
         ResetElemTimers();
-        if (boss != null)
-        {
-            ResetBossHealth();
-        }
+        ResetBossHealth();
+        
         foreach (var spawner in allSpawners)
         {
             if (spawner != null)
@@ -870,6 +868,7 @@ public class GameManager : MonoBehaviour
                 boss = bossObj.GetComponent<BossSM>();
             }
         }
+        if (boss == null) return;
         
         IEnemyReset bossReset = boss.GetComponent<IEnemyReset>();
         if (bossReset != null)
