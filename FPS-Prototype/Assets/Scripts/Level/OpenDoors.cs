@@ -35,7 +35,7 @@ public class OpenDoors : MonoBehaviour
         {
             if (DoorAnimation != null)
             {
-                Debug.Log("opening door");
+                
                 StopCoroutine(DoorAnimation);
                 
             }
@@ -52,7 +52,6 @@ public class OpenDoors : MonoBehaviour
             if (DoorAnimation != null)
             {
                 StopCoroutine(DoorAnimation);
-                
             }
             DoorAnimation = StartCoroutine(SlidingDoorClose());
         }    
@@ -65,7 +64,6 @@ public class OpenDoors : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             SoundManager.instance.PlaySFX(sfxName);
-            Debug.Log("entering Door Trigger");
             Open(other.transform.position);
         }
         if (isLocked)

@@ -4,7 +4,7 @@ public class PlayerAbilities : MonoBehaviour
 {
     [Header("Pistol Upgrades")]
     [SerializeField][Tooltip("If the ricochet upgrade is unlocked")]
-    public bool ricochet;
+    public bool ricochet = true;
 
     //pistol
     public int w1DmgMod;

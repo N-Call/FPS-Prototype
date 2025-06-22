@@ -22,7 +22,7 @@ public class Model2Enemy : EnemyController
         meshRenderers = GetComponentsInChildren<MeshRenderer>();
         //grab mesh material of all the components of the enemy
         originalColors = new Color[meshRenderers.Length];
-        Debug.Log("Found" + meshRenderers.Length + " renderers on" + gameObject.name);
+        ;
         for (int i = 0; i < meshRenderers.Length; i++)
         {
 
@@ -67,7 +67,7 @@ public class Model2Enemy : EnemyController
         {
             if (blinkTimer > 0)
             {
-                Debug.Log("Enemy flashed");
+                
                 meshRenderers[i].material.color = flashColor;
             }
             else

@@ -326,14 +326,16 @@ public class GameManager : MonoBehaviour
             
             ApplyUpgrade(upgrade);
         }
-        else
+        else if(upgrade.currentLevel < upgrade.maxLevel)
         {
-            
             int cost = upgrade.costPerLevel[upgrade.currentLevel];
-            SpendScrap(cost);
-            upgrade.currentLevel++;
-           
-            ApplyUpgrade(upgrade);
+            
+            {
+                SpendScrap(cost);
+                upgrade.currentLevel++;
+
+                ApplyUpgrade(upgrade);
+            }
         }
     }
 
