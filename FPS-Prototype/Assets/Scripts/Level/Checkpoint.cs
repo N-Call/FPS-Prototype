@@ -21,9 +21,8 @@ public class Checkpoint : MonoBehaviour
 
             if (isFinalCheckPoint)
             {
-                
-                GameManager.instance.WinCondition(-1);
                 SaveSystem.SaveStats();
+                GameManager.instance.WinCondition(-1);
                 SoundManager.instance.sfxSource.Stop();
                 SoundManager.instance.PlaySFX("victory");
             }
