@@ -357,7 +357,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         wallRunLockedWall = wallObject;
         wallJumped = false;
 
-        if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
+        if (provideExtraJumpIfNeeded && jumpCount == maxJumps + GameManager.instance.playerAbilities.moveWallRunJump / 2)
         {
             jumpCount -= 1;
         }
