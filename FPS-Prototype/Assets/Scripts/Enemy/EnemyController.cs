@@ -59,11 +59,7 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
-        
-        
         maxHealth = currentHealth;
-       
-        
         colorOrig = model.material.color;
         startingPos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
