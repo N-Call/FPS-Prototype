@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     [Header("Menus")]
     [SerializeField] EventSystem eventSystem;
     [SerializeField] GameObject firstSelectedButton;
+    
 
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
@@ -131,6 +133,28 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            StartCoroutine(ShowCursorDelayed());
+
+            isPaused = true;
+            Time.timeScale = 0;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            //EnablePPVolume();
+            globalVol.SetActive(true);
+            // to turn off the reticle
+            reticle.SetActive(false);
+            SoundManager.instance.musicSource.Pause();
+            SoundManager.instance.sfxSource.Stop();
+            // stop the player from shooting
+            menuActive = menuRules;
+            menuRules.SetActive(true);
+
+            playerScript.enabled = false;
+            InputActionManager.instance.EnableMenuInput();
+        }
+
         if (scrapUI != null)
         {
             scrapUI.text = scrapCounter.ToString("F0");
@@ -179,7 +203,7 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-
+        
         isPaused = true;
         Time.timeScale = 0;
         Cursor.visible = true;
@@ -195,11 +219,13 @@ public class GameManager : MonoBehaviour
         playerScript.enabled = false;
         InputActionManager.instance.EnableMenuInput();
 
+       
         if (showPauseMenu)
         {
             menuActive = menuPause;
             menuPause.SetActive(isPaused);
         }
+        
     }
 
     public void StatePause()
@@ -243,6 +269,13 @@ public class GameManager : MonoBehaviour
         {
             InputActionManager.instance.DisableMenuInput();
             playerScript.enabled = true;
+        }
+        if (menuRules != null)
+        {
+            // for level 1 rules
+            menuRules.SetActive(false);
+            menuActive = null;
+            
         }
     }
     public void AddScrap(int amount)
@@ -337,20 +370,17 @@ public class GameManager : MonoBehaviour
                 else if ((upgradeType == UpgradeType.Speed))
                 {
                     //change to ammo mag size
-                    playerAbilities.w1AmmoMag += 2;
+                    playerAbilities.w1AmmoMag ++;
                 }
                 else if ((upgradeType == UpgradeType.Rate))
                 {
-
                     playerAbilities.w1RateMod -= 0.20f;
-                    
                 }
                 else if ((upgradeType == UpgradeType.Major))
                 {
                     playerAbilities.w1Major = true;
                     playerAbilities.ricochet = true;
-                    // need full auto for the pistol
-                    
+                    // need full auto for the pistol  
                 }
                 break;
             case UpgradeCategory.Weapon2:
@@ -874,5 +904,14 @@ public class GameManager : MonoBehaviour
         {
             bossReset.ResetHealth();
         }        
+    }
+
+    
+
+    IEnumerator ShowCursorDelayed()
+    {
+        yield return null; // wait one frame
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

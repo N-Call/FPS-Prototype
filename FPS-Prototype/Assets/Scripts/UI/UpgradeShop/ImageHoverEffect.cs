@@ -15,21 +15,21 @@ public class ImageHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     void Start()
     {
+        LoadUpgradeLevel();
+
         if (upText != null)
-        {// need to add UI count to major Upgrades
+        {
             Debug.Log($"[{upgradeData.name}] Level on load: {upgradeData.currentLevel}");
             upText.text = upgradeData.currentLevel.ToString();
         }
-        LoadUpgradeLevel();
     }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("point is down");
         GameManager.instance.BuyUpgrade(upgradeData);
-        
+
         if (upText != null)
-        {// need to add UI count to major Upgrades
+        {
             upText.text = upgradeData.currentLevel.ToString();
         }
     }
@@ -44,7 +44,10 @@ public class ImageHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        hoverImage.gameObject.SetActive(false); // Hide hover image
+        if (hoverImage != null)
+        {
+            hoverImage.gameObject.SetActive(false); // Hide hover image
+        }
     }
 
     private void LoadUpgradeLevel()
