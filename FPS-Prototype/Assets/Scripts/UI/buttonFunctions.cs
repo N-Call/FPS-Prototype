@@ -23,6 +23,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void StartGame()
     {
+        GameManager.instance.ResetRules();
         SceneManager.LoadScene(4);
     }
 
