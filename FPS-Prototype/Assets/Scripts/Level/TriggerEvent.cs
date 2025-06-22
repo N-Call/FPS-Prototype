@@ -6,7 +6,9 @@ public class TriggerEvent : MonoBehaviour
     [SerializeField] GameObject target;
 
     public UnityEvent onActivation;
+    public bool activateOnce;
 
+    private bool hasActivated;
     private void Start()
     {
         if(target == null)
@@ -18,7 +20,9 @@ public class TriggerEvent : MonoBehaviour
     {
         if (other.gameObject == target)
         {
+            if(hasActivated && activateOnce) { return; }
             onActivation?.Invoke();
+            hasActivated = true;
         }
     }
 }

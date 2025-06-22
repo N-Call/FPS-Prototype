@@ -7,6 +7,7 @@ public class DoorTrigger : MonoBehaviour
     [SerializeField] private string colliderObject = "Player";
     [SerializeField] AudioSource clip;
     [SerializeField] AudioClip doorOpen;
+    [SerializeField] private bool disableTrigger;
     
     public void OnTriggerEnter(Collider other)
     {
@@ -31,6 +32,10 @@ public class DoorTrigger : MonoBehaviour
             foreach (OpenDoors door in doorScript)
             {
                 door.Close(other.transform.position);
+            }
+            if (disableTrigger)
+            {
+                gameObject.SetActive(false);
             }
         }
     }
