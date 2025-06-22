@@ -359,17 +359,24 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
                         if (CheckForDuplicateBinding(action, bindingIndex, allCompositeParts))
                         {
+                            Debug.Log("[0] Prompting again!");
                             action.RemoveBindingOverride(bindingIndex);
                             CleanUp();
                             PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
                             return;
                         }
 
+                        Debug.Log("[0] Setting new keybind!");
 
                         InputActionManager.instance.DisableRebindInput();
                         if (m_RebindOverlay != null)
                         {
+                            Debug.Log("[0] Deactivating overlay!");
                             m_RebindOverlay.SetActive(false);
+                        }
+                        else
+                        {
+                            Debug.Log("[0] Overlay is null!");
                         }
 
                         UpdateBindingDisplay();
@@ -431,13 +438,17 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
                     if (binding.effectivePath == newBinding.effectivePath)
                     {
+                        Debug.Log("[1] Duplicate Found! Old: " + binding.effectivePath + " | New: " + newBinding.effectivePath);
                         return true;
                     }
                 }
             }
 
+            Debug.Log("[1] No duplicates found!");
+
             if (!allCompositeParts)
             {
+                Debug.Log("[2] No duplicates found!");
                 return false;
             }
 
