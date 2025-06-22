@@ -365,7 +365,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("we upgraded the pistol");
                 if((upgradeType == UpgradeType.Damage))
                 {
-                    playerAbilities.w1DmgMod += 2;
+                    playerAbilities.w1DmgMod ++;
                 }
                 else if ((upgradeType == UpgradeType.Speed))
                 {

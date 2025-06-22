@@ -34,6 +34,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float crouchHeightMultiplier;
     [SerializeField] float crouchRate = 0.05f;
     [SerializeField] float crouchWaitTimer = 0.001f;
+    [SerializeField] SphereCollider damageCollider;
 
     [Header("Sliding")]
     [SerializeField] float slideSpeedBonus;
@@ -119,6 +120,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     int jumpCount;
     int currentWeapon = 0;
 
+    
     bool isSprinting;
     bool isCrouching;
     bool isSliding;
@@ -129,6 +131,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     public bool jumpBuffed;
     public bool speedDebuffed;
     public bool jumpDebuffed;
+
     bool elemInversed;
     bool isPlayingStep;
 
@@ -476,6 +479,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             {
                 speed += GameManager.instance.playerAbilities.moveSlideSpeed;
             }
+          
+
 
             if (speed <= calculatedCrouchSpeed)
             {
@@ -585,6 +590,23 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             if (isSprinting && controller.isGrounded)
             {
                 isSliding = true;
+                if (GameManager.instance.playerAbilities.slideMajor == true)
+                {
+                    
+                    // Damage enemies in range using the player's SphereCollider
+                    Vector3 center = transform.position + damageCollider.center;
+                    float radius = damageCollider.radius * transform.localScale.x;
+
+                    Collider[] hitEnemies = Physics.OverlapSphere(center, radius, LayerMask.GetMask("Enemy"));
+                    foreach (Collider enemy in hitEnemies)
+                    {
+                        if (enemy.TryGetComponent<IDamage>(out IDamage damageable))
+                        {
+                            damageable.TakeDamage(2); // Adjust damage value as needed
+                        }
+                    }
+                }
+
                 currentSlideSpeed = slideSpeedBonus;
                 isSprinting = false;
             }
