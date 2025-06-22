@@ -34,13 +34,21 @@ public class ButtonFunctions : MonoBehaviour
 
     public void BackToOverWorld()
     {
-        SaveSystem.SaveStats();
+        
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
         
     }
+    public void BackToOverWorldShopOnly()
+    {
+        
+        SaveSystem.SaveStats();
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SceneManager.LoadScene(2);
 
+    }
     public void MainMenu()
     {
         Time.timeScale = GameManager.instance.timeScaleOrig;
@@ -73,12 +81,8 @@ public class ButtonFunctions : MonoBehaviour
         // this is to load the next level but does a check first on making sure your in scene count 
         if (SceneManager.GetActiveScene().buildIndex + 1 <= 8)
         {
-            
-            Debug.Log("I have not made it to next scene");
-            SaveSystem.LoadGrades();
-            
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            
             SoundManager.instance.sfxSource.Stop();
             GameManager.instance.StateUnpause();
         }
@@ -97,7 +101,7 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void LvlOverWorldLoad()
     {
-        SaveSystem.LoadGrades();
+        
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
@@ -105,7 +109,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void LvlSelectStartScene()
     {
-        SaveSystem.LoadGrades();
+        
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2); 
