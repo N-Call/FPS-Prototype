@@ -55,7 +55,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float wallCheckDist = 0.7f;
     [SerializeField] float wallCheckFBDist = 0.9f;
     [SerializeField] float wallJumpHoriForce;
-    //[SerializeField] float wallRunCooldown;
+    
     [SerializeField] float wallStickForce;
     [SerializeField] float minWallRunHeight;
 
@@ -66,7 +66,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     bool isWallRunning;         // Is the player wall jumping?
     bool wallJumped;            // Did the player wall jump?
     float wallRunTimer;         // Timer for the active wall run.
-    //float wallRunCooldownTimer; // Cooldown before another wall run can be made.
+    
     Vector3 wallNormal;         // Normal of the wall being run on in question.
     Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
     private bool wallDetectedThisFrame;
@@ -170,8 +170,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             wallRunLockedWall = null;
         }
-        //Debug.DrawRay(transform.position, -transform.right * wallCheckDist, Color.blue);
-        //Debug.DrawRay(transform.position, transform.right * wallCheckDist, Color.red);
+       
         if (!stopActions)
         {
             Movement();
@@ -201,7 +200,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
         bool isMoveInput = (Mathf.Abs(walkHorizontalDirection) > 0.01f || Mathf.Abs(walkVerticalDirection) > 0.01f);
 
-        //Debug.Log($"Frame: {Time.frameCount} | isMoveInput: {isMoveInput} | isGrounded: {controller.isGrounded}");
+      
 
         // This determines the amplitude and frequency based on the movement state.
         // And is only applied while grounded.
@@ -213,13 +212,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 {
                     currAmp = sprintBobAmp;
                     currFreq = sprintBobFreq;
-                    //Debug.Log($"Sprinting - Amp: {currAmp}, Freq: {currFreq}");
+                    
                 }
                 else // Is the player walking?
                 {
                     currAmp = walkBobAmp;
                     currFreq = walkBobFreq;
-                    //Debug.Log($"Walking - Amp: {currAmp}, Freq: {currFreq}");
+                    
                 }
             }
         }
@@ -233,21 +232,21 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             // The Mathf.Sin function allows me to create a smooth, oscillating value betrween -1 and 1.
             // Also, multiplying by the currAmp scales this oscillation to any desired bobbing height as you wish.
             float bobbingOffset = (-0.5f * Mathf.Sin(bobTimer) - 0.5f) * currAmp;
-            //Debug.Log($"Bob Timer: {bobTimer}, Bobbing Offset: {bobbingOffset}");
+            
 
             // Then I apply the offset to the camera's local Y position.
             Vector3 newCamLocalPos = cameraLocalPosOrig;
             newCamLocalPos.y += bobbingOffset;
 
             Camera.main.transform.localPosition = newCamLocalPos;
-            //Debug.Log($"[Bobbing Active] Frame: {Time.frameCount} | bobTimer: {bobTimer:F4} | Offset: {bobbingOffset:F4} | Final Local Pos: {Camera.main.transform.localPosition:F4}");
+            
         }
         else // If the player is either not moving at all, or is in the air. This includes wall running, jumping, falling, etc.
         {
             bobTimer = 0f; // This resets the timer, when not moving
             // This smoothly returns the camera back to its original position.
             Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, cameraLocalPosOrig, Time.deltaTime * bobReturnSpeed);
-            //Debug.Log($"[Bobbing Reset] Frame: {Time.frameCount} | Final Local Pos: {Camera.main.transform.localPosition:F4}");
+           
         }
     }
 
@@ -412,8 +411,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         // The current speed calculated
         float speed = CalculateSpeed();
 
-        // Debug added here to track state in FixedUpdate
-
         if (isWallRunning)
         {
             Vector3 wallRunMoveDirection = Vector3.ProjectOnPlane(direction, wallNormal).normalized;
@@ -524,18 +521,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             finalJumpForce = Mathf.Max(0f, finalJumpForce);
 
             verticalVelocity.y = finalJumpForce;
-            //if (jumpModifier < 1 && jumpModifier != 0)
-            //{
-            //    verticalVelocity.y = jumpForce + (jumpForce * -(1.0f + jumpModifier));
-            //}
-            //else if (jumpModifier > 0)
-            //{
-            //    verticalVelocity.y = jumpForce * jumpModifier;
-            //}
-            //else
-            //{
-            //    verticalVelocity.y = jumpForce;
-            //}
 
             jumpCount++;
         }
@@ -730,7 +715,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     {
         if (invulnerable)
         {
-            Debug.Log("Invulnerable Hit");
             return;
         }
 
@@ -794,10 +778,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     {
         speedModifier += speed;
         jumpModifier += jump;
-
-        Debug.Log("[AddModifier] Speed += " + speed + ", Jump += " + jump +
-          " | Total SpeedModifier = " + speedModifier +
-          ", JumpModifier = " + jumpModifier);
     }
 
     public void SetShield(int shieldAmount)
@@ -960,7 +940,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
         if (jumpBuffed && GameManager.instance.jumpBuffTimer >= GameManager.instance.jumpBuffLimit)
         {
-            Debug.Log("Applying jump mod: " + jumpElemMod);
             AddModifier(0.0f, -jumpElemMod);
             particleJpMod.gameObject.SetActive(false);
             GameManager.instance.BuffJumpIcon(false);

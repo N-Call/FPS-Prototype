@@ -14,16 +14,10 @@ public class ShockWave : MonoBehaviour, IParent
 
             if(children == null)
             {
-                Debug.LogError("Was unable to find children of gameobject");
+                
                 Destroy(this);
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void CheckChild()

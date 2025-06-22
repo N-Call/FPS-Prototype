@@ -7,7 +7,7 @@ public class StartScreenScript : MonoBehaviour
     void Start()
     {
         GameManager.instance.SetOnStartScreen(true);
-        Debug.Log("StartScreen set to true");
+         
     }
 
 }

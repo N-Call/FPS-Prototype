@@ -117,7 +117,7 @@ public class BossSM : StateMachine, IDamage, IEnemyReset
                 orbSpawnCounter = 0;
             }
 
-            //GameManager.instance.bossHPbar.fillAmount = (float)currentHealth / (float)health;
+            
             StartCoroutine(FlashRed());
         }
         else
@@ -224,6 +224,5 @@ public class BossSM : StateMachine, IDamage, IEnemyReset
     public void ResetHealth()
     {
         currentHealth = health;
-        Debug.Log("[BossSM] ResetHealth called!");
     }
 }

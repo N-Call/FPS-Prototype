@@ -23,12 +23,6 @@ public class BossOrb : MonoBehaviour, IBossDamagable
         minOrbsSpawn = spline.Spline.Count - 3 + (int)DifficultyManager.Instance?.currentSettings.difficulty;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void TakeDamage()
     {
         health--;

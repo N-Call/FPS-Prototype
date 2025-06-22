@@ -12,12 +12,9 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     [SerializeField] protected Renderer model;
     [SerializeField] protected int currentHealth;
 
-    //[SerializeField] GameObject parent;
 
     [SerializeField] protected bool addToEnemyCount;
 
-    //[SerializeField] Animator anim;
-    //[SerializeField] int animTransSpeed;
 
     [Header("Agent Settings")]
     [SerializeField] protected NavMeshAgent agent;
@@ -63,7 +60,7 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     protected virtual void Start()
     {
         
-        //GameManager.instance.AddEnemyToRespawn(this);
+        
         maxHealth = currentHealth;
        
         
@@ -81,11 +78,8 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
     // Update is called once per frame
     protected virtual void Update()
     {
-        //SetAnimParameters();
         
         shootTimer += Time.deltaTime;
-        
-
 
         if (agent.remainingDistance < 0.01f)
         {
@@ -101,15 +95,6 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
             CheckRoam();
         }
     }
-
-   
-    //void SetAnimParameters()
-    //{
-    //    float agentSpeedCurr = agent.velocity.normalized.magnitude;
-    //    float animSpeedCurr = anim.GetFloat("Speed");
-
-    //    anim.SetFloat("Speed", Mathf.Lerp(animSpeedCurr, agentSpeedCurr, Time.deltaTime * animTransSpeed));
-    //}
 
     void CheckRoam()
     {
@@ -185,33 +170,6 @@ public class EnemyController : MonoBehaviour, IDamage, IEnemyReset
             Destroy(gameObject);
         }
     }
-
-    //protected IEnumerator flashRed()
-    //{
-    //    // Set this object's color to red
-    //    model.material.color = Color.red;
-
-    //    List<Color> colors = new List<Color>();
-
-    //    // Set children's colors to red
-    //    foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
-    //    {
-    //        colors.Add(renderer.material.color);
-    //        renderer.material.color = Color.red;
-    //    }
-
-    //    yield return new WaitForSeconds(0.05f);
-
-    //    // Set this object's color back to its original
-    //    model.material.color = colorOrig;
-
-    //    int index = 0;
-    //    foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
-    //    {
-    //        renderer.material.color = colors[index];
-    //        index++;
-    //    }
-    //}
 
     protected void FaceTarget()
     {

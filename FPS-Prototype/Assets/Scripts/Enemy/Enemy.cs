@@ -39,20 +39,12 @@ public class Enemy: MonoBehaviour, IDamage
     public bool isDead;
     public bool isRespawned;
 
-    //Transform turretBase;
+    
     Transform turretHead;
     Transform turretBarrel;
-    //Transform turretLeftEye;
-    //Transform turretLeftEyebrow;
-    //Transform turretRightEye;
-    //Transform turretRightEyebrow;
-    //Color turretBaseColor;
+   
     Color turretHeadColor;
-    //Color turretBarrelColor;
-    //Color turretLeftEyeColor;
-    //Color turretLeftEyebrowColor;
-    //Color turretRightEyeColor;
-    //Color turretRightEyebrowColor;
+ 
 
     Transform mineTop;
     Color mineTopColor;
@@ -64,7 +56,7 @@ public class Enemy: MonoBehaviour, IDamage
     void Start()
     {
 
-        //GameManager.instance.AddEnemyToRespawn(this);
+        
         maxHealth = currentHealth;
         originalPosition = transform.position;
         colorOrig = model.material.color;
@@ -75,24 +67,6 @@ public class Enemy: MonoBehaviour, IDamage
             turretHeadColor = turretHead.GetComponent<MeshRenderer>().material.color;
 
             StartCoroutine(Rotate());
-
-            //turretBase = transform.Find("Base");
-            //turretBaseColor = turretBase.GetComponent<MeshRenderer>().material.color;
-
-            //turretBarrel = transform.Find("Head/CannonBase/Cannon");
-            //turretBarrelColor = turretBarrel.GetComponent<MeshRenderer>().material.color;
-
-            //turretLeftEye = transform.Find("Head/Left Eye");
-            //turretLeftEyeColor = turretLeftEye.GetComponent<MeshRenderer>().material.color;
-
-            //turretLeftEyebrow = transform.Find("Head/Left Eye/Left Eyebrow");
-            //turretLeftEyebrowColor = turretLeftEyebrow.GetComponent<MeshRenderer>().material.color;
-
-            //turretRightEye = transform.Find("Head/Right Eye");
-            //turretRightEyeColor = turretRightEye.GetComponent<MeshRenderer>().material.color;
-
-            //turretRightEyebrow = transform.Find("Head/Right Eye/Right Eyebrow");
-            //turretRightEyebrowColor = turretRightEyebrow.GetComponent<MeshRenderer>().material.color;
         }
         robotMouth = transform.Find("RobotMouth.001");
 
@@ -138,7 +112,6 @@ public class Enemy: MonoBehaviour, IDamage
         }
         if (playerInRange && isTurret)
         {
-            Debug.Log("looking");
 
             turretHead.LookAt(GameManager.instance.player.transform);
             turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
@@ -226,7 +199,7 @@ public class Enemy: MonoBehaviour, IDamage
     {
         if (playerInRange && isTurret && rangeIsTrigger)
         {
-            Debug.Log("tracking");
+            
             turretHead.LookAt(GameManager.instance.player.transform);
             turretHead.eulerAngles = new Vector3(0, turretHead.eulerAngles.y, 0);
         }
@@ -235,45 +208,14 @@ public class Enemy: MonoBehaviour, IDamage
     IEnumerator flashRed()
     {
         model.material.color = Color.red;
-        //if (isTurret)
-        //{
-        //    FlashTurretRed();
-        //}
-
+       
 
         yield return new WaitForSeconds(0.05f);
 
         model.material.color = colorOrig;
-        //if (isTurret)
-        //{
-        //    ReturnTurretColor();
-        //}
-
+    
     }
 
-
-
-    //void FlashTurretRed()
-    //{
-    //    turretBase.GetComponent<MeshRenderer>().material.color = Color.red;
-    //    turretHead.GetComponent<MeshRenderer>().material.color = Color.red;
-    //    turretBarrel.GetComponent<MeshRenderer>().material.color = Color.red;
-    //    turretLeftEye.GetComponent<MeshRenderer>().material.color = Color.red;
-    //    turretLeftEyebrow.GetComponent<MeshRenderer>().material.color = Color.red;
-    //    turretRightEye.GetComponent<MeshRenderer>().material.color = Color.red;
-    //    turretRightEyebrow.GetComponent<MeshRenderer>().material.color = Color.red;
-    //}
-
-    //void ReturnTurretColor()
-    //{
-    //    turretBase.GetComponent<MeshRenderer>().material.color = turretBaseColor;
-    //    turretHead.GetComponent<MeshRenderer>().material.color = turretHeadColor;
-    //    turretBarrel.GetComponent<MeshRenderer>().material.color = turretBarrelColor;
-    //    turretLeftEye.GetComponent<MeshRenderer>().material.color = turretLeftEyeColor;
-    //    turretLeftEyebrow.GetComponent<MeshRenderer>().material.color = turretLeftEyebrowColor;
-    //    turretRightEye.GetComponent<MeshRenderer>().material.color = turretRightEyeColor;
-    //    turretRightEyebrow.GetComponent<MeshRenderer>().material.color = turretRightEyebrowColor;
-    //}
 
     private IEnumerator Rotate()
     {

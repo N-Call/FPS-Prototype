@@ -28,10 +28,7 @@ public class AmmoCratePickup : MonoBehaviour
 
                 Destroy(gameObject);
             }
-            else
-            {
-                Debug.LogWarning("PlayerPrefs doesn't have a reloadable weapon equipped. Cannot add ammo.", this);
-            }
+            
         }
     }
 }

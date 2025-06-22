@@ -371,7 +371,7 @@ public class InputActionManager : MonoBehaviour
     {
         lastInputDevice = device;
         isUsingGamepad = !(device is Mouse) && !(device is Keyboard);
-        //Debug.Log($"[{Time.deltaTime}]\t\tSwitched to " + (isUsingGamepad ? "Gamepad" : "Keyboard & Mouse"));
+       
     }
 
     private void OnDestroy()

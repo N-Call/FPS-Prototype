@@ -21,7 +21,7 @@ public class Break : MonoBehaviour, ILevelReset
             foreach (Rigidbody rb in brokenInstance.GetComponentsInChildren<Rigidbody>())
             {
                 rb.AddExplosionForce(explosionForce, explosionOrigin, explosionRadius);
-               // rb.angularVelocity = Random.insideUnitSphere * 5f;
+               
             }
         }
         SoundManager.instance.PlaySFX("Shatter");

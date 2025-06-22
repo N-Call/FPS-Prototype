@@ -123,12 +123,6 @@ public class GameManager : MonoBehaviour
         timeScaleOrig = Time.timeScale;
        
         SaveSettingsSystem.Load();
-        
-
-        //if (playerAbilities == null)
-        //{
-        //    playerAbilities = new PlayerAbilities();
-        //}
     }
 
     private void Start()
@@ -182,11 +176,6 @@ public class GameManager : MonoBehaviour
         {
             MenuManager.instance.CloseMenu();
         }
-
-        //if (isPaused && menuActive == menuPause && InputActionManager.instance.menuNavigate.magnitude > 0 && eventSystem.currentSelectedGameObject == null)
-        //{
-        //    eventSystem.SetSelectedGameObject(firstSelectedButton);
-        //}
 
         if (!isPaused && playerScript != null)
         {
@@ -280,7 +269,6 @@ public class GameManager : MonoBehaviour
     }
     public void AddScrap(int amount)
     {
-        Debug.Log(amount + "added");
         scrapCounter += amount;
 
         scrapUI.text = scrapCounter.ToString("F0");
@@ -296,7 +284,7 @@ public class GameManager : MonoBehaviour
         if (scrapManager.totalScrap >= amount)
         {
             scrapManager.totalScrap -= amount;
-            Debug.Log(scrapManager.totalScrap + "My Money");
+            
             totalScrapUI.text = scrapManager.totalScrap.ToString("F0");
 
             return true;
@@ -313,12 +301,12 @@ public class GameManager : MonoBehaviour
     {
         if (upgrade.isMajor)
         {
-            Debug.Log("Can I buy major");
+            
             return (upgrade);
         }
         else
         {
-            Debug.Log("Maxed out lvl need to prompt player");
+            
             return upgrade.currentLevel < upgrade.maxLevel &&
                    scrapManager.totalScrap >= upgrade.costPerLevel[upgrade.currentLevel];
         }
@@ -332,7 +320,7 @@ public class GameManager : MonoBehaviour
 
         if (upgrade.isMajor && upgrade.currentLevel < upgrade.maxLevel)
         {
-            Debug.Log("I bought a major");
+            
             SpendScrap(upgrade.majorCost);
             upgrade.currentLevel++;
             
@@ -340,7 +328,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("I bought minors");
+            
             int cost = upgrade.costPerLevel[upgrade.currentLevel];
             SpendScrap(cost);
             upgrade.currentLevel++;
@@ -352,7 +340,7 @@ public class GameManager : MonoBehaviour
 
     private void ApplyUpgrade(UpgradeData upgrade)
     {
-        Debug.Log("Minor upgrade applied: " + upgrade.name + " to level " + upgrade.currentLevel);
+        
         // Apply minor upgrade effect here
 
         UpgradeCategory name = upgrade.category;
@@ -362,7 +350,7 @@ public class GameManager : MonoBehaviour
         switch (name)
         {
             case UpgradeCategory.Weapon1:
-                Debug.Log("we upgraded the pistol");
+                
                 if((upgradeType == UpgradeType.Damage))
                 {
                     playerAbilities.w1DmgMod ++;
@@ -385,7 +373,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case UpgradeCategory.Weapon2:
-                Debug.Log("we upgraded the bow");
+                
                 if ((upgradeType == UpgradeType.Damage))
                 {
                     playerAbilities.w2DmgMod++;
@@ -406,7 +394,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case UpgradeCategory.Weapon3:
-                Debug.Log("we upgraded the sword");
+                
                 if ((upgradeType == UpgradeType.Damage))
                 {
                     playerAbilities.w3DmgMod++;
@@ -427,7 +415,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case UpgradeCategory.OrbSpeed:
-                Debug.Log("we upgraded the orbSpeed");
+                
                 if ((upgradeType == UpgradeType.OrbStrength))
                 {
                     playerAbilities.o1Srt++;
@@ -713,7 +701,7 @@ public class GameManager : MonoBehaviour
         {
             // display ammo count for the UI 
             ammoCount.GetComponent<TMPro.TMP_Text>().text = "" + amount + "/" + ammoCap;
-            //Debug.Log($"<color=green>UI Update Call: Magazine={amount}, Reserve={ammoCap}</color>");
+            
         }
     }
 
@@ -724,11 +712,6 @@ public class GameManager : MonoBehaviour
             weaponIcon.GetComponent<Image>().sprite = icon;
         }
     }
-
-    //public void AddEnemyToRespawn(EnemyController enemy)
-    //{
-    //    enemiesToRespawn.Add(enemy);
-    //}
 
     public void SetSpawnPosition(Vector3 newSpawnPosition, Quaternion newSpawnRotation)
     {
@@ -754,7 +737,6 @@ public class GameManager : MonoBehaviour
         {
             if (spawner != null)
             {
-                Debug.Log("Enemy Health Restored");
                 spawner.ResetAllEnemyHealth();
             }
            
@@ -789,7 +771,7 @@ public class GameManager : MonoBehaviour
             switch (elem)
             {
                 case 1:
-                    Debug.Log("Timer Started");
+                    
                     if (playerAbilities != null)
                     {
                         speedBuffLimit = totalTime + playerAbilities.o1Dur;
@@ -906,8 +888,6 @@ public class GameManager : MonoBehaviour
             bossReset.ResetHealth();
         }        
     }
-
-    
 
     IEnumerator ShowCursorDelayed()
     {

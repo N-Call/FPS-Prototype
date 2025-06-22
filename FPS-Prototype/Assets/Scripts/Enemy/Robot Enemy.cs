@@ -7,7 +7,7 @@ public class RobotEnemy : EnemyController
     {
         playerDir = (GameManager.instance.player.transform.position - transform.position);
         angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
-        Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
+        
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, playerDir, out hit))

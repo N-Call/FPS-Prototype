@@ -17,7 +17,7 @@ public class SaveSettingsSystem : MonoBehaviour
 
     public static void Save()
     {
-        Debug.Log("isSaving");
+        
         HandleSaveData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }

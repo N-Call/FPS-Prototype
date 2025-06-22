@@ -153,7 +153,7 @@ public class Spawner : MonoBehaviour
 
     public void ResetAllEnemyHealth()
     {
-        Debug.Log("resetting enemy health");
+        
         var enemies = GetComponentsInChildren<MonoBehaviour>(true)
                       .OfType<IEnemyReset>();
 
@@ -161,7 +161,7 @@ public class Spawner : MonoBehaviour
         {
             enemy.ResetHealth();  // will only reset if not dead
         }
-        Debug.Log("enemies found");
+        
     }
 
 }

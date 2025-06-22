@@ -27,9 +27,5 @@ public class SceneLoader : MonoBehaviour
         {
             SceneManager.LoadScene(sceneIndex);
         }
-        else
-        {
-            Debug.LogError("no scene found for Index: "+ savedSceneID);
-        }
     }
 }

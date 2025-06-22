@@ -178,29 +178,6 @@ public class GunHitScan : Range
             return true;
         }
         return false;
-        // Check if they damaged an enemy or target..
-        //IDamage dmg = hitCollider.GetComponent<IDamage>();
-        //if (dmg != null)
-        //{
-        //    dmg.TakeDamage(damage);
-        //    return true;
-        //}
-
-        //ITarget targ = hitCollider.GetComponent<ITarget>();
-        //if (targ != null)
-        //{
-
-        //    targ.ActivateElem((int)elem);
-        //    return true;
-        //}
-        //Break breakable = hitCollider.GetComponent<Break>();
-
-        //if (breakable != null)
-        //{
-        //    breakable.Shatter(location);
-        //    return true;
-        //}
-
     }
 
     public override void AttackBegin(LayerMask playerMask)
@@ -223,13 +200,9 @@ public class GunHitScan : Range
         if (ammoCount <= 0 && currTotalBullets > 0)
         {
             Reload();
-            //SoundManager.instance.PlaySFX("gunClick");
+            
             return;
         }
-
-        //      shootRate <= shootTimer
-        // &&   ammoCount > 0
-        // &&   currTotalBullets > 0
 
         PlayShootAnim();
         SoundManager.instance.PlaySFX("pistol");

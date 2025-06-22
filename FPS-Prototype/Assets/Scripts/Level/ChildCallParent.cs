@@ -15,7 +15,7 @@ public class ChildCallParent : MonoBehaviour
             parent = GetComponentInParent<IParent>();
             if(parent == null)
             {
-                Debug.LogError("Was unable to Find Parent");
+                
                 Destroy(this);
             }
         }
@@ -24,12 +24,6 @@ public class ChildCallParent : MonoBehaviour
         {
             target = GameManager.instance.player;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OnTriggerEnter(Collider other)

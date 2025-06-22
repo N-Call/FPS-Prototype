@@ -21,13 +21,13 @@ public class Model2Turret : EnemyController
         meshRenderers = GetComponentsInChildren<MeshRenderer>();
 
         originalColors = new Color[meshRenderers.Length];
-        Debug.Log("Found" + meshRenderers.Length + " renderers on" + gameObject.name);
+       
         for (int i = 0; i < meshRenderers.Length; i++)
         {
 
             originalColors[i] = meshRenderers[i].material.color;
         }
-        //GameManager.instance.AddEnemyToRespawn(this);
+        
         maxHealth = currentHealth;
         colorOrig = model.material.color;
         turretHead = transform.Find("Head");
@@ -65,7 +65,7 @@ public class Model2Turret : EnemyController
         {
             if (blinkTimer > 0)
             {
-                Debug.Log("Enemy flashed");
+               
                 meshRenderers[i].material.color = flashColor;
             }
             else
@@ -80,7 +80,7 @@ public class Model2Turret : EnemyController
     {
         playerDir = (GameManager.instance.player.transform.position + (Vector3.up * 0.5f)) - aimPos.position;
         angleToPlayer = Vector3.Angle(playerDir, aimPos.forward);
-        Debug.DrawRay(aimPos.position, playerDir);
+        
 
         RaycastHit hit;
         if (Physics.Raycast(aimPos.position, playerDir, out hit, shootDistance, ~layerToIgnore) && angleToPlayer <= FOV && hit.collider.CompareTag("Player"))

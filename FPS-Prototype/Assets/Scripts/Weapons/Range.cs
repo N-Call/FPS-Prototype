@@ -165,15 +165,6 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void SetAmmo(float percent)
     {
-        //float temp = percent / 100;
-        //int newAmmo = (int)(ammoOrigCap * temp);
-        //ammoCap += newAmmo;
-
-        //if (gameObject.activeSelf)
-        //{
-        //    GameManager.instance?.GlobalAmmoCount(ammoCount, ammoCap);
-        //}
-
         // I thought of using this method to set the total ammo capacity.
         // Normally used for initial setups of full refills.
         float amount = ammoOrigCap * (percent / 100f);
@@ -183,16 +174,14 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void AddAmmoToReserve(int amount)
     {
-        //Debug.Log($"<color=purple>--- AMMO CRATE PICKUP START ---</color>");
-        //Debug.Log($"<color=purple>Before Add: currTotalBullets={currTotalBullets}, ammoCount={ammoCount}, ammoCap={ammoCap}, AmountToAdd={amount}</color>");
+        
         float tempTotal = currTotalBullets;
         currTotalBullets = Mathf.Min(ammoCap, currTotalBullets + amount);
         if (ammoCount <= 0 && tempTotal <= 0) { Reload(); }
 
-        //Debug.Log($"<color=purple>After Add: currTotalBullets={currTotalBullets}, ammoCount={ammoCount}</color>");
+       
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
 
-        //Debug.Log($"<color=purple>--- AMMO CRATE PICKUP END ---</color>");
     }
 }
 

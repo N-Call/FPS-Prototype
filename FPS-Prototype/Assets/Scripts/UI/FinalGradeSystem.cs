@@ -24,12 +24,6 @@ public class FinalGradeSystem : MonoBehaviour
         GameManager.instance.gradeSystem = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SaveFinal(int count, string time, string grade)
     {
         levelIndex = SceneManager.GetActiveScene().buildIndex;
@@ -42,7 +36,7 @@ public class FinalGradeSystem : MonoBehaviour
 
         if (scoreDataList.TryGetValue(levelIndex, out List<string> data))
         {
-            Debug.Log("is Converting");
+            
             if (ConvertToInt(data[1]) > ConvertToInt(scores[1]))
             {
                 data = scores;
