@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
-public class BossSM : StateMachine, IDamage
+public class BossSM : StateMachine, IDamage, IEnemyReset
 {
     [HideInInspector] public IdleDecide idle;
     [HideInInspector] public JumpAttack jump;
@@ -17,7 +17,7 @@ public class BossSM : StateMachine, IDamage
     [HideInInspector] public BeamAttack beam;
     [HideInInspector] public DeadState dead;
 
-    [Header ("Refereances")]
+    [Header ("References")]
     public Rigidbody rigidBody;
     public Animator animator;
     public NavMeshAgent agent;
@@ -34,7 +34,7 @@ public class BossSM : StateMachine, IDamage
     public LayerMask ignorelayer;
     public GameObject orbLocation;
     public ShockWave shockWave;
-
+    
     [Header("Boss Settings")]
     public int health;
     public int currentHealth;
@@ -131,7 +131,7 @@ public class BossSM : StateMachine, IDamage
         List<Color> colors = new List<Color>();
 
         // Set children's colors to red
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
         {
             colors.Add(renderer.material.color);
             renderer.material.color = Color.red;
@@ -140,7 +140,7 @@ public class BossSM : StateMachine, IDamage
         yield return new WaitForSeconds(0.01f);
 
         int index = 0;
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
         {
             if (index < colors.Count)
             {
@@ -219,5 +219,11 @@ public class BossSM : StateMachine, IDamage
     public void LookAtPlayer(int partIndex)
     {
         bodyParts[partIndex].transform.LookAt(new Vector3(GameManager.instance.player.transform.position.x, bodyParts[partIndex].transform.position.y, GameManager.instance.player.transform.position.z));
+    }
+
+    public void ResetHealth()
+    {
+        currentHealth = health;
+        Debug.Log("[BossSM] ResetHealth called!");
     }
 }

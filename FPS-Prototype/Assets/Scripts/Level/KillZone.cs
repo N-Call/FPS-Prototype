@@ -6,7 +6,7 @@ public class KillZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.instance.YouLose();
+            MenuManager.instance.ShowLoseMenu();
         }
     }
 }

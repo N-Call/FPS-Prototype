@@ -205,7 +205,7 @@ public class GunHitScan : Range
 
     public override void AttackBegin(LayerMask playerMask)
     {
-        float shootRateMod = (GameManager.instance.playerAbilities == null)? shootRate : shootRate + GameManager.instance.playerAbilities.w1RateMod;
+        float shootRateMod = (GameManager.instance.playerAbilities == null)? shootRate : shootRate - GameManager.instance.playerAbilities.w1RateMod;
 
         if (shootRate > shootTimer)
         {

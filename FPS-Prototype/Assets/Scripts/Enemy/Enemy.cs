@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 
-public class Enemy : MonoBehaviour, IDamage
+public class Enemy: MonoBehaviour, IDamage
 {
     [Header("Stats and Info")]
     [SerializeField] Renderer model;

@@ -18,13 +18,16 @@ public class StandardMovement : ObjectMovement
 
     public UnityEvent onActivateEvent;
 
+    private bool isInvoked;
+
     override protected void Move()
     {
         if (finishedMoving)
         {
-            if (isEventTrigerrable)
+            if (isEventTrigerrable && !isInvoked)
             {
                 onActivateEvent?.Invoke();
+                isInvoked = true;
             }
             return;
         }
@@ -33,6 +36,18 @@ public class StandardMovement : ObjectMovement
         {
             finishedMoving = true;
         }
+    }
+
+    public void SetNextYDestination(float yDest)
+    {
+        Debug.Log("is working");
+        onActivateEvent?.RemoveAllListeners();
+        currentDestination.y += yDest;
+        startTimer = 0;
+        finishedMoving = false;
+        waitedForPlayer = false;
+        hasPlayer = false;
+        isInvoked = false;
     }
 
     protected override void Destruction()

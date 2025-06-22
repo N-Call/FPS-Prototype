@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6941987464726165841}
   - component: {fileID: 1534727801143808866}
   - component: {fileID: 1238726419410192731}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Neck Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 5863559356966861437}
   - component: {fileID: 8286818650477746183}
   - component: {fileID: 1611503073369721765}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 6155783864065199278}
   - component: {fileID: 6162032189030804150}
   - component: {fileID: 8144615388405156729}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 2355624170033129712}
   - component: {fileID: 4968380124516081616}
   - component: {fileID: 7507352129435643041}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BackFeetMiddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 8743099969304040235}
   - component: {fileID: 717962781798719026}
   - component: {fileID: 5713294667902021683}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 7482178395347094031}
   - component: {fileID: 8157173597882723460}
   - component: {fileID: 7472564496645430106}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 1590129504322428191}
   - component: {fileID: 4284926670407966599}
   - component: {fileID: 3673872465142332847}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 3961585494465564693}
   - component: {fileID: 2832365189624601571}
   - component: {fileID: 5536662952597076329}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head Cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -710,7 +710,7 @@ GameObject:
   - component: {fileID: 1410024565185434940}
   - component: {fileID: 7464102739611435474}
   - component: {fileID: 3551100047466226573}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightEyebrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -797,9 +797,9 @@ GameObject:
   - component: {fileID: 2885407118392971911}
   - component: {fileID: 3531637469929599709}
   - component: {fileID: 3950822991997496995}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model2Turret
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -812,7 +812,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3432681914449044526}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.00000058114523}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 1.8580651, y: 1.0000005, z: 9.2951145}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -854,6 +854,8 @@ MonoBehaviour:
   shootPos: {fileID: 3130619668353855388}
   bullet: {fileID: 8973326993888958128, guid: 3d478ccae6fa99b48a17177b02922246, type: 3}
   shootRate: 0.8
+  blinkIntensity: 3
+  blinkDuration: 0.05
   originalPosition: {x: 0, y: 0, z: 0}
   shootDistance: 1000
   aimPos: {fileID: 5429587590801610701}
@@ -918,7 +920,7 @@ GameObject:
   - component: {fileID: 5489952749971192435}
   - component: {fileID: 4090449039672299366}
   - component: {fileID: 8118588923625131096}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BackFeetInside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1004,7 +1006,7 @@ GameObject:
   - component: {fileID: 8463340152049977654}
   - component: {fileID: 2201263746830121082}
   - component: {fileID: 7872635533825914921}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftFeetOutside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1090,7 +1092,7 @@ GameObject:
   - component: {fileID: 2144930673795786494}
   - component: {fileID: 3361656174830583901}
   - component: {fileID: 5919201106086166183}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CannonBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1176,7 +1178,7 @@ GameObject:
   - component: {fileID: 2353835906872439560}
   - component: {fileID: 4360124005486765164}
   - component: {fileID: 8026925927055939789}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BackFeetOutside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1262,7 +1264,7 @@ GameObject:
   - component: {fileID: 2341807672968875214}
   - component: {fileID: 96336795420031227}
   - component: {fileID: 5423377889405054638}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FrontFeetMiddle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1350,7 +1352,7 @@ GameObject:
   - component: {fileID: 5157108999351789822}
   - component: {fileID: 5581586060306588698}
   - component: {fileID: 5609563658885967792}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftFeetInside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1436,7 +1438,7 @@ GameObject:
   - component: {fileID: 5671238833057154854}
   - component: {fileID: 8307360451701726277}
   - component: {fileID: 7267320948613227180}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftEyebrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1522,7 +1524,7 @@ GameObject:
   - component: {fileID: 226780030270363249}
   - component: {fileID: 1258069641717507250}
   - component: {fileID: 6860242175701153056}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightFeetOutside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1608,8 +1610,8 @@ GameObject:
   - component: {fileID: 3287657916933312121}
   - component: {fileID: 6437268726153781642}
   - component: {fileID: 5725901421012819664}
-  m_Layer: 0
-  m_Name: Cylinder.001
+  m_Layer: 6
+  m_Name: B CannonRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1692,7 +1694,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5429587590801610701}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AimPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1725,8 +1727,8 @@ GameObject:
   - component: {fileID: 5078974308597748247}
   - component: {fileID: 4871804684377074117}
   - component: {fileID: 5484141333175544706}
-  m_Layer: 0
-  m_Name: Cylinder
+  m_Layer: 6
+  m_Name: F CannonRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1811,7 +1813,7 @@ GameObject:
   - component: {fileID: 6283589598086386008}
   - component: {fileID: 664222435868209001}
   - component: {fileID: 893354263290747325}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FrontFeetInside1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1897,7 +1899,7 @@ GameObject:
   - component: {fileID: 106229175989143593}
   - component: {fileID: 1966724924425814532}
   - component: {fileID: 4704874219229415148}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1983,7 +1985,7 @@ GameObject:
   - component: {fileID: 7430433737987169901}
   - component: {fileID: 9211540993976850409}
   - component: {fileID: 4456347387276685174}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightFeetInside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2069,7 +2071,7 @@ GameObject:
   - component: {fileID: 5797595363687642956}
   - component: {fileID: 455780249816014035}
   - component: {fileID: 1509537347904247357}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftFeetMiddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2157,7 +2159,7 @@ GameObject:
   - component: {fileID: 5728868108464265009}
   - component: {fileID: 2813013446073513348}
   - component: {fileID: 460715204054384619}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FrontFeetEdge1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2243,7 +2245,7 @@ GameObject:
   - component: {fileID: 6486711674634190812}
   - component: {fileID: 3522669273262107026}
   - component: {fileID: 3775026484923683353}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2329,7 +2331,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3130619668353855388}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shootPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2362,7 +2364,7 @@ GameObject:
   - component: {fileID: 1409960158204223667}
   - component: {fileID: 261544318196002927}
   - component: {fileID: 7595798169989510486}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightFeetMiddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,3 +1,6 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -20,6 +23,9 @@ public class Spawner : MonoBehaviour
     [SerializeField][Tooltip("The rate at which objects spawn")]
     float spawnRate;
 
+    [SerializeField][Tooltip("Can enemies drop scrap")]
+    public bool allowScrapDrop = true;
+
     [Header("Enemy Spawn Settings")]
     [SerializeField][Tooltip("Add enemies to enemy count when they spawn? False adds the enemies that will spawn, at start")]
     bool addToCountWhenSpawned;
@@ -38,6 +44,7 @@ public class Spawner : MonoBehaviour
     bool firstSpawned;
     bool hasPlayer;
     bool isActive = true;
+   
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -87,8 +94,9 @@ public class Spawner : MonoBehaviour
         firstSpawned = true;
         
         int index = GetPositionIndex();
-        GameObject spawned = Instantiate(objectToSpawn, spawnPositions[index].position, spawnPositions[index].rotation);
-
+        GameObject spawned = Instantiate(objectToSpawn, spawnPositions[index].position, spawnPositions[index].rotation, this.transform);
+        spawned.GetComponent<EnemyController>().SetCanDropScrap(allowScrapDrop);
+        
         if (overrideTurretBullets && turretBullets.Length == spawnPositions.Length)
         {
             TurretEnemy turret = spawned.GetComponent<TurretEnemy>();
@@ -141,6 +149,19 @@ public class Spawner : MonoBehaviour
     public void DisableSpawner()
     {
         isActive = false;
+    }
+
+    public void ResetAllEnemyHealth()
+    {
+        Debug.Log("resetting enemy health");
+        var enemies = GetComponentsInChildren<MonoBehaviour>(true)
+                      .OfType<IEnemyReset>();
+
+        foreach (var enemy in enemies)
+        {
+            enemy.ResetHealth();  // will only reset if not dead
+        }
+        Debug.Log("enemies found");
     }
 
 }

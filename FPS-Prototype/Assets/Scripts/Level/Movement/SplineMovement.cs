@@ -6,8 +6,10 @@ public class SplineMovement : MonoBehaviour
     public SplineContainer splineContainer;
     public int splinIndex;
     [SerializeField] private bool takeStartPos;
+    [SerializeField] private bool isRotating;
     [SerializeField] private bool isWrapable;
     [SerializeField] private bool isCustome;
+    [SerializeField] private bool isPingPonging;
     [SerializeField] private bool isAscending;
     [SerializeField] [Range(0f,1f)] private float path = 0;
     [SerializeField] private float speed = 0.2f;
@@ -50,11 +52,20 @@ public class SplineMovement : MonoBehaviour
         {
             path += speed * Time.deltaTime;
             path = (isWrapable && path > 1f) ? 0 : path;
+            if(path >= 1 && isPingPonging)
+            {
+                isAscending = false;
+            }
         }
         else
         {
             path -= speed * Time.deltaTime;
             path = (isWrapable && path < 0f) ? 1 : path;
+
+            if (path <= 0 && isPingPonging)
+            {
+                isAscending = true;
+            }
         }
 
         var curv = splineContainer[splinIndex];

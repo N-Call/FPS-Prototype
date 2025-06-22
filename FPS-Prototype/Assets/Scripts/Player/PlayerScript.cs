@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour, IDamage, IPickup
 {
+    [HideInInspector] public bool stopActions;
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask playerMask;
 
@@ -47,9 +48,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [Header("Wall Running/Jumping")]
     [SerializeField] LayerMask wallRunMask;
     [SerializeField] float wallRunDur;
+    [SerializeField] float wallRunDurMajor = 3.15f;
     [SerializeField] float wallRunGravity;
     [SerializeField] float wallJumpForce;
     [SerializeField] float wallCheckDist = 0.7f;
+    [SerializeField] float wallCheckFBDist = 0.9f;
     [SerializeField] float wallJumpHoriForce;
     //[SerializeField] float wallRunCooldown;
     [SerializeField] float wallStickForce;
@@ -166,15 +169,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
         //Debug.DrawRay(transform.position, -transform.right * wallCheckDist, Color.blue);
         //Debug.DrawRay(transform.position, transform.right * wallCheckDist, Color.red);
-
-        Movement();
-        WallRunCheck();
-        Jump();
-        Sprint();
-        Crouch();
-        WeaponInput();
-        SetCurrentFOV();
-        HandleHeadBobbing();
+        if (!stopActions)
+        {
+            Movement();
+            WallRunCheck();
+            Jump();
+            Sprint();
+            Crouch();
+            WeaponInput();
+            SetCurrentFOV();
+            HandleHeadBobbing();
+        }
 
         if (invulnerable)
         {
@@ -245,6 +250,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     void WallRunCheck()
     {
+        bool wallRunMajorUpgrade = GameManager.instance.playerAbilities != null && GameManager.instance.playerAbilities.wallRunMajor;
+        float currWallRunDur = wallRunMajorUpgrade ? wallRunDurMajor : wallRunDur;
         // Immediately stop wall run if player is grounded while wall running
         if (isWallRunning && controller.isGrounded)
         {
@@ -282,9 +289,24 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             wallDetectedThisFrame = true;
         }
 
+        if (isWallRunning && wallRunMajorUpgrade)
+        {
+            if (Physics.Raycast(transform.position, -transform.forward, out wallHit, wallCheckFBDist, wallRunMask))
+            {
+                currWallNormal = wallHit.normal;
+                hitWallObject = wallHit.collider.gameObject;
+                wallDetectedThisFrame = true;
+            }
+        }
+
         bool tryToRunOnLockedWall = (wallRunLockedWall != null && hitWallObject == wallRunLockedWall);
         bool canInitiateWallRun = wallDetectedThisFrame && !controller.isGrounded && distToGnd > minWallRunHeight && !wallJumped && !tryToRunOnLockedWall && walkVerticalDirection > 0.2f && verticalVelocity.y < 0f;
-        bool canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
+
+        bool canContinueWallRun;
+        if (wallRunMajorUpgrade)
+            canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded;
+        else
+            canContinueWallRun = isWallRunning && wallDetectedThisFrame && !controller.isGrounded && walkVerticalDirection > 0.2f;
 
         if (canInitiateWallRun)
         {
@@ -294,9 +316,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             wallNormal = currWallNormal;
             wallRunTimer += Time.deltaTime;
-            verticalVelocity.y = -wallRunGravity;
 
-            if (wallRunTimer > wallRunDur)
+            if (wallRunMajorUpgrade)
+                verticalVelocity.y = 0f;
+            else
+                verticalVelocity.y = -wallRunGravity;
+
+            if (wallRunTimer > currWallRunDur)
             {
                 StopWallRun(hitWallObject, false);
                 return;
@@ -331,7 +357,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         wallRunLockedWall = wallObject;
         wallJumped = false;
 
-        if (provideExtraJumpIfNeeded && jumpCount == maxJumps)
+        if (provideExtraJumpIfNeeded && jumpCount == maxJumps + GameManager.instance.playerAbilities.moveWallRunJump / 2)
         {
             jumpCount -= 1;
         }
@@ -445,12 +471,18 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             float calculatedCrouchSpeed = speed * crouchSpeedMultiplier;
             speed += currentSlideSpeed;
+            // This is to apply the upgrade numbers from the slide speed
+            if (GameManager.instance.playerAbilities != null)
+            {
+                speed += GameManager.instance.playerAbilities.moveSlideSpeed;
+            }
 
             if (speed <= calculatedCrouchSpeed)
             {
                 isSliding = false;
                 isCrouching = true;
                 speed = calculatedCrouchSpeed;
+                
             }
 
             currentSlideSpeed -= slideRate;
@@ -464,9 +496,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             currSpeed = speed *= speedModifier;
         }
-
         // Return the calculated speed, and factor in external speed modifiers
         return currSpeed;
+        
     }
 
     void Jump()
@@ -674,24 +706,24 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     public void TakeDamage(int amount)
     {
-        //if (invulnerable)
-        //{
-        //    Debug.Log("Invulnerable Hit");
-        //    return;
-        //}
+        if (invulnerable)
+        {
+            Debug.Log("Invulnerable Hit");
+            return;
+        }
 
-        SoundManager.instance.PlaySFX("playerHurt");
-
-        if (isShielded > 0) //&& !invulnerable)
+        if (isShielded > 0 && !invulnerable)
         {
             isShielded -= 1;
 
             invincHitTime = 0.15f;
         }
+        
         else if (!invulnerable)
         {
             HP -= amount;
             StartCoroutine(FlashDamageScreen());
+            SoundManager.instance.PlaySFX("playerHurt");
         }
 
         UpdatePlayerUI();

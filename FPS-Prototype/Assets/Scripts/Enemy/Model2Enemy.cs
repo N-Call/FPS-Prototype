@@ -16,13 +16,27 @@ public class Model2Enemy : EnemyController
 
     bool canShoot;
     bool leftShot;
-   
+    protected override void Start()
+    {
+        base.Start();
+        meshRenderers = GetComponentsInChildren<MeshRenderer>();
+        //grab mesh material of all the components of the enemy
+        originalColors = new Color[meshRenderers.Length];
+        Debug.Log("Found" + meshRenderers.Length + " renderers on" + gameObject.name);
+        for (int i = 0; i < meshRenderers.Length; i++)
+        {
+
+            originalColors[i] = meshRenderers[i].material.color;
+        }
+    }
     protected override void Update()
     {
         canShoot = false;
         base.Update();
 
         shootTimer += Time.deltaTime;
+        blinkTimer -= Time.deltaTime;
+        EnemyFlash();
 
         if (canShoot && shootTimer >= shootRate)
         {
@@ -52,6 +66,28 @@ public class Model2Enemy : EnemyController
         //}
     }
 
+    void EnemyFlash()
+    {
+
+        float lerp = Mathf.Clamp01(blinkTimer / blinkDuration) * 1.0f;
+        float intensity = lerp * blinkIntensity;
+        Color flashColor = Color.red * intensity;
+
+        for (int i = 0; i < meshRenderers.Length; i++)
+        {
+            if (blinkTimer > 0)
+            {
+                Debug.Log("Enemy flashed");
+                meshRenderers[i].material.color = flashColor;
+            }
+            else
+            {
+                meshRenderers[i].material.color = originalColors[i];
+            }
+
+        }
+
+    }
     protected override bool CanSeePlayer()
     {
         playerDir = (GameManager.instance.player.transform.position - transform.position);

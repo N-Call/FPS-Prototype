@@ -58,9 +58,9 @@ public class OpenDoors : MonoBehaviour
         }    
     }
 
-    
 
-    private void OnTriggerEnter(Collider other)
+
+    public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -68,11 +68,11 @@ public class OpenDoors : MonoBehaviour
             Debug.Log("entering Door Trigger");
             Open(other.transform.position);
         }
-        if(isLocked)
+        if (isLocked)
         {
             SoundManager.instance.PlaySFX("Door Lock");
         }
-        
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -86,8 +86,10 @@ public class OpenDoors : MonoBehaviour
 
     private IEnumerator SlidingDoorOpen()
     {
-        Vector3 endPosition = startPosition + slideAmount * slideDirection;
+        Vector3 endPosition = transform.position + slideAmount * slideDirection;
         Vector3 startPos = transform.position;
+
+        startPosition = startPos;
 
         float time = 0;
 
