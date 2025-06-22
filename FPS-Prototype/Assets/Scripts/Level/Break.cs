@@ -7,6 +7,7 @@ public class Break : MonoBehaviour, ILevelReset
     Vector3 explosionOffset = Vector3.zero;
     private bool isBroken = false;
     private GameObject brokenInstance;
+    [SerializeField] string soundFxName;
 
     public void Shatter(Vector3 explosionOrigin)
     {
@@ -24,7 +25,7 @@ public class Break : MonoBehaviour, ILevelReset
                // rb.angularVelocity = Random.insideUnitSphere * 5f;
             }
         }
-        SoundManager.instance.PlaySFX("Shatter");
+        SoundManager.instance.PlaySFX(soundFxName);
            
     }
     public void ResetState()
