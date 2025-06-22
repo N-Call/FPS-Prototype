@@ -50,6 +50,7 @@ public class SaveSystem
     private static void HandleSaveStatsData()
     {
         GameManager.instance.scrapManager.Save(ref saveData.ScrapData);
+        GameManager.instance.playerAbilities.Save(ref saveData.abilitiesData);
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
         DifficultyManager.Instance.Save(ref saveData.difficultyData);
     }

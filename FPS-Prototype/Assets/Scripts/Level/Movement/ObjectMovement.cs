@@ -7,7 +7,7 @@ public class ObjectMovement : MonoBehaviour
     static bool shouldResetPlayerParent = true;
 
     [Header("Destination Settings")]
-    [SerializeField] Vector3 destination;
+    [SerializeField] protected Vector3 destination;
     [SerializeField] bool relative = true;
     [SerializeField] float stoppingDistance = 0.01f;
 
@@ -37,8 +37,8 @@ public class ObjectMovement : MonoBehaviour
     float destroyTimer;
     float distanceLeft;
 
-    bool waitedForPlayer;
-    bool hasPlayer;
+    protected bool waitedForPlayer;
+    protected bool hasPlayer;
 
     private void OnValidate()
     {

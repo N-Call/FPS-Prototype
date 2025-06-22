@@ -60,7 +60,7 @@ public class OpenDoors : MonoBehaviour
 
 
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -86,8 +86,10 @@ public class OpenDoors : MonoBehaviour
 
     private IEnumerator SlidingDoorOpen()
     {
-        Vector3 endPosition = startPosition + slideAmount * slideDirection;
+        Vector3 endPosition = transform.position + slideAmount * slideDirection;
         Vector3 startPos = transform.position;
+
+        startPosition = startPos;
 
         float time = 0;
 

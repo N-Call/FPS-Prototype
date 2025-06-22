@@ -381,7 +381,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("we upgraded the pistol");
                 if((upgradeType == UpgradeType.Damage))
                 {
-                    playerAbilities.w1DmgMod++;
+                    playerAbilities.w1DmgMod += 2;
                 }
                 else if ((upgradeType == UpgradeType.Speed))
                 {
@@ -390,12 +390,13 @@ public class GameManager : MonoBehaviour
                 }
                 else if ((upgradeType == UpgradeType.Rate))
                 {
-                    playerAbilities.w1RateMod -= 0.20f;
+                    playerAbilities.w1RateMod ++;
                 }
                 else if ((upgradeType == UpgradeType.Major))
                 {
                     playerAbilities.w1Major = true;
                     playerAbilities.ricochet = true;
+                    
                     // need full auto for the pistol  
                 }
                 break;
@@ -501,7 +502,7 @@ public class GameManager : MonoBehaviour
             case UpgradeCategory.Slide:
                 if ((upgradeType == UpgradeType.SlideSpeed))
                 {
-                    playerAbilities.moveSlideSpeed += 2f;
+                    playerAbilities.moveSlideSpeed ++;
                 }
             
                 else if ((upgradeType == UpgradeType.Major))
