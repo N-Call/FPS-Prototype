@@ -17763,6 +17763,7 @@ MonoBehaviour:
   spawnAmount: 2
   spawnDelay: 0
   spawnRate: 0
+  allowScrapDrop: 1
   addToCountWhenSpawned: 0
   turretBullets: []
   overrideTurretBullets: 0
@@ -20916,6 +20917,26 @@ PrefabInstance:
     - target: {fileID: 2499138746266671060, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745752831576499313, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: TimeA
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745752831576499313, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: TimeB
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745752831576499313, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: TimeC
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745752831576499313, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: TimeE
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745752831576499313, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: TimeS
+      value: 40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31021,6 +31042,7 @@ MonoBehaviour:
   spawnAmount: 3
   spawnDelay: 0
   spawnRate: 0
+  allowScrapDrop: 1
   addToCountWhenSpawned: 0
   turretBullets: []
   overrideTurretBullets: 0
