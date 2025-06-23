@@ -918,7 +918,7 @@ public class GameManager : MonoBehaviour
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        if (currentSceneIndex == 13)
+        if (currentSceneIndex == 14)
         {
             OnFinalLevelComplete();
         }
@@ -930,17 +930,8 @@ public class GameManager : MonoBehaviour
 
     public void OnFinalLevelComplete()
     {
-        playerHPbar.gameObject.SetActive(false);
-        ammoCount.gameObject.SetActive(false);
-        playerShieldbar.gameObject.SetActive(false);
-        enemyCountUI.gameObject.SetActive(false);
-        timerWinCount.gameObject.SetActive(false);
-        SoundManager.instance.sfxSource.Stop();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        playerScript.enabled = false;
-        Camera.main.GetComponent<CameraController>().enabled = false;
-        MenuManager.instance.ShowCreditsMenu();
+        StartCoroutine(ShowCursorDelayed());
+        //MenuManager.instance.ShowCreditsMenu();
         InputActionManager.instance.EnableMenuInput();
     }
 }
