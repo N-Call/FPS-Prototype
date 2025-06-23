@@ -26,7 +26,7 @@ public class SaveSystem
 
     public static void Save()
     {
-        Debug.Log("isSaving");
+        
         HandleSaveData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
@@ -42,7 +42,7 @@ public class SaveSystem
 
     public static void SaveStats()
     {
-        Debug.Log("isSavingStats");
+       
         HandleSaveStatsData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }

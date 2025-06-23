@@ -4,11 +4,6 @@ public class ScrapManager : MonoBehaviour
 {
     public int totalScrap;
 
-    void Awake()
-    {
-       
-    }
-
     private void OnLevelWasLoaded(int level)
     {
         GameManager.instance.scrapManager = this;

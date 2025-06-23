@@ -12,20 +12,18 @@ public class ImageHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public TMP_Text upText;
 
-
     void Start()
     {
         LoadUpgradeLevel();
 
         if (upText != null)
         {
-            Debug.Log($"[{upgradeData.name}] Level on load: {upgradeData.currentLevel}");
             upText.text = GetUpgradeDisplayValue().ToString();
         }
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("point is down");
+        
         GameManager.instance.BuyUpgrade(upgradeData);
 
         if (upText != null)
@@ -151,8 +149,6 @@ public class ImageHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
             {
                 upText.text = upgradeData.currentLevel.ToString();
             }
-
-            Debug.Log($"[Load] {upgradeData.upgradeID} = {upgradeData.currentLevel}");
         }
     }
 }

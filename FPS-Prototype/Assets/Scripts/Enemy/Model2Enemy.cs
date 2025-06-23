@@ -22,7 +22,7 @@ public class Model2Enemy : EnemyController
         meshRenderers = GetComponentsInChildren<MeshRenderer>();
         //grab mesh material of all the components of the enemy
         originalColors = new Color[meshRenderers.Length];
-        Debug.Log("Found" + meshRenderers.Length + " renderers on" + gameObject.name);
+        ;
         for (int i = 0; i < meshRenderers.Length; i++)
         {
 
@@ -54,16 +54,6 @@ public class Model2Enemy : EnemyController
             shootTimer = 0f;
             SoundManager.instance.PlaySFX("enemyShot");
         }
-
-        //HandleElements();
-        //if (elemBuffed || elemDebuffed)
-        //{
-        //    effectTimer += Time.deltaTime;
-        //    if (effectTimer >= elementEffectTime)
-        //    {
-        //        EndElement();
-        //    }
-        //}
     }
 
     void EnemyFlash()
@@ -77,7 +67,7 @@ public class Model2Enemy : EnemyController
         {
             if (blinkTimer > 0)
             {
-                Debug.Log("Enemy flashed");
+                
                 meshRenderers[i].material.color = flashColor;
             }
             else
@@ -92,7 +82,7 @@ public class Model2Enemy : EnemyController
     {
         playerDir = (GameManager.instance.player.transform.position - transform.position);
         angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
-        //Debug.DrawRay(transform.position, new Vector3(playerDir.x, 0, playerDir.z));
+        
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, playerDir, out hit) && angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
@@ -137,51 +127,4 @@ public class Model2Enemy : EnemyController
             Instantiate(bullet, shootPosR.position, shootPosR.rotation);
         }
     }
-
-    //void HandleElements()
-    //{
-    //    if (elemBuffed)
-    //    {
-    //        agent.speed += elementJumpMod;
-    //    }
-    //    if (elemDebuffed)
-    //    {
-    //        agent.speed -= elementJumpMod;
-    //    }
-    //}
-
-    //void EndElement()
-    //{
-    //    if (elemBuffed)
-    //    {
-    //        agent.baseOffset -= elementJumpMod;
-    //        elemBuffed = false;
-    //    }
-    //    else if (elemDebuffed)
-    //    {
-    //        agent.baseOffset += elementJumpMod;
-    //        elemDebuffed = false;
-    //    }
-    //}
-
-    //public void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod)
-    //{
-    //    elementJumpMod = jumpMod;
-    //    if (buffStatus)
-    //    {
-    //        elemBuffed = true;
-    //        agent.baseOffset *= elementJumpMod;
-    //    }
-    //    else if (!buffStatus)
-    //    {
-    //        elemDebuffed = true;
-    //        agent.baseOffset /= elementJumpMod;
-    //    }
-    //    effectTimer = 0f;
-    //}
-
-    //public void ElementInverse()
-    //{
-    //    // Not yet implemented
-    //}
 }

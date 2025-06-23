@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9171631982446698515}
   - component: {fileID: 3874833946849159785}
-  - component: {fileID: 6562357962442606277}
   - component: {fileID: 5511291707596354463}
   - component: {fileID: 7953381702130162339}
   - component: {fileID: 4795134292987749438}
@@ -49,39 +48,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27998aa5a8ed647479a67ed6339a9a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   rb: {fileID: 0}
+  homingCollider: {fileID: 0}
   damageType: 3
   elem: 0
   damageAmount: 100
   speed: 0
   destroyTime: 0
+  FOV: 0
+  homingRadius: 0
+  chaseDist: 0
+  smoothSpeed: 0
+  isTriggerHoming: 0
+  isWallBouncable: 0
+  maxReflections: 0
   dotDamage: 0
   dotDamageRate: 0
---- !u!114 &6562357962442606277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5239139098542354359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destination: {x: 10, y: 0, z: 0}
-  relative: 1
-  speed: 10
-  playerMomentumMod: 0
-  lerp: 0
-  startDelay: 0
-  startDelayInitial: 0
-  destinationDelay: 0
-  pingPong: 1
-  backToStart: 0
-  destroyAfterTime: 0
-  destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0
 --- !u!33 &5511291707596354463
 MeshFilter:
   m_ObjectHideFlags: 0

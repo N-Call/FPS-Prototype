@@ -72,7 +72,7 @@ public class Damage : MonoBehaviour
                     Vector3 direction = target.position - transform.position;
                     Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed * Time.deltaTime);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed * Time.deltaTime );
                     rb.linearVelocity = transform.forward * speed;
 
                 }
@@ -106,12 +106,12 @@ public class Damage : MonoBehaviour
     {
         targetDir = (target.position - transform.position);
         angleToPlayer = Vector3.Angle(new Vector3(targetDir.x, 0, targetDir.z), transform.forward);
-        Debug.DrawRay(transform.position, new Vector3(targetDir.x, 0, targetDir.z));
+        
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, targetDir, out hit))
         {
-            if (angleToPlayer <= FOV && hit.collider.gameObject == target.gameObject)
+            if (angleToPlayer <= FOV + GameManager.instance.playerAbilities.w2RateMod && hit.collider.gameObject == target.gameObject)
             {
                 return true;
             }

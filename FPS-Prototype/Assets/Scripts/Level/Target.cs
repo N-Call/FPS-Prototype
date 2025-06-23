@@ -146,12 +146,10 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
         {
             SoundManager.instance.PlaySFX("powerUp");
 
-            //if (GameManager.instance.speedBuffTimer > speedElemTime || GameManager.instance.speedBuffTimer == 0)
+            
             if (GameManager.instance.speedBuffTimer <= 0 || !GameManager.instance.playerScript.speedBuffed)
             {
-                Debug.Log("is working");
                 GameManager.instance.playerScript.AddModifier(speedElemMod);
-                
                 GameManager.instance.playerScript.SetBaseFOV(baseFOV + speedElemFOVMod);
                 GameManager.instance.BuffSprintIcon(true);
                 GameManager.instance.playerScript.particleSpMod.gameObject.SetActive(true);
@@ -208,13 +206,13 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
     {
         if (buff)
         {
-            //Debug.Log("Shield Given");
+            
             SoundManager.instance.PlaySFX("powerUp");
             GameManager.instance.playerScript.SetShield(shieldElemMod);
         }
         else if (!buff)
         {
-            //Debug.Log("Shield Taken");
+            
             SoundManager.instance.PlaySFX("debuff");
             GameManager.instance.playerScript.SetShield(-shieldElemMod);
         }

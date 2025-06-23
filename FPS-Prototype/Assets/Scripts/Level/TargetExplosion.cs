@@ -16,16 +16,12 @@ public class TargetExplosion : MonoBehaviour
             affected?.ApplyElement((int)parentTarg.elem, parentTarg.buff, parentTarg.speedElemMod, parentTarg.jumpElemMod);
         }
 
-        //GameManager.instance.playerAbilities.o1Major = true;
-        //GameManager.instance.playerAbilities.o2Major = true;
-        //GameManager.instance.playerAbilities.o3Major = true;
 
         IDamage dmgTarg = other.GetComponent<IDamage>();
 
         if (dmgTarg != null && other.CompareTag("Enemy") && (int)parentTarg.elem == 1 && GameManager.instance.playerAbilities.o1Major)
         {
             dmgTarg.TakeDamage(1);
-            Debug.Log("It's my fault");
         }
         if (dmgTarg != null && other.CompareTag("Enemy") && (int)parentTarg.elem == 2 && GameManager.instance.playerAbilities.o2Major)
         {

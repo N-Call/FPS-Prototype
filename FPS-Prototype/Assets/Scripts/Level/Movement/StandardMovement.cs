@@ -40,7 +40,7 @@ public class StandardMovement : ObjectMovement
 
     public void SetNextYDestination(float yDest)
     {
-        Debug.Log("is working");
+        
         onActivateEvent?.RemoveAllListeners();
         currentDestination.y += yDest;
         startTimer = 0;

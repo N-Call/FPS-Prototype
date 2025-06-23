@@ -35,7 +35,7 @@ public class OpenDoors : MonoBehaviour
         {
             if (DoorAnimation != null)
             {
-                Debug.Log("opening door");
+                
                 StopCoroutine(DoorAnimation);
                 
             }
@@ -52,7 +52,6 @@ public class OpenDoors : MonoBehaviour
             if (DoorAnimation != null)
             {
                 StopCoroutine(DoorAnimation);
-                
             }
             DoorAnimation = StartCoroutine(SlidingDoorClose());
         }    
@@ -65,7 +64,6 @@ public class OpenDoors : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             SoundManager.instance.PlaySFX(sfxName);
-            Debug.Log("entering Door Trigger");
             Open(other.transform.position);
         }
         if (isLocked)
@@ -126,14 +124,4 @@ public class OpenDoors : MonoBehaviour
         }
     }
 
-
-    //private IEnumerator PlayAlarm()
-    //{
-    //    yield return new WaitForSeconds(0.1f);
-    //    SoundManager.instance.PlaySFX("danger", 0.7f);
-    //    if(GameManager.instance.isPaused)
-    //    {
-    //        SoundManager.instance.sfxSource.Pause();
-    //    }
-    //}
 }

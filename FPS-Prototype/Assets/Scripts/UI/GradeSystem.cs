@@ -20,48 +20,38 @@ public class GradeSystem : MonoBehaviour
             {
                 GradeLetter.text = "S";
                 GameManager.instance.textComponent.text = "Leave some for the rest of us! Actually don't. You know what you're doing.";
-                Debug.Log("Grade S");
             }
             else if (Time >= TimeS && Time <= TimeA)
             {
                 GradeLetter.text = "A";
                 GameManager.instance.textComponent.text = "Well done, kid. Gold star! I knew you had it in you.";
-                Debug.Log("Grade A");
             }
             else if (Time >= TimeA && Time <= TimeB)
             {
                 GradeLetter.text = "B";
                 GameManager.instance.textComponent.text = "Keep it going, kid! Those bots ain't gonna just wait for ya.";
-                Debug.Log("Grade B");
             }
             else if (Time >= TimeB && Time <= TimeC)
             {
                 GradeLetter.text = "C";
                 GameManager.instance.textComponent.text = "Eh. Middle of the road. I know you can do better.";
-                Debug.Log("Grade C");
             }
             else if (Time >= TimeC && Time <= TimeD)
             {
                 GradeLetter.text = "D";
                 GameManager.instance.textComponent.text = "You want out, don't ya? Try not to stop and shop next time. I've got places to be.";
-                Debug.Log("Grade D");
             }
             else if (Time >= TimeD && Time <= TimeE)
             {
                 GradeLetter.text = "E";
                 GameManager.instance.textComponent.text = "Almost fell asleep! Sight seeing is beautiful this time of year, isn't it?";
-                Debug.Log("Grade E");
             }
             else 
             {
                 GradeLetter.text = "F";
                 GameManager.instance.textComponent.text = "Kid... I know I should have rescued someone else. There is no one else but it's that bad.";
-                Debug.Log("Grade F");
             }
            
         }
     }
-    // then find time of player of end time
-    // if or math for A,B,C,D,F grade for time 
-    // then display in win menu
 }

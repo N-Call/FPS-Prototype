@@ -6170,6 +6170,7 @@ GameObject:
   - component: {fileID: 3057074538613408114}
   - component: {fileID: 1859134559281487093}
   - component: {fileID: 6793983163119624986}
+  - component: {fileID: 7542319807644125095}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -6227,6 +6228,7 @@ MonoBehaviour:
   crouchHeightMultiplier: 0.5
   crouchRate: 0.08
   crouchWaitTimer: 0.001
+  damageCollider: {fileID: 7542319807644125095}
   slideSpeedBonus: 20
   slideRate: 0.3
   slideJumpSpeedBonus: 16
@@ -6240,9 +6242,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   wallRunDur: 1.8
+  wallRunDurMajor: 3.15
   wallRunGravity: 1
   wallJumpForce: 8
   wallCheckDist: 0.65
+  wallCheckFBDist: 0.9
   wallJumpHoriForce: 32
   wallStickForce: 24
   minWallRunHeight: 2
@@ -6350,6 +6354,27 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 1, z: 0.5}
   m_DirtyAABB: 0
+--- !u!135 &7542319807644125095
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2185671252196296916}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2210531572587585985
 GameObject:
   m_ObjectHideFlags: 0

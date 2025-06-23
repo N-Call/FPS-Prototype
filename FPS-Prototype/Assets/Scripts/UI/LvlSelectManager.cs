@@ -13,9 +13,7 @@ public class LvlSelectManager : MonoBehaviour
     public GameObject[] lvlIamges;
 
     [Header("Buttons")]
-    // look at lists/array
-    //public GameObject[] lvlRecords;
-
+    
     [SerializeField] GameObject StartGame;
 
     [SerializeField] Button[] lvlsBtn;
