@@ -46,10 +46,7 @@ public class RobotEnemy : EnemyController
         {
             agent.SetDestination(GameManager.instance.player.transform.position);
         }
-        if (currentHealth <= 0)
-        {
-            breakable.Shatter(transform.position);
-        }
+      
     }
 
     protected override void Shoot()
