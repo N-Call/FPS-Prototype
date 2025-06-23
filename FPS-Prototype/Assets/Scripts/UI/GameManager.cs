@@ -930,7 +930,16 @@ public class GameManager : MonoBehaviour
 
     public void OnFinalLevelComplete()
     {
-        StatePause();
+        playerHPbar.gameObject.SetActive(false);
+        ammoCount.gameObject.SetActive(false);
+        playerShieldbar.gameObject.SetActive(false);
+        enemyCountUI.gameObject.SetActive(false);
+        timerWinCount.gameObject.SetActive(false);
+        SoundManager.instance.sfxSource.Stop();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        playerScript.enabled = false;
+        Camera.main.GetComponent<CameraController>().enabled = false;
         MenuManager.instance.ShowCreditsMenu();
         InputActionManager.instance.EnableMenuInput();
     }
