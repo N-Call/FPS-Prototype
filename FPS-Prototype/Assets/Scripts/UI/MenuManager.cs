@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
     [Header("Events")]
     [SerializeField] EventSystem eventSystem;
 
+
     [Header("Menus")]
     [SerializeField] GameObject startMenu;
     [SerializeField] GameObject pauseMenu;
@@ -57,6 +58,10 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject loseMenuFirstSelected;
     [SerializeField] GameObject rulesMenuFirstSelected;
     [SerializeField] GameObject creditsMenuFirstSelected;
+
+    [SerializeField] Credits creditsScroller;
+
+
     #endregion
 
     #region Private Fields
@@ -374,6 +379,7 @@ public class MenuManager : MonoBehaviour
     public void ShowCreditsMenu()
     {
         ShowMenu(creditsMenu);
+        creditsScroller.ResetScroll();
         eventSystem.firstSelectedGameObject = creditsMenuFirstSelected;
         UpdateSelectedButton();
     }

@@ -7,6 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEditor.Rendering;
 
 
 public class GameManager : MonoBehaviour
@@ -98,8 +99,8 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter = 0;
-    
+    int scrapCounter = 100000;
+    private static bool rulesShown = false;
     public List<UpgradeData> allUpgrades;
     private Spawner[] allSpawners;
     
@@ -127,26 +128,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 4)
+        if (SceneManager.GetActiveScene().buildIndex == 4 && !rulesShown)
         {
-            StartCoroutine(ShowCursorDelayed());
-
-            isPaused = true;
-            Time.timeScale = 0;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            //EnablePPVolume();
-            globalVol.SetActive(true);
-            // to turn off the reticle
-            reticle.SetActive(false);
-            SoundManager.instance.musicSource.Pause();
-            SoundManager.instance.sfxSource.Stop();
-            // stop the player from shooting
-            menuActive = menuRules;
-            menuRules.SetActive(true);
-
-            playerScript.enabled = false;
-            InputActionManager.instance.EnableMenuInput();
+            rulesShown = true;
+            ShowRules();
         }
 
         if (scrapUI != null)
@@ -184,6 +169,37 @@ public class GameManager : MonoBehaviour
                 HandleElemTimers();
             }
         }
+    }
+
+    public void ShowRules()
+    {
+        StartCoroutine(ShowCursorDelayed());
+
+        isPaused = true;
+        Time.timeScale = 0;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        //EnablePPVolume();
+        globalVol.SetActive(true);
+        // to turn off the reticle
+        reticle.SetActive(false);
+
+        SoundManager.instance.musicSource.Pause();
+        SoundManager.instance.sfxSource.Stop();
+
+        // stop the player from shooting
+        menuActive = menuRules;
+        menuRules.SetActive(true);
+
+
+        playerScript.enabled = false;
+        InputActionManager.instance.EnableMenuInput();
+    }
+
+    public void ResetRules()
+    {
+        rulesShown = false; 
     }
 
     public void StatePause(bool showPauseMenu)
@@ -896,5 +912,26 @@ public class GameManager : MonoBehaviour
         yield return null; // wait one frame
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void OnLevelComplete()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        if (currentSceneIndex == 13)
+        {
+            OnFinalLevelComplete();
+        }
+        else
+        {
+            SceneManager.LoadScene(currentSceneIndex + 1);
+        }
+    }
+
+    public void OnFinalLevelComplete()
+    {
+        StatePause();
+        MenuManager.instance.ShowCreditsMenu();
+        InputActionManager.instance.EnableMenuInput();
     }
 }

@@ -11,6 +11,8 @@ public class SoundManager : MonoBehaviour
     public Sound[] musicSounds, sfxSounds;
     public AudioSource musicSource, sfxSource;
 
+   
+
     private void Awake()
     {
         
@@ -37,6 +39,10 @@ public class SoundManager : MonoBehaviour
         {
             if (s.name == name && s.isMusic)
             {
+                if (musicSource.clip != null && musicSource.clip.name == s.GetClip().name)
+                {
+                    return;
+                }
                 AudioClip clip = s.GetClip();
                 if (clip != null)
                 {

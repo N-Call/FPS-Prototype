@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class RobotEnemy : EnemyController
 {
-    
+    Break breakable;
+    private void Awake()
+    {
+        breakable = GetComponent<Break>();
+    }
     protected override bool CanSeePlayer()
     {
         playerDir = (GameManager.instance.player.transform.position - transform.position);
@@ -41,6 +45,10 @@ public class RobotEnemy : EnemyController
         if (currentHealth > 0.0f)
         {
             agent.SetDestination(GameManager.instance.player.transform.position);
+        }
+        if (currentHealth <= 0)
+        {
+            breakable.Shatter(transform.position);
         }
     }
 
