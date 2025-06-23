@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
 
     int gameGoalCount;
     int enemyCount;
-    int scrapCounter = 100000;
+    int scrapCounter = 0;
     private static bool rulesShown = false;
     public List<UpgradeData> allUpgrades;
     private Spawner[] allSpawners;
