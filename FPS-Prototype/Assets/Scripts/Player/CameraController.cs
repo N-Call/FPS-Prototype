@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] int mouseSensitivityX, mouseSensitivityY;
-    [SerializeField] int controllerSensitivityX, controllerSensitivityY;
+    [SerializeField] float mouseSensitivityX, mouseSensitivityY;
+    [SerializeField] float controllerSensitivityX, controllerSensitivityY;
     [SerializeField] int lockVertMin, lockVertMax;
     [SerializeField] bool invertY;
 
@@ -53,5 +53,16 @@ public class CameraController : MonoBehaviour
     public void SetWallRunTilt(float tilt)
     {
         targetTiltZ = tilt;
+    }
+
+    public void SetXSensitivity(float value)
+    {
+        Debug.Log("sensitivity set to: " + value);
+        mouseSensitivityX = value;
+    }
+
+    public void SetYSensitivity(float value)
+    {
+        mouseSensitivityY = value;
     }
 }

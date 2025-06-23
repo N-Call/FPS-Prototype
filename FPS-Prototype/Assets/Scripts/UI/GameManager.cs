@@ -931,4 +931,25 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
+
+    public void OnLevelComplete()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        if (currentSceneIndex == 13)
+        {
+            OnFinalLevelComplete();
+        }
+        else
+        {
+            SceneManager.LoadScene(currentSceneIndex + 1);
+        }
+    }
+
+    public void OnFinalLevelComplete()
+    {
+        StatePause();
+        MenuManager.instance.ShowCreditsMenu();
+        InputActionManager.instance.EnableMenuInput();
+    }
 }

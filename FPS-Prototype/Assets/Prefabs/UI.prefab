@@ -1450,8 +1450,8 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 1073645159605272149}
     m_SelectOnDown: {fileID: 6996516976028868464}
-    m_SelectOnLeft: {fileID: 1124454395486234730}
-    m_SelectOnRight: {fileID: 1124454395486234730}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0.72156864, b: 0, a: 1}
@@ -1478,12 +1478,24 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4384611764028006991}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 20
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: SetYSensitivity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3284946065488636769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4469,7 +4481,7 @@ MonoBehaviour:
   elapsedTime: {fileID: 6258419417989548038}
   enemyWinCount: {fileID: 5805850867470498081}
   scrapUI: {fileID: 7543857672553516361}
-  totalScrapUI: {fileID: 0}
+  totalScrapUI: {fileID: 7543857672553516361}
   buffSprint: {fileID: 3561523379631254118}
   debuffSprint: {fileID: 1980549887408479409}
   buffJump: {fileID: 3577654086188944385}
@@ -19113,8 +19125,8 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 7454166697264059820}
     m_SelectOnDown: {fileID: 6996516976028868464}
-    m_SelectOnLeft: {fileID: 6466989973027913068}
-    m_SelectOnRight: {fileID: 6466989973027913068}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0.72156864, b: 0, a: 1}
@@ -19141,12 +19153,24 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3858768191594397860}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 20
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: SetXSensitivity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8235950106851481734
 MonoBehaviour:
   m_ObjectHideFlags: 0
