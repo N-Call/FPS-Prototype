@@ -19,6 +19,8 @@ public class JumpAttack : BaseState
         bossSM.animator.CrossFade("Jumping", 0.02f);
         isStopped = false;
         bossSM.agent.enabled = false;
+        bossSM.rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        bossSM.rigidBody.excludeLayers = bossSM.ignorelayer;
         bossSM.transform.LookAt(new Vector3(bossSM.targetPoint.position.x, bossSM.transform.position.y, bossSM.targetPoint.position.z));
 
     }
@@ -66,8 +68,6 @@ public class JumpAttack : BaseState
 
     public void JumpToTarget()
     {
-        bossSM.rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
-        bossSM.rigidBody.excludeLayers = bossSM.ignorelayer;
         Vector3 jumpVelocity = CalculateJumpVelocity(bossSM.transform.position, bossSM.targetPoint.position, bossSM.targetPoint.position.y - bossSM.transform.position.y);
         bossSM.rigidBody.AddForce(jumpVelocity, ForceMode.Impulse);
     }

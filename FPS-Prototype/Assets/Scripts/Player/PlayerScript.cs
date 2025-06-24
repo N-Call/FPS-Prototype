@@ -359,7 +359,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         wallRunLockedWall = wallObject;
         wallJumped = false;
 
-        if (provideExtraJumpIfNeeded && jumpCount == maxJumps + GameManager.instance.playerAbilities.moveWallRunJump / 2)
+        if (provideExtraJumpIfNeeded && jumpCount == maxJumps + ((GameManager.instance.playerAbilities != null)? GameManager.instance.playerAbilities.moveWallRunJump / 2 : 0))
         {
             jumpCount -= 1;
         }
@@ -575,7 +575,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             if (isSprinting && controller.isGrounded)
             {
                 isSliding = true;
-                if (GameManager.instance.playerAbilities.slideMajor == true)
+                if (GameManager.instance.playerAbilities != null && GameManager.instance.playerAbilities.slideMajor == true)
                 {
                     
                     // Damage enemies in range using the player's SphereCollider
