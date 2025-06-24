@@ -7,7 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEditor.Rendering;
+
 
 
 public class GameManager : MonoBehaviour

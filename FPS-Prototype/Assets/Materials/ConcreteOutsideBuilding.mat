@@ -27,7 +27,7 @@ Material:
   m_ValidKeywords:
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
-  - _PARALLAXMAP
+  - _OCCLUSIONMAP
   m_InvalidKeywords:
   - _METALLICGLOSSMAP
   m_LightmapFlags: 4
@@ -43,11 +43,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 42d4b786d5cf31b4d9bce2cd616b5742, type: 3}
-        m_Scale: {x: 0.03, y: 0.1}
+        m_Texture: {fileID: 2800000, guid: a369a67d5fc0dea45a859745654e8e63, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: f341dc1dbaa9bf440857e4e3cc4d4109, type: 3}
+        m_Texture: {fileID: 2800000, guid: 51177436faba9054e8ec4528c5ad92ac, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -67,19 +67,19 @@ Material:
         m_Scale: {x: 0.03, y: 0.1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 42d4b786d5cf31b4d9bce2cd616b5742, type: 3}
-        m_Scale: {x: 0.03, y: 0.1}
+        m_Texture: {fileID: 2800000, guid: a369a67d5fc0dea45a859745654e8e63, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 84960fb96a88db6469fb34d5ee863a1d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8a30b45a85c898d4ab3e695da700f9f3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6a157eab4916bc5489099eaa63611aa8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 5c541eed6816d1242a94b68d403fd4c1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0c6f5c6c21429d64789861bb5f63fbd4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -105,7 +105,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BumpScale: 2
+    - _BumpScale: 5
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -121,7 +121,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Parallax: 0.02
+    - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.271

@@ -843,7 +843,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         else // NEW Uncrouching conditions
         {
             float targetHeight = originalHeight;
-            float heightDiff = targetHeight - originalHeight;
+            float heightDiff = targetHeight - controller.height;
 
             Vector3 rayOrigin = transform.position + controller.center + Vector3.up * (controller.height / 2f);
             float rayLength = heightDiff;

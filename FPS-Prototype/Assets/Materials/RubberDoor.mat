@@ -27,6 +27,7 @@ Material:
   m_ValidKeywords:
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
+  - _OCCLUSIONMAP
   - _PARALLAXMAP
   m_InvalidKeywords:
   - _METALLICGLOSSMAP
@@ -43,11 +44,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 6289f5501136367478ab23a6976a250b, type: 3}
-        m_Scale: {x: 0.5, y: 0.01}
+        m_Texture: {fileID: 2800000, guid: fa3f2fef6599c254a99426df26ce9fb7, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: fd2d550de4a775349a786e3bfc772118, type: 3}
+        m_Texture: {fileID: 2800000, guid: a9524e43ff1d91249bc130aac6568826, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -67,19 +68,19 @@ Material:
         m_Scale: {x: 0.5, y: 0.01}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 6289f5501136367478ab23a6976a250b, type: 3}
-        m_Scale: {x: 0.5, y: 0.01}
+        m_Texture: {fileID: 2800000, guid: fa3f2fef6599c254a99426df26ce9fb7, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 4904e18856c2cd74580b99766f1ba780, type: 3}
+        m_Texture: {fileID: 2800000, guid: 59db8904b54148c4dbb572541ca8075f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6652ab124d5696444adc6b4f8fa62b67, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 1e8e1e10cb5cd454692bd25a6e5f57b5, type: 3}
+        m_Texture: {fileID: 2800000, guid: ea885ef4ab39368499816f45740d44fd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -105,7 +106,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BumpScale: 1
+    - _BumpScale: 3
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -121,10 +122,10 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Parallax: 0.02
+    - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 1
+    - _Smoothness: 0.205
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
