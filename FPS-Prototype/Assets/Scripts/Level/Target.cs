@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
+public class Target : MonoBehaviour, IDamage, ITarget
 {
     public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
@@ -29,7 +29,7 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
 
     public bool buff;
     bool respawn;
-    bool isActive;
+    //bool isActive;
 
     Vector3 explosionScale;
     public bool enemyBuff; 
@@ -127,7 +127,7 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
         }
         else
         {
-            isActive = false;
+            //isActive = false;
             //Debug.Log("Set inactive!");
             gameObject.SetActive(false);
         }
@@ -208,21 +208,21 @@ public class Target : MonoBehaviour, IDamage, ITarget, ILevelReset
         {
             
             SoundManager.instance.PlaySFX("powerUp");
-            GameManager.instance.playerScript.SetShield(shieldElemMod);
+            GameManager.instance.playerScript.SetShieldBuff(shieldElemMod);
         }
         else if (!buff)
         {
-            
+
             SoundManager.instance.PlaySFX("debuff");
-            GameManager.instance.playerScript.SetShield(-shieldElemMod);
+            GameManager.instance.playerScript.SetShieldDeBuff(shieldElemMod);
         }
 
         GameManager.instance.playerScript.UpdatePlayerUI();
     }
 
-    public void ResetState()
-    {
-        isActive = true;
-        gameObject.SetActive(true);
-    }
+    //public void ResetState()
+    //{
+    //    isActive = true;
+    //    gameObject.SetActive(true);
+    //}
 }

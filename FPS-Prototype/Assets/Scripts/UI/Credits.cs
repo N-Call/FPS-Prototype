@@ -8,7 +8,7 @@ public class Credits : MonoBehaviour
     private Vector2 startPosition;
     private RectTransform rectTransform;
     private bool isScrolling = true;
-    private bool startSet = false;
+    //private bool startSet = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -18,7 +18,7 @@ public class Credits : MonoBehaviour
 
     private void OnEnable()
     {
-        startPosition = new Vector2(0, -1400);
+        startPosition = new Vector2(0, -900);
         ResetScroll();
     }
 

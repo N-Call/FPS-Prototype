@@ -18,14 +18,14 @@ public class VolumeSettings : MonoBehaviour
 
     public void SetMasterVolume()
     {
-        GameManager.instance.volumeSystemData.masterVolume = masterSlider.value;
+        //GameManager.instance.volumeSystemData.masterVolume = masterSlider.value;
         float volume = Mathf.Clamp(masterSlider.value, 0.0001f, 1f);
         GameManager.instance.volumeSystemData.masterVolume = volume;
         myMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
     }
     public void SetMusicVolume()
     {
-        GameManager.instance.volumeSystemData.musicVolume = musicSlider.value;
+        //GameManager.instance.volumeSystemData.musicVolume = musicSlider.value;
         float volume = Mathf.Clamp(musicSlider.value, 0.0001f, 1f);
         GameManager.instance.volumeSystemData.musicVolume = volume;
         myMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
@@ -34,7 +34,7 @@ public class VolumeSettings : MonoBehaviour
 
     public void SetSFXVolume()
     {
-        GameManager.instance.volumeSystemData.sfxVolume = SFXSlider.value;
+        //GameManager.instance.volumeSystemData.sfxVolume = SFXSlider.value;
         float volume = Mathf.Clamp(SFXSlider.value, 0.0001f, 1f);
         GameManager.instance.volumeSystemData.sfxVolume = volume;
         myMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
@@ -43,9 +43,20 @@ public class VolumeSettings : MonoBehaviour
 
     private void SetSliders()
     {
-        masterSlider.value = GameManager.instance.volumeSystemData.masterVolume;
-        musicSlider.value = GameManager.instance.volumeSystemData.musicVolume;
-        SFXSlider.value = GameManager.instance.volumeSystemData.sfxVolume;
+        float master = GameManager.instance.volumeSystemData.masterVolume;
+        float music = GameManager.instance.volumeSystemData.musicVolume;
+        float sfx = GameManager.instance.volumeSystemData.sfxVolume;
+
+        bool allZero = master == 0f && music == 0f && sfx == 0f;
+
+        masterSlider.value = allZero ? 0.75f : master;
+        musicSlider.value = allZero ? 0.75f : music;
+        SFXSlider.value = allZero ? 0.75f : sfx;
+
+
+        //masterSlider.value = GameManager.instance.volumeSystemData.masterVolume;
+        //musicSlider.value = GameManager.instance.volumeSystemData.musicVolume;
+        //SFXSlider.value = GameManager.instance.volumeSystemData.sfxVolume;
     }
 
 }
