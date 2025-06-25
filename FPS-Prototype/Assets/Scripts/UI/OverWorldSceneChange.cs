@@ -7,7 +7,7 @@ public class OverWorldSceneChange : MonoBehaviour
 
 
     bool playerInTrigger;
-    [HideInInspector] public Vector3 playerPos;
+    
 
     // Update is called once per frame
     void Update()

@@ -208,13 +208,13 @@ public class Target : MonoBehaviour, IDamage, ITarget
         {
             
             SoundManager.instance.PlaySFX("powerUp");
-            GameManager.instance.playerScript.SetShield(shieldElemMod);
+            GameManager.instance.playerScript.SetShieldBuff(shieldElemMod);
         }
         else if (!buff)
         {
-            
+
             SoundManager.instance.PlaySFX("debuff");
-            GameManager.instance.playerScript.SetShield(-shieldElemMod);
+            GameManager.instance.playerScript.SetShieldDeBuff(shieldElemMod);
         }
 
         GameManager.instance.playerScript.UpdatePlayerUI();

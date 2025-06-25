@@ -14,6 +14,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float invincHitTime;
     [SerializeField] int isShielded;
     [SerializeField] int shieldMax;
+    [SerializeField] int shieldMin;
 
     [Header("Walking")]
     [SerializeField][Tooltip("The walk speed of the player walking forwards")] float walkForwardSpeed = 8.0f;
@@ -55,7 +56,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float wallCheckDist = 0.7f;
     [SerializeField] float wallCheckFBDist = 0.9f;
     [SerializeField] float wallJumpHoriForce;
-    
+
     [SerializeField] float wallStickForce;
     [SerializeField] float minWallRunHeight;
 
@@ -66,7 +67,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     bool isWallRunning;         // Is the player wall jumping?
     bool wallJumped;            // Did the player wall jump?
     float wallRunTimer;         // Timer for the active wall run.
-    
+
     Vector3 wallNormal;         // Normal of the wall being run on in question.
     Vector3 wallJumpVel;        // Horizontal force being applied for a wall jump.
     private bool wallDetectedThisFrame;
@@ -122,7 +123,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     int currentWeapon = 0;
     int shieldCount;
 
-    
+
     bool isSprinting;
     bool isCrouching;
     bool isSliding;
@@ -173,7 +174,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             wallRunLockedWall = null;
         }
-       
+
         if (!stopActions)
         {
             Movement();
@@ -203,7 +204,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
         bool isMoveInput = (Mathf.Abs(walkHorizontalDirection) > 0.01f || Mathf.Abs(walkVerticalDirection) > 0.01f);
 
-      
+
 
         // This determines the amplitude and frequency based on the movement state.
         // And is only applied while grounded.
@@ -215,13 +216,13 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 {
                     currAmp = sprintBobAmp;
                     currFreq = sprintBobFreq;
-                    
+
                 }
                 else // Is the player walking?
                 {
                     currAmp = walkBobAmp;
                     currFreq = walkBobFreq;
-                    
+
                 }
             }
         }
@@ -235,21 +236,21 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             // The Mathf.Sin function allows me to create a smooth, oscillating value betrween -1 and 1.
             // Also, multiplying by the currAmp scales this oscillation to any desired bobbing height as you wish.
             float bobbingOffset = (-0.5f * Mathf.Sin(bobTimer) - 0.5f) * currAmp;
-            
+
 
             // Then I apply the offset to the camera's local Y position.
             Vector3 newCamLocalPos = cameraLocalPosOrig;
             newCamLocalPos.y += bobbingOffset;
 
             Camera.main.transform.localPosition = newCamLocalPos;
-            
+
         }
         else // If the player is either not moving at all, or is in the air. This includes wall running, jumping, falling, etc.
         {
             bobTimer = 0f; // This resets the timer, when not moving
             // This smoothly returns the camera back to its original position.
             Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, cameraLocalPosOrig, Time.deltaTime * bobReturnSpeed);
-           
+
         }
     }
 
@@ -479,7 +480,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             {
                 speed += GameManager.instance.playerAbilities.moveSlideSpeed;
             }
-          
+
 
 
             if (speed <= calculatedCrouchSpeed)
@@ -487,7 +488,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 isSliding = false;
                 isCrouching = true;
                 speed = calculatedCrouchSpeed;
-                
+
             }
 
             currentSlideSpeed -= slideRate;
@@ -503,7 +504,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
         // Return the calculated speed, and factor in external speed modifiers
         return currSpeed;
-        
+
     }
 
     void Jump()
@@ -580,7 +581,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 isSliding = true;
                 if (GameManager.instance.playerAbilities.slideMajor == true)
                 {
-                    
+
                     // Damage enemies in range using the player's SphereCollider
                     Vector3 center = transform.position + damageCollider.center;
                     float radius = damageCollider.radius * transform.localScale.x;
@@ -727,7 +728,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
             invincHitTime = 0.05f;
         }
-        
+
         else if (!invulnerable)
         {
             HP -= amount;
@@ -784,15 +785,29 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         jumpModifier += jump;
     }
 
-    public void SetShield(int shieldAmount)
+    public void SetShieldBuff(int shieldAmount)
     {
         if (isShielded + shieldAmount > shieldMax)
         {
             return;
         }
+        
         else
         {
             isShielded += shieldAmount;
+        }
+    }
+
+    public void SetShieldDeBuff(int shieldAmount)
+    {
+        if (isShielded + shieldAmount <= shieldMin)
+        {
+            return;
+        }
+
+        else
+        {
+            isShielded -= shieldAmount;
         }
     }
 
