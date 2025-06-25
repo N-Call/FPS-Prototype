@@ -53,7 +53,16 @@ public class Bow : Range
     {
         shootTimer = 0;
         Damage dmg = Instantiate(projectils[projectileIndex], shootPos.position, transform.rotation);
-        dmg.AddDamageAmount((int)(damage * currentCharge + GameManager.instance.playerAbilities.w2DmgMod));
+
+        if (GameManager.instance.playerAbilities != null)
+        {
+            dmg.AddDamageAmount((int)(damage * currentCharge + GameManager.instance.playerAbilities.w2DmgMod));
+        }
+        else
+        {
+            dmg.AddDamageAmount((int)(damage * currentCharge));
+        }
+
         dmg.AddSpeedAmount((int)(distance / chargeMaxRate * currentCharge));
 
         currentCharge = 0;
@@ -80,6 +89,7 @@ public class Bow : Range
         {
             return;
         }
+
         if (GameManager.instance.playerAbilities.w2Major == true && InputActionManager.instance.playerAim)
         {
             projectileIndex = (projectileIndex + 1 > projectils.Length - 1) ? 0 : projectileIndex + 1;
@@ -92,7 +102,15 @@ public class Bow : Range
         SoundManager.instance.PlaySFX("bowLoad");
         while (currentCharge < chargeMaxRate)
         {
-            currentCharge += chargeRate + GameManager.instance.playerAbilities.w2SpeedMod;
+            if (GameManager.instance.playerAbilities != null)
+            {
+                currentCharge += chargeRate + GameManager.instance.playerAbilities.w2SpeedMod;
+            }
+            else
+            {
+                currentCharge += chargeRate;
+            }
+
             yield return new WaitForSeconds(chargeRate);
         }
     }
