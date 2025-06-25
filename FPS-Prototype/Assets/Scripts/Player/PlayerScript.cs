@@ -97,6 +97,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     Coroutine unCrouchCoroutine;
 
     Vector3 verticalVelocity;
+    Vector3 direction;
 
     float originalHeight;
     float walkHorizontalDirection;
@@ -119,6 +120,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     int originalHP;
     int jumpCount;
     int currentWeapon = 0;
+    int shieldCount;
 
     
     bool isSprinting;
@@ -157,6 +159,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         cameraLocalPosOrig = Camera.main.transform.localPosition;
         Application.targetFrameRate = 60;
         baseFOV = origFOV;
+        shieldCount = 0;
     }
 
     // Update is called once per frame
@@ -402,7 +405,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         bool backwards = walkVerticalDirection < 0;
 
         // The direction the player is going
-        Vector3 direction = transform.right * walkHorizontalDirection + transform.forward * walkVerticalDirection;
+        direction = transform.right * walkHorizontalDirection + transform.forward * walkVerticalDirection;
 
         // Vertical & horizontal speed
         verticalSpeed = forward && backwards ? 0.0f : forward ? walkForwardSpeed : backwards ? walkBackwardsSpeed : 0.0f;
@@ -553,7 +556,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     // Handle sprint inputs
     void Sprint()
     {
-        if (InputActionManager.instance.playerSprint && controller.isGrounded && !isSliding && !isCrouching)
+        if (InputActionManager.instance.playerSprint && controller.isGrounded && !isSliding && !isCrouching && InputActionManager.instance.playerWalk.magnitude != 0)
         {
             isSprinting = true;
             particleSpRun.gameObject.SetActive(true);
@@ -722,7 +725,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         {
             isShielded -= 1;
 
-            invincHitTime = 0.15f;
+            invincHitTime = 0.05f;
         }
         
         else if (!invulnerable)
@@ -749,6 +752,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         verticalVelocity.y = 0.0f;
         HP = originalHP;
         invulnerable = false;
+        shieldCount = isShielded;
 
         ResetElems();
         ResetFOV();

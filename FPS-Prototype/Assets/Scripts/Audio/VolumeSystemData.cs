@@ -31,8 +31,8 @@ public class VolumeSystemData : MonoBehaviour
 
     public void Load(VolumeSaveData data)
     {
-        masterVolume = data.masterVol;
-        musicVolume = data.musicVol;
+        masterVolume = data.masterVol > 0 ? data.masterVol : 0.75f;
+        musicVolume = data.musicVol > 0 ? data.masterVol : 0.75f;
         sfxVolume = data.sfxVol;
         SetVolumes();
     }
