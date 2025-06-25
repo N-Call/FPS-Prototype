@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
+    public Transform shopPos;
    
     public void Respawn()
     {
@@ -48,6 +49,7 @@ public class ButtonFunctions : MonoBehaviour
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
+        GameManager.instance.player.transform.position = shopPos.localPosition;
 
     }
     public void MainMenu()

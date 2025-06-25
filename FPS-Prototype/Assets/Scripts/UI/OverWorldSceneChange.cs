@@ -7,6 +7,7 @@ public class OverWorldSceneChange : MonoBehaviour
 
 
     bool playerInTrigger;
+    [HideInInspector] public Vector3 playerPos;
 
     // Update is called once per frame
     void Update()
@@ -25,6 +26,7 @@ public class OverWorldSceneChange : MonoBehaviour
             }
             else if(Input.GetButtonDown("Interact"))
             {
+                
                 SceneManager.LoadScene(3);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
