@@ -139,7 +139,8 @@ public class GameManager : MonoBehaviour
             scrapUI.text = scrapCounter.ToString("F0");
             
         }
-        if (totalScrapUI != null)
+
+        if (totalScrapUI != null && scrapManager != null)
         {
             totalScrapUI.text = scrapManager.totalScrap.ToString("F0");
         }
