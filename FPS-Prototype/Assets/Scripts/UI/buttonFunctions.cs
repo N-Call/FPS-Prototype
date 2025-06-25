@@ -50,6 +50,7 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene(2);
 
     }
+
     public void MainMenu()
     {
         Time.timeScale = GameManager.instance.timeScaleOrig;

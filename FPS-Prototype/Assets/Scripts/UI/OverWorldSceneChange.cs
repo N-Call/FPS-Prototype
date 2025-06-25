@@ -16,6 +16,7 @@ public class OverWorldSceneChange : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact") && button.CompareTag("ButtonLvl"))
             {
+                //level select
                 
                 SceneManager.LoadScene(1);
                 Cursor.visible = true;
@@ -25,6 +26,8 @@ public class OverWorldSceneChange : MonoBehaviour
             }
             else if(Input.GetButtonDown("Interact"))
             {
+                //Overworld shop
+                
                 SceneManager.LoadScene(3);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
@@ -42,4 +45,5 @@ public class OverWorldSceneChange : MonoBehaviour
         playerInTrigger = false;
         button.SetActive(false);
     }
+   
 }
