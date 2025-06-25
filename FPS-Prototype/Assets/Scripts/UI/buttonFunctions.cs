@@ -49,8 +49,6 @@ public class ButtonFunctions : MonoBehaviour
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
-        
-
     }
 
     public void MainMenu()

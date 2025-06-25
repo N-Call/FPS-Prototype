@@ -14,7 +14,7 @@ public class OverWorldSceneChange : MonoBehaviour
         // need to check which trigger zone the player is in to then send to correct scene
         if(playerInTrigger)
         {
-            if (Input.GetButtonDown("Interact") && button.CompareTag("ButtonLvl"))
+            if (InputActionManager.instance.playerInteract && button.CompareTag("ButtonLvl"))
             {
                 //level select
                 
@@ -24,7 +24,7 @@ public class OverWorldSceneChange : MonoBehaviour
                 
 
             }
-            else if(Input.GetButtonDown("Interact"))
+            else if(InputActionManager.instance.playerInteract)
             {
                 //Overworld shop
                 
