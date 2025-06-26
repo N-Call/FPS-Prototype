@@ -17,7 +17,7 @@ public class OverWorldSceneChange : MonoBehaviour
             if (InputActionManager.instance.playerInteract && button.CompareTag("ButtonLvl"))
             {
                 //level select
-                
+                GameManager.instance.playerPosition.SaveToFile();
                 SceneManager.LoadScene(1);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
@@ -27,7 +27,7 @@ public class OverWorldSceneChange : MonoBehaviour
             else if(InputActionManager.instance.playerInteract)
             {
                 //Overworld shop
-                
+                GameManager.instance.playerPosition.SaveToFile();
                 SceneManager.LoadScene(3);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;

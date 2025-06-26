@@ -33,18 +33,23 @@ public class ButtonFunctions : MonoBehaviour
         
         LvlSelectManager.instance.StartGameBtn();
     }
-
     public void BackToOverWorld()
     {
         
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();
         SceneManager.LoadScene(2);
-        
+
+    }
+
+    public void BackToOverWorldlvlSelect()
+    {
+        Time.timeScale = GameManager.instance.timeScaleOrig;
+        SoundManager.instance.musicSource.Play();
+        SceneManager.LoadScene(2);
     }
     public void BackToOverWorldShopOnly()
     {
-        
         SaveSystem.SaveStats();
         Time.timeScale = GameManager.instance.timeScaleOrig;
         SoundManager.instance.musicSource.Play();

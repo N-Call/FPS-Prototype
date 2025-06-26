@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
     public PlayerScript playerScript;
     public PlayerAbilities playerAbilities;
     public PlayerSettings playerSettings;
+    public PlayerPosition playerPosition;
     public SceneData sceneData;
     public SceneLoader sceneLoader;
     public FinalGradeSystem gradeSystem;
