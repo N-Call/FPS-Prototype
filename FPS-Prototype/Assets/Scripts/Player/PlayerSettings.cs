@@ -1,12 +1,11 @@
-using System;
 using UnityEngine;
 
 public class PlayerSettings : MonoBehaviour
 {
 
     [Header("Sensitivities")]
-    public Vector2 mouseSensitivity;
-    public Vector2 controllerSensitivity;
+    public Vector2 mouseSensitivity = new Vector2(10f, 10f);
+    public Vector2 controllerSensitivity = new Vector2(250f, 200f);
 
     string keybinds;
 

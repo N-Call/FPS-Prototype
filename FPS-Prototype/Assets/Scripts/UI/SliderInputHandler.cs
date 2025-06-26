@@ -5,8 +5,10 @@ using System;
 
 public class SliderInputHandler : MonoBehaviour
 {
+
     [SerializeField] Slider slider;
     [SerializeField] TMP_InputField inputField;
+    [SerializeField] float minimum, maximum;
 
     void UpdateSliderAlreadyRounded(float value)
     {
@@ -67,7 +69,7 @@ public class SliderInputHandler : MonoBehaviour
             return;
         }
 
-        inputField.text = MathF.Round(val, 1).ToString("#.#");
+        inputField.text = Mathf.Clamp(MathF.Round(val, 1), minimum, maximum).ToString("#.#");
         UpdateSliderAlreadyRounded(val);
     }
 

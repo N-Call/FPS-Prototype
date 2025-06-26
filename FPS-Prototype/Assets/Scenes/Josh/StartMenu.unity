@@ -4693,6 +4693,7 @@ GameObject:
   - component: {fileID: 249305738}
   - component: {fileID: 249305737}
   - component: {fileID: 249305736}
+  - component: {fileID: 249305740}
   m_Layer: 5
   m_Name: SettingsPCMenu
   m_TagString: Untagged
@@ -4774,6 +4775,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1820, y: 980}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &249305740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249305735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff38fdbb6102e545a929ad67f4791d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSliderX: {fileID: 1252381572}
+  mouseSliderY: {fileID: 960315015}
+  mouseInputX: {fileID: 827755196}
+  mouseInputY: {fileID: 1352413516}
+  controllerSliderX: {fileID: 0}
+  controllerSliderY: {fileID: 0}
 --- !u!1001 &260687056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15250,6 +15269,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1252381572}
   inputField: {fileID: 827755196}
+  minimum: 0.1
+  maximum: 20
 --- !u!1001 &829819346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17620,6 +17641,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 0}
   inputField: {fileID: 1352413516}
+  minimum: 0
+  maximum: 0
 --- !u!114 &960315017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21926,6 +21949,7 @@ GameObject:
   - component: {fileID: 1183712197}
   - component: {fileID: 1183712196}
   - component: {fileID: 1183712195}
+  - component: {fileID: 1183712199}
   m_Layer: 5
   m_Name: SettingsControllerMenu
   m_TagString: Untagged
@@ -22007,6 +22031,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1183712199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183712194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff38fdbb6102e545a929ad67f4791d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSliderX: {fileID: 0}
+  mouseSliderY: {fileID: 0}
+  mouseInputX: {fileID: 0}
+  mouseInputY: {fileID: 0}
+  controllerSliderX: {fileID: 1335223498}
+  controllerSliderY: {fileID: 1520501372}
 --- !u!4 &1186789636 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1456825660133939555, guid: 0c2b450e3ef10f44993f5980657b0f27, type: 3}
@@ -23721,6 +23763,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 0}
   inputField: {fileID: 827755196}
+  minimum: 0
+  maximum: 0
 --- !u!114 &1252381574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26206,6 +26250,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 960315015}
   inputField: {fileID: 1352413516}
+  minimum: 0.1
+  maximum: 20
 --- !u!4 &1354572842 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1456825660133939555, guid: 0c2b450e3ef10f44993f5980657b0f27, type: 3}
@@ -46867,6 +46913,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9150666411790169439, guid: 3cf3d920baf5eb54ab073476acd7572f, type: 3}
       insertIndex: 1
       addedObject: {fileID: 6727732365833248387}
+    - targetCorrespondingSourceObject: {fileID: 9150666411790169439, guid: 3cf3d920baf5eb54ab073476acd7572f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6727732365833248389}
   m_SourcePrefab: {fileID: 100100000, guid: 3cf3d920baf5eb54ab073476acd7572f, type: 3}
 --- !u!1 &6727732365833248386 stripped
 GameObject:
@@ -46887,6 +46936,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: {x: 10, y: 10}
   controllerSensitivity: {x: 250, y: 200}
+--- !u!114 &6727732365833248389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6727732365833248386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5651e106dcec64742b5b646a2de86a56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &6751269882823160438
 CanvasRenderer:
   m_ObjectHideFlags: 0

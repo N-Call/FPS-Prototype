@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InputUpdateHandler : MonoBehaviour
 {
-    
+
     public void SetMouseSensitivityX(float sensitivity)
     {
         if (GameManager.instance.playerSettings == null)
@@ -11,7 +11,7 @@ public class InputUpdateHandler : MonoBehaviour
             return;
         }
 
-        GameManager.instance.playerSettings.mouseSensitivity.x = MathF.Round(sensitivity, 1);
+        GameManager.instance.playerSettings.mouseSensitivity.x = Mathf.Clamp(MathF.Round(sensitivity, 1), 0.1f, 20.0f);
     }
 
     public void SetMouseSensitivityX(string sensitivity)
@@ -36,7 +36,7 @@ public class InputUpdateHandler : MonoBehaviour
             return;
         }
 
-        GameManager.instance.playerSettings.mouseSensitivity.y = MathF.Round(sensitivity, 1);
+        GameManager.instance.playerSettings.mouseSensitivity.y = Mathf.Clamp(MathF.Round(sensitivity, 1), 0.1f, 20.0f);
     }
 
     public void SetMouseSensitivityY(string sensitivity)
@@ -54,14 +54,14 @@ public class InputUpdateHandler : MonoBehaviour
         SetMouseSensitivityY(val);
     }
 
-    public void SetControllerSensitivityX(float value)
+    public void SetControllerSensitivityX(float sensitivity)
     {
         if (GameManager.instance.playerSettings == null)
         {
             return;
         }
 
-        GameManager.instance.playerSettings.controllerSensitivity.x = MathF.Round(value, 1);
+        GameManager.instance.playerSettings.controllerSensitivity.x = Mathf.Clamp(MathF.Round(sensitivity, 1), 25.0f, 475.0f);
     }
 
     public void SetControllerSensitivityX(string value)
@@ -79,14 +79,14 @@ public class InputUpdateHandler : MonoBehaviour
         SetControllerSensitivityX(val);
     }
 
-    public void SetControllerSensitivityY(float value)
+    public void SetControllerSensitivityY(float sensitivity)
     {
         if (GameManager.instance.playerSettings == null)
         {
             return;
         }
 
-        GameManager.instance.playerSettings.controllerSensitivity.y = MathF.Round(value, 1);
+        GameManager.instance.playerSettings.controllerSensitivity.y = Mathf.Clamp(MathF.Round(sensitivity, 1), 25.0f, 475.0f);
     }
 
     public void SetControllerSensitivityY(string value)

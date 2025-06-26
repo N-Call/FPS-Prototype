@@ -1448,6 +1448,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 0}
   inputField: {fileID: 8656643870308292825}
+  minimum: 0
+  maximum: 0
 --- !u!114 &6466989973027913068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8869,6 +8871,7 @@ GameObject:
   - component: {fileID: 4593543549175883694}
   - component: {fileID: 1687635877627907762}
   - component: {fileID: 4957232019726561799}
+  - component: {fileID: 1390011505285401659}
   m_Layer: 5
   m_Name: SettingsControllerMenu
   m_TagString: Untagged
@@ -8950,6 +8953,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: e9f96786a32cbd84fb645f7a6e5e0bce, type: 3}
   targetControlScheme: Gamepad
+--- !u!114 &1390011505285401659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656698499669028345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff38fdbb6102e545a929ad67f4791d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSliderX: {fileID: 0}
+  mouseSliderY: {fileID: 0}
+  mouseInputX: {fileID: 0}
+  mouseInputY: {fileID: 0}
+  controllerSliderX: {fileID: 6551491801708449529}
+  controllerSliderY: {fileID: 4540546543797918441}
 --- !u!1 &1681496833964681030
 GameObject:
   m_ObjectHideFlags: 0
@@ -19380,6 +19401,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 0}
   inputField: {fileID: 4670371502795767287}
+  minimum: 0
+  maximum: 0
 --- !u!114 &1124454395486234730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19940,6 +19963,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 6466989973027913068}
   inputField: {fileID: 8656643870308292825}
+  minimum: 0.1
+  maximum: 20
 --- !u!222 &5878638235587961618
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -43050,6 +43075,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1124454395486234730}
   inputField: {fileID: 4670371502795767287}
+  minimum: 0.1
+  maximum: 20
 --- !u!222 &5987990539589117363
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -43385,6 +43412,7 @@ GameObject:
   - component: {fileID: 4198152822761807366}
   - component: {fileID: 2339730691989121876}
   - component: {fileID: 2028261167646876198}
+  - component: {fileID: 7134907847237577360}
   m_Layer: 5
   m_Name: SettingsPCMenu
   m_TagString: Untagged
@@ -43466,6 +43494,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: e9f96786a32cbd84fb645f7a6e5e0bce, type: 3}
   targetControlScheme: PC
+--- !u!114 &7134907847237577360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9139772970323642609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff38fdbb6102e545a929ad67f4791d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSliderX: {fileID: 1124454395486234730}
+  mouseSliderY: {fileID: 6466989973027913068}
+  mouseInputX: {fileID: 4670371502795767287}
+  mouseInputY: {fileID: 8656643870308292825}
+  controllerSliderX: {fileID: 0}
+  controllerSliderY: {fileID: 0}
 --- !u!1 &9142225591710020981
 GameObject:
   m_ObjectHideFlags: 0

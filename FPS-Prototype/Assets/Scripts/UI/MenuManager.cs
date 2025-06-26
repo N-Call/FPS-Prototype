@@ -12,7 +12,6 @@ public class MenuManager : MonoBehaviour
     [Header("Events")]
     [SerializeField] EventSystem eventSystem;
 
-
     [Header("Menus")]
     [SerializeField] GameObject startMenu;
     [SerializeField] GameObject pauseMenu;
@@ -60,8 +59,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject creditsMenuFirstSelected;
 
     [SerializeField] Credits creditsScroller;
-
-
     #endregion
 
     #region Private Fields
@@ -432,7 +429,8 @@ public class MenuManager : MonoBehaviour
     // Back to Settings from Keyboard & Mouse Settings
     public void SettingsPCBack()
     {
-        SaveSystem.SaveSettings();
+        GameManager.instance.playerSettings.UpdateKeybinds();
+        SaveSettingsSystem.Save();
         ShowSettingsMenu();
         UpdateSelectedButton(settingsMenuPCButton);
     }
@@ -447,7 +445,8 @@ public class MenuManager : MonoBehaviour
     // Back to Settings from Controller Settings
     public void SettingsControllerBack()
     {
-        SaveSystem.SaveSettings();
+        GameManager.instance.playerSettings.UpdateKeybinds();
+        SaveSettingsSystem.Save();
         ShowSettingsMenu();
         UpdateSelectedButton(settingsMenuControllerButton);
     }

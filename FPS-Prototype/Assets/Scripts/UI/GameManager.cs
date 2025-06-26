@@ -123,8 +123,6 @@ public class GameManager : MonoBehaviour
         allSpawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
 
         timeScaleOrig = Time.timeScale;
-       
-        SaveSettingsSystem.Load();
     }
 
     private void Start()

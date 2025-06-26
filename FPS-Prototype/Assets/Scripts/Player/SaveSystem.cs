@@ -14,7 +14,6 @@ public class SaveSystem
         public FinalGradeData finalGradeData;
         public DifficultySaveData difficultyData;
         public AbilitiesSaveData abilitiesData;
-        public SettingsSaveData settingsData;
     }
 
     public static string SaveFileName()
@@ -40,14 +39,7 @@ public class SaveSystem
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
         GameManager.instance.playerAbilities.Save(ref saveData.abilitiesData);
-        GameManager.instance.playerSettings.Save(ref saveData.settingsData);
         DifficultyManager.Instance.Save(ref saveData.difficultyData);
-    }
-
-    public static void SaveSettings()
-    {
-        GameManager.instance.playerSettings.Save(ref saveData.settingsData);
-        File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
 
     public static void SaveStats()
@@ -105,7 +97,6 @@ public class SaveSystem
         DifficultyManager.Instance.Load(saveData.difficultyData);
         GameManager.instance.scrapManager.Load(saveData.ScrapData);
         GameManager.instance.playerAbilities.Load(saveData.abilitiesData);
-        GameManager.instance.playerSettings.Load(saveData.settingsData);
     }
 
     private static void HandleLoadGradeData()

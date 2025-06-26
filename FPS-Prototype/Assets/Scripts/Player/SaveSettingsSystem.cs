@@ -1,12 +1,16 @@
 using UnityEngine;
 using System.IO;
+
 public class SaveSettingsSystem : MonoBehaviour
 {
+
     private static SaveData saveData = new SaveData();
+
     [System.Serializable]
     struct SaveData
     {
         public VolumeSaveData volumeSaveData;
+        public SettingsSaveData settingsSaveData;
     }
 
     public static string SaveFileName()
@@ -17,7 +21,6 @@ public class SaveSettingsSystem : MonoBehaviour
 
     public static void Save()
     {
-        
         HandleSaveData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
@@ -25,6 +28,7 @@ public class SaveSettingsSystem : MonoBehaviour
     private static void HandleSaveData()
     {
         GameManager.instance.volumeSystemData.Save(ref saveData.volumeSaveData);
+        GameManager.instance.playerSettings.Save(ref saveData.settingsSaveData);
     }
 
     public static void Load()
@@ -32,7 +36,6 @@ public class SaveSettingsSystem : MonoBehaviour
         if (File.Exists(SaveFileName()))
         {
             string saveContent = File.ReadAllText(SaveFileName());
-
             saveData = JsonUtility.FromJson<SaveData>(saveContent);
             HandleLoadData();
         }
@@ -41,5 +44,7 @@ public class SaveSettingsSystem : MonoBehaviour
     private static void HandleLoadData()
     {
         GameManager.instance.volumeSystemData.Load(saveData.volumeSaveData);
+        GameManager.instance.playerSettings.Load(saveData.settingsSaveData);
     }
+
 }
