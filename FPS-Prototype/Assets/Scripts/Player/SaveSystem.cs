@@ -3,7 +3,9 @@ using System.IO;
 
 public class SaveSystem
 {
+
     private static SaveData saveData = new SaveData();
+
     [System.Serializable]
     struct SaveData
     {
@@ -12,7 +14,9 @@ public class SaveSystem
         public FinalGradeData finalGradeData;
         public DifficultySaveData difficultyData;
         public AbilitiesSaveData abilitiesData;
+        public SettingsSaveData settingsData;
     }
+
     public static string SaveFileName()
     {
         string saveFile = Application.persistentDataPath + "/save" + ".save";
@@ -26,7 +30,6 @@ public class SaveSystem
 
     public static void Save()
     {
-        
         HandleSaveData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
@@ -37,12 +40,18 @@ public class SaveSystem
         GameManager.instance.sceneData.Save(ref saveData.SceneData);
         GameManager.instance.gradeSystem.Save(ref saveData.finalGradeData);
         GameManager.instance.playerAbilities.Save(ref saveData.abilitiesData);
+        GameManager.instance.playerSettings.Save(ref saveData.settingsData);
         DifficultyManager.Instance.Save(ref saveData.difficultyData);
+    }
+
+    public static void SaveSettings()
+    {
+        GameManager.instance.playerSettings.Save(ref saveData.settingsData);
+        File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
 
     public static void SaveStats()
     {
-       
         HandleSaveStatsData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
@@ -96,6 +105,7 @@ public class SaveSystem
         DifficultyManager.Instance.Load(saveData.difficultyData);
         GameManager.instance.scrapManager.Load(saveData.ScrapData);
         GameManager.instance.playerAbilities.Load(saveData.abilitiesData);
+        GameManager.instance.playerSettings.Load(saveData.settingsData);
     }
 
     private static void HandleLoadGradeData()
@@ -112,4 +122,5 @@ public class SaveSystem
         GameManager.instance.scrapManager.Load(saveData.ScrapData);
         GameManager.instance.playerAbilities.Load(saveData.abilitiesData);
     }
+
 }
