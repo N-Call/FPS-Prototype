@@ -1,7 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour, IDamage, IPickup
 {
@@ -99,6 +100,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     Vector3 verticalVelocity;
     Vector3 direction;
+    public PlayerPosition positionSaver;
 
     float originalHeight;
     float walkHorizontalDirection;
@@ -151,6 +153,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        positionSaver = GameManager.instance.playerPosition;
+
+        if (SceneManager.GetActiveScene().buildIndex == 2) // ← change 2 if needed
+        {
+            string path = Application.persistentDataPath + "/playerpos.json";
+            if (System.IO.File.Exists(path))
+            {
+                GameManager.instance.playerPosition.LoadFromFile();
+                System.IO.File.Delete(path); // optional: prevents reuse outside intended flow
+            }
+        }
         originalHP = HP;
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
