@@ -172,16 +172,19 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
     }
 
-    public void AddAmmoToReserve(int amount)
+    public bool AddAmmoToReserve(int amount)
     {
-        
         float tempTotal = currTotalBullets;
+        if (currTotalBullets == ammoCap)
+        {
+            return false;
+        }
         currTotalBullets = Mathf.Min(ammoCap, currTotalBullets + amount);
         if (ammoCount <= 0 && tempTotal <= 0) { Reload(); }
 
        
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
-
+        return true;
     }
 }
 

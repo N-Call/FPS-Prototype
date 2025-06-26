@@ -20,10 +20,8 @@ public class AmmoCratePickup : MonoBehaviour
             // If you wish to adjust this so it applies to both the bow and the gun, then that's perfectly fine.
             IReloadable weapon = GameManager.instance.playerScript.weaponList[0].GetComponent<IReloadable>();
 
-            if (weapon != null)
+            if (weapon != null && weapon.AddAmmoToReserve(ammoAmount))
             {
-                weapon.AddAmmoToReserve(ammoAmount);
-
                 SoundManager.instance.PlaySFX(sfxName);
 
                 Destroy(gameObject);
