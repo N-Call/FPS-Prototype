@@ -432,6 +432,7 @@ public class MenuManager : MonoBehaviour
     // Back to Settings from Keyboard & Mouse Settings
     public void SettingsPCBack()
     {
+        SaveSystem.SaveSettings();
         ShowSettingsMenu();
         UpdateSelectedButton(settingsMenuPCButton);
     }
@@ -446,6 +447,7 @@ public class MenuManager : MonoBehaviour
     // Back to Settings from Controller Settings
     public void SettingsControllerBack()
     {
+        SaveSystem.SaveSettings();
         ShowSettingsMenu();
         UpdateSelectedButton(settingsMenuControllerButton);
     }
