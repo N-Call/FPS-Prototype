@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -60,7 +61,8 @@ public class BossOrb : MonoBehaviour, IBossDamagable
             numbers.Add(index);
             regularOrb.splineContainer = spline;
             regularOrb.splinIndex = index;
-            Instantiate(regularOrb, transform.position, transform.rotation);
+            GameObject currOrb = Instantiate(regularOrb, transform.position, transform.rotation).gameObject;
+            orbSpawner.smallOrbs.Add(currOrb);
         }
         
         Destroy(gameObject);
