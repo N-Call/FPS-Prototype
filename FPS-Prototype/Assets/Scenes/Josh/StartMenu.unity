@@ -41555,6 +41555,7 @@ MonoBehaviour:
   playerScript: {fileID: 0}
   playerAbilities: {fileID: 1967675310}
   playerSettings: {fileID: 6727732365833248387}
+  playerPosition: {fileID: 6727732365833248390}
   sceneData: {fileID: 1818439498}
   sceneLoader: {fileID: 0}
   gradeSystem: {fileID: 1967675309}
@@ -46915,6 +46916,9 @@ PrefabInstance:
       addedObject: {fileID: 6727732365833248387}
     - targetCorrespondingSourceObject: {fileID: 9150666411790169439, guid: 3cf3d920baf5eb54ab073476acd7572f, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6727732365833248390}
+    - targetCorrespondingSourceObject: {fileID: 9150666411790169439, guid: 3cf3d920baf5eb54ab073476acd7572f, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 6727732365833248389}
   m_SourcePrefab: {fileID: 100100000, guid: 3cf3d920baf5eb54ab073476acd7572f, type: 3}
 --- !u!1 &6727732365833248386 stripped
@@ -46948,6 +46952,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5651e106dcec64742b5b646a2de86a56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6727732365833248390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6727732365833248386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf4574915e30734793dff1dba6df321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
 --- !u!222 &6751269882823160438
 CanvasRenderer:
   m_ObjectHideFlags: 0

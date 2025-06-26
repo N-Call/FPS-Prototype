@@ -21,8 +21,6 @@ public class OverWorldSceneChange : MonoBehaviour
                 SceneManager.LoadScene(1);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
-                
-
             }
             else if(InputActionManager.instance.playerInteract)
             {
