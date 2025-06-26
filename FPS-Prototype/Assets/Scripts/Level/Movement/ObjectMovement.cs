@@ -17,6 +17,7 @@ public class ObjectMovement : MonoBehaviour
 
     [Header("Passenger Settings")]
     [SerializeField] bool carryPassengers;
+    [SerializeField] bool dontMovePassengers;
     [SerializeField] bool moveWithoutPlayer = true;
     [SerializeField] bool waitForPlayer;
     [SerializeField] float triggerHeight;
@@ -205,6 +206,12 @@ public class ObjectMovement : MonoBehaviour
         {
             return;
         }
+        
+        if (dontMovePassengers)
+        {
+            hasPlayer = true;
+            return;
+        }
 
         if (other.transform.parent != null)
         {
@@ -219,6 +226,12 @@ public class ObjectMovement : MonoBehaviour
     {
         if (!carryPassengers || !other.CompareTag("Player"))
         {
+            return;
+        }
+
+        if (dontMovePassengers)
+        {
+            hasPlayer = false;
             return;
         }
 

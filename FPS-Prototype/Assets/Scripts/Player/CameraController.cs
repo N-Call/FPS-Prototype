@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -55,14 +56,105 @@ public class CameraController : MonoBehaviour
         targetTiltZ = tilt;
     }
 
-    public void SetXSensitivity(float value)
+    public void SetMouseSensitivityX(float value)
     {
-        Debug.Log("sensitivity set to: " + value);
-        mouseSensitivityX = value;
+        mouseSensitivityX = MathF.Round(value, 1);
     }
 
-    public void SetYSensitivity(float value)
+    public void SetMouseSensitivityX(string value)
     {
-        mouseSensitivityY = value;
+        float val;
+        try
+        {
+            val = float.Parse(value);
+        }
+        catch
+        {
+            return;
+        }
+
+        SetMouseSensitivityX(val);
     }
+
+    public void SetMouseSensitivityY(float value)
+    {
+        mouseSensitivityY = MathF.Round(value, 1);
+    }
+
+    public void SetMouseSensitivityY(string value)
+    {
+        float val;
+        try
+        {
+            val = float.Parse(value);
+        }
+        catch
+        {
+            return;
+        }
+
+        SetMouseSensitivityY(val);
+    }
+
+    public void SetControllerSensitivityX(float value)
+    {
+        controllerSensitivityX = MathF.Round(value, 1);
+    }
+
+    public void SetControllerSensitivityX(string value)
+    {
+        float val;
+        try
+        {
+            val = float.Parse(value);
+        }
+        catch
+        {
+            return;
+        }
+
+        SetControllerSensitivityX(val);
+    }
+
+    public void SetControllerSensitivityY(float value)
+    {
+        controllerSensitivityY = MathF.Round(value, 1);
+    }
+
+
+    public void SetControllerSensitivityY(string value)
+    {
+        float val;
+        try
+        {
+            val = float.Parse(value);
+        }
+        catch
+        {
+            return;
+        }
+
+        SetControllerSensitivityY(val);
+    }
+
+    public float GetMouseSensitivityX()
+    {
+        return mouseSensitivityX;
+    }
+
+    public float GetMouseSensitivityY()
+    {
+        return mouseSensitivityY;
+    }
+
+    public float GetControllerSensitivityX()
+    {
+        return controllerSensitivityX;
+    }
+
+    public float GetControllerSensitivityY()
+    {
+        return controllerSensitivityY;
+    }
+
 }
