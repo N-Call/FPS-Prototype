@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.SceneManagement;
 
 public class InputActionManager : MonoBehaviour
 {
@@ -12,7 +11,6 @@ public class InputActionManager : MonoBehaviour
     [SerializeField] InputActionAsset menuInputActionMap;
     [SerializeField] InputActionAsset playerInputActionMap;
     [SerializeField] InputActionAsset rebindInputActionMap;
-    [SerializeField] InputActionAsset debugInputActionMap;
 
     [SerializeField] bool onStartScreen = false;
 
@@ -85,8 +83,6 @@ public class InputActionManager : MonoBehaviour
     public bool rebindCancel { get; private set; }
     public bool rebindReset { get; private set; }
 
-    InputAction debugInputAction;
-
     InputDevice lastInputDevice;
 
     private void Awake()
@@ -127,12 +123,6 @@ public class InputActionManager : MonoBehaviour
         playerBowAction = playerInputActionMap["Bow"];
         playerPauseAction = playerInputActionMap["Pause"];
 
-        if (debugInputActionMap != null)
-        {
-            debugInputAction = debugInputActionMap["Debug"];
-            debugInputAction.Enable();
-        }
-
         if (onStartScreen)
         {
             EnableMenuInput();
@@ -141,16 +131,6 @@ public class InputActionManager : MonoBehaviour
 
     private void Update()
     {
-        if (
-            debugInputActionMap != null
-            && debugInputActionMap.enabled
-            && debugInputAction.WasPressedThisFrame()
-            && SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Showcase (Debug)")
-        ) {
-            SceneManager.LoadScene("Showcase (Debug)");
-            return;
-        }
-
         bool menu = menuInputActionMap.enabled;
         menuUnpause = menu ? menuUnpauseAction.WasPressedThisFrame() : false;
         menuNavigate = menu ? menuNavigateAction.ReadValue<Vector2>() : Vector2.zero;
