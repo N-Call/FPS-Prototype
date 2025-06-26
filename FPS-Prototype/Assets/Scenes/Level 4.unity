@@ -1311,6 +1311,7 @@ MonoBehaviour:
   moveSpeed: 30
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -2064,6 +2065,7 @@ MonoBehaviour:
   moveSpeed: 20
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -4967,6 +4969,7 @@ MonoBehaviour:
   moveSpeed: 12
   lerp: 0
   carryPassengers: 1
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 5
@@ -5758,6 +5761,7 @@ MonoBehaviour:
   moveSpeed: 10
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -6903,6 +6907,7 @@ MonoBehaviour:
   moveSpeed: 10
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -7641,6 +7646,8 @@ Transform:
   - {fileID: 1686689761}
   - {fileID: 1930508374}
   - {fileID: 61940671}
+  - {fileID: 2120858215}
+  - {fileID: 2044566277}
   m_Father: {fileID: 594618315}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &433802198
@@ -9698,6 +9705,7 @@ MonoBehaviour:
   moveSpeed: 10
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -18059,6 +18067,7 @@ MonoBehaviour:
   moveSpeed: 20
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -19660,6 +19669,7 @@ MonoBehaviour:
   moveSpeed: 3
   lerp: 0
   carryPassengers: 1
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -19980,6 +19990,7 @@ MonoBehaviour:
   moveSpeed: 3
   lerp: 0
   carryPassengers: 1
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 5
@@ -21434,6 +21445,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5751749de91427f439291b0c95c67030, type: 3}
+--- !u!1001 &1083794508
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 422630529}
+    m_Modifications:
+    - target: {fileID: 1335332903016838321, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_Name
+      value: Kill Zone (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 75.560104
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 36.75155
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 97.52896
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.44499695
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.984844
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
 --- !u!1001 &1085951760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21700,6 +21776,7 @@ MonoBehaviour:
   moveSpeed: 9
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -22707,6 +22784,7 @@ MonoBehaviour:
   moveSpeed: 10
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -23233,6 +23311,7 @@ MonoBehaviour:
   moveSpeed: 30
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -23488,6 +23567,7 @@ MonoBehaviour:
   moveSpeed: 9
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -23730,54 +23810,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3858768191594397860, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3858768191594397860, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3858768191594397860, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4384611764028006991, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4384611764028006991, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4384611764028006991, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
+    - target: {fileID: 4540546543797918441, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 715207170}
+    - target: {fileID: 4670371502795767287, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 715207170}
     - target: {fileID: 6466989973027913068, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 715207170}
-    - target: {fileID: 7324541246379608287, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324541246379608287, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324756253904866136, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7324756253904866136, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9139772970323642609, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 6551491801708449529, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 715207170}
+    - target: {fileID: 8656643870308292825, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 715207170}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24503,6 +24555,7 @@ MonoBehaviour:
   moveSpeed: 20
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -24625,6 +24678,7 @@ MonoBehaviour:
   moveSpeed: 10
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -27146,6 +27200,7 @@ MonoBehaviour:
   moveSpeed: 9
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -30061,6 +30116,7 @@ MonoBehaviour:
   moveSpeed: 10
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -30667,6 +30723,7 @@ MonoBehaviour:
   moveSpeed: 10
   lerp: 0
   carryPassengers: 1
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 1
   triggerHeight: 5
@@ -32739,6 +32796,7 @@ MonoBehaviour:
   moveSpeed: 9
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -32969,6 +33027,7 @@ MonoBehaviour:
   moveSpeed: 9
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -34996,6 +35055,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889017129}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1890980785
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 422630529}
+    m_Modifications:
+    - target: {fileID: 1335332903016838321, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_Name
+      value: Kill Zone (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 36.75155
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 91.52896
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.4449997
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 38.015156
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
 --- !u!1 &1892730288
 GameObject:
   m_ObjectHideFlags: 0
@@ -35831,6 +35951,7 @@ MonoBehaviour:
   moveSpeed: 25
   lerp: 0
   carryPassengers: 1
+  dontMovePassengers: 1
   moveWithoutPlayer: 1
   waitForPlayer: 1
   triggerHeight: 10
@@ -38327,6 +38448,7 @@ MonoBehaviour:
   moveSpeed: 2
   lerp: 0
   carryPassengers: 1
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 5
@@ -38714,6 +38836,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2043495825}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &2044566277 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+  m_PrefabInstance: {fileID: 1083794508}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2045202337
 GameObject:
   m_ObjectHideFlags: 0
@@ -40267,6 +40394,11 @@ Transform:
   - {fileID: 1154546909}
   m_Father: {fileID: 310022157}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2120858215 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2975852631690659656, guid: 31d6b3ccd8e90be4b963abad3fb22e1c, type: 3}
+  m_PrefabInstance: {fileID: 1890980785}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2122924698
 GameObject:
   m_ObjectHideFlags: 0
@@ -43825,6 +43957,7 @@ MonoBehaviour:
   moveSpeed: 9
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0

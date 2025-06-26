@@ -581,7 +581,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 isSliding = true;
                 if (GameManager.instance.playerAbilities != null && GameManager.instance.playerAbilities.slideMajor == true)
                 {
-
                     // Damage enemies in range using the player's SphereCollider
                     Vector3 center = transform.position + damageCollider.center;
                     float radius = damageCollider.radius * transform.localScale.x;

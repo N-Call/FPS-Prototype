@@ -15789,6 +15789,7 @@ MonoBehaviour:
   moveSpeed: 3
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -18553,7 +18554,7 @@ PrefabInstance:
       objectReference: {fileID: 1086107035}
     - target: {fileID: 1124454395486234730, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetXSensitivity
+      value: SetMouseSensitivityX
       objectReference: {fileID: 0}
     - target: {fileID: 2499138746266671060, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: m_Pivot.x
@@ -18659,6 +18660,22 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4540546543797918441, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1086107035}
+    - target: {fileID: 4540546543797918441, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetControllerSensitivityY
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670371502795767287, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1086107035}
+    - target: {fileID: 4670371502795767287, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetMouseSensitivityX
+      objectReference: {fileID: 0}
     - target: {fileID: 4745752831576499313, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: TimeA
       value: 160
@@ -18689,7 +18706,15 @@ PrefabInstance:
       objectReference: {fileID: 1086107035}
     - target: {fileID: 6466989973027913068, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetYSensitivity
+      value: SetMouseSensitivityY
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551491801708449529, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1086107035}
+    - target: {fileID: 6551491801708449529, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetControllerSensitivityX
       objectReference: {fileID: 0}
     - target: {fileID: 7324541246379608287, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: m_AnchorMax.x
@@ -18710,6 +18735,14 @@ PrefabInstance:
     - target: {fileID: 7603587520270679697, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: playerAbilities
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8656643870308292825, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1086107035}
+    - target: {fileID: 8656643870308292825, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetMouseSensitivityY
       objectReference: {fileID: 0}
     - target: {fileID: 9139772970323642609, guid: dc58626eb9fd5214dbffcc09642562da, type: 3}
       propertyPath: m_IsActive
@@ -28329,6 +28362,7 @@ MonoBehaviour:
   moveSpeed: 7
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0
@@ -47725,6 +47759,7 @@ MonoBehaviour:
   moveSpeed: 3
   lerp: 0
   carryPassengers: 0
+  dontMovePassengers: 0
   moveWithoutPlayer: 1
   waitForPlayer: 0
   triggerHeight: 0

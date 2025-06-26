@@ -80,6 +80,7 @@ public class Bow : Range
         {
             return;
         }
+
         if (GameManager.instance.playerAbilities.w2Major == true && InputActionManager.instance.playerAim)
         {
             projectileIndex = (projectileIndex + 1 > projectils.Length - 1) ? 0 : projectileIndex + 1;
