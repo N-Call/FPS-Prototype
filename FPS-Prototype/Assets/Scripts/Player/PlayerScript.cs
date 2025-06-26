@@ -1014,4 +1014,18 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         GameManager.instance.AddScrap(amount);
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("EnemyHead"))
+        {
+            Debug.Log("Touched enemy head");
+
+            //Prevent standing on enemy
+            Vector3 pushDirection = (transform.position - other.transform.position).normalized;
+            pushDirection.y = 5f; // Add upward force
+            controller.Move(pushDirection * Time.deltaTime * 5f);
+
+        }
+    }
+
 }

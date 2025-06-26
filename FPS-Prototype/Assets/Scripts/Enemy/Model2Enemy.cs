@@ -116,6 +116,7 @@ public class Model2Enemy : EnemyController
     {
         if (shootPosL != null)
         {
+            //shootPosL.LookAt(GameManager.instance.player.transform.position);
             Instantiate(bullet, shootPosL.position, shootPosL.rotation);
         }
     }
@@ -124,6 +125,8 @@ public class Model2Enemy : EnemyController
     {
         if (shootPosR != null)
         {
+            
+            //shootPosR.LookAt(GameManager.instance.player.transform.position);
             Instantiate(bullet, shootPosR.position, shootPosR.rotation);
         }
     }
