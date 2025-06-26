@@ -120,7 +120,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     int originalHP;
     int jumpCount;
-    int currentWeapon = 0;
+    public int currentWeapon = 0;
     int shieldCount;
 
 
@@ -635,8 +635,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
     }
 
-    void WeaponInput()
+    public void WeaponInput()
     {
+       
         //check for primary weapon
         if (InputActionManager.instance.playerShoot && weaponList != null)
         {
@@ -660,14 +661,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         else if (InputActionManager.instance.playerPistol)
         {
             SetWeapon(0);
+            GameManager.instance.ammocountOn();
         }
         else if (InputActionManager.instance.playerBow)
         {
             SetWeapon(1);
+            GameManager.instance.ammocountOn();
         }
         else if (InputActionManager.instance.playerSword)
         {
             SetWeapon(2);
+            GameManager.instance.ammoCountOff();
         }
 
         if (InputActionManager.instance.playerReload)

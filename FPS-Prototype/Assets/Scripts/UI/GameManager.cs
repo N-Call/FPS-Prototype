@@ -234,6 +234,14 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void ammoCountOff()
+    {
+        ammoCount.SetActive(false);
+    }
+    public void ammocountOn()
+    {
+        ammoCount.SetActive(true);
+    }
     public void StatePause()
     {
         StatePause(false);
