@@ -298,6 +298,16 @@ public class InputActionManager : MonoBehaviour
         playerInputActionMap.Disable();
     }
 
+    public string GetSavedKeybinds()
+    {
+        return playerInputActionMap.SaveBindingOverridesAsJson();
+    }
+
+    public void SetSavedKeybinds(string jsonKeybinds)
+    {
+        playerInputActionMap.LoadBindingOverridesFromJson(jsonKeybinds);
+    }
+
     void OnInputEvent(InputEventPtr eventPtr, InputDevice device)
     {
         if (device == lastInputDevice || (!isUsingGamepad && (device is Mouse || device is Keyboard)))

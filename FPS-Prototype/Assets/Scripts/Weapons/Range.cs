@@ -44,13 +44,24 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         ammoCount = reloadCap;
         currTotalBullets = ammoOrigCap + reloadCap;
         ammoCap = reloadCap + ammoOrigCap;
-        GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        if (IsActiveWeapon())
+        {
+            GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        }
     }
-
+    protected bool IsActiveWeapon()
+    {
+        return GameManager.instance.playerScript.weaponList[
+            GameManager.instance.playerScript.currentWeapon
+        ] == this.gameObject;
+    }
     void OnEnable()
     {
         PlayIdle();
-        GameManager.instance?.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        if (IsActiveWeapon())
+        {
+            GameManager.instance?.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        }
         GameManager.instance?.SetWeaponIcon(ammoIcon);
     }
 
@@ -135,7 +146,10 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
 
     public void OnReloadAnimationEnd()
     {
-        GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        if (IsActiveWeapon())
+        {
+            GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        }
     }
 
     private void PlayReloadAnim()
@@ -169,7 +183,10 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         // Normally used for initial setups of full refills.
         float amount = ammoOrigCap * (percent / 100f);
         currTotalBullets = Mathf.Min(ammoCap, (int)amount);
-        GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        if (IsActiveWeapon())
+        {
+            GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        }
     }
 
     public void AddAmmoToReserve(int amount)
@@ -179,8 +196,10 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
         currTotalBullets = Mathf.Min(ammoCap, currTotalBullets + amount);
         if (ammoCount <= 0 && tempTotal <= 0) { Reload(); }
 
-       
-        GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        if (IsActiveWeapon())
+        {
+            GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+        }
 
     }
 }

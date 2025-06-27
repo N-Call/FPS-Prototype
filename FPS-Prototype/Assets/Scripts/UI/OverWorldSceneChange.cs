@@ -7,7 +7,6 @@ public class OverWorldSceneChange : MonoBehaviour
 
 
     bool playerInTrigger;
-    
 
     // Update is called once per frame
     void Update()
@@ -15,18 +14,18 @@ public class OverWorldSceneChange : MonoBehaviour
         // need to check which trigger zone the player is in to then send to correct scene
         if(playerInTrigger)
         {
-            if (Input.GetButtonDown("Interact") && button.CompareTag("ButtonLvl"))
+            if (InputActionManager.instance.playerInteract && button.CompareTag("ButtonLvl"))
             {
-                
+                //level select
+                GameManager.instance.playerPosition.SaveToFile();
                 SceneManager.LoadScene(1);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
-                
-
             }
-            else if(Input.GetButtonDown("Interact"))
+            else if(InputActionManager.instance.playerInteract)
             {
-                
+                //Overworld shop
+                GameManager.instance.playerPosition.SaveToFile();
                 SceneManager.LoadScene(3);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
@@ -44,4 +43,5 @@ public class OverWorldSceneChange : MonoBehaviour
         playerInTrigger = false;
         button.SetActive(false);
     }
+   
 }
