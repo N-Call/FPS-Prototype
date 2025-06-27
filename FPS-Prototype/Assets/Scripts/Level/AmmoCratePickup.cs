@@ -50,6 +50,4 @@ public class AmmoCratePickup : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-}
 }

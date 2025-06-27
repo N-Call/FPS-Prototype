@@ -6,5 +6,5 @@ public interface IReloadable
 
     void SetAmmo(float amount);
 
-    bool AddAmmoToReserve(int amount);
+    void AddAmmoToReserve(int amount);
 }
