@@ -6171,6 +6171,7 @@ GameObject:
   - component: {fileID: 1859134559281487093}
   - component: {fileID: 6793983163119624986}
   - component: {fileID: 7542319807644125095}
+  - component: {fileID: 6435124432926318546}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -6226,10 +6227,13 @@ MonoBehaviour:
   maxGravity: 45
   sprintSpeed: 4
   crouchSpeedMultiplier: 0.5
-  crouchHeightMultiplier: 0.5
+  crouchHeightMultiplier: 0.6
   crouchRate: 0.08
   crouchWaitTimer: 0.001
+  crouchCenterHeight: 0.4
+  crouchCenterRate: 0.05
   damageCollider: {fileID: 7542319807644125095}
+  legCollider: {fileID: 6435124432926318546}
   slideSpeedBonus: 20
   slideRate: 0.3
   slideJumpSpeedBonus: 16
@@ -6262,6 +6266,8 @@ MonoBehaviour:
   particleSpMod: {fileID: 3180199372560554078}
   particleSpRun: {fileID: 5164049633874411298}
   particleJpMod: {fileID: 5494831160535287924}
+  positionSaver: {fileID: 0}
+  currentWeapon: 0
   speedBuffed: 0
   jumpBuffed: 0
   speedDebuffed: 0
@@ -6376,6 +6382,29 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &6435124432926318546
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2185671252196296916}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &2210531572587585985
 GameObject:
   m_ObjectHideFlags: 0
@@ -7067,7 +7096,7 @@ Transform:
   m_GameObject: {fileID: 2972450916966642229}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.84, z: 0}
+  m_LocalPosition: {x: 0, y: 0.72, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7090,10 +7119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57fa56138abdd34c8dba2d5e84f43ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivityX: 20
-  mouseSensitivityY: 20
-  controllerSensitivityX: 250
-  controllerSensitivityY: 200
   lockVertMin: -90
   lockVertMax: 90
   invertY: 0

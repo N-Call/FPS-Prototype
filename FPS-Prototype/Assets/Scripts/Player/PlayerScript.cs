@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -36,7 +37,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float crouchHeightMultiplier;
     [SerializeField] float crouchRate = 0.05f;
     [SerializeField] float crouchWaitTimer = 0.001f;
+    [SerializeField] float crouchCenterHeight = 0.5f;
+    [SerializeField] float crouchCenterRate = 0.05f;
     [SerializeField] SphereCollider damageCollider;
+    [SerializeField] CapsuleCollider legCollider;
 
     [Header("Sliding")]
     [SerializeField] float slideSpeedBonus;
@@ -632,6 +636,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         // Uncrouched
         else
         {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + (Vector3.up * 0.5f), transform.up, out hit, 1.7f))
+            {
+                return;
+            }
             if (crouchCoroutine != null)
             {
                 StopCoroutine(crouchCoroutine);
@@ -869,11 +878,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     {
         if (crouch)
         {
+            legCollider.enabled = true;
             while (controller.height > originalHeight * crouchHeightMultiplier)
             {
                 controller.height -= crouchRate;
+                if(controller.center.y < crouchCenterHeight)
+                {
+                    controller.center += Vector3.up * crouchCenterRate;
+                }
                 yield return new WaitForSeconds(crouchWaitTimer);
             }
+            legCollider.enabled = false;
         }
         else // NEW Uncrouching conditions
         {
@@ -891,9 +906,15 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 yield break;
             }
 
+            legCollider.enabled = false;
             while (controller.height < originalHeight)
             {
                 controller.height += crouchRate;
+
+                if (controller.center.y > 0)
+                {
+                    controller.center -= Vector3.up * crouchCenterRate;
+                }
                 yield return new WaitForSeconds(crouchWaitTimer);
             }
         }
