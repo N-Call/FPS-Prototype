@@ -75,6 +75,8 @@ public class GameManager : MonoBehaviour
     public Image playerShieldbar;
     public PlayerScript playerScript;
     public PlayerAbilities playerAbilities;
+    public PlayerSettings playerSettings;
+    public PlayerPosition playerPosition;
     public SceneData sceneData;
     public SceneLoader sceneLoader;
     public FinalGradeSystem gradeSystem;
@@ -122,8 +124,6 @@ public class GameManager : MonoBehaviour
         allSpawners = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
 
         timeScaleOrig = Time.timeScale;
-       
-        SaveSettingsSystem.Load();
     }
 
     private void Start()
@@ -234,6 +234,14 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void ammoCountOff()
+    {
+        ammoCount.SetActive(false);
+    }
+    public void ammocountOn()
+    {
+        ammoCount.SetActive(true);
+    }
     public void StatePause()
     {
         StatePause(false);

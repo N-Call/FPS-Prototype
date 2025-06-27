@@ -1,7 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour, IDamage, IPickup
 {
@@ -99,6 +100,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     Vector3 verticalVelocity;
     Vector3 direction;
+    public PlayerPosition positionSaver;
 
     float originalHeight;
     float walkHorizontalDirection;
@@ -120,7 +122,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     int originalHP;
     int jumpCount;
-    int currentWeapon = 0;
+    public int currentWeapon = 0;
     int shieldCount;
 
 
@@ -151,6 +153,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        positionSaver = GameManager.instance.playerPosition;
+
+        if (SceneManager.GetActiveScene().buildIndex == 2) // ← change 2 if needed
+        {
+            string path = Application.persistentDataPath + "/playerpos.json";
+            if (System.IO.File.Exists(path))
+            {
+                GameManager.instance.playerPosition.LoadFromFile();
+                System.IO.File.Delete(path); // optional: prevents reuse outside intended flow
+            }
+        }
         originalHP = HP;
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
@@ -635,8 +648,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
     }
 
-    void WeaponInput()
+    public void WeaponInput()
     {
+       
         //check for primary weapon
         if (InputActionManager.instance.playerShoot && weaponList != null)
         {
@@ -660,14 +674,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         else if (InputActionManager.instance.playerPistol)
         {
             SetWeapon(0);
+            GameManager.instance.ammocountOn();
         }
         else if (InputActionManager.instance.playerBow)
         {
             SetWeapon(1);
+            GameManager.instance.ammocountOn();
         }
         else if (InputActionManager.instance.playerSword)
         {
             SetWeapon(2);
+            GameManager.instance.ammoCountOff();
         }
 
         if (InputActionManager.instance.playerReload)
@@ -1011,6 +1028,20 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     public void CollectScrap(int amount)
     {
         GameManager.instance.AddScrap(amount);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("EnemyHead"))
+        {
+            Debug.Log("Touched enemy head");
+
+            //Prevent standing on enemy
+            Vector3 pushDirection = (transform.position - other.transform.position).normalized;
+            pushDirection.y = 5f; // Add upward force
+            controller.Move(pushDirection * Time.deltaTime * 5f);
+
+        }
     }
 
 }

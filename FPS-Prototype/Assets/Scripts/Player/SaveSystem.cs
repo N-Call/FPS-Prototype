@@ -3,7 +3,9 @@ using System.IO;
 
 public class SaveSystem
 {
+
     private static SaveData saveData = new SaveData();
+
     [System.Serializable]
     struct SaveData
     {
@@ -13,6 +15,7 @@ public class SaveSystem
         public DifficultySaveData difficultyData;
         public AbilitiesSaveData abilitiesData;
     }
+
     public static string SaveFileName()
     {
         string saveFile = Application.persistentDataPath + "/save" + ".save";
@@ -26,7 +29,6 @@ public class SaveSystem
 
     public static void Save()
     {
-        
         HandleSaveData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
@@ -42,7 +44,6 @@ public class SaveSystem
 
     public static void SaveStats()
     {
-       
         HandleSaveStatsData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(saveData, true));
     }
@@ -112,4 +113,5 @@ public class SaveSystem
         GameManager.instance.scrapManager.Load(saveData.ScrapData);
         GameManager.instance.playerAbilities.Load(saveData.abilitiesData);
     }
+
 }

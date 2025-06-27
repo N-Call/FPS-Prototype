@@ -1,8 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
-using System;
-
 
 public class SoundManager : MonoBehaviour
 {
@@ -10,8 +6,6 @@ public class SoundManager : MonoBehaviour
 
     public Sound[] musicSounds, sfxSounds;
     public AudioSource musicSource, sfxSource;
-
-   
 
     private void Awake()
     {
@@ -27,6 +21,7 @@ public class SoundManager : MonoBehaviour
         }
         sfxSource.playOnAwake = false;
     }
+
     private void Start()
     {
         PlayMusic("Theme");
