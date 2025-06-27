@@ -87,6 +87,27 @@ public class Model2Enemy : EnemyController
         RaycastHit hit;
         if (Physics.Raycast(transform.position, playerDir, out hit) && angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
         {
+            Vector3 shootDir = (GameManager.instance.player.transform.position - shootPosL.position);
+            Vector3 shootDir2 = (GameManager.instance.player.transform.position - shootPosR.position);
+
+            float pitch = Vector3.SignedAngle(shootDir, new Vector3(shootDir.x, 0, shootDir.z), shootPosL.right);
+            float pitch2 = Vector3.SignedAngle(shootDir, new Vector3(shootDir.x, 0, shootDir.z), shootPosR.right);
+
+            pitch = Mathf.Clamp(-pitch, -45, 45);
+            pitch2 = Mathf.Clamp(-pitch, -45, 45);
+
+            shootPosL.LookAt(GameManager.instance.player.transform.position);
+            shootPosR.LookAt(GameManager.instance.player.transform.position);
+
+            Vector3 eulerAngles = shootPosL.rotation.eulerAngles;
+            Vector3 eulerAngles2 = shootPosR.rotation.eulerAngles;
+
+            eulerAngles.x = pitch;
+            eulerAngles2.x = pitch2;
+
+            shootPosL.rotation = Quaternion.Euler(eulerAngles);
+            shootPosR.rotation = Quaternion.Euler(eulerAngles2);
+
             agent.SetDestination(GameManager.instance.player.transform.position);
 
             if (agent.remainingDistance <= agent.stoppingDistance)
@@ -116,7 +137,6 @@ public class Model2Enemy : EnemyController
     {
         if (shootPosL != null)
         {
-            //shootPosL.LookAt(GameManager.instance.player.transform.position);
             Instantiate(bullet, shootPosL.position, shootPosL.rotation);
         }
     }
@@ -126,7 +146,6 @@ public class Model2Enemy : EnemyController
         if (shootPosR != null)
         {
             
-            //shootPosR.LookAt(GameManager.instance.player.transform.position);
             Instantiate(bullet, shootPosR.position, shootPosR.rotation);
         }
     }

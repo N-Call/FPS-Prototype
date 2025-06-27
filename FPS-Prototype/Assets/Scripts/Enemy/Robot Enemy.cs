@@ -2,11 +2,7 @@ using UnityEngine;
 
 public class RobotEnemy : EnemyController
 {
-    Break breakable;
-    private void Awake()
-    {
-        breakable = GetComponent<Break>();
-    }
+    
     protected override bool CanSeePlayer()
     {
         playerDir = (GameManager.instance.player.transform.position - transform.position);
@@ -18,8 +14,17 @@ public class RobotEnemy : EnemyController
         {
             if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
-                Vector3 middlePlayerDir = playerDir;
-                middlePlayerDir.y -= 0.3f;
+                Vector3 shootDir = (GameManager.instance.player.transform.position - shootPos.position);
+
+                float pitch = Vector3.SignedAngle(shootDir, new Vector3(shootDir.x, 0, shootDir.z), shootPos.right);
+                pitch = Mathf.Clamp(-pitch, -45, 45);
+
+                shootPos.LookAt(GameManager.instance.player.transform.position);
+
+                Vector3 eulerAngles = shootPos.rotation.eulerAngles;
+                eulerAngles.x = pitch;
+                shootPos.rotation = Quaternion.Euler(eulerAngles);
+
                 agent.SetDestination(GameManager.instance.player.transform.position);
 
                 if (shootTimer >= shootRate)
@@ -54,7 +59,6 @@ public class RobotEnemy : EnemyController
         if (shootPos != null)
         {
             shootTimer = 0;
-            //shootPos.LookAt(GameManager.instance.player.transform.position);
             Instantiate(bullet, shootPos.position, shootPos.rotation);
         }
         SoundManager.instance.PlaySFX("enemyShot");
