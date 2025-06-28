@@ -8,6 +8,6 @@ public class DifficultySettingsSo : ScriptableObject
     [Range(0.1f, 3)] public float enemyAttackRateMultiplier = 1f;
     [Range(1, 20)] public int enemyAttackCount = 1;
     [Range(1, 2)] public float spawnRateMultiplier = 1f;
-    public bool deathLazers = false;
+    [Range(1, 5)] public float laserDmgMod = 1;
 
 }
