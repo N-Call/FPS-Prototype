@@ -539,7 +539,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D-Pad Up
+  m_text: D-Pad/Up
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -1448,6 +1448,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 0}
   inputField: {fileID: 8656643870308292825}
+  minimum: 0
+  maximum: 0
 --- !u!114 &6466989973027913068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1499,8 +1501,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+      - m_Target: {fileID: 1760938743954725146}
+        m_TargetAssemblyTypeName: InputUpdateHandler, Assembly-CSharp
         m_MethodName: SetMouseSensitivityY
         m_Mode: 0
         m_Arguments:
@@ -4578,6 +4580,7 @@ MonoBehaviour:
   playerShieldbar: {fileID: 4855199549714212014}
   playerScript: {fileID: 0}
   playerAbilities: {fileID: 0}
+  playerSettings: {fileID: 0}
   sceneData: {fileID: 0}
   sceneLoader: {fileID: 0}
   gradeSystem: {fileID: 0}
@@ -8530,8 +8533,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2770061522245204269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.3888889, y: 0}
-  m_AnchorMax: {x: 0.3888889, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8868,6 +8871,7 @@ GameObject:
   - component: {fileID: 4593543549175883694}
   - component: {fileID: 1687635877627907762}
   - component: {fileID: 4957232019726561799}
+  - component: {fileID: 1390011505285401659}
   m_Layer: 5
   m_Name: SettingsControllerMenu
   m_TagString: Untagged
@@ -8949,6 +8953,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: e9f96786a32cbd84fb645f7a6e5e0bce, type: 3}
   targetControlScheme: Gamepad
+--- !u!114 &1390011505285401659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656698499669028345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff38fdbb6102e545a929ad67f4791d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSliderX: {fileID: 0}
+  mouseSliderY: {fileID: 0}
+  mouseInputX: {fileID: 0}
+  mouseInputY: {fileID: 0}
+  controllerSliderX: {fileID: 6551491801708449529}
+  controllerSliderY: {fileID: 4540546543797918441}
 --- !u!1 &1681496833964681030
 GameObject:
   m_ObjectHideFlags: 0
@@ -9317,7 +9339,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Right Stick
+  m_text: Right Stick Press
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -10658,8 +10680,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2834454830200615336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10959,7 +10981,7 @@ RectTransform:
   m_Father: {fileID: 3400087773160764259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12836,7 +12858,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D-Pad Right
+  m_text: D-Pad/Right
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -18494,7 +18516,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D-Pad Left
+  m_text: D-Pad/Left
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -18999,6 +19021,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1849741927009272014}
   - component: {fileID: 6423371925261081215}
+  - component: {fileID: 1760938743954725146}
   m_Layer: 0
   m_Name: InputActionManager
   m_TagString: Untagged
@@ -19036,10 +19059,21 @@ MonoBehaviour:
   menuInputActionMap: {fileID: -944628639613478452, guid: 590950bc0420e2749925e3042204a315, type: 3}
   playerInputActionMap: {fileID: -944628639613478452, guid: e9f96786a32cbd84fb645f7a6e5e0bce, type: 3}
   rebindInputActionMap: {fileID: -944628639613478452, guid: 2fe883a905fe9e44b94c2a2730257c65, type: 3}
-  debugInputActionMap: {fileID: -944628639613478452, guid: 6521ef959f546814e86ec3c25191e962, type: 3}
   onStartScreen: 0
   toggleSprint: 0
   toggleCrouch: 0
+--- !u!114 &1760938743954725146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3621958894453511316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64495b92f40b5134aa33437e2d67ef9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3631621316917142722
 GameObject:
   m_ObjectHideFlags: 0
@@ -19367,6 +19401,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 0}
   inputField: {fileID: 4670371502795767287}
+  minimum: 0
+  maximum: 0
 --- !u!114 &1124454395486234730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19418,8 +19454,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+      - m_Target: {fileID: 1760938743954725146}
+        m_TargetAssemblyTypeName: InputUpdateHandler, Assembly-CSharp
         m_MethodName: SetMouseSensitivityX
         m_Mode: 0
         m_Arguments:
@@ -19927,6 +19963,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 6466989973027913068}
   inputField: {fileID: 8656643870308292825}
+  minimum: 0.1
+  maximum: 20
 --- !u!222 &5878638235587961618
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19978,7 +20016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -20057,8 +20095,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+      - m_Target: {fileID: 1760938743954725146}
+        m_TargetAssemblyTypeName: InputUpdateHandler, Assembly-CSharp
         m_MethodName: SetMouseSensitivityY
         m_Mode: 0
         m_Arguments:
@@ -20449,7 +20487,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LS Up
+  m_text: LS/Up
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -20796,7 +20834,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LS Right
+  m_text: LS/Right
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -23052,8 +23090,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+      - m_Target: {fileID: 1760938743954725146}
+        m_TargetAssemblyTypeName: InputUpdateHandler, Assembly-CSharp
         m_MethodName: SetControllerSensitivityX
         m_Mode: 0
         m_Arguments:
@@ -27675,7 +27713,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: X
+  m_text: Y
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -34991,7 +35029,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Y
+  m_text: X
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -35202,7 +35240,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LS Left
+  m_text: LS/Left
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -35425,7 +35463,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B
+  m_text: A
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -36680,7 +36718,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A
+  m_text: B
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -37603,7 +37641,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ZL
+  m_text: LT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -37885,7 +37923,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Left Stick
+  m_text: Left Stick Press
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -41062,7 +41100,7 @@ RectTransform:
   m_Father: {fileID: 4977568485823667462}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.3888889, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -42730,7 +42768,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ZR
+  m_text: RT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
@@ -42892,8 +42930,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+      - m_Target: {fileID: 1760938743954725146}
+        m_TargetAssemblyTypeName: InputUpdateHandler, Assembly-CSharp
         m_MethodName: SetControllerSensitivityY
         m_Mode: 0
         m_Arguments:
@@ -43037,6 +43075,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1124454395486234730}
   inputField: {fileID: 4670371502795767287}
+  minimum: 0.1
+  maximum: 20
 --- !u!222 &5987990539589117363
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -43088,7 +43128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -43167,8 +43207,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+      - m_Target: {fileID: 1760938743954725146}
+        m_TargetAssemblyTypeName: InputUpdateHandler, Assembly-CSharp
         m_MethodName: SetMouseSensitivityX
         m_Mode: 0
         m_Arguments:
@@ -43372,6 +43412,7 @@ GameObject:
   - component: {fileID: 4198152822761807366}
   - component: {fileID: 2339730691989121876}
   - component: {fileID: 2028261167646876198}
+  - component: {fileID: 7134907847237577360}
   m_Layer: 5
   m_Name: SettingsPCMenu
   m_TagString: Untagged
@@ -43453,6 +43494,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: e9f96786a32cbd84fb645f7a6e5e0bce, type: 3}
   targetControlScheme: PC
+--- !u!114 &7134907847237577360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9139772970323642609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff38fdbb6102e545a929ad67f4791d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSliderX: {fileID: 1124454395486234730}
+  mouseSliderY: {fileID: 6466989973027913068}
+  mouseInputX: {fileID: 4670371502795767287}
+  mouseInputY: {fileID: 8656643870308292825}
+  controllerSliderX: {fileID: 0}
+  controllerSliderY: {fileID: 0}
 --- !u!1 &9142225591710020981
 GameObject:
   m_ObjectHideFlags: 0
@@ -43593,7 +43652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LS Down
+  m_text: LS/Down
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}
   m_sharedMaterial: {fileID: -3944948416131081609, guid: 5c1d385f52e6aa248a78ff2a2f0cb29c, type: 2}

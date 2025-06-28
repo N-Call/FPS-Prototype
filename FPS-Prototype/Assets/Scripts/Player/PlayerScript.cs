@@ -1,7 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour, IDamage, IPickup
 {
@@ -35,7 +37,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     [SerializeField] float crouchHeightMultiplier;
     [SerializeField] float crouchRate = 0.05f;
     [SerializeField] float crouchWaitTimer = 0.001f;
+    [SerializeField] float crouchCenterHeight = 0.5f;
+    [SerializeField] float crouchCenterRate = 0.05f;
     [SerializeField] SphereCollider damageCollider;
+    [SerializeField] CapsuleCollider legCollider;
 
     [Header("Sliding")]
     [SerializeField] float slideSpeedBonus;
@@ -99,6 +104,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     Vector3 verticalVelocity;
     Vector3 direction;
+    public PlayerPosition positionSaver;
 
     float originalHeight;
     float walkHorizontalDirection;
@@ -120,7 +126,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     int originalHP;
     int jumpCount;
-    int currentWeapon = 0;
+    public int currentWeapon = 0;
     int shieldCount;
 
 
@@ -151,6 +157,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        positionSaver = GameManager.instance.playerPosition;
+
+        if (SceneManager.GetActiveScene().buildIndex == 2) // ← change 2 if needed
+        {
+            string path = Application.persistentDataPath + "/playerpos.json";
+            if (System.IO.File.Exists(path))
+            {
+                GameManager.instance.playerPosition.LoadFromFile();
+                System.IO.File.Delete(path); // optional: prevents reuse outside intended flow
+            }
+        }
         originalHP = HP;
         originalHeight = controller.height;
         camControl = Camera.main.GetComponent<CameraController>();
@@ -619,6 +636,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         // Uncrouched
         else
         {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + (Vector3.up * 0.5f), transform.up, out hit, 1.7f))
+            {
+                return;
+            }
             if (crouchCoroutine != null)
             {
                 StopCoroutine(crouchCoroutine);
@@ -635,8 +657,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
     }
 
-    void WeaponInput()
+    public void WeaponInput()
     {
+       
         //check for primary weapon
         if (InputActionManager.instance.playerShoot && weaponList != null)
         {
@@ -660,14 +683,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         else if (InputActionManager.instance.playerPistol)
         {
             SetWeapon(0);
+            GameManager.instance.ammocountOn();
         }
         else if (InputActionManager.instance.playerBow)
         {
             SetWeapon(1);
+            GameManager.instance.ammocountOn();
         }
         else if (InputActionManager.instance.playerSword)
         {
             SetWeapon(2);
+            GameManager.instance.ammoCountOff();
         }
 
         if (InputActionManager.instance.playerReload)
@@ -852,11 +878,17 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     {
         if (crouch)
         {
+            legCollider.enabled = true;
             while (controller.height > originalHeight * crouchHeightMultiplier)
             {
                 controller.height -= crouchRate;
+                if(controller.center.y < crouchCenterHeight)
+                {
+                    controller.center += Vector3.up * crouchCenterRate;
+                }
                 yield return new WaitForSeconds(crouchWaitTimer);
             }
+            legCollider.enabled = false;
         }
         else // NEW Uncrouching conditions
         {
@@ -874,9 +906,15 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
                 yield break;
             }
 
+            legCollider.enabled = false;
             while (controller.height < originalHeight)
             {
                 controller.height += crouchRate;
+
+                if (controller.center.y > 0)
+                {
+                    controller.center -= Vector3.up * crouchCenterRate;
+                }
                 yield return new WaitForSeconds(crouchWaitTimer);
             }
         }
@@ -1011,6 +1049,20 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
     public void CollectScrap(int amount)
     {
         GameManager.instance.AddScrap(amount);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("EnemyHead"))
+        {
+            Debug.Log("Touched enemy head");
+
+            //Prevent standing on enemy
+            Vector3 pushDirection = (transform.position - other.transform.position).normalized;
+            pushDirection.y = 5f; // Add upward force
+            controller.Move(pushDirection * Time.deltaTime * 5f);
+
+        }
     }
 
 }

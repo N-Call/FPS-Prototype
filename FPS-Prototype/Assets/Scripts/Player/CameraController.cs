@@ -1,10 +1,8 @@
-using System;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] float mouseSensitivityX, mouseSensitivityY;
-    [SerializeField] float controllerSensitivityX, controllerSensitivityY;
+
     [SerializeField] int lockVertMin, lockVertMax;
     [SerializeField] bool invertY;
 
@@ -26,6 +24,17 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float mouseSensitivityX = 20, mouseSensitivityY = 20;
+        float controllerSensitivityX = 250, controllerSensitivityY = 200;
+
+        if (GameManager.instance.playerSettings != null)
+        {
+            mouseSensitivityX = GameManager.instance.playerSettings.mouseSensitivity.x;
+            mouseSensitivityY = GameManager.instance.playerSettings.mouseSensitivity.y;
+            controllerSensitivityX = GameManager.instance.playerSettings.controllerSensitivity.x;
+            controllerSensitivityY = GameManager.instance.playerSettings.controllerSensitivity.y;
+        }
+
         //get input
         float sensitivityX = InputActionManager.instance.isUsingGamepad ? controllerSensitivityX : mouseSensitivityX;
         float sensitivityY = InputActionManager.instance.isUsingGamepad ? controllerSensitivityY : mouseSensitivityY;
@@ -54,107 +63,6 @@ public class CameraController : MonoBehaviour
     public void SetWallRunTilt(float tilt)
     {
         targetTiltZ = tilt;
-    }
-
-    public void SetMouseSensitivityX(float value)
-    {
-        mouseSensitivityX = MathF.Round(value, 1);
-    }
-
-    public void SetMouseSensitivityX(string value)
-    {
-        float val;
-        try
-        {
-            val = float.Parse(value);
-        }
-        catch
-        {
-            return;
-        }
-
-        SetMouseSensitivityX(val);
-    }
-
-    public void SetMouseSensitivityY(float value)
-    {
-        mouseSensitivityY = MathF.Round(value, 1);
-    }
-
-    public void SetMouseSensitivityY(string value)
-    {
-        float val;
-        try
-        {
-            val = float.Parse(value);
-        }
-        catch
-        {
-            return;
-        }
-
-        SetMouseSensitivityY(val);
-    }
-
-    public void SetControllerSensitivityX(float value)
-    {
-        controllerSensitivityX = MathF.Round(value, 1);
-    }
-
-    public void SetControllerSensitivityX(string value)
-    {
-        float val;
-        try
-        {
-            val = float.Parse(value);
-        }
-        catch
-        {
-            return;
-        }
-
-        SetControllerSensitivityX(val);
-    }
-
-    public void SetControllerSensitivityY(float value)
-    {
-        controllerSensitivityY = MathF.Round(value, 1);
-    }
-
-
-    public void SetControllerSensitivityY(string value)
-    {
-        float val;
-        try
-        {
-            val = float.Parse(value);
-        }
-        catch
-        {
-            return;
-        }
-
-        SetControllerSensitivityY(val);
-    }
-
-    public float GetMouseSensitivityX()
-    {
-        return mouseSensitivityX;
-    }
-
-    public float GetMouseSensitivityY()
-    {
-        return mouseSensitivityY;
-    }
-
-    public float GetControllerSensitivityX()
-    {
-        return controllerSensitivityX;
-    }
-
-    public float GetControllerSensitivityY()
-    {
-        return controllerSensitivityY;
     }
 
 }

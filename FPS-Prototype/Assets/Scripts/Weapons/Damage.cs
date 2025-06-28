@@ -111,7 +111,7 @@ public class Damage : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, targetDir, out hit))
         {
-            if (angleToPlayer <= FOV + GameManager.instance.playerAbilities.w2RateMod && hit.collider.gameObject == target.gameObject)
+            if (angleToPlayer <= FOV + (GameManager.instance.playerAbilities != null? GameManager.instance.playerAbilities.w2RateMod : 0) && hit.collider.gameObject == target.gameObject)
             {
                 return true;
             }

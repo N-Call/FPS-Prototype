@@ -42,7 +42,7 @@ public class IdleDecide : BaseState
         else if(Vector3.Distance(player.transform.position, bossSM.rigidBody.position) < bossSM.decideDis * 2)
         {
             int range = Random.Range(0, 2);
-            if (range > 0)
+            if (range > 0 || player.transform.position.y - bossSM.rigidBody.position.y >= bossSM.decideDis)
             {
                 bossSM.ChangeState(bossSM.run);
 
