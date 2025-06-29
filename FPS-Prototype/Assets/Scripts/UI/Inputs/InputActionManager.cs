@@ -67,6 +67,7 @@ public class InputActionManager : MonoBehaviour
     public bool playerShoot { get; private set; }
     public bool playerShooting { get; private set; }
     public bool playerAim { get; private set; }
+    public bool playerChange { get; private set; }
     public bool playerReload { get; private set; }
     public float playerSwap { get; private set; }
     public bool playerPistol { get; private set; }
@@ -180,6 +181,7 @@ public class InputActionManager : MonoBehaviour
         playerShoot = player ? playerShootAction.WasPressedThisFrame() : false;
         playerShooting = player ? playerShootAction.IsPressed() : false;
         playerAim = player ? playerAimAction.IsPressed() : false;
+        playerChange = player ? playerAimAction.WasPressedThisFrame() : false;
         playerReload = player ? playerReloadAction.WasPressedThisFrame() : false;
 
         // If is player -> is using gamepad? Otherwise return 0

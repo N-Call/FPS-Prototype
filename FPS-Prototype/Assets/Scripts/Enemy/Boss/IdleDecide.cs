@@ -17,6 +17,7 @@ public class IdleDecide : BaseState
     public override void Enter()
     {
         base.Enter();
+        bossSM.SetInvincible(false);
         bossSM.LookAtPlayer(0);
         counter = bossSM.decideTime;
         player = GameManager.instance.player;

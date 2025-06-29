@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class BossSM : StateMachine, IDamage, IEnemyReset
 {
@@ -18,6 +19,7 @@ public class BossSM : StateMachine, IDamage, IEnemyReset
     [HideInInspector] public DeadState dead;
 
     [Header ("References")]
+    public Image bossHealthBar;
     public Rigidbody rigidBody;
     public Animator animator;
     public NavMeshAgent agent;
@@ -87,6 +89,9 @@ public class BossSM : StateMachine, IDamage, IEnemyReset
         targetPoint.transform.position = transform.position + Vector3.up * jumpHeight;
         currentHealth = health;
         orbSpawnCounter = orbSpawnTimer;
+        isInvensible = true;
+
+        bossHealthBar.transform.parent.gameObject.SetActive(true);
     }
 
     protected override BaseState GetFirstState()
@@ -109,6 +114,8 @@ public class BossSM : StateMachine, IDamage, IEnemyReset
         if(isInvensible) { return; }
 
         currentHealth -= amount;
+        bossHealthBar.fillAmount = (float)currentHealth / (float)health;
+
         if (currentHealth > 0)
         {
             if(currentHealth <= health / 2 && orbSpawnCounter >= orbSpawnTimer && currentAbility == 0) 
@@ -123,6 +130,7 @@ public class BossSM : StateMachine, IDamage, IEnemyReset
         else
         {
             Dead();
+            bossHealthBar.transform.parent.gameObject.SetActive(false);
         }
     }
 
@@ -224,5 +232,6 @@ public class BossSM : StateMachine, IDamage, IEnemyReset
     public void ResetHealth()
     {
         currentHealth = health;
+        bossHealthBar.fillAmount = (float)currentHealth / (float)health;
     }
 }

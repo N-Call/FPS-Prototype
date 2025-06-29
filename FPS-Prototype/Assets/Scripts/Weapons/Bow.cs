@@ -7,6 +7,7 @@ public class Bow : Range
     [Header("References")]
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject animArrow;
+    [SerializeField] Material bowStringMaterial;
     [SerializeField] Damage[] projectils;
 
     Coroutine chargeCoroutine;
@@ -14,6 +15,11 @@ public class Bow : Range
     private int projectileIndex;
     float currentCharge;
 
+    protected override void Start()
+    {
+        base.Start();
+        bowStringMaterial.color = Color.white;
+    }
     public override void AttackBegin(LayerMask playerMask)
     {
         //See if they have bullets
@@ -81,9 +87,17 @@ public class Bow : Range
             return;
         }
 
-        if (GameManager.instance.playerAbilities.w2Major == true && InputActionManager.instance.playerAim)
+        if (GameManager.instance.playerAbilities.w2Major == true && InputActionManager.instance.playerChange)
         {
             projectileIndex = (projectileIndex + 1 > projectils.Length - 1) ? 0 : projectileIndex + 1;
+            if (projectileIndex == 1)
+            {
+                bowStringMaterial.color = Color.green;
+            }
+            else
+            {
+                bowStringMaterial.color = Color.white;
+            }
         }
     }
 

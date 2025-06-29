@@ -38,7 +38,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected virtual void Start()
     {
         shootTimer = shootRate;
         ammoCount = reloadCap;
