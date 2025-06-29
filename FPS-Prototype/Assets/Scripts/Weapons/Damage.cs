@@ -42,6 +42,7 @@ public class Damage : MonoBehaviour
     private bool isDamaging;
     private bool stopChasing;
     private bool isLocked;
+    private bool alreadyDestroyed;
     float DOTTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -135,7 +136,7 @@ public class Damage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger){return;}
+        if (other.isTrigger || alreadyDestroyed) {return;}
         if (target == null && damageType == DamageType.homing) 
         {
             if (Vector3.Distance(startPos, transform.position) <= 1f)
@@ -169,13 +170,14 @@ public class Damage : MonoBehaviour
         if (damageType == DamageType.moving || isWallBouncable && reflectionCount > maxReflections || isWallBouncable && (dmg != null || targ != null))
         {
             GameObject.Destroy(gameObject);
+            alreadyDestroyed = true;
         }
 
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.isTrigger)
+        if (other.isTrigger || alreadyDestroyed)
         {
             return;
         }
@@ -198,11 +200,13 @@ public class Damage : MonoBehaviour
                 dmg?.TakeDamage(damageAmount);
                 targ?.ActivateElem((int)elem);
                 GameObject.Destroy(gameObject);
+                alreadyDestroyed = true;
             }else if (!isWallBouncable || reflectionCount > maxReflections)
             {
                 dmg?.TakeDamage(damageAmount);
                 targ?.ActivateElem((int)elem);
                 GameObject.Destroy(gameObject);
+                alreadyDestroyed = true;
             }
         }
         IDamage damage = other.GetComponent<IDamage>();

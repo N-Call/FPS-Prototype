@@ -854,6 +854,14 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         UpdatePlayerUI();
     }
 
+    public void ActivateProvideExtraJump()
+    {
+        if(jumpCount == maxJumps)
+        {
+            jumpCount--;
+        }
+    }
+
     public void SetCurrentFOV()
     {
         if (isSprinting == true)

@@ -10,6 +10,8 @@ public class Melee : MonoBehaviour, IWeapon
     
     [Header("Referencess")]
     [SerializeField] private Sprite weaponImage;
+    [SerializeField] private Image weaponMeeter;
+    [SerializeField] private Color weaponGlow;
     [SerializeField] private Animator animator;
     [SerializeField] private Collider weaponCollider;
 
@@ -19,13 +21,17 @@ public class Melee : MonoBehaviour, IWeapon
     [SerializeField] private float attackSpeed;
     [SerializeField] private float attackRate;
     [SerializeField] private float attackDistance;
+    [SerializeField] private float notifactionDistance;
 
+    private Color origColor;
     private float attackTimer;
+    private bool isTargeting;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         attackTimer = attackRate;
+        origColor = weaponMeeter.color;
         GetComponentInChildren<Damage>().AddDamageAmount(damage);
         GetComponentInChildren<Damage>().SetElement((int)elem);
     }
@@ -34,7 +40,29 @@ public class Melee : MonoBehaviour, IWeapon
     void Update()
     {
         attackTimer += Time.deltaTime;
-    }
+        RaycastHit hit;
+        if (!isTargeting && Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, attackDistance + notifactionDistance, ~LayerMask.GetMask("Player")))
+        {
+            if ((hit.collider.GetComponent<IDamage>() != null || hit.collider.GetComponent<ITarget>() != null))
+            {
+                weaponMeeter.fillAmount = 1 - (hit.distance - attackDistance) / notifactionDistance;
+
+                if(weaponMeeter.fillAmount == 1)
+                {
+                    weaponMeeter.color = weaponGlow;
+                }
+                else
+                {
+                    weaponMeeter.color = origColor;
+                }
+            }
+            else if ((hit.collider.GetComponent<IDamage>() == null && hit.collider.GetComponent<ITarget>() == null) && weaponMeeter.fillAmount > 0)
+            {
+                weaponMeeter.color = origColor;
+                weaponMeeter.fillAmount = (weaponMeeter.fillAmount - Time.deltaTime < 0) ? 0 : weaponMeeter.fillAmount - Time.deltaTime;
+            }
+        }
+        }
 
     public void AttackBegin(LayerMask playerMask)
     {
@@ -53,7 +81,8 @@ public class Melee : MonoBehaviour, IWeapon
             {
                 if (hit.collider.GetComponent<IDamage>() != null || hit.collider.GetComponent<ITarget>() != null)
                 {
-                    StartCoroutine(MoveOverTime(hit.point, 0.17f));
+                    weaponMeeter.fillAmount = 1;
+                    StartCoroutine(MoveOverTime(hit.point, 0.55f / animator.speed));
                 }
             }
         }
@@ -91,6 +120,8 @@ public class Melee : MonoBehaviour, IWeapon
 
     IEnumerator MoveOverTime(Vector3 target, float duration)
     {
+        isTargeting = true;
+        weaponMeeter.color = weaponGlow;
         GameManager.instance.playerScript.stopActions = true;
         GameObject player = GameManager.instance.player;
         Vector3 start = player.transform.position;
@@ -104,5 +135,8 @@ public class Melee : MonoBehaviour, IWeapon
             yield return null;
         }
         GameManager.instance.playerScript.stopActions = false;
+        GameManager.instance.playerScript.ActivateProvideExtraJump();
+        isTargeting = false;
+        weaponMeeter.color = origColor;
     }
 }
