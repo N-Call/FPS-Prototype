@@ -38,6 +38,11 @@ public class Laser : MonoBehaviour
         {
             StartCoroutine(ToggleLaser());
         }
+
+        if (DifficultyManager.Instance.currentSettings != null)
+        {
+            damage = (int)(damage * DifficultyManager.Instance.currentSettings.laserDmgMod);
+        }
     }
 
     // Update is called once per frame
