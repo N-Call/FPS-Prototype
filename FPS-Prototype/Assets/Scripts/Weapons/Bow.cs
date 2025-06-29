@@ -15,6 +15,11 @@ public class Bow : Range
     private int projectileIndex;
     float currentCharge;
 
+    protected override void Start()
+    {
+        base.Start();
+        bowStringMaterial.color = Color.white;
+    }
     public override void AttackBegin(LayerMask playerMask)
     {
         //See if they have bullets
