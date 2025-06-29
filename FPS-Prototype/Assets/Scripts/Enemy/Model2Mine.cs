@@ -13,10 +13,27 @@ public class Model2Mine : EnemyController, IElemental
     bool elemDebuffed;
     float effectTimer;
 
+    protected override void Start()
+    {
+        base.Start();
+        meshRenderers = GetComponentsInChildren<MeshRenderer>();
+
+        originalColors = new Color[meshRenderers.Length];
+
+        for (int i = 0; i < meshRenderers.Length; i++)
+        {
+
+            originalColors[i] = meshRenderers[i].material.color;
+        }
+    }
+
     protected override void Update()
     {
         base.Update();
-       
+        blinkTimer -= Time.deltaTime;
+        EnemyFlash();
+
+
         //HandleElements();
         if (elemBuffed || elemDebuffed)
         {
@@ -26,6 +43,29 @@ public class Model2Mine : EnemyController, IElemental
                 EndElement();
             }
         }
+    }
+
+    void EnemyFlash()
+    {
+
+        float lerp = Mathf.Clamp01(blinkTimer / blinkDuration) * 1.0f;
+        float intensity = lerp * blinkIntensity;
+        Color flashColor = Color.red * intensity;
+
+        for (int i = 0; i < meshRenderers.Length; i++)
+        {
+            if (blinkTimer > 0)
+            {
+
+                meshRenderers[i].material.color = flashColor;
+            }
+            else
+            {
+                meshRenderers[i].material.color = originalColors[i];
+            }
+
+        }
+
     }
 
     protected override bool CanSeePlayer()

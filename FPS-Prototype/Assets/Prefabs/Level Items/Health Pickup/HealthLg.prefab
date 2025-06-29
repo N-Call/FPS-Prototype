@@ -97,9 +97,9 @@ GameObject:
   - component: {fileID: 9204003448207090614}
   - component: {fileID: 8815953598337059213}
   - component: {fileID: 2281899205476825196}
-  - component: {fileID: 9056526867913717866}
   - component: {fileID: 2620243694546372478}
   - component: {fileID: 7689380859201669746}
+  - component: {fileID: 4255974792500093715}
   m_Layer: 0
   m_Name: HealthLg
   m_TagString: Untagged
@@ -154,32 +154,6 @@ MonoBehaviour:
   y: 1
   z: 0
   speed: 90
---- !u!114 &9056526867913717866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5212745903581269863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d96142c04a43b248848a6e7d5e2399f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destination: {x: 0, y: 0.75, z: 0}
-  relative: 1
-  speed: 0.75
-  lerp: 0
-  startDelay: 0
-  startDelayInitial: 0
-  destinationDelay: 0
-  pingPong: 1
-  backToStart: 0
-  carryPlayer: 0
-  onlyMoveWhenPlayer: 0
-  destroyAfterTime: 0
-  destroyAfterCycles: 0
-  destroyAtDestinationDelay: 0
 --- !u!135 &2620243694546372478
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -221,6 +195,33 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &4255974792500093715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212745903581269863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829ce0a7e63bf4046976681b97a7ee97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destination: {x: 0, y: 0.75, z: 0}
+  relative: 1
+  stoppingDistance: 0.01
+  moveSpeed: 0.75
+  lerp: 0
+  carryPassengers: 0
+  dontMovePassengers: 0
+  moveWithoutPlayer: 1
+  waitForPlayer: 0
+  triggerHeight: 0
+  startDelay: 0
+  destroyAfterTime: 0
+  initialStartDelay: 0
+  destinationDelay: 0
+  destroyAfterCycle: 0
 --- !u!1 &7368300751181496506
 GameObject:
   m_ObjectHideFlags: 0
