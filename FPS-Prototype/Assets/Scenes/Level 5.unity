@@ -27038,9 +27038,9 @@ MonoBehaviour:
   - {fileID: 986675334}
   - {fileID: 721752757}
   colliderObject: Boss_Item
-  clip: {fileID: 0}
-  doorOpen: {fileID: 0}
+  doorOpen: 
   disableTrigger: 0
+  isLocked: 0
 --- !u!65 &1412617536
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50651,6 +50651,10 @@ PrefabInstance:
     - target: {fileID: 2608236469862786189, guid: bffb0169fa2396b4985f64896eb65461, type: 3}
       propertyPath: m_Name
       value: ElevatorPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 2640613469427763338, guid: bffb0169fa2396b4985f64896eb65461, type: 3}
+      propertyPath: doorOpen
+      value: Elevator
       objectReference: {fileID: 0}
     - target: {fileID: 3818908462314403942, guid: bffb0169fa2396b4985f64896eb65461, type: 3}
       propertyPath: moveSpeed
