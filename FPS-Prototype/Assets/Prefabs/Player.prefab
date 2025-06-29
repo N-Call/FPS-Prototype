@@ -6786,13 +6786,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2811520563446056288}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.1688757, b: 1, a: 0.7490196}
+  m_Color: {r: 0, g: 0.16836739, b: 1, a: 0.7490196}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6804,7 +6804,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -6854,7 +6854,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2847445194580682713}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
@@ -8014,7 +8014,7 @@ GameObject:
   - component: {fileID: 6286644372543796190}
   - component: {fileID: 7946157744906787328}
   - component: {fileID: 8129594010789458921}
-  m_Layer: 15
+  m_Layer: 11
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8072,13 +8072,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponImage: {fileID: 21300000, guid: c8c1b4a5b98a92046b012895c4d51d07, type: 3}
+  weaponMeeter: {fileID: 6979863577885409322}
+  weaponGlow: {r: 0, g: 0.77480817, b: 1, a: 0.9411765}
   animator: {fileID: 7946157744906787328}
   weaponCollider: {fileID: 5221988603149441471}
   elem: 3
-  damage: 3
+  damage: 4
   attackSpeed: 2
   attackRate: 0.4
-  attackDistance: 10
+  attackDistance: 15
+  notifactionDistance: 5
 --- !u!1 &4096683493614999352
 GameObject:
   m_ObjectHideFlags: 0
