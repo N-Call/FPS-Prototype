@@ -379,6 +379,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         wallRunTimer = 0f;
         wallRunLockedWall = wallObject;
         wallJumped = false;
+        SoundManager.instance.wallRunSource.loop = true;
+        SoundManager.instance.wallRunSource.Play();
 
         if (provideExtraJumpIfNeeded && jumpCount == maxJumps + ((GameManager.instance.playerAbilities != null)? GameManager.instance.playerAbilities.moveWallRunJump / 2 : 0))
         {
@@ -394,8 +396,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         bool wasWallRunning = isWallRunning;
         isWallRunning = false;
         wallRunTimer = 0f;
-
         wallNormal = Vector3.zero;
+        SoundManager.instance.wallRunSource.Stop();
 
         if (!wasJump)
         {

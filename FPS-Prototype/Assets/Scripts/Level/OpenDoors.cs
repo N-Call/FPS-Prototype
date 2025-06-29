@@ -61,15 +61,15 @@ public class OpenDoors : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isLocked)
         {
             SoundManager.instance.PlaySFX(sfxName);
             Open(other.transform.position);
         }
-        if (isLocked)
-        {
-            SoundManager.instance.PlaySFX("Door Lock");
-        }
+        //if (isLocked)
+        //{
+        //    //SoundManager.instance.PlaySFX("Door Lock");
+        //}
 
     }
 

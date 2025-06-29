@@ -5,23 +5,25 @@ public class DoorTrigger : MonoBehaviour
 {
     [SerializeField] private List<OpenDoors> doorScript;
     [SerializeField] private string colliderObject = "Player";
-    [SerializeField] AudioSource clip;
-    [SerializeField] AudioClip doorOpen;
+    [SerializeField] string doorOpen;
     [SerializeField] private bool disableTrigger;
+    [SerializeField] private bool isLocked;
     
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(colliderObject))
+        if (other.CompareTag(colliderObject) && !isLocked)
         {
-            if (clip != null)
-            {
-                clip.PlayOneShot(doorOpen);
-            }
+            SoundManager.instance.PlaySFX(doorOpen);
+            
             foreach (OpenDoors door in doorScript)
             {
                 door.Open(other.transform.position);
                 
             }
+        }
+        else if (isLocked) 
+        {
+           SoundManager.instance.PlaySFX("Door Lock");
         }
     }
 
