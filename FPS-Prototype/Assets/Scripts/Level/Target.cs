@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Target : MonoBehaviour, IDamage, ITarget
+public class Target : MonoBehaviour, IDamage
 {
     public enum ElementType { speed = 1, jump = 2, shield = 3 }
 
@@ -72,37 +72,6 @@ public class Target : MonoBehaviour, IDamage, ITarget
             StartCoroutine(InitiateExplosion());
             StartCoroutine(ToggleExplosionVisual());
         }   
-    }
-
-    public void ActivateElem(int element)
-    {
-        // Check area for applicable targets. Need IElemental interface
-        //Toggle explosion radius on and off to achieve ^^
-        //Debug.Log("Activating Element");
-
-        if ((int)elem == element)
-        {
-            buff = true;
-            GameManager.instance.playerScript.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-        }
-        else
-        {
-            buff = false;
-            GameManager.instance.playerScript.ApplyElement((int)elem, buff, speedElemMod, jumpElemMod);
-            
-        }
-        switch ((int)elem)
-        {
-            case 1:
-                ApplySpeedElem();
-                break;
-            case 2:
-                ApplyJumpElem();
-                break;
-            case 3:
-                ApplyShieldElem();
-                break;
-        }
     }
 
     void ToggleVisuals()

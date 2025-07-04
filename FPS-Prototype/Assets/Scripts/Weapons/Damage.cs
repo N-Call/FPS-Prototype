@@ -14,7 +14,7 @@ public class Damage : MonoBehaviour
 
     [Header("Damage Settings")]
     [SerializeField] DamageType damageType;
-    [SerializeField] ElementType elem;
+    [SerializeField] EAbility elem;
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
     [SerializeField] float destroyTime;
@@ -126,7 +126,7 @@ public class Damage : MonoBehaviour
     }
     public void SetElement(int type)
     {
-        elem = (ElementType)type;
+        elem = (EAbility)type;
     }
 
     public void AddSpeedAmount(int range)
@@ -152,12 +152,12 @@ public class Damage : MonoBehaviour
             return; 
         }
         IDamage dmg = other.GetComponent<IDamage>();
-        ITarget targ = other.GetComponent<ITarget>();
+        IOrb targ = other.GetComponent<IOrb>();
 
         if ((dmg != null || targ != null) && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
             dmg?.TakeDamage(damageAmount);
-            targ?.ActivateElem((int)elem);
+            targ?.ActivateEffect(GameManager.instance.playerScript, elem);
         }
 
         Break breakable = other.GetComponent<Break>();
@@ -193,18 +193,18 @@ public class Damage : MonoBehaviour
             Physics.Raycast(transform.position, transform.right, homingRadius) || Physics.Raycast(transform.position, -transform.right, homingRadius)))
         {
             IDamage dmg = other.GetComponent<IDamage>();
-            ITarget targ = other.GetComponent<ITarget>();
+            IOrb targ = other.GetComponent<IOrb>();
 
             if (isWallBouncable && (dmg != null || targ != null))
             {
                 dmg?.TakeDamage(damageAmount);
-                targ?.ActivateElem((int)elem);
+                targ?.ActivateEffect(GameManager.instance.playerScript, elem);
                 GameObject.Destroy(gameObject);
                 alreadyDestroyed = true;
             }else if (!isWallBouncable || reflectionCount > maxReflections)
             {
                 dmg?.TakeDamage(damageAmount);
-                targ?.ActivateElem((int)elem);
+                targ?.ActivateEffect(GameManager.instance.playerScript, elem);
                 GameObject.Destroy(gameObject);
                 alreadyDestroyed = true;
             }

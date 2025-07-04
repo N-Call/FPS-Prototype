@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class PlayerScript : MonoBehaviour, IDamage, IPickup
+public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
 {
     [HideInInspector] public bool stopActions;
     [SerializeField] CharacterController controller;
@@ -31,6 +31,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     [Header("Sprinting")]
     [SerializeField] float sprintSpeed;
+    [SerializeField] float speedElemFOVMod;
 
     [Header("Crouching")]
     [SerializeField] float crouchSpeedMultiplier;
@@ -143,6 +144,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     bool elemInversed;
     bool isPlayingStep;
+
+    Coroutine SpeedRoutine;
+    Coroutine JumpRoutine;
+    Coroutine ShieldRoutine;
 
     private void OnEnable()
     {
@@ -749,9 +754,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
             return;
         }
 
-        if (isShielded > 0 && !invulnerable)
+        if (shieldCount > 0 && !invulnerable)
         {
-            isShielded -= 1;
+            shieldCount -= 1;
 
             invincHitTime = 0.05f;
         }
@@ -782,7 +787,10 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         invulnerable = false;
         shieldCount = isShielded;
 
-        ResetElems();
+        EndAbility(EAbility.speedBoost);
+        EndAbility(EAbility.jumpBoost);
+        EndAbility(EAbility.invensBoost);
+        //EndAbility(EAbility.speedBoost);
         ResetFOV();
         UpdatePlayerUI();
     }
@@ -793,7 +801,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         GameManager.instance.playerHPbar.fillAmount = (float)HP / originalHP;
 
         // update player shield bar at full and when taking damage
-        GameManager.instance.playerShieldbar.fillAmount = (float)isShielded / shieldMax;
+        GameManager.instance.playerShieldbar.fillAmount = (float)shieldCount / shieldMax;
     }
 
     public void SetSpeedModifier(float modifier)
@@ -958,102 +966,51 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
 
     }
 
-    // Element Work
-    public void ApplyElement(int elem, bool buffStatus, float speedMod, float jumpMod)
+    IEnumerator ActivateBoost(EAbility ability, float duration, float modifier)
     {
-        if (buffStatus)
-        {
-            switch (elem)
-            {
-                case 1:
-                    speedBuffed = true;
-                    break;
-                case 2:
-                    jumpBuffed = true;
-                    break;
-                default:
-                    return;
-            }
-        }
-        else
-        {
-            switch (elem)
-            {
-                case 1:
-                    speedDebuffed = true;
-                    break;
-                case 2:
-                    jumpDebuffed = true;
-                    break;
-                default:
-                    return;
-            }
-        }
-        speedElemMod = speedMod;
-        jumpElemMod = jumpMod;
+        StartAbility(ability, modifier);
+        yield return new WaitForSeconds(duration);
+        EndAbility(ability);
     }
 
-    public void ElementReverse()
+    void StartAbility(EAbility ability, float modifier)
     {
-        if (speedBuffed && GameManager.instance.speedBuffTimer >= GameManager.instance.speedBuffLimit)
+        switch (ability)
         {
-            particleSpMod.gameObject.SetActive(false);
-            GameManager.instance.BuffSprintIcon(false);
-            AddModifier(-speedElemMod);
-            ResetFOV();
-            speedBuffed = false;
-            GameManager.instance.speedBuffTimer = 0;
-        }
-        if (jumpBuffed && GameManager.instance.jumpBuffTimer >= GameManager.instance.jumpBuffLimit)
-        {
-            AddModifier(0.0f, -jumpElemMod);
-            particleJpMod.gameObject.SetActive(false);
-            GameManager.instance.BuffJumpIcon(false);
-            jumpBuffed = false;
-            GameManager.instance.jumpBuffTimer = 0;
-        }
-        if (speedDebuffed && GameManager.instance.speedDebuffTimer >= GameManager.instance.speedDebuffLimit)
-        {
-            GameManager.instance.DeBuffSprintIcon(false);
-            AddModifier(speedElemMod);
-            ResetFOV();
-            speedDebuffed = false;
-            GameManager.instance.speedDebuffTimer = 0;
-        }
-        if (jumpDebuffed && GameManager.instance.jumpDebuffTimer >= GameManager.instance.jumpDebuffLimit)
-        {
-            GameManager.instance.DeBuffJumpIcon(false);
-            AddModifier(0.0f, jumpElemMod);
-            jumpDebuffed = false;
-            GameManager.instance.jumpDebuffTimer = 0;
-
+            case EAbility.speedBoost:
+                speedModifier = modifier;
+                break;
+            case EAbility.jumpBoost:
+                jumpModifier = modifier;
+                break;
+            case EAbility.invensBoost:
+                shieldCount += (int)modifier;
+                UpdatePlayerUI();
+                break;
         }
     }
 
-    public void ElementInverse()
+    void EndAbility(EAbility ability)
     {
-        if (elemInversed)
+        switch (ability)
         {
-            elemInversed = false;
-            GameManager.instance.playerInInverseScreen.SetActive(false);
+            case EAbility.speedBoost:
+                ResetFOV();
+                particleSpMod.gameObject.SetActive(false);
+                GameManager.instance.BuffSprintIcon(false);
+                GameManager.instance.DeBuffSprintIcon(false);
+                speedModifier = 0;
+                break;
+            case EAbility.jumpBoost:
+                GameManager.instance.BuffJumpIcon(false);
+                GameManager.instance.DeBuffJumpIcon(false);
+                particleJpMod.gameObject.SetActive(false);
+                jumpModifier = 0;
+                break;
+            case EAbility.invensBoost:
+                shieldCount = 0;
+                break;
         }
-        else
-        {
-            elemInversed = true;
-            GameManager.instance.playerInInverseScreen.SetActive(true);
-        }
-    }
-
-    void ResetElems()
-    {
-        speedBuffed = false;
-        jumpBuffed = false;
-        speedDebuffed = false;
-        jumpDebuffed = false;
-        speedElemMod = 0.0f;
-        jumpElemMod = 0.0f;
-        particleSpMod.gameObject.SetActive(false);
-        particleJpMod.gameObject.SetActive(false);
     }
 
     public void CollectScrap(int amount)
@@ -1075,4 +1032,66 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup
         }
     }
 
+    public void ActivateBuffAbility(EAbility ability, float duration, float modifier)
+    {
+        switch (ability)
+        {
+            case EAbility.speedBoost:
+                if(SpeedRoutine != null){ StopCoroutine(SpeedRoutine); }
+                SetBaseFOV(baseFOV + speedElemFOVMod);
+                particleSpMod.gameObject.SetActive(true);
+                GameManager.instance.BuffSprintIcon(true);
+                SpeedRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
+                break;
+            case EAbility.jumpBoost:
+                if (JumpRoutine != null) { StopCoroutine(JumpRoutine); }
+                GameManager.instance.BuffJumpIcon(true);
+                particleJpMod.gameObject.SetActive(true);
+                JumpRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
+                break;
+            case EAbility.invensBoost:
+                //SetShieldBuff((int)modifier);
+                StartAbility(ability, modifier);
+                break;
+        }
+    }
+
+    public void ActivateDebuffAbility(EAbility ability, float duration, float modifier)
+    {
+        switch (ability)
+        {
+            case EAbility.speedBoost:
+                if (SpeedRoutine != null) 
+                { 
+                    StopCoroutine(SpeedRoutine);
+                    if (speedModifier > 0)
+                    {
+                        EndAbility(ability);
+                        break;
+                    }
+                }
+                GameManager.instance.DeBuffSprintIcon(true);
+                SpeedRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
+                break;
+            case EAbility.jumpBoost:
+                if (JumpRoutine != null) 
+                {
+                    StopCoroutine(JumpRoutine);
+                    if (jumpModifier > 0)
+                    {
+                        EndAbility(ability);
+                        break;
+                    }
+                }
+                GameManager.instance.DeBuffJumpIcon(true);
+                JumpRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
+                break;
+            case EAbility.invensBoost:
+                if (shieldCount > 0)
+                {
+                    StartAbility(ability, modifier); 
+                }
+                break;
+        }
+    }
 }

@@ -112,7 +112,7 @@ public class GunHitScan : Range
             remainingLength -= Vector3.Distance(ray.origin, hit.point);
 
             IDamage dmg = hit.collider.GetComponent<IDamage>();
-            ITarget targ = hit.collider.GetComponent<ITarget>();
+            IOrb targ = hit.collider.GetComponent<IOrb>();
             if (dmg != null || targ != null)
             {
                 hitCollider = hit.collider;
@@ -167,13 +167,13 @@ public class GunHitScan : Range
         }
 
         IDamage dmg = hitCollider.GetComponent<IDamage>();
-        ITarget targ = hitCollider.GetComponent<ITarget>();
+        IOrb targ = hitCollider.GetComponent<IOrb>();
         Break breakable = hitCollider.GetComponent<Break>();
 
         if (dmg != null || targ != null || breakable != null)
         {
             dmg?.TakeDamage( (GameManager.instance.playerAbilities != null)?  damage + GameManager.instance.playerAbilities.w1DmgMod : damage);
-            targ?.ActivateElem((int)elem);
+            targ?.ActivateEffect(GameManager.instance.playerScript, EAbility.speedBoost);
             breakable?.Shatter(location);
             return true;
         }

@@ -162,14 +162,6 @@ public class GameManager : MonoBehaviour
         {
             MenuManager.instance.CloseMenu();
         }
-
-        if (!isPaused && playerScript != null)
-        {
-            if (playerScript.speedBuffed || playerScript.jumpBuffed || playerScript.speedDebuffed || playerScript.jumpDebuffed)
-            {
-                HandleElemTimers();
-            }
-        }
     }
 
     public void ShowRules()
@@ -839,41 +831,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-    }
-    void HandleElemTimers()
-    {
-        if (playerScript.speedBuffed)
-        {
-            speedBuffTimer += Time.deltaTime;
-            if (speedBuffTimer >= speedBuffLimit)
-            {
-                playerScript.ElementReverse();
-            }
-        }
-        if (playerScript.jumpBuffed)
-        {
-            jumpBuffTimer += Time.deltaTime;
-            if (jumpBuffTimer >= jumpBuffLimit)
-            {
-                playerScript.ElementReverse();
-            }
-        }
-        if (playerScript.speedDebuffed)
-        {
-            speedDebuffTimer += Time.deltaTime;
-            if (speedDebuffTimer >= speedDebuffLimit)
-            {
-                playerScript.ElementReverse();
-            }
-        }
-        if (playerScript.jumpDebuffed)
-        {
-            jumpDebuffTimer += Time.deltaTime;
-            if (jumpDebuffTimer >= jumpDebuffLimit)
-            {
-                playerScript.ElementReverse();
-            }
-        }
     }
 
     public void SetOnStartScreen(bool onStartScreen)

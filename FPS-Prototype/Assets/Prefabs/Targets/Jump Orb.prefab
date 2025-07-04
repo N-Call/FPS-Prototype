@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5493716559379945484}
-  - component: {fileID: 6834454559251434919}
   - component: {fileID: 3275994072766960474}
   - component: {fileID: 697517194529859222}
   - component: {fileID: 4907070814465549490}
   - component: {fileID: 6201864485003306977}
+  - component: {fileID: 176344056106755546}
   m_Layer: 8
   m_Name: Jump Orb
   m_TagString: Untagged
@@ -38,32 +38,6 @@ Transform:
   - {fileID: 935993561563603790}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: -180}
---- !u!114 &6834454559251434919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2263744280346622512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a94a29f135adf44497706f0686903df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 5636007818262470855}
-  explosionRadius: {fileID: 566636820626271574}
-  explosionSize: 0.4
-  elem: 2
-  speedElemMod: 2
-  speedElemFOVMod: 10
-  speedElemTime: 5
-  jumpElemMod: 6
-  jumpElemTime: 5
-  shieldElemMod: 1
-  HP: 1
-  respawnTime: 1
-  buff: 0
-  enemyBuff: 0
 --- !u!114 &3275994072766960474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +125,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &176344056106755546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2263744280346622512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017a8de9477602b49a8d655fa30c6b36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  duration: 5
+  respawnRate: 2
+  modifier: 6
+  isDestroyable: 0
 --- !u!1 &3858757699719690683
 GameObject:
   m_ObjectHideFlags: 0
@@ -19634,20 +19625,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8028527232780259738, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
-      propertyPath: parentTarg
-      value: 
-      objectReference: {fileID: 6834454559251434919}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
---- !u!1 &566636820626271574 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5410915152941909907, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
-  m_PrefabInstance: {fileID: 5533366511650237125}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &935993561563603790 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4627209649974233483, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
