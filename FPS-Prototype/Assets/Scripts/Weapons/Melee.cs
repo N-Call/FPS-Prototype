@@ -40,6 +40,8 @@ public class Melee : MonoBehaviour, IWeapon
     void Update()
     {
         attackTimer += Time.deltaTime;
+        animator.updateMode = (Time.timeScale != 0) ? AnimatorUpdateMode.UnscaledTime : AnimatorUpdateMode.Normal;
+
         RaycastHit hit;
         if (!isTargeting && Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, attackDistance + notifactionDistance, ~LayerMask.GetMask("Player")))
         {

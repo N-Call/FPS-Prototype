@@ -75,7 +75,7 @@ public class GunHitScan : Range
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, distance, ~playerLayerMask))
         {
             IDamage dmg = hit.collider.GetComponent<IDamage>();
-            ITarget targ = hit.collider.GetComponent<ITarget>();
+            IOrb targ = hit.collider.GetComponent<IOrb>();
 
             if (dmg != null || targ != null)
             {

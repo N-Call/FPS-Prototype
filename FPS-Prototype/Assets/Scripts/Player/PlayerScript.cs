@@ -147,7 +147,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
 
     Coroutine SpeedRoutine;
     Coroutine JumpRoutine;
-    Coroutine ShieldRoutine;
+    Coroutine TimeRoutine;
 
     private void OnEnable()
     {
@@ -211,7 +211,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
 
         if (invulnerable)
         {
-            iFrameTimer += Time.deltaTime;
+            iFrameTimer += Time.unscaledDeltaTime;
             if (iFrameTimer >= invincHitTime)
             {
                 invulnerable = false;
@@ -252,7 +252,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
         if (currAmp > 0f && !isCrouching && !isSliding)
         {
             // This timer increments based on the frequency;
-            bobTimer += Time.deltaTime * currFreq;
+            bobTimer += Time.unscaledDeltaTime * currFreq;
 
             // This calculateds the bobbing effect offset using a sine wave system.
             // The Mathf.Sin function allows me to create a smooth, oscillating value betrween -1 and 1.
@@ -271,7 +271,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
         {
             bobTimer = 0f; // This resets the timer, when not moving
             // This smoothly returns the camera back to its original position.
-            Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, cameraLocalPosOrig, Time.deltaTime * bobReturnSpeed);
+            Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, cameraLocalPosOrig, Time.unscaledDeltaTime * bobReturnSpeed);
 
         }
     }
@@ -343,7 +343,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
         else if (canContinueWallRun)
         {
             wallNormal = currWallNormal;
-            wallRunTimer += Time.deltaTime;
+            wallRunTimer += Time.unscaledDeltaTime;
 
             if (wallRunMajorUpgrade)
                 verticalVelocity.y = 0f;
@@ -447,11 +447,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
             {
                 stickToWallForce = -wallNormal * wallStickForce;
             }
-            controller.Move((wallRunMoveDirection * speed + stickToWallForce) * Time.deltaTime);
+            controller.Move((wallRunMoveDirection * speed + stickToWallForce) * Time.unscaledDeltaTime);
         }
         else
         {
-            controller.Move(direction * speed * Time.deltaTime);
+            controller.Move(direction * speed * Time.unscaledDeltaTime);
             if (direction != Vector3.zero && !isPlayingStep && controller.isGrounded)
             {
                 StartCoroutine(PlaySteps());
@@ -460,8 +460,8 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
 
         if (wallJumpVel != Vector3.zero)
         {
-            controller.Move(wallJumpVel * Time.deltaTime);
-            wallJumpVel = Vector3.Lerp(wallJumpVel, Vector3.zero, 5f * Time.deltaTime);
+            controller.Move(wallJumpVel * Time.unscaledDeltaTime);
+            wallJumpVel = Vector3.Lerp(wallJumpVel, Vector3.zero, 5f * Time.unscaledDeltaTime);
         }
     }
 
@@ -556,12 +556,12 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
         // Apply normal gravity when not wall running
         if (!isWallRunning)
         {
-            verticalVelocity.y -= gravity * Time.deltaTime;
+            verticalVelocity.y -= gravity * Time.unscaledDeltaTime;
             verticalVelocity.y = Mathf.Max(verticalVelocity.y, -maxGravity);
         }
 
         // Debug added here to track state before vertical move
-        controller.Move(verticalVelocity * Time.deltaTime);
+        controller.Move(verticalVelocity * Time.unscaledDeltaTime);
 
         // Reset jumps, slide jump speed bonus, and applied gravity
         if (controller.isGrounded)
@@ -790,7 +790,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
         EndAbility(EAbility.speedBoost);
         EndAbility(EAbility.jumpBoost);
         EndAbility(EAbility.invensBoost);
-        //EndAbility(EAbility.speedBoost);
+        EndAbility(EAbility.timeBoost);
         ResetFOV();
         UpdatePlayerUI();
     }
@@ -874,11 +874,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
     {
         if (isSprinting == true)
         {
-            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, baseFOV + sprintFOVMod, changeRate * Time.deltaTime);
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, baseFOV + sprintFOVMod, changeRate * Time.unscaledDeltaTime);
         }
         else
         {
-            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, baseFOV, changeRate * Time.deltaTime);
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, baseFOV, changeRate * Time.unscaledDeltaTime);
         }
     }
 
@@ -983,6 +983,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
             case EAbility.jumpBoost:
                 jumpModifier = modifier;
                 break;
+            case EAbility.timeBoost:
+                Time.timeScale -= modifier;
+                break;
             case EAbility.invensBoost:
                 shieldCount += (int)modifier;
                 UpdatePlayerUI();
@@ -1007,6 +1010,9 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
                 particleJpMod.gameObject.SetActive(false);
                 jumpModifier = 0;
                 break;
+            case EAbility.timeBoost:
+                Time.timeScale = 1;
+                break;
             case EAbility.invensBoost:
                 shieldCount = 0;
                 break;
@@ -1027,7 +1033,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
             //Prevent standing on enemy
             Vector3 pushDirection = (transform.position - other.transform.position).normalized;
             pushDirection.y = 5f; // Add upward force
-            controller.Move(pushDirection * Time.deltaTime * 5f);
+            controller.Move(pushDirection * Time.unscaledDeltaTime * 5f);
 
         }
     }
@@ -1050,8 +1056,11 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
                 JumpRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
                 break;
             case EAbility.invensBoost:
-                //SetShieldBuff((int)modifier);
                 StartAbility(ability, modifier);
+                break;
+            case EAbility.timeBoost:
+                if (TimeRoutine != null) { StopCoroutine(TimeRoutine); }
+                TimeRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
                 break;
         }
     }
@@ -1085,6 +1094,18 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
                 }
                 GameManager.instance.DeBuffJumpIcon(true);
                 JumpRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
+                break;
+            case EAbility.timeBoost:
+                if (TimeRoutine != null)
+                {
+                    StopCoroutine(TimeRoutine);
+                    if (Time.timeScale < 1)
+                    {
+                        EndAbility(ability);
+                        break;
+                    }
+                }
+                TimeRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
                 break;
             case EAbility.invensBoost:
                 if (shieldCount > 0)

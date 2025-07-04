@@ -32,8 +32,8 @@ public class BaseOrb : MonoBehaviour, IOrb, IDamage
 
     public void ActivateEffect(IEActivator activator, EAbility ability)
     {
-        bool isPositive = (ability == curAbility);
 
+        bool isPositive = (curAbility > EAbility.invensBoost)? (curAbility - EAbility.invensBoost) == (int)ability : (ability == curAbility);
         if (isPositive)
         {
             //call activator for buff
