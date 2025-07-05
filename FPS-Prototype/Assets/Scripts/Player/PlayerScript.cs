@@ -128,7 +128,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
     int originalHP;
     int jumpCount;
     public int currentWeapon = 0;
-    int shieldCount;
+    public int shieldCount;
 
 
     bool isSprinting;
@@ -142,7 +142,6 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
     public bool speedDebuffed;
     public bool jumpDebuffed;
 
-    bool elemInversed;
     bool isPlayingStep;
 
     Coroutine SpeedRoutine;
@@ -993,7 +992,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
         }
     }
 
-    void EndAbility(EAbility ability)
+    public void EndAbility(EAbility ability)
     {
         switch (ability)
         {
@@ -1003,6 +1002,7 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
                 GameManager.instance.BuffSprintIcon(false);
                 GameManager.instance.DeBuffSprintIcon(false);
                 speedModifier = 0;
+                speedBuffed = false;
                 break;
             case EAbility.jumpBoost:
                 GameManager.instance.BuffJumpIcon(false);
@@ -1043,14 +1043,30 @@ public class PlayerScript : MonoBehaviour, IDamage, IPickup, IEActivator
         switch (ability)
         {
             case EAbility.speedBoost:
-                if(SpeedRoutine != null){ StopCoroutine(SpeedRoutine); }
+                if(SpeedRoutine != null){
+                    StopCoroutine(SpeedRoutine);
+                    if (speedModifier < 0)
+                    {
+                        EndAbility(ability);
+                        break;
+                    }
+                }
                 SetBaseFOV(baseFOV + speedElemFOVMod);
                 particleSpMod.gameObject.SetActive(true);
                 GameManager.instance.BuffSprintIcon(true);
+                speedBuffed = true;
                 SpeedRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));
                 break;
             case EAbility.jumpBoost:
-                if (JumpRoutine != null) { StopCoroutine(JumpRoutine); }
+                if (JumpRoutine != null) 
+                {
+                    StopCoroutine(JumpRoutine);
+                    if (jumpModifier < 0)
+                    {
+                        EndAbility(ability);
+                        break;
+                    }
+                }
                 GameManager.instance.BuffJumpIcon(true);
                 particleJpMod.gameObject.SetActive(true);
                 JumpRoutine = StartCoroutine(ActivateBoost(ability, duration, modifier));

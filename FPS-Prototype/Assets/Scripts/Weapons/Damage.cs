@@ -32,8 +32,11 @@ public class Damage : MonoBehaviour
 
 
     [Header("Damage Over Time Settings")]
+    [SerializeField] bool canHeal;
+    [SerializeField] private int dotHeal;
+    [SerializeField] private float dotHealRate;
     [SerializeField] private int dotDamage;
-    [SerializeField] private int dotDamageRate;
+    [SerializeField] private float dotDamageRate;
 
     private int reflectionCount;
     private Vector3 startPos;
@@ -216,7 +219,14 @@ public class Damage : MonoBehaviour
         }
         else
         {
-            StartCoroutine(DamageOther(damage));
+            if(canHeal && other.CompareTag("Player"))
+            {
+                StartCoroutine(HealOther(damage));
+            }
+            else
+            {
+                StartCoroutine(DamageOther(damage));
+            }
         }
     }
 
@@ -226,6 +236,15 @@ public class Damage : MonoBehaviour
         isDamaging = true;
         
         yield return new WaitForSeconds(dotDamageRate);
+        isDamaging = false;
+    }
+
+    IEnumerator HealOther(IDamage other)
+    {
+        other?.TakeDamage(-dotHeal);
+        isDamaging = true;
+
+        yield return new WaitForSeconds(dotHealRate);
         isDamaging = false;
     }
 
