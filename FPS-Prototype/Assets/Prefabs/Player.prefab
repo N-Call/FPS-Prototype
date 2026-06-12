@@ -6226,6 +6226,7 @@ MonoBehaviour:
   gravity: 25
   maxGravity: 45
   sprintSpeed: 4
+  speedElemFOVMod: 0
   crouchSpeedMultiplier: 0.5
   crouchHeightMultiplier: 0.6
   crouchRate: 0.08
@@ -6268,6 +6269,7 @@ MonoBehaviour:
   particleJpMod: {fileID: 5494831160535287924}
   positionSaver: {fileID: 0}
   currentWeapon: 0
+  shieldCount: 0
   speedBuffed: 0
   jumpBuffed: 0
   speedDebuffed: 0
@@ -7407,42 +7409,8 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  lineRange: 10
-  rendererStartWidth: 0.01
-  rendererEndWidth: 0.01
-  rendererGradient:
-    serializedVersion: 2
-    key0: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.5019608}
-    key1: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0.5019608}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  rendererMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-  maxReflections: 1
-  bulletForce: 0
+  zipDistance: 50
+  zipSpeed: 0.2
 --- !u!1 &3055625125730868901
 GameObject:
   m_ObjectHideFlags: 0
@@ -8082,6 +8050,7 @@ MonoBehaviour:
   attackRate: 0.4
   attackDistance: 15
   notifactionDistance: 5
+  explosiveSphere: {fileID: 4669622627705089412, guid: 165ecf648d37bf842add80fc924bd4a5, type: 3}
 --- !u!1 &4096683493614999352
 GameObject:
   m_ObjectHideFlags: 0

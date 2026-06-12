@@ -14,7 +14,7 @@ public class Damage : MonoBehaviour
 
     [Header("Damage Settings")]
     [SerializeField] DamageType damageType;
-    [SerializeField] ElementType elem;
+    [SerializeField] EAbility elem;
     [SerializeField] int damageAmount;
     [SerializeField] int speed;
     [SerializeField] float destroyTime;
@@ -32,8 +32,11 @@ public class Damage : MonoBehaviour
 
 
     [Header("Damage Over Time Settings")]
+    [SerializeField] bool canHeal;
+    [SerializeField] private int dotHeal;
+    [SerializeField] private float dotHealRate;
     [SerializeField] private int dotDamage;
-    [SerializeField] private int dotDamageRate;
+    [SerializeField] private float dotDamageRate;
 
     private int reflectionCount;
     private Vector3 startPos;
@@ -126,7 +129,7 @@ public class Damage : MonoBehaviour
     }
     public void SetElement(int type)
     {
-        elem = (ElementType)type;
+        elem = (EAbility)type;
     }
 
     public void AddSpeedAmount(int range)
@@ -152,12 +155,12 @@ public class Damage : MonoBehaviour
             return; 
         }
         IDamage dmg = other.GetComponent<IDamage>();
-        ITarget targ = other.GetComponent<ITarget>();
+        IOrb targ = other.GetComponent<IOrb>();
 
         if ((dmg != null || targ != null) && (damageType == DamageType.moving || damageType == DamageType.homing || damageType == DamageType.stationary))
         {
             dmg?.TakeDamage(damageAmount);
-            targ?.ActivateElem((int)elem);
+            targ?.ActivateEffect(GameManager.instance.playerScript, elem);
         }
 
         Break breakable = other.GetComponent<Break>();
@@ -193,18 +196,18 @@ public class Damage : MonoBehaviour
             Physics.Raycast(transform.position, transform.right, homingRadius) || Physics.Raycast(transform.position, -transform.right, homingRadius)))
         {
             IDamage dmg = other.GetComponent<IDamage>();
-            ITarget targ = other.GetComponent<ITarget>();
+            IOrb targ = other.GetComponent<IOrb>();
 
             if (isWallBouncable && (dmg != null || targ != null))
             {
                 dmg?.TakeDamage(damageAmount);
-                targ?.ActivateElem((int)elem);
+                targ?.ActivateEffect(GameManager.instance.playerScript, elem);
                 GameObject.Destroy(gameObject);
                 alreadyDestroyed = true;
             }else if (!isWallBouncable || reflectionCount > maxReflections)
             {
                 dmg?.TakeDamage(damageAmount);
-                targ?.ActivateElem((int)elem);
+                targ?.ActivateEffect(GameManager.instance.playerScript, elem);
                 GameObject.Destroy(gameObject);
                 alreadyDestroyed = true;
             }
@@ -216,7 +219,14 @@ public class Damage : MonoBehaviour
         }
         else
         {
-            StartCoroutine(DamageOther(damage));
+            if(canHeal && other.CompareTag("Player"))
+            {
+                StartCoroutine(HealOther(damage));
+            }
+            else
+            {
+                StartCoroutine(DamageOther(damage));
+            }
         }
     }
 
@@ -226,6 +236,15 @@ public class Damage : MonoBehaviour
         isDamaging = true;
         
         yield return new WaitForSeconds(dotDamageRate);
+        isDamaging = false;
+    }
+
+    IEnumerator HealOther(IDamage other)
+    {
+        other?.TakeDamage(-dotHeal);
+        isDamaging = true;
+
+        yield return new WaitForSeconds(dotHealRate);
         isDamaging = false;
     }
 

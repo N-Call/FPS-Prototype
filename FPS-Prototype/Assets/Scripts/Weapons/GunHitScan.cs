@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,151 +9,34 @@ public class GunHitScan : Range
     public GameObject hitEffect;
     [SerializeField] Transform shootPosition;
     [SerializeField] LayerMask playerLayerMask;
-   
-    
 
-    [Header("Ricochet Upgrade Settings")]
-    [SerializeField] float lineRange = 50.0f;
-    
-    [SerializeField][Tooltip("Only applied if there's no line renderer component already on the object")]
-    float rendererStartWidth = 0.1f, rendererEndWidth = 0.1f;
-
-    [SerializeField][Tooltip("Only applied if there's no line renderer component already on the object")]
-    Gradient rendererGradient;
-
-    [SerializeField][Tooltip("Only applied if there's no line renderer component already on the object")]
-    Material rendererMaterial;
-
-    [SerializeField] int maxReflections;
+    [Header("Major Upgrade Settings")]
+    [SerializeField] float zipDistance;
+    [SerializeField] float zipSpeed;
 
     RaycastHit cameraHit;
-    LineRenderer ricochetLineRenderer;
     Collider hitCollider;
 
-    [SerializeField] float bulletForce;
-
-
+    private bool isTargeting;
 
     protected override void Awake()
     {
         base.Awake();
-
-        ricochetLineRenderer = gameObject.GetComponent<LineRenderer>();
-        if (ricochetLineRenderer == null)
-        {
-            ricochetLineRenderer = gameObject.AddComponent<LineRenderer>();
-            ricochetLineRenderer.startWidth = rendererStartWidth;
-            ricochetLineRenderer.endWidth = rendererEndWidth;
-
-            ricochetLineRenderer.colorGradient = rendererGradient;
-            ricochetLineRenderer.material = rendererMaterial;
-        }
     }
 
     protected override void LateUpdate()
     {
         base.LateUpdate();
 
-        // Draw line from shootPosition to camera
-
-        if (!ShouldDrawLine())
-        {
-            // Disable line renderer and return if we should not draw a line
-            ricochetLineRenderer.enabled = false;
-            return;
-        }
-        else if (!ricochetLineRenderer.enabled)
-        {
-            ricochetLineRenderer.enabled = true;
-        }
-
-        // Draw the line from the shootPosition to the camera's hit point
-        ricochetLineRenderer.positionCount = 2;
-        ricochetLineRenderer.SetPosition(0, shootPosition.position);
-        ricochetLineRenderer.SetPosition(1, cameraHit.point);
-
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, distance, ~playerLayerMask))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, zipDistance, ~playerLayerMask))
         {
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-            ITarget targ = hit.collider.GetComponent<ITarget>();
-
-            if (dmg != null || targ != null)
+            if (GameManager.instance.playerScript.speedBuffed && InputActionManager.instance.playerChange)
             {
-                hitCollider = hit.collider;
+                StartCoroutine(MoveOverTime(hit.point, zipSpeed));
                 return;
             }
         }
-
-        // Get hit positions from reflections
-        foreach (Vector3 position in GetHitPositions(Mathf.Min(distance, lineRange))) {
-            ricochetLineRenderer.positionCount++;
-            ricochetLineRenderer.SetPosition(ricochetLineRenderer.positionCount - 1, position);
-        }
-    }
-
-    List<Vector3> GetHitPositions(float maxDistance)
-    {
-        List<Vector3> positions = new();
-
-        float remainingLength = maxDistance;
-        Ray ray = new Ray(cameraHit.point, Vector3.Reflect(shootPosition.forward, cameraHit.normal));
-
-        RaycastHit hit;
-        for (int i = 0; i < maxReflections; i++)
-        {
-            if (!Physics.Raycast(ray.origin, ray.direction, out hit, remainingLength))
-            {
-                positions.Add(ray.origin + ray.direction * remainingLength);
-                continue;
-            }
-
-            positions.Add(hit.point);
-            ray = new Ray(hit.point, Vector3.Reflect(ray.direction, hit.normal));
-            remainingLength -= Vector3.Distance(ray.origin, hit.point);
-
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-            ITarget targ = hit.collider.GetComponent<ITarget>();
-            if (dmg != null || targ != null)
-            {
-                hitCollider = hit.collider;
-                return positions;
-            }
-        }
-
-        return positions;
-    }
-
-    bool ShouldRicochet()
-    {
-        if (GameManager.instance.playerAbilities == null || !GameManager.instance.playerAbilities.RicochetUnlocked())
-        {
-            return false;
-        }
-
-        if (reloadInProgress)
-        {
-            return false;
-        }
-
-        if (!InputActionManager.instance.playerAim)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    bool ShouldDrawLine()
-    {
-        cameraHit = default;
-
-        if (!ShouldRicochet())
-        {
-            return false;
-        }
-
-        return Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out cameraHit, distance, ~playerLayerMask);
     }
    
     bool ShootAt(Vector3 location)
@@ -167,13 +51,13 @@ public class GunHitScan : Range
         }
 
         IDamage dmg = hitCollider.GetComponent<IDamage>();
-        ITarget targ = hitCollider.GetComponent<ITarget>();
+        IOrb targ = hitCollider.GetComponent<IOrb>();
         Break breakable = hitCollider.GetComponent<Break>();
 
         if (dmg != null || targ != null || breakable != null)
         {
             dmg?.TakeDamage( (GameManager.instance.playerAbilities != null)?  damage + GameManager.instance.playerAbilities.w1DmgMod : damage);
-            targ?.ActivateElem((int)elem);
+            targ?.ActivateEffect(GameManager.instance.playerScript, EAbility.speedBoost);
             breakable?.Shatter(location);
             return true;
         }
@@ -217,18 +101,32 @@ public class GunHitScan : Range
             hitEnemyOrTarget = ShootAt(hit.point);
         }
 
-        // If they should ricochet and did not hit an enemy or target..
-        if (ShouldRicochet() && !hitEnemyOrTarget)
-        {
-            foreach (Vector3 position in GetHitPositions(distance))
-            {
-                ShootAt(position);
-            }
-        }
-
         ammoCount--;
         currTotalBullets--;
         GameManager.instance.GlobalAmmoCount(ammoCount, currTotalBullets - ammoCount);
+    }
+
+
+
+    IEnumerator MoveOverTime(Vector3 target, float duration)
+    {
+        isTargeting = true;
+        GameManager.instance.playerScript.stopActions = true;
+        GameObject player = GameManager.instance.player;
+        Vector3 start = player.transform.position;
+        float elapsed = 0;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            Vector3 nextPos = Vector3.Lerp(start, target, elapsed / duration);
+            player.GetComponent<CharacterController>().Move(nextPos - transform.position);
+
+            yield return null;
+        }
+        GameManager.instance.playerScript.stopActions = false;
+        GameManager.instance.playerScript.ActivateProvideExtraJump();
+        GameManager.instance.playerScript.EndAbility(EAbility.speedBoost);
+        isTargeting = false;
     }
 
 }

@@ -6,4 +6,5 @@ public enum EAbility
     speedBoost = 1,
     jumpBoost = 2,
     invensBoost = 3,
+    timeBoost = 4
 }

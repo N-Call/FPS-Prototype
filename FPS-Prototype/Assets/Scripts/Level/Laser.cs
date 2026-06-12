@@ -39,7 +39,7 @@ public class Laser : MonoBehaviour
             StartCoroutine(ToggleLaser());
         }
 
-        if (DifficultyManager.Instance.currentSettings != null)
+        if (DifficultyManager.Instance != null && DifficultyManager.Instance.currentSettings != null)
         {
             damage = (int)(damage * DifficultyManager.Instance.currentSettings.laserDmgMod);
         }

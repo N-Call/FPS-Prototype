@@ -23,6 +23,9 @@ public class Melee : MonoBehaviour, IWeapon
     [SerializeField] private float attackDistance;
     [SerializeField] private float notifactionDistance;
 
+    [Header("Major Upgrade Settings")]
+    [SerializeField] private GameObject explosiveSphere;
+
     private Color origColor;
     private float attackTimer;
     private bool isTargeting;
@@ -40,28 +43,35 @@ public class Melee : MonoBehaviour, IWeapon
     void Update()
     {
         attackTimer += Time.deltaTime;
-        RaycastHit hit;
-        if (!isTargeting && Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, attackDistance + notifactionDistance, ~LayerMask.GetMask("Player")))
-        {
-            if ((hit.collider.GetComponent<IDamage>() != null || hit.collider.GetComponent<ITarget>() != null))
-            {
-                weaponMeeter.fillAmount = 1 - (hit.distance - attackDistance) / notifactionDistance;
+        animator.updateMode = (Time.timeScale != 0) ? AnimatorUpdateMode.UnscaledTime : AnimatorUpdateMode.Normal;
 
-                if(weaponMeeter.fillAmount == 1)
-                {
-                    weaponMeeter.color = weaponGlow;
-                }
-                else
-                {
-                    weaponMeeter.color = origColor;
-                }
-            }
-            else if ((hit.collider.GetComponent<IDamage>() == null && hit.collider.GetComponent<ITarget>() == null) && weaponMeeter.fillAmount > 0)
-            {
-                weaponMeeter.color = origColor;
-                weaponMeeter.fillAmount = (weaponMeeter.fillAmount - Time.deltaTime < 0) ? 0 : weaponMeeter.fillAmount - Time.deltaTime;
-            }
+        if (InputActionManager.instance.playerChange && GameManager.instance.playerScript.shieldCount > 0)
+        {
+            Instantiate(explosiveSphere, transform.position, transform.rotation);
+            GameManager.instance.playerScript.ActivateDebuffAbility(EAbility.invensBoost, 0, -1);
         }
+        //RaycastHit hit;
+        //if (!isTargeting && Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, attackDistance + notifactionDistance, ~LayerMask.GetMask("Player")))
+        //{
+        //    if ((hit.collider.GetComponent<IDamage>() != null || hit.collider.GetComponent<IOrb>() != null))
+        //    {
+        //        weaponMeeter.fillAmount = 1 - (hit.distance - attackDistance) / notifactionDistance;
+
+        //        if(weaponMeeter.fillAmount == 1)
+        //        {
+        //            weaponMeeter.color = weaponGlow;
+        //        }
+        //        else
+        //        {
+        //            weaponMeeter.color = origColor;
+        //        }
+        //    }
+        //    else if ((hit.collider.GetComponent<IDamage>() == null && hit.collider.GetComponent<IOrb>() == null) && weaponMeeter.fillAmount > 0)
+        //    {
+        //        weaponMeeter.color = origColor;
+        //        weaponMeeter.fillAmount = (weaponMeeter.fillAmount - Time.deltaTime < 0) ? 0 : weaponMeeter.fillAmount - Time.deltaTime;
+        //    }
+        //}
         }
 
     public void AttackBegin(LayerMask playerMask)
@@ -79,7 +89,7 @@ public class Melee : MonoBehaviour, IWeapon
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, attackDistance, ~playerMask))
             {
-                if (hit.collider.GetComponent<IDamage>() != null || hit.collider.GetComponent<ITarget>() != null)
+                if (hit.collider.GetComponent<IDamage>() != null || hit.collider.GetComponent<IOrb>() != null)
                 {
                     weaponMeeter.fillAmount = 1;
                     StartCoroutine(MoveOverTime(hit.point, 0.55f / animator.speed));
@@ -97,7 +107,7 @@ public class Melee : MonoBehaviour, IWeapon
 
         //check to see if the trigger hit an enemy
         other.GetComponent<IDamage>()?.TakeDamage((GameManager.instance.playerAbilities != null)? damage + GameManager.instance.playerAbilities.w3DmgMod: damage);
-        other.GetComponent<ITarget>()?.ActivateElem((int)elem);
+        other.GetComponent<IOrb>()?.ActivateEffect(GameManager.instance.playerScript, EAbility.invensBoost);
     }
     public void AttackEnd(LayerMask playerMask)
     {

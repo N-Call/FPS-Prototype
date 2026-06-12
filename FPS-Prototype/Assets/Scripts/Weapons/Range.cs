@@ -69,6 +69,7 @@ public class Range : MonoBehaviour, IReloadable, IWeapon
     protected virtual void Update()
     {
         shootTimer += Time.deltaTime;
+        animator.updateMode = (Time.timeScale != 0)? AnimatorUpdateMode.UnscaledTime : AnimatorUpdateMode.Normal;
 
         if (reloadInProgress && animator != null)
         {

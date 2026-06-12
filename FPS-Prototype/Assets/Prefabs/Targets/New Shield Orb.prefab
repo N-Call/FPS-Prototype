@@ -14599,11 +14599,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4875576783482083083}
-  - component: {fileID: 2826459893217806561}
   - component: {fileID: 4341147070653394369}
   - component: {fileID: 4829522874450920502}
   - component: {fileID: 3234550413337290190}
   - component: {fileID: 5129018924666808238}
+  - component: {fileID: -1688915787825469451}
   m_Layer: 8
   m_Name: New Shield Orb
   m_TagString: Untagged
@@ -14628,32 +14628,6 @@ Transform:
   - {fileID: 1985919856311438738}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: -180}
---- !u!114 &2826459893217806561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7808308724460142867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a94a29f135adf44497706f0686903df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 7247430049964369207}
-  explosionRadius: {fileID: 1202231949722010506}
-  explosionSize: 0.4
-  elem: 3
-  speedElemMod: 2
-  speedElemFOVMod: 10
-  speedElemTime: 5
-  jumpElemMod: 1.5
-  jumpElemTime: 5
-  shieldElemMod: 1
-  HP: 1
-  respawnTime: 1
-  buff: 0
-  enemyBuff: 0
 --- !u!114 &4341147070653394369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14741,6 +14715,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1688915787825469451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808308724460142867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a463b7b71b8d5c24380a78ed153c4683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  duration: 5
+  modifier: 1
+  respawnRate: 5
+  isDestroyable: 0
 --- !u!1 &7948199697015552398
 GameObject:
   m_ObjectHideFlags: 0
@@ -19642,20 +19633,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8028527232780259738, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
-      propertyPath: parentTarg
-      value: 
-      objectReference: {fileID: 2826459893217806561}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8028527232780259738, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
---- !u!1 &1202231949722010506 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5410915152941909907, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
-  m_PrefabInstance: {fileID: 6609104194088453145}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1985919856311438738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4627209649974233483, guid: 8f0076080c33df845b702b4bd0a9066e, type: 3}
